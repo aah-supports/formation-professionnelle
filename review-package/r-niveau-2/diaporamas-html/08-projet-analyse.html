@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projet fil rouge</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#080808; --bg2:#111111; --text:#ffffff; --body:#d1d5db; --muted:#888888; --dim:#444444; --border:#222222; --cyan:#00f3ff; --purple:#a78bfa; --orange:#ff6b00; --green:#10b981; }
+    * { box-sizing:border-box; }
+    .reveal { font-family:'Inter',sans-serif; font-size:24px; background:var(--bg); }
+    .reveal .slides { text-align:left; }
+    .reveal .slides > section { display:flex !important; flex-direction:column; justify-content:center; align-items:center; height:100%; padding:40px 60px; }
+    .reveal .slides > section > * { width:100%; max-width:1200px; }
+    .reveal h1 { font-weight:800; font-size:2.4em; letter-spacing:-0.03em; line-height:1.1; margin-bottom:0.3em; }
+    .reveal h2 { font-weight:700; font-size:1.6em; color:#fff; margin-bottom:0.2em; letter-spacing:-0.02em; }
+    .reveal p { color:var(--body); line-height:1.6; }
+    .subtitle { font-size:1.1em; color:var(--muted); margin-top:0.3em; }
+    .slide-header { margin-bottom:1em; }
+    pre { background:var(--bg2) !important; border:1px solid var(--border); border-radius:12px; padding:20px !important; margin:0 !important; font-size:0.7em !important; overflow-x:auto; }
+    code { font-family:'JetBrains Mono',monospace !important; line-height:1.7 !important; }
+    .bullet-list, .summary-list { list-style:none; padding:0; margin:0; }
+    .bullet-list li, .summary-list li { padding:8px 0; border-bottom:1px solid var(--border); color:var(--body); font-size:0.9em; line-height:1.5; }
+    .bullet-list li:last-child, .summary-list li:last-child { border-bottom:none; }
+    .check { font-weight:700; margin-right:8px; }
+    .progress-bar { position:absolute; top:0; left:0; width:100%; height:3px; background:var(--border); z-index:10; }
+    .progress-fill { height:100%; transition:width .5s ease; border-radius:0 2px 2px 0; }
+    .slide-footer { position:absolute; bottom:16px; right:24px; }
+    .slide-num { font-size:0.65em; color:var(--dim); font-family:'JetBrains Mono',monospace; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:10%; background:#00f3ff"></div></div>
+      <h1 style="color:#00f3ff; font-size:2.2em">Module 8 — Projet fil rouge</h1>
+      <p class="subtitle">De la donnée brute à la synthèse descriptive métier</p>
+      <div class="slide-footer"><span class="slide-num">1 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:20%; background:#a78bfa"></div></div>
+      <div class="slide-header"><h2>Contexte du cas</h2></div>
+      <ul class="bullet-list">
+        <li>Ventes transactionnelles en base SQL</li>
+        <li>Objectifs et catalogue en Excel</li>
+        <li>Demande métier : reporting mensuel fiable</li>
+        <li>Livrable : KPI + recommandations</li>
+      </ul>
+      <div class="slide-footer"><span class="slide-num">2 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:30%; background:#00f3ff"></div></div>
+      <div class="slide-header"><h2>Étape 1 — Extraction</h2></div>
+      <pre><code class="language-r">con &lt;- DBI::dbConnect(RSQLite::SQLite(), "business.db")
+ventes_tbl &lt;- dplyr::tbl(con, "ventes")
+clients_tbl &lt;- dplyr::tbl(con, "clients")
+
+catalogue &lt;- readxl::read_excel("catalogue.xlsx", sheet = "Produits")
+objectifs &lt;- readxl::read_excel("objectifs.xlsx", sheet = "Objectifs", skip = 2)</code></pre>
+      <div class="slide-footer"><span class="slide-num">3 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:40%; background:#ff6b00"></div></div>
+      <div class="slide-header"><h2>Étape 2 — Qualité</h2></div>
+      <ul class="bullet-list">
+        <li>Taux de NA sur colonnes critiques</li>
+        <li>Unicité de la clé commande</li>
+        <li>Produits vendus hors catalogue</li>
+        <li>Décision GO / NO GO pour l'analyse</li>
+      </ul>
+      <div class="slide-footer"><span class="slide-num">4 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:50%; background:#a78bfa"></div></div>
+      <div class="slide-header"><h2>Étape 3 — Table analytique</h2></div>
+      <pre><code class="language-r">pilotage &lt;- ventes_tbl |&gt;
+  left_join(clients_tbl, by = "client_id") |&gt;
+  collect() |&gt;
+  left_join(catalogue, by = "produit_id") |&gt;
+  mutate(montant_commande = quantite * prix_net) |&gt;
+  group_by(mois, region, segment) |&gt;
+  summarise(ca = sum(montant_commande, na.rm = TRUE), .groups = "drop") |&gt;
+  left_join(objectifs, by = c("mois", "region"))</code></pre>
+      <div class="slide-footer"><span class="slide-num">5 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:60%; background:#00f3ff"></div></div>
+      <div class="slide-header"><h2>Étape 4 — Descriptif pratique</h2></div>
+      <ul class="bullet-list">
+        <li>CA total, panier moyen, clients actifs</li>
+        <li>Part de CA par segment</li>
+        <li>Variation MoM par région</li>
+        <li>Top 5 clients par région</li>
+      </ul>
+      <div class="slide-footer"><span class="slide-num">6 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:70%; background:#ff6b00"></div></div>
+      <div class="slide-header"><h2>Étape 5 — Restitution</h2></div>
+      <ul class="bullet-list">
+        <li>1 tableau GT de synthèse</li>
+        <li>2 graphiques descriptifs clés</li>
+        <li>Exports CSV/Excel/PNG</li>
+        <li>Synthèse écrite (8-10 lignes)</li>
+      </ul>
+      <div class="slide-footer"><span class="slide-num">7 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:80%; background:#a78bfa"></div></div>
+      <div class="slide-header"><h2>Barème projet</h2></div>
+      <ul class="bullet-list">
+        <li>Extraction multi-sources : 20 pts</li>
+        <li>Qualité et contrôle : 20 pts</li>
+        <li>Requêtes avancées : 25 pts</li>
+        <li>Analyse descriptive : 20 pts</li>
+        <li>Restitution : 15 pts</li>
+      </ul>
+      <div class="slide-footer"><span class="slide-num">8 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:90%; background:#00f3ff"></div></div>
+      <div class="slide-header"><h2>Checklist finale</h2></div>
+      <ul class="bullet-list">
+        <li>Code exécutable de bout en bout</li>
+        <li>Hypothèses explicitées</li>
+        <li>Anomalies signalées</li>
+        <li>Recommandations concrètes</li>
+      </ul>
+      <div class="slide-footer"><span class="slide-num">9 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:100%; background:#00f3ff"></div></div>
+      <div class="slide-header"><h2 style="color:#00f3ff">Bilan de la formation</h2></div>
+      <ul class="summary-list">
+        <li><span class="check" style="color:#00f3ff">✓</span>Exploiter une base SQL depuis R</li>
+        <li><span class="check" style="color:#00f3ff">✓</span>Fiabiliser des exports Excel</li>
+        <li><span class="check" style="color:#00f3ff">✓</span>Construire des requêtes avancées robustes</li>
+        <li><span class="check" style="color:#00f3ff">✓</span>Clore par une analyse descriptive utile aux métiers</li>
+      </ul>
+      <div class="slide-footer"><span class="slide-num">10 / 10</span></div>
+    </section>
+
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+  <script>
+    Reveal.initialize({ hash:true, transition:'slide', transitionSpeed:'default', backgroundTransition:'fade', width:1920, height:1080, margin:0, center:false, controls:true, progress:false, slideNumber:false, plugins:[] });
+    hljs.highlightAll();
+  </script>
+</body>
+</html>

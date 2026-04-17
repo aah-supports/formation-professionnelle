@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Requêtes avancées II et automatisation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#080808; --bg2:#111111; --text:#ffffff; --body:#d1d5db; --muted:#888888; --dim:#444444; --border:#222222; --cyan:#00f3ff; --purple:#a78bfa; --orange:#ff6b00; --green:#10b981; }
+    * { box-sizing:border-box; }
+    .reveal { font-family:'Inter',sans-serif; font-size:24px; background:var(--bg); }
+    .reveal .slides { text-align:left; }
+    .reveal .slides > section { display:flex !important; flex-direction:column; justify-content:center; align-items:center; height:100%; padding:40px 60px; }
+    .reveal .slides > section > * { width:100%; max-width:1200px; }
+    .reveal h1 { font-weight:800; font-size:2.4em; letter-spacing:-0.03em; line-height:1.1; margin-bottom:0.3em; }
+    .reveal h2 { font-weight:700; font-size:1.6em; color:#fff; margin-bottom:0.2em; letter-spacing:-0.02em; }
+    .reveal p { color:var(--body); line-height:1.6; }
+    .subtitle { font-size:1.1em; color:var(--muted); margin-top:0.3em; }
+    .slide-subtitle { font-size:0.85em; font-weight:600; margin-bottom:0.8em; }
+    .slide-header { margin-bottom:1em; }
+    pre { background:var(--bg2) !important; border:1px solid var(--border); border-radius:12px; padding:20px !important; margin:0 !important; font-size:0.7em !important; overflow-x:auto; }
+    code { font-family:'JetBrains Mono',monospace !important; line-height:1.7 !important; }
+    .bullet-list, .summary-list { list-style:none; padding:0; margin:0; }
+    .bullet-list li, .summary-list li { padding:8px 0; border-bottom:1px solid var(--border); color:var(--body); font-size:0.9em; line-height:1.5; }
+    .bullet-list li:last-child, .summary-list li:last-child { border-bottom:none; }
+    .check { font-weight:700; margin-right:8px; }
+    .progress-bar { position:absolute; top:0; left:0; width:100%; height:3px; background:var(--border); z-index:10; }
+    .progress-fill { height:100%; transition:width .5s ease; border-radius:0 2px 2px 0; }
+    .slide-footer { position:absolute; bottom:16px; right:24px; }
+    .slide-num { font-size:0.65em; color:var(--dim); font-family:'JetBrains Mono',monospace; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:10%; background:#00f3ff"></div></div>
+      <h1 style="color:#00f3ff; font-size:2.2em">Module 4 — Requêtes avancées II</h1>
+      <p class="subtitle">Fenêtres SQL, fonctions paramétrées et pipelines robustes</p>
+      <div class="slide-footer"><span class="slide-num">1 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:20%; background:#a78bfa"></div></div>
+      <div class="slide-header"><h2>Ce qu'on automatise</h2></div>
+      <ul class="bullet-list">
+        <li>Extractions récurrentes quotidiennes / hebdo</li>
+        <li>Calcul de KPI avec même logique métier</li>
+        <li>Exports standardisés (CSV/Excel)</li>
+        <li>Journalisation des traitements</li>
+      </ul>
+      <div class="slide-footer"><span class="slide-num">2 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:30%; background:#00f3ff"></div></div>
+      <div class="slide-header"><h2>Fonctions de fenêtre (ranking)</h2></div>
+      <pre><code class="language-r">classement_region &lt;- ventes_tbl |&gt;
+  group_by(region, client_id) |&gt;
+  summarise(ca = sum(prix_net, na.rm = TRUE), .groups = "drop") |&gt;
+  group_by(region) |&gt;
+  mutate(
+    rang = dense_rank(desc(ca)),
+    part_region = ca / sum(ca)
+  )</code></pre>
+      <div class="slide-footer"><span class="slide-num">3 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:40%; background:#ff6b00"></div></div>
+      <div class="slide-header"><h2>Fonctions de fenêtre (évolution)</h2></div>
+      <pre><code class="language-r">evo &lt;- ventes_tbl |&gt;
+  mutate(mois = substr(date, 1, 7)) |&gt;
+  group_by(region, mois) |&gt;
+  summarise(ca = sum(prix_net, na.rm = TRUE), .groups = "drop") |&gt;
+  group_by(region) |&gt;
+  arrange(mois, .by_group = TRUE) |&gt;
+  mutate(
+    ca_mois_prec = lag(ca),
+    var_mom = (ca - ca_mois_prec) / ca_mois_prec
+  )</code></pre>
+      <div class="slide-footer"><span class="slide-num">4 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:50%; background:#a78bfa"></div></div>
+      <div class="slide-header"><h2>Fonction paramétrée</h2></div>
+      <pre><code class="language-r">extraire_kpi &lt;- function(con, date_debut, date_fin, region = NULL) {
+  req &lt;- tbl(con, "ventes") |&gt;
+    filter(date &gt;= date_debut, date &lt;= date_fin)
+
+  if (!is.null(region)) req &lt;- req |&gt; filter(region == !!region)
+
+  req |&gt;
+    summarise(ca_total = sum(prix_net, na.rm = TRUE),
+              nb_commandes = n_distinct(id_commande)) |&gt;
+    collect()
+}</code></pre>
+      <div class="slide-footer"><span class="slide-num">5 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:60%; background:#00f3ff"></div></div>
+      <div class="slide-header"><h2>Gestion d'erreur (tryCatch / possibly)</h2></div>
+      <pre><code class="language-r">safe_extract &lt;- purrr::possibly(
+  ~ extraire_kpi(con, .x$date_debut, .x$date_fin, .x$region),
+  otherwise = tibble::tibble(ca_total = NA_real_, nb_commandes = NA_integer_)
+)
+
+resultats &lt;- scenarios |&gt; purrr::map(safe_extract)</code></pre>
+      <div class="slide-footer"><span class="slide-num">6 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:70%; background:#ff6b00"></div></div>
+      <div class="slide-header"><h2>Journalisation minimale</h2></div>
+      <pre><code class="language-r">log_ligne &lt;- tibble::tibble(
+  horodatage = Sys.time(),
+  job = "kpi_mensuel",
+  statut = "OK",
+  nb_lignes = nrow(resultat),
+  message = "Extraction terminée"
+)
+
+readr::write_csv(log_ligne, "logs/job_kpi.csv", append = TRUE)</code></pre>
+      <div class="slide-footer"><span class="slide-num">7 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:80%; background:#a78bfa"></div></div>
+      <div class="slide-header"><h2>Exports standardisés</h2></div>
+      <ul class="bullet-list">
+        <li>Nommage : <code>kpi_region_YYYYMMDD.csv</code></li>
+        <li>Chemin unique de sortie</li>
+        <li>Versionnage simple par date</li>
+        <li>Écrire un résumé dans le log</li>
+      </ul>
+      <div class="slide-footer"><span class="slide-num">8 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:90%; background:#00f3ff"></div></div>
+      <div class="slide-header"><h2>Atelier du module</h2></div>
+      <ul class="bullet-list">
+        <li>Créer une extraction "Top clients" paramétrée</li>
+        <li>Ajouter un contrôle qualité bloquant</li>
+        <li>Journaliser l'exécution</li>
+        <li>Exporter les résultats pour les métiers</li>
+      </ul>
+      <div class="slide-footer"><span class="slide-num">9 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:100%; background:#00f3ff"></div></div>
+      <div class="slide-header"><h2 style="color:#00f3ff">Récapitulatif</h2></div>
+      <ul class="summary-list">
+        <li><span class="check" style="color:#00f3ff">✓</span>Fenêtres pour ranking et évolutions</li>
+        <li><span class="check" style="color:#00f3ff">✓</span>Fonctions paramétrées réutilisables</li>
+        <li><span class="check" style="color:#00f3ff">✓</span>Gestion d'erreur sans rupture du flux</li>
+        <li><span class="check" style="color:#00f3ff">✓</span>Automatisation prête pour production</li>
+      </ul>
+      <div class="slide-footer"><span class="slide-num">10 / 10</span></div>
+    </section>
+
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+  <script>
+    Reveal.initialize({ hash:true, transition:'slide', transitionSpeed:'default', backgroundTransition:'fade', width:1920, height:1080, margin:0, center:false, controls:true, progress:false, slideNumber:false, plugins:[] });
+    hljs.highlightAll();
+  </script>
+</body>
+</html>

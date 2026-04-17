@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jour2 Exercices</title>
+<style>
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#2d3436;line-height:1.7;max-width:800px;margin:0 auto;padding:30px 24px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
+h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+h4{font-size:.95rem;margin:16px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid #dfe6e9;padding:8px 12px;text-align:left;font-size:.9rem}
+th{background:#f1f2f6;font-weight:600}
+tr:nth-child(even){background:#f8f9fa}
+blockquote{border-left:4px solid #74b9ff;margin:12px 0;padding:8px 16px;background:#f8f9fa;color:#636e72}
+strong{color:#2d3436}
+hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
+.header-bar{background:#0984e3;color:#fff;padding:12px 20px;border-radius:8px;margin-bottom:24px;font-size:.85rem}
+.header-bar strong{color:#fff}
+</style>
+</head>
+<body>
+<div class="header-bar"><strong>R Niveau II</strong></div>
+<h1>R Niveau II — Jour 2 : Exercices pratiques</h1>
+<blockquote>
+<p>Qualité des données, statistiques descriptives pratiques et restitution métier</p>
+</blockquote>
+<hr>
+<h2>Module 5 : Contrôles qualité et consolidation</h2>
+<h3>Exercice 5.1 : Profil qualité rapide [Difficulté: Facile]</h3>
+<p><strong>Énoncé</strong> : Sur <code>base_analyse</code>, calculez pour chaque colonne :</p>
+<ol>
+<li>Le nombre de valeurs manquantes</li>
+<li>Le pourcentage de valeurs manquantes</li>
+<li>Le nombre de valeurs distinctes</li>
+</ol>
+<details><summary>Solution</summary>
+<pre><code class="language-r">library(dplyr)
+library(tidyr)
+
+profil_qc &lt;- base_analyse |&gt;
+  summarise(across(
+    everything(),
+    list(
+      na_n = ~ sum(is.na(.x)),
+      na_pct = ~ round(mean(is.na(.x)) * 100, 2),
+      n_distinct = ~ n_distinct(.x)
+    )
+  )) |&gt;
+  pivot_longer(everything(), names_to = "metrique", values_to = "valeur")
+
+profil_qc
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 5.2 : Détection de doublons [Difficulté: Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Identifiez les commandes dupliquées sur la clé <code>(id_commande, date)</code>.</p>
+<ol>
+<li>Compter les occurrences par clé</li>
+<li>Ne garder que celles avec plus d&#39;une occurrence</li>
+<li>Afficher les lignes concernées</li>
+</ol>
+<details><summary>Solution</summary>
+<pre><code class="language-r">dups_keys &lt;- base_analyse |&gt;
+  count(id_commande, date, name = "n") |&gt;
+  filter(n &gt; 1)
+
+dups_lignes &lt;- base_analyse |&gt;
+  inner_join(dups_keys |> select(id_commande, date), by = c("id_commande", "date")) |&gt;
+  arrange(id_commande, date)
+
+dups_lignes
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 5.3 : Réconciliation base vs Excel [Difficulté: Avancé]</h3>
+<p><strong>Énoncé</strong> : Comparez les montants mensuels entre :</p>
+<ul>
+<li><code>ca_base</code> issu des transactions SQL</li>
+<li><code>ca_excel</code> issu d&#39;un fichier de reporting</li>
+</ul>
+<p>Objectif : produire un tableau de différentiel (<code>ecart</code>, <code>ecart_pct</code>).</p>
+<details><summary>Solution</summary>
+<pre><code class="language-r">reco &lt;- ca_base |&gt;
+  full_join(ca_excel, by = c("mois", "region")) |&gt;
+  mutate(
+    ca_base = coalesce(ca_base, 0),
+    ca_excel = coalesce(ca_excel, 0),
+    ecart = ca_base - ca_excel,
+    ecart_pct = if_else(ca_excel == 0, NA_real_, ecart / ca_excel)
+  ) |&gt;
+  arrange(desc(abs(ecart)))
+
+reco
+</code></pre>
+</details>
+
+<hr>
+<h2>Module 6 : Statistiques descriptives pratiques</h2>
+<h3>Exercice 6.1 : KPI de tendance centrale et dispersion [Difficulté: Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Sur la variable <code>montant_commande</code>, calculez :</p>
+<ul>
+<li>moyenne, médiane, p25, p75</li>
+<li>IQR, écart-type, coefficient de variation</li>
+</ul>
+<details><summary>Solution</summary>
+<pre><code class="language-r">kpi_dispersion &lt;- base_analyse |&gt;
+  summarise(
+    moyenne = mean(montant_commande, na.rm = TRUE),
+    mediane = median(montant_commande, na.rm = TRUE),
+    p25 = quantile(montant_commande, 0.25, na.rm = TRUE),
+    p75 = quantile(montant_commande, 0.75, na.rm = TRUE),
+    iqr = IQR(montant_commande, na.rm = TRUE),
+    ecart_type = sd(montant_commande, na.rm = TRUE),
+    coef_variation = ecart_type / moyenne
+  )
+
+kpi_dispersion
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 6.2 : Analyse par segment client [Difficulté: Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Produisez un tableau descriptif par <code>segment</code> avec :</p>
+<ol>
+<li>Nombre de clients</li>
+<li>CA total</li>
+<li>Panier moyen</li>
+<li>Médiane panier</li>
+<li>Part de CA (%)</li>
+</ol>
+<details><summary>Solution</summary>
+<pre><code class="language-r">desc_segment &lt;- base_analyse |&gt;
+  group_by(segment) |&gt;
+  summarise(
+    nb_clients = n_distinct(client_id),
+    ca_total = sum(montant_commande, na.rm = TRUE),
+    panier_moyen = mean(montant_commande, na.rm = TRUE),
+    panier_mediane = median(montant_commande, na.rm = TRUE),
+    .groups = "drop"
+  ) |&gt;
+  mutate(part_ca = ca_total / sum(ca_total)) |&gt;
+  arrange(desc(ca_total))
+
+desc_segment
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 6.3 : Indicateurs temporels pratiques [Difficulté: Avancé]</h3>
+<p><strong>Énoncé</strong> : Construisez un tableau mensuel avec :</p>
+<ul>
+<li>CA du mois</li>
+<li>variation MoM (%)</li>
+<li>cumul annuel</li>
+<li>moyenne mobile 3 mois</li>
+</ul>
+<details><summary>Solution</summary>
+<pre><code class="language-r">serie_mensuelle &lt;- base_analyse |&gt;
+  mutate(mois = as.Date(format(date, "%Y-%m-01"))) |&gt;
+  group_by(mois) |&gt;
+  summarise(ca = sum(montant_commande, na.rm = TRUE), .groups = "drop") |&gt;
+  arrange(mois) |&gt;
+  mutate(
+    ca_mois_prec = lag(ca),
+    var_mom = (ca - ca_mois_prec) / ca_mois_prec,
+    cumul_annuel = cumsum(ca),
+    mm3 = (lag(ca, 2) + lag(ca, 1) + ca) / 3
+  )
+
+serie_mensuelle
+</code></pre>
+</details>
+
+<hr>
+<h2>Module 7 : Restitution opérationnelle</h2>
+<h3>Exercice 7.1 : Tableau de pilotage avec gt [Difficulté: Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : À partir de <code>desc_segment</code>, produire un tableau lisible :</p>
+<ol>
+<li>Format monétaire pour CA et panier</li>
+<li>Format pourcentage pour part de CA</li>
+<li>Mise en évidence du segment avec le CA max</li>
+</ol>
+<details><summary>Solution</summary>
+<pre><code class="language-r">library(gt)
+
+tbl_pilotage &lt;- desc_segment |&gt;
+  gt() |&gt;
+  fmt_currency(columns = c(ca_total, panier_moyen, panier_mediane), currency = "EUR") |&gt;
+  fmt_percent(columns = part_ca, decimals = 1) |&gt;
+  tab_style(
+    style = list(cell_fill(color = "#d4edda"), cell_text(weight = "bold")),
+    locations = cells_body(rows = ca_total == max(ca_total))
+  )
+
+tbl_pilotage
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 7.2 : Graphiques descriptifs utiles [Difficulté: Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Créer deux graphiques :</p>
+<ul>
+<li>CA mensuel (ligne)</li>
+<li>Répartition du CA par segment (barres)</li>
+</ul>
+<p>Avec un titre métier explicite et <code>theme_minimal()</code>.</p>
+<details><summary>Solution</summary>
+<pre><code class="language-r">library(ggplot2)
+
+p1 &lt;- serie_mensuelle |&gt;
+  ggplot(aes(mois, ca)) +
+  geom_line(linewidth = 1.1, color = "#0984e3") +
+  geom_point(size = 2, color = "#0984e3") +
+  labs(
+    title = "Évolution mensuelle du chiffre d'affaires",
+    x = "Mois", y = "CA"
+  ) +
+  theme_minimal()
+
+p2 &lt;- desc_segment |&gt;
+  ggplot(aes(reorder(segment, ca_total), ca_total, fill = segment)) +
+  geom_col(show.legend = FALSE) +
+  coord_flip() +
+  labs(
+    title = "Contribution au CA par segment client",
+    x = "Segment", y = "CA"
+  ) +
+  theme_minimal()
+
+p1
+p2
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 7.3 : Export des livrables [Difficulté: Facile]</h3>
+<p><strong>Énoncé</strong> : Exportez :</p>
+<ul>
+<li>Le tableau descriptif segment en CSV</li>
+<li>Le tableau de réconciliation en Excel</li>
+<li>Un graphique PNG</li>
+</ul>
+<details><summary>Solution</summary>
+<pre><code class="language-r">library(readr)
+library(openxlsx)
+
+write_csv(desc_segment, "outputs/desc_segment.csv")
+write.xlsx(reco, "outputs/reconciliation_base_excel.xlsx", overwrite = TRUE)
+ggsave("outputs/ca_mensuel.png", p1, width = 9, height = 5, dpi = 150)
+</code></pre>
+</details>
+
+<hr>
+<h2>Mini-cas de fin de journée (35 min)</h2>
+<p><strong>Mission</strong> : Produire une note descriptive de 1 page pour le directeur commercial :</p>
+<ol>
+<li>3 KPI globaux (CA, panier moyen, variation MoM)</li>
+<li>Top 3 segments et leur contribution</li>
+<li>1 alerte qualité de données</li>
+<li>2 recommandations d&#39;action opérationnelle</li>
+</ol>
+<p><strong>Livrables</strong> : un tableau <code>gt</code>, 2 graphiques, 1 paragraphe de synthèse.</p>
+
+</body>
+</html>

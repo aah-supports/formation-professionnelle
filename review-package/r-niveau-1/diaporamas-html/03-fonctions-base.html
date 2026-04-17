@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Les fonctions de base</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080808; --bg2: #111111; --text: #ffffff; --body: #d1d5db;
+      --muted: #888888; --dim: #444444; --border: #222222;
+      --cyan: #00f3ff; --purple: #a78bfa; --orange: #ff6b00; --green: #10b981;
+    }
+    * { box-sizing: border-box; }
+    .reveal { font-family: 'Inter', sans-serif; font-size: 24px; background: var(--bg); }
+    .reveal .slides { text-align: left; }
+    .reveal .slides > section {
+      display: flex !important; flex-direction: column; justify-content: center;
+      align-items: center; height: 100%; padding: 40px 60px;
+    }
+    .reveal .slides > section > * { width: 100%; max-width: 1200px; }
+    .reveal h1 { font-weight: 800; font-size: 2.4em; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 0.3em; }
+    .reveal h2 { font-weight: 700; font-size: 1.6em; color: #fff; margin-bottom: 0.2em; letter-spacing: -0.02em; }
+    .reveal p { color: var(--body); line-height: 1.6; }
+    .subtitle { font-size: 1.1em; color: var(--muted); margin-top: 0.3em; }
+    .slide-subtitle { font-size: 0.85em; font-weight: 600; margin-bottom: 0.8em; }
+    .slide-header { margin-bottom: 1em; }
+    .slide-body { display: flex; gap: 40px; align-items: flex-start; }
+    .two-col .col-text, .two-col .col-code { flex: 1.2; }
+    .two-col .col-visual { flex: 0.8; display: flex; justify-content: center; align-items: center; }
+
+    /* Code */
+    pre { background: var(--bg2) !important; border: 1px solid var(--border); border-radius: 12px;
+          padding: 20px !important; margin: 0 !important; font-size: 0.7em !important; overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', monospace !important; line-height: 1.7 !important; }
+
+    /* Bullets */
+    .bullet-list, .summary-list { list-style: none; padding: 0; margin: 0; }
+    .bullet-list li, .summary-list li {
+      padding: 8px 0; border-bottom: 1px solid var(--border); color: var(--body);
+      font-size: 0.9em; line-height: 1.5;
+    }
+    .bullet-list li:last-child, .summary-list li:last-child { border-bottom: none; }
+    .check { font-weight: 700; margin-right: 8px; }
+
+    /* Schemas */
+    .schema { display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; padding: 20px; }
+    .schema-label { font-size: 0.75em; font-weight: 600; color: var(--accent, var(--cyan)); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+    .schema-row { display: flex; gap: 12px; align-items: center; justify-content: center; }
+    .schema-stack-grid { display: flex; gap: 10px; align-items: center; }
+    .schema-box {
+      background: var(--bg2); border: 2px solid var(--accent, var(--cyan)); border-radius: 8px;
+      padding: 12px 20px; color: var(--text); font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8em; text-align: center; min-width: 60px;
+      animation: fadeSlideUp 0.5s ease-out both;
+    }
+    .schema-box.active { background: var(--accent, var(--cyan)); color: var(--bg); font-weight: 700; }
+    .schema-box.highlight { background: rgba(0, 243, 255, 0.15); border-color: var(--accent, var(--cyan)); }
+    .schema-box.dim { opacity: 0.3; }
+    .schema-box.strike { text-decoration: line-through; opacity: 0.5; }
+    .schema-box.glow { box-shadow: 0 0 20px var(--accent, var(--cyan)); }
+    .schema-box.messy { border-style: dashed; opacity: 0.6; }
+    .schema-box.clean-box { border-color: var(--green); box-shadow: 0 0 12px rgba(16, 185, 129, 0.3); }
+    .schema-arrow { color: var(--accent, var(--cyan)); font-size: 1.5em; font-weight: 700; }
+    .schema-ptr { color: var(--accent, var(--cyan)); font-size: 1.2em; animation: bounce 1s ease infinite; }
+    .schema-loop { color: var(--accent, var(--cyan)); font-size: 2em; font-weight: 700; animation: spin 3s linear infinite; }
+    .schema-method {
+      background: var(--bg2); border: 2px solid var(--accent, var(--cyan)); border-radius: 24px;
+      padding: 10px 24px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--text);
+    }
+    .schema-check { color: var(--accent, var(--cyan)); font-size: 1.1em; font-weight: 600; }
+    .schema-pipe { display: flex; gap: 8px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.8em; }
+    .pipe-in { color: var(--muted); } .pipe-out { color: var(--green); font-weight: 700; }
+    .pipe-filter { color: var(--accent, var(--cyan)); background: var(--bg2); padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border); }
+
+    /* Progress bar */
+    .progress-bar { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 10; }
+    .progress-fill { height: 100%; transition: width 0.5s ease; border-radius: 0 2px 2px 0; }
+
+    /* Footer */
+    .slide-footer { position: absolute; bottom: 16px; right: 24px; }
+    .slide-num { font-size: 0.65em; color: var(--dim); font-family: 'JetBrains Mono', monospace; }
+
+    /* Python-specific schemas */
+    .schema-kv { display: flex; flex-direction: column; gap: 6px; }
+    .kv-row { display: flex; gap: 8px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75em; }
+    .kv-key { color: var(--cyan); background: var(--bg2); padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border); }
+    .kv-val { color: var(--body); }
+    .kv-sep { color: var(--accent, var(--cyan)); font-weight: 700; }
+    .schema-table { border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 0.7em; }
+    .schema-table th { background: var(--accent, var(--cyan)); color: var(--bg); padding: 6px 14px; font-weight: 600; }
+    .schema-table td { background: var(--bg2); border: 1px solid var(--border); padding: 6px 14px; color: var(--body); text-align: center; }
+    .schema-table .row-idx { color: var(--muted); font-weight: 600; background: var(--bg); }
+    .schema-type-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .type-box { font-family: 'JetBrains Mono', monospace; font-size: 0.8em; padding: 8px 16px !important; min-width: auto !important; }
+    .schema-flow { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: center; }
+    .schema-chart { display: flex; gap: 6px; align-items: flex-end; height: 80px; padding-top: 10px; }
+    .chart-bar { width: 20px; background: var(--accent, var(--cyan)); border-radius: 3px 3px 0 0; animation: fadeSlideUp 0.5s ease-out both; opacity: 0.8; }
+    .schema-venn { position: relative; width: 120px; height: 80px; }
+    .venn-circle { position: absolute; width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--accent, var(--cyan)); display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.8em; color: var(--text); background: rgba(0,243,255,0.05); }
+    .venn-left { left: 0; } .venn-right { left: 45px; }
+
+    /* Animations */
+    @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .anim-build { animation: fadeSlideUp 0.5s ease-out both; }
+
+    /* Print / PDF */
+    @media print {
+      .reveal .slides > section { page-break-after: always; }
+      .progress-bar { display: none; }
+      .fragment { opacity: 1 !important; visibility: visible !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:13%; background:#00f3ff"></div></div>
+      
+      <h1 style="color: #00f3ff; font-size: 2.2em">Les fonctions de base</h1>
+      <p class="subtitle">La boîte à outils intégrée de R</p>
+      
+    <div class="schema" style="--accent: #00f3ff">
+      <div class="schema-label">Fonctions R</div>
+      <div class="schema-row">
+        <div class="schema-method">Fonctions R</div>
+        
+      </div>
+    </div>
+      <div class="slide-footer">
+        <span class="slide-num">1 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:25%; background:#ff6b00"></div></div>
+      
+      <div class="slide-header">
+        <h2>Fonctions mathématiques</h2>
+        <p class="slide-subtitle" style="color: #ff6b00">Calculer en une ligne</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-r">sqrt(144)         # 12
+abs(-7)           # 7
+round(3.14159, 2) # 3.14
+ceiling(3.2)      # 4
+floor(3.8)        # 3
+
+v &lt;- c(10, 20, 30, 40)
+sum(v)            # 100
+cumsum(v)         # 10 30 60 100</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #ff6b00">
+      <div class="schema-label">Calculs</div>
+      <div class="schema-row">
+        <div class="schema-method">Calculs</div>
+        
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">2 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:38%; background:#a78bfa"></div></div>
+      
+      <div class="slide-header">
+        <h2>Fonctions statistiques</h2>
+        <p class="slide-subtitle" style="color: #a78bfa">Résumer vos données</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-r">notes &lt;- c(12, 15, 8, 18, 14, 11, 16)
+
+mean(notes)      # 13.43
+median(notes)    # 14
+sd(notes)        # 3.36
+
+quantile(notes, 0.75)  # 15.5
+
+summary(notes)
+# Min. 1st Qu. Median Mean 3rd Qu. Max.
+# 8.00  11.50  14.00  13.43  15.50  18.00</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #a78bfa">
+      <div class="schema-label">Résumé statistique</div>
+      <div class="schema-stack-grid">
+        <div class="schema-box" style="animation-delay:0.1s">Résumé statistique</div>
+        <div class="schema-box" style="animation-delay:0.30000000000000004s">…</div>
+        <div class="schema-box" style="animation-delay:0.5s">…</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">3 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:50%; background:#10b981"></div></div>
+      
+      <div class="slide-header">
+        <h2>Manipulation de chaînes</h2>
+        <p class="slide-subtitle" style="color: #10b981">Travailler avec du texte</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-r">paste(&quot;Bonjour&quot;, &quot;le&quot;, &quot;monde&quot;)
+# &quot;Bonjour le monde&quot;
+
+paste0(&quot;var_&quot;, 1:3)
+# &quot;var_1&quot; &quot;var_2&quot; &quot;var_3&quot;
+
+nchar(&quot;Statistique&quot;)  # 11
+toupper(&quot;bonjour&quot;)    # &quot;BONJOUR&quot;
+substr(&quot;ABCDEF&quot;, 2, 4) # &quot;BCD&quot;
+gsub(&quot;a&quot;, &quot;@&quot;, &quot;banana&quot;) # &quot;b@n@n@&quot;</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #10b981">
+      <div class="schema-label">Traitement du texte</div>
+      <div class="schema-row">
+        <div class="schema-box">Traitement du texte</div>
+        <div class="schema-arrow">→</div>
+        <div class="schema-box clean-box">données propres</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">4 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:63%; background:#00f3ff"></div></div>
+      
+      <div class="slide-header">
+        <h2>Fonctions logiques</h2>
+        <p class="slide-subtitle" style="color: #00f3ff">Poser des questions aux données</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-r">x &lt;- c(3, 7, 2, 9, 5)
+
+any(x &gt; 8)    # TRUE
+all(x &gt; 1)    # TRUE
+which(x &gt; 5)  # 2 4
+
+ifelse(x &gt; 5, &quot;haut&quot;, &quot;bas&quot;)
+# &quot;bas&quot; &quot;haut&quot; &quot;bas&quot; &quot;haut&quot; &quot;bas&quot;</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #00f3ff">
+      <div class="schema-label">Filtrage logique</div>
+      <div class="schema-pipe">
+        <span class="pipe-in">données</span>
+        <span class="pipe-filter">▸ Filtrage logique ▸</span>
+        <span class="pipe-out">résultat</span>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">5 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:75%; background:#ff6b00"></div></div>
+      
+      <div class="slide-header">
+        <h2>Créer ses propres fonctions</h2>
+        <p class="slide-subtitle" style="color: #ff6b00">Automatiser vos traitements</p>
+      </div>
+      <div class="slide-body">
+        <div class="col-code" style="flex: 1">
+          <pre><code class="language-r">z_score &lt;- function(x) {
+  (x - mean(x)) / sd(x)
+}
+
+notes &lt;- c(12, 15, 8, 18, 14)
+z_score(notes)
+# [1] -0.42  0.42 -1.54  1.26  0.28
+
+# Argument par défaut
+arrondir &lt;- function(x, n = 2) {
+  round(x, n)
+}
+arrondir(3.14159)     # 3.14
+arrondir(3.14159, 3)  # 3.142</code></pre>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">6 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:88%; background:#a78bfa"></div></div>
+      
+      <div class="slide-header">
+        <h2>Appliquer une fonction</h2>
+        <p class="slide-subtitle" style="color: #a78bfa">sapply et lapply</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-r">carres &lt;- sapply(1:5, function(x) x^2)
+print(carres)
+# [1]  1  4  9 16 25
+
+df &lt;- data.frame(a = c(1,2,3), b = c(10,20,30))
+sapply(df, mean)
+#  a  b
+#  2 20</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #a78bfa">
+      <div class="schema-label">Itération</div>
+      <div class="schema-row">
+        <div class="schema-loop">↻</div>
+        <div style="color: var(--body); font-size: 0.8em; margin-left: 12px;">Itération</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">7 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:100%; background:#10b981"></div></div>
+      
+      <div class="slide-header">
+        <h2 style="color: #10b981">Récapitulatif</h2>
+        <p class="slide-subtitle">Votre boîte à outils est prête</p>
+      </div>
+      <ul class="summary-list"><li class="fragment" data-fragment-index="0">
+        <span class="check" style="color: #10b981">✓</span> Math : sqrt, abs, round, sum, cumsum
+      </li>
+<li class="fragment" data-fragment-index="1">
+        <span class="check" style="color: #10b981">✓</span> Stats : mean, median, sd, summary
+      </li>
+<li class="fragment" data-fragment-index="2">
+        <span class="check" style="color: #10b981">✓</span> Texte : paste, gsub, nchar, toupper
+      </li>
+<li class="fragment" data-fragment-index="3">
+        <span class="check" style="color: #10b981">✓</span> Logique : any, all, which, ifelse
+      </li>
+<li class="fragment" data-fragment-index="4">
+        <span class="check" style="color: #10b981">✓</span> Custom : function(args) { corps }
+      </li></ul>
+      <div class="slide-footer">
+        <span class="slide-num">8 / 8</span>
+      </div>
+    </section>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      width: 1920, height: 1080,
+      margin: 0,
+      center: false,
+      controls: true,
+      progress: false,
+      slideNumber: false,
+      plugins: []
+    });
+    hljs.highlightAll();
+  </script>
+</body>
+</html>

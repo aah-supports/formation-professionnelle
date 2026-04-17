@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de Cours</title>
+<style>
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#2d3436;line-height:1.7;max-width:800px;margin:0 auto;padding:30px 24px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
+h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+h4{font-size:.95rem;margin:16px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid #dfe6e9;padding:8px 12px;text-align:left;font-size:.9rem}
+th{background:#f1f2f6;font-weight:600}
+tr:nth-child(even){background:#f8f9fa}
+blockquote{border-left:4px solid #74b9ff;margin:12px 0;padding:8px 16px;background:#f8f9fa;color:#636e72}
+strong{color:#2d3436}
+hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
+.header-bar{background:#0984e3;color:#fff;padding:12px 20px;border-radius:8px;margin-bottom:24px;font-size:.85rem}
+.header-bar strong{color:#fff}
+</style>
+</head>
+<body>
+<div class="header-bar"><strong>Python Niveau I</strong></div>
+<h1>Python Niveau I — Plan de cours détaillé</h1>
+<p><strong>Formation</strong> : Initiation au langage Python
+<strong>Durée</strong> : 2 jours (14 heures)
+<strong>Horaires</strong> : 9h00 – 17h00</p>
+<hr>
+<h2>JOUR 1 — Découverte de Python</h2>
+<hr>
+<h3>Module 1 : Introduction à Python et son environnement (9h00 – 10h30)</h3>
+<p><strong>Objectifs</strong> : Installer Python, comprendre les environnements de développement, exécuter ses premières commandes.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Pourquoi Python ?</strong> (15 min)</p>
+<ul>
+<li>Python dans l&#39;écosystème data science (comparaison R, Java, JavaScript)</li>
+<li>Open source, communauté active, polyvalence</li>
+<li>Cas d&#39;usage : data science, web, automatisation, IA, sciences</li>
+</ul>
+</li>
+<li><p><strong>Installation de Python</strong> (15 min)</p>
+<ul>
+<li>Téléchargement depuis python.org</li>
+<li>Vérification de l&#39;installation : <code>python --version</code></li>
+<li>Le gestionnaire de paquets pip</li>
+</ul>
+</li>
+<li><p><strong>Les environnements de développement</strong> (20 min)</p>
+<ul>
+<li>VS Code : installation, extensions Python, terminal intégré</li>
+<li>Jupyter Notebook : installation via pip, cellules de code et de texte</li>
+<li>Autres options : PyCharm, IDLE (mention rapide)</li>
+</ul>
+</li>
+<li><p><strong>L&#39;interpréteur interactif</strong> (20 min)</p>
+<ul>
+<li>Python comme calculatrice : opérations arithmétiques</li>
+<li>Affectation avec <code>=</code></li>
+<li>Afficher avec <code>print()</code> et f-strings</li>
+<li>L&#39;historique des commandes</li>
+</ul>
+</li>
+<li><p><strong>Les scripts Python</strong> (10 min)</p>
+<ul>
+<li>Créer, sauvegarder, exécuter un script (.py)</li>
+<li>Commentaires avec <code>#</code></li>
+<li>Exécuter depuis le terminal : <code>python script.py</code></li>
+</ul>
+</li>
+<li><p><strong>Obtenir de l&#39;aide</strong> (10 min)</p>
+<ul>
+<li><code>help(fonction)</code>, <code>dir(objet)</code></li>
+<li><code>type()</code> pour identifier un type</li>
+<li>Documentation officielle docs.python.org</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Créer un script qui effectue 10 calculs variés, les stocke dans des variables et les affiche avec des f-strings.</p>
+<hr>
+<h3>Module 2 : Types de données et structures (10h45 – 12h15)</h3>
+<p><strong>Objectifs</strong> : Identifier les types fondamentaux de Python, maîtriser les structures de données principales.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Les types numériques</strong> (10 min)</p>
+<ul>
+<li><code>int</code> (précision arbitraire), <code>float</code> (IEEE 754)</li>
+<li>Opérateurs : <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>//</code>, <code>%</code>, <code>**</code></li>
+<li>Conversion : <code>int()</code>, <code>float()</code></li>
+</ul>
+</li>
+<li><p><strong>Les chaînes de caractères</strong> (15 min)</p>
+<ul>
+<li>Guillemets simples, doubles, triples</li>
+<li>f-strings : <code>f&quot;Bonjour {nom}&quot;</code></li>
+<li>Méthodes : <code>.upper()</code>, <code>.lower()</code>, <code>.strip()</code>, <code>.split()</code>, <code>.replace()</code>, <code>.join()</code></li>
+<li>Indexation et slicing sur les chaînes</li>
+<li>Immutabilité des chaînes</li>
+</ul>
+</li>
+<li><p><strong>Booléens et None</strong> (10 min)</p>
+<ul>
+<li><code>True</code>, <code>False</code>, opérateurs <code>and</code>, <code>or</code>, <code>not</code></li>
+<li>Valeurs « falsy » : <code>0</code>, <code>&quot;&quot;</code>, <code>[]</code>, <code>{}</code>, <code>None</code></li>
+<li><code>None</code> : absence de valeur</li>
+<li>Comparaisons : <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code></li>
+</ul>
+</li>
+<li><p><strong>Les listes</strong> (15 min)</p>
+<ul>
+<li>Création : <code>[]</code>, <code>list()</code>, <code>list(range())</code></li>
+<li>Mutabilité : modifier, ajouter, supprimer</li>
+<li>Méthodes : <code>.append()</code>, <code>.extend()</code>, <code>.insert()</code>, <code>.remove()</code>, <code>.pop()</code>, <code>.sort()</code>, <code>.reverse()</code></li>
+<li>Opérations : <code>len()</code>, <code>in</code>, concaténation <code>+</code>, répétition <code>*</code></li>
+</ul>
+</li>
+<li><p><strong>Indexation et slicing</strong> (15 min)</p>
+<ul>
+<li>Par position : <code>l[0]</code>, <code>l[-1]</code></li>
+<li>Slicing : <code>l[1:3]</code>, <code>l[:3]</code>, <code>l[2:]</code>, <code>l[::2]</code>, <code>l[::-1]</code></li>
+<li>Assignation par tranche : <code>l[1:3] = [10, 20]</code></li>
+</ul>
+</li>
+<li><p><strong>Les tuples</strong> (10 min)</p>
+<ul>
+<li>Création : <code>()</code>, <code>tuple()</code></li>
+<li>Immutabilité : pas de modification après création</li>
+<li>Unpacking : <code>a, b, c = (1, 2, 3)</code></li>
+<li>Quand utiliser un tuple vs une liste</li>
+</ul>
+</li>
+<li><p><strong>Les dictionnaires</strong> (10 min)</p>
+<ul>
+<li>Création : <code>{}</code>, <code>dict()</code></li>
+<li>Accès : <code>d[&quot;clé&quot;]</code>, <code>d.get(&quot;clé&quot;, défaut)</code></li>
+<li>Méthodes : <code>.keys()</code>, <code>.values()</code>, <code>.items()</code></li>
+<li>Itérer sur un dictionnaire</li>
+</ul>
+</li>
+<li><p><strong>Les ensembles (sets)</strong> (5 min)</p>
+<ul>
+<li>Création : <code>set()</code>, <code>{1, 2, 3}</code></li>
+<li>Unicité des éléments</li>
+<li>Opérations : union <code>|</code>, intersection <code>&amp;</code>, différence <code>-</code></li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Créer un mini-répertoire téléphonique (dictionnaire) avec recherche, ajout et suppression de contacts.</p>
+<hr>
+<h3>Module 3 : Fonctions et structures de contrôle (13h30 – 15h00)</h3>
+<p><strong>Objectifs</strong> : Maîtriser le flux d&#39;exécution et écrire ses premières fonctions.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Conditions if/elif/else</strong> (15 min)</p>
+<ul>
+<li>Syntaxe avec indentation obligatoire</li>
+<li><code>if</code>, <code>elif</code>, <code>else</code></li>
+<li>Conditions multiples avec <code>and</code>, <code>or</code></li>
+<li>Opérateur ternaire : <code>x if condition else y</code></li>
+</ul>
+</li>
+<li><p><strong>Boucle for</strong> (15 min)</p>
+<ul>
+<li>Itérer sur une liste, une chaîne, un dictionnaire</li>
+<li><code>range(start, stop, step)</code></li>
+<li><code>enumerate()</code> pour index + valeur</li>
+<li><code>zip()</code> pour itérer en parallèle</li>
+<li><code>break</code> et <code>continue</code></li>
+</ul>
+</li>
+<li><p><strong>Boucle while</strong> (10 min)</p>
+<ul>
+<li>Syntaxe et condition d&#39;arrêt</li>
+<li>Boucle infinie et <code>break</code></li>
+<li>Exemples : compteur, validation d&#39;entrée</li>
+</ul>
+</li>
+<li><p><strong>Fonctions def</strong> (20 min)</p>
+<ul>
+<li>Syntaxe : <code>def nom(arg1, arg2):</code></li>
+<li><code>return</code> explicite</li>
+<li>Arguments par défaut : <code>def f(x, n=2):</code></li>
+<li>Arguments nommés : <code>f(x=5, n=3)</code></li>
+<li>Portée des variables (scope local vs global)</li>
+<li>Docstrings : <code>&quot;&quot;&quot;Description de la fonction&quot;&quot;&quot;</code></li>
+</ul>
+</li>
+<li><p><strong>Arguments avancés</strong> (10 min)</p>
+<ul>
+<li><code>*args</code> : arguments positionnels variables</li>
+<li><code>**kwargs</code> : arguments nommés variables</li>
+<li>Aperçu rapide</li>
+</ul>
+</li>
+<li><p><strong>Compréhensions de liste</strong> (15 min)</p>
+<ul>
+<li>Syntaxe : <code>[expr for x in iterable]</code></li>
+<li>Avec condition : <code>[expr for x in iterable if condition]</code></li>
+<li>Compréhensions de dictionnaire : <code>{k: v for k, v in ...}</code></li>
+<li>Comparaison avec boucle for classique</li>
+</ul>
+</li>
+<li><p><strong>Fonctions lambda</strong> (5 min)</p>
+<ul>
+<li>Syntaxe : <code>lambda x: x * 2</code></li>
+<li>Usage avec <code>sorted()</code>, <code>map()</code>, <code>filter()</code></li>
+<li>Quand utiliser lambda vs def</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Écrire 3 fonctions — conversion Celsius/Fahrenheit, calcul d&#39;IMC, nettoyage de texte — puis les appliquer à des listes avec des compréhensions.</p>
+<hr>
+<h3>Module 4 : Atelier pratique Jour 1 (15h15 – 17h00)</h3>
+<p><strong>Objectifs</strong> : Consolider les acquis des Modules 1 à 3 par la pratique guidée.</p>
+<p><strong>Contenu</strong> :</p>
+<ol>
+<li><p><strong>Exercice guidé 1</strong> (20 min) — Listes et slicing</p>
+<ul>
+<li>Créer des listes de données, les filtrer, calculer des statistiques</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé 2</strong> (20 min) — Dictionnaires</p>
+<ul>
+<li>Construire un dictionnaire de produits, calculer des totaux</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé 3</strong> (20 min) — Fonctions</p>
+<ul>
+<li>Écrire une fonction de validation d&#39;email</li>
+<li>L&#39;appliquer à une liste d&#39;adresses</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé 4</strong> (25 min) — Mini-analyse</p>
+<ul>
+<li>Créer un jeu de données (liste de dictionnaires), calculer des statistiques par groupe</li>
+</ul>
+</li>
+<li><p><strong>Correction collective et questions</strong> (20 min)</p>
+</li>
+</ol>
+<hr>
+<h2>JOUR 2 — Manipulation de données</h2>
+<hr>
+<h3>Module 5 : Fichiers et modules (9h00 – 10h30)</h3>
+<p><strong>Objectifs</strong> : Lire et écrire des fichiers, utiliser les modules standards et externes.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Lire un fichier texte</strong> (15 min)</p>
+<ul>
+<li><code>open(&quot;fichier.txt&quot;, &quot;r&quot;)</code> : modes r, w, a</li>
+<li><code>.read()</code>, <code>.readline()</code>, <code>.readlines()</code></li>
+<li>Itérer ligne par ligne</li>
+</ul>
+</li>
+<li><p><strong>Le with statement</strong> (10 min)</p>
+<ul>
+<li>Fermeture automatique du fichier</li>
+<li><code>with open(&quot;f.txt&quot;) as f:</code></li>
+<li>Bonnes pratiques de gestion de ressources</li>
+</ul>
+</li>
+<li><p><strong>Écrire dans un fichier</strong> (10 min)</p>
+<ul>
+<li>Mode <code>&quot;w&quot;</code> (écraser) vs <code>&quot;a&quot;</code> (ajouter)</li>
+<li><code>.write()</code>, <code>.writelines()</code></li>
+<li>Encodage UTF-8 : <code>encoding=&quot;utf-8&quot;</code></li>
+</ul>
+</li>
+<li><p><strong>Le module csv</strong> (15 min)</p>
+<ul>
+<li><code>csv.reader()</code> et <code>csv.writer()</code></li>
+<li><code>csv.DictReader()</code> et <code>csv.DictWriter()</code></li>
+<li>Paramètres : <code>delimiter</code>, <code>quotechar</code></li>
+</ul>
+</li>
+<li><p><strong>Le module json</strong> (10 min)</p>
+<ul>
+<li><code>json.load()</code> / <code>json.dump()</code> : fichiers</li>
+<li><code>json.loads()</code> / <code>json.dumps()</code> : chaînes</li>
+<li><code>indent</code> pour un affichage lisible</li>
+</ul>
+</li>
+<li><p><strong>os et chemins de fichiers</strong> (10 min)</p>
+<ul>
+<li><code>os.path.join()</code>, <code>os.path.exists()</code></li>
+<li><code>os.listdir()</code>, <code>os.getcwd()</code></li>
+<li><code>pathlib.Path</code> (aperçu moderne)</li>
+</ul>
+</li>
+<li><p><strong>Importer des modules</strong> (15 min)</p>
+<ul>
+<li><code>import math</code>, <code>from math import sqrt</code></li>
+<li><code>import module as alias</code></li>
+<li>Modules standards utiles : <code>math</code>, <code>datetime</code>, <code>collections</code>, <code>random</code></li>
+<li><code>pip install package</code> pour les modules externes</li>
+</ul>
+</li>
+<li><p><strong>Créer son propre module</strong> (5 min)</p>
+<ul>
+<li>Un fichier .py = un module</li>
+<li><code>if __name__ == &quot;__main__&quot;:</code></li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Lire un CSV contenant des données de ventes, le traiter en Python pur, et écrire un rapport JSON.</p>
+<hr>
+<h3>Module 6 : NumPy et pandas (10h45 – 12h15)</h3>
+<p><strong>Objectifs</strong> : Calculer efficacement avec numpy et manipuler des données tabulaires avec pandas.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Introduction à NumPy</strong> (15 min)</p>
+<ul>
+<li><code>import numpy as np</code></li>
+<li><code>np.array()</code> : créer des tableaux 1D et 2D</li>
+<li>Opérations vectorisées : <code>+</code>, <code>*</code>, comparaisons</li>
+<li>Fonctions statistiques : <code>np.mean()</code>, <code>np.std()</code>, <code>np.median()</code>, <code>np.sum()</code></li>
+<li>Génération : <code>np.arange()</code>, <code>np.linspace()</code>, <code>np.zeros()</code>, <code>np.ones()</code>, <code>np.random</code></li>
+<li>Indexation et slicing sur les arrays</li>
+<li>Différence avec les listes Python : performance et typage homogène</li>
+</ul>
+</li>
+<li><p><strong>Series et DataFrame</strong> (10 min)</p>
+<ul>
+<li><code>pd.Series</code> : vecteur étiqueté</li>
+<li><code>pd.DataFrame</code> : tableau bidimensionnel</li>
+<li>Création depuis un dictionnaire, une liste de dictionnaires</li>
+</ul>
+</li>
+<li><p><strong>Charger des données</strong> (15 min)</p>
+<ul>
+<li><code>pd.read_csv()</code> : paramètres <code>sep</code>, <code>encoding</code>, <code>na_values</code>, <code>parse_dates</code></li>
+<li>Exploration : <code>.head()</code>, <code>.tail()</code>, <code>.shape</code>, <code>.dtypes</code></li>
+<li><code>.info()</code>, <code>.describe()</code>, <code>.value_counts()</code></li>
+</ul>
+</li>
+<li><p><strong>Sélection avec loc et iloc</strong> (15 min)</p>
+<ul>
+<li><code>.loc[]</code> : sélection par étiquettes (lignes et colonnes)</li>
+<li><code>.iloc[]</code> : sélection par positions entières</li>
+<li>Sélection de colonnes : <code>df[&quot;col&quot;]</code>, <code>df[[&quot;col1&quot;, &quot;col2&quot;]]</code></li>
+</ul>
+</li>
+<li><p><strong>Filtrage</strong> (10 min)</p>
+<ul>
+<li>Indexation booléenne : <code>df[df[&quot;age&quot;] &gt; 30]</code></li>
+<li>Conditions multiples : <code>&amp;</code>, <code>|</code>, <code>~</code></li>
+<li><code>.query(&quot;age &gt; 30 and ville == &#39;Paris&#39;&quot;)</code></li>
+<li><code>.isin()</code> pour les appartenances</li>
+</ul>
+</li>
+<li><p><strong>Tri</strong> (5 min)</p>
+<ul>
+<li><code>.sort_values(&quot;col&quot;, ascending=False)</code></li>
+<li>Tri multi-critères</li>
+<li><code>.sort_index()</code></li>
+</ul>
+</li>
+<li><p><strong>Colonnes calculées</strong> (10 min)</p>
+<ul>
+<li><code>df[&quot;new&quot;] = df[&quot;a&quot;] + df[&quot;b&quot;]</code></li>
+<li><code>.assign()</code> pour le chaînage</li>
+<li><code>.apply()</code> pour les fonctions personnalisées</li>
+<li><code>.map()</code> pour les transformations</li>
+</ul>
+</li>
+<li><p><strong>Merge et concat</strong> (10 min)</p>
+<ul>
+<li><code>pd.merge(left, right, on=&quot;clé&quot;, how=&quot;inner&quot;)</code> : inner, left, right, outer</li>
+<li><code>pd.concat([df1, df2])</code> : empiler verticalement ou horizontalement</li>
+</ul>
+</li>
+<li><p><strong>Groupby et agrégation</strong> (15 min)</p>
+<ul>
+<li><code>df.groupby(&quot;col&quot;).mean()</code></li>
+<li><code>.agg({&quot;col1&quot;: &quot;mean&quot;, &quot;col2&quot;: &quot;sum&quot;})</code></li>
+<li>Agrégation multiple : <code>.agg([&quot;mean&quot;, &quot;std&quot;, &quot;count&quot;])</code></li>
+<li><code>.transform()</code> pour garder la même forme</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Pipeline complet — charger un CSV, filtrer, joindre deux tables, agréger par groupe, exporter le résultat.</p>
+<hr>
+<h3>Module 7 : Visualisation avec matplotlib (13h30 – 15h00)</h3>
+<p><strong>Objectifs</strong> : Créer des graphiques informatifs avec matplotlib.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Les bases de matplotlib</strong> (10 min)</p>
+<ul>
+<li><code>import matplotlib.pyplot as plt</code></li>
+<li><code>plt.figure()</code>, <code>plt.show()</code>, <code>plt.close()</code></li>
+<li>Interface pyplot vs interface orientée objet (<code>fig, ax = plt.subplots()</code>)</li>
+</ul>
+</li>
+<li><p><strong>Nuage de points (scatter)</strong> (10 min)</p>
+<ul>
+<li><code>plt.scatter(x, y)</code> ou <code>ax.scatter(x, y)</code></li>
+<li>Paramètres : <code>c</code> (couleur), <code>s</code> (taille), <code>alpha</code> (transparence), <code>marker</code></li>
+<li>Droite de régression avec <code>numpy.polyfit</code></li>
+</ul>
+</li>
+<li><p><strong>Courbes (line plot)</strong> (10 min)</p>
+<ul>
+<li><code>plt.plot(x, y)</code> : style, couleur, marqueurs</li>
+<li>Plusieurs courbes sur le même axe</li>
+<li><code>plt.fill_between()</code> pour les zones</li>
+</ul>
+</li>
+<li><p><strong>Histogramme</strong> (10 min)</p>
+<ul>
+<li><code>plt.hist(data, bins=15)</code></li>
+<li><code>color</code>, <code>edgecolor</code>, <code>alpha</code></li>
+<li>Ajouter moyenne et médiane avec <code>plt.axvline()</code></li>
+<li><code>density=True</code> pour les densités</li>
+</ul>
+</li>
+<li><p><strong>Boîte à moustaches (boxplot)</strong> (10 min)</p>
+<ul>
+<li><code>plt.boxplot(data)</code> ou <code>df.boxplot()</code></li>
+<li>Boxplot par groupe</li>
+<li>Interprétation : médiane, quartiles, outliers</li>
+<li><code>vert=False</code> pour l&#39;orientation horizontale</li>
+</ul>
+</li>
+<li><p><strong>Diagramme en barres (bar)</strong> (10 min)</p>
+<ul>
+<li><code>plt.bar(x, height)</code> et <code>plt.barh()</code></li>
+<li>Barres empilées et côte à côte</li>
+<li>Ajouter les valeurs au-dessus des barres</li>
+</ul>
+</li>
+<li><p><strong>Multi-graphiques (subplots)</strong> (10 min)</p>
+<ul>
+<li><code>fig, axes = plt.subplots(2, 2, figsize=(10, 8))</code></li>
+<li>Accéder aux axes : <code>axes[0, 0]</code>, <code>axes[1, 1]</code></li>
+<li><code>plt.tight_layout()</code> pour l&#39;espacement</li>
+</ul>
+</li>
+<li><p><strong>Personnalisation et export</strong> (10 min)</p>
+<ul>
+<li>Titres : <code>plt.title()</code>, <code>plt.xlabel()</code>, <code>plt.ylabel()</code></li>
+<li>Légende : <code>plt.legend()</code></li>
+<li>Style : <code>plt.style.use(&quot;seaborn-v0_8-whitegrid&quot;)</code></li>
+<li>Export : <code>plt.savefig(&quot;figure.png&quot;, dpi=150, bbox_inches=&quot;tight&quot;)</code></li>
+</ul>
+</li>
+<li><p><strong>Aperçu de seaborn</strong> (10 min)</p>
+<ul>
+<li><code>import seaborn as sns</code></li>
+<li><code>sns.scatterplot()</code>, <code>sns.histplot()</code>, <code>sns.boxplot()</code></li>
+<li>Thèmes intégrés pour des graphiques élégants</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Créer un dashboard de 4 graphiques sur le jeu de données <code>iris</code> (via seaborn).</p>
+<hr>
+<h3>Module 8 : Projet intégrateur (15h15 – 17h00)</h3>
+<p><strong>Objectifs</strong> : Mobiliser l&#39;ensemble des compétences acquises sur un cas concret.</p>
+<p><strong>Contenu</strong> :</p>
+<ol>
+<li><p><strong>Présentation du projet</strong> (10 min)</p>
+<ul>
+<li>Jeu de données : tips (pourboires dans un restaurant)</li>
+<li>Objectif : analyser les facteurs influençant le montant des pourboires</li>
+</ul>
+</li>
+<li><p><strong>Étape 1 : Import et exploration</strong> (20 min)</p>
+<ul>
+<li>Charger les données avec pandas</li>
+<li>Examiner la structure, les types, les valeurs manquantes</li>
+<li>Statistiques descriptives globales</li>
+</ul>
+</li>
+<li><p><strong>Étape 2 : Nettoyage</strong> (15 min)</p>
+<ul>
+<li>Traitement des valeurs manquantes</li>
+<li>Création de variables dérivées (pourcentage de pourboire, catégories)</li>
+</ul>
+</li>
+<li><p><strong>Étape 3 : Statistiques descriptives</strong> (15 min)</p>
+<ul>
+<li>Moyennes par groupe, corrélations</li>
+<li>Tableaux croisés avec groupby</li>
+</ul>
+</li>
+<li><p><strong>Étape 4 : Visualisations</strong> (20 min)</p>
+<ul>
+<li>4 graphiques commentés (scatter, hist, boxplot, barplot)</li>
+<li>Dashboard multi-graphiques</li>
+</ul>
+</li>
+<li><p><strong>Étape 5 : Synthèse et interprétation</strong> (10 min)</p>
+<ul>
+<li>Rédiger 5 conclusions en commentaires Python</li>
+</ul>
+</li>
+<li><p><strong>Correction collective et bilan</strong> (15 min)</p>
+<ul>
+<li>Tour de table, questions, ressources pour aller plus loin</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>Récapitulatif des livrables</h2>
+<table>
+<thead>
+<tr>
+<th>Livrable</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Slides animées (vidéos)</td>
+<td>8 lesson.json (Remotion)</td>
+</tr>
+<tr>
+<td>Scripts vidéo</td>
+<td>8 fichiers Markdown</td>
+</tr>
+<tr>
+<td>Exercices Jour 1</td>
+<td>Markdown + solutions Python</td>
+</tr>
+<tr>
+<td>Exercices Jour 2</td>
+<td>Markdown + solutions Python</td>
+</tr>
+<tr>
+<td>Projet intégrateur</td>
+<td>Markdown + solution complète</td>
+</tr>
+<tr>
+<td>Syllabus</td>
+<td>Markdown</td>
+</tr>
+<tr>
+<td>Plan de cours</td>
+<td>Ce document</td>
+</tr>
+</tbody></table>
+
+</body>
+</html>

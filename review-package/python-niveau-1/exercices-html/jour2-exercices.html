@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jour2 Exercices</title>
+<style>
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#2d3436;line-height:1.7;max-width:800px;margin:0 auto;padding:30px 24px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
+h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+h4{font-size:.95rem;margin:16px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid #dfe6e9;padding:8px 12px;text-align:left;font-size:.9rem}
+th{background:#f1f2f6;font-weight:600}
+tr:nth-child(even){background:#f8f9fa}
+blockquote{border-left:4px solid #74b9ff;margin:12px 0;padding:8px 16px;background:#f8f9fa;color:#636e72}
+strong{color:#2d3436}
+hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
+.header-bar{background:#0984e3;color:#fff;padding:12px 20px;border-radius:8px;margin-bottom:24px;font-size:.85rem}
+.header-bar strong{color:#fff}
+</style>
+</head>
+<body>
+<div class="header-bar"><strong>Python Niveau I</strong></div>
+<h1>Python Niveau I — Exercices Jour 2</h1>
+<h2>Module 5 : Fichiers et modules</h2>
+<hr>
+<h3>Exercice 5.1 : Lire un fichier texte [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Creez un fichier <code>villes.txt</code> contenant 5 villes (une par ligne) en utilisant <code>open()</code> en mode ecriture</li>
+<li>Relisez le fichier avec <code>open()</code> et <code>read()</code> pour obtenir tout le contenu</li>
+<li>Relisez le fichier avec <code>readlines()</code> pour obtenir une liste de lignes</li>
+<li>Relisez le fichier avec une boucle <code>for line in f</code></li>
+<li>Utilisez le mot-cle <code>with</code> pour une gestion propre du fichier</li>
+</ol>
+<p><strong>Indice</strong> : <code>open(&quot;fichier&quot;, &quot;w&quot;)</code> ouvre en ecriture, <code>open(&quot;fichier&quot;, &quot;r&quot;)</code> en lecture. Le bloc <code>with open(...) as f:</code> ferme automatiquement le fichier.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python"># 1. Creer le fichier
+with open(&quot;villes.txt&quot;, &quot;w&quot;) as f:
+    f.write(&quot;Paris\n&quot;)
+    f.write(&quot;Lyon\n&quot;)
+    f.write(&quot;Marseille\n&quot;)
+    f.write(&quot;Toulouse\n&quot;)
+    f.write(&quot;Bordeaux\n&quot;)
+
+# 2. Lire tout le contenu
+with open(&quot;villes.txt&quot;, &quot;r&quot;) as f:
+    contenu = f.read()
+print(&quot;--- read() ---&quot;)
+print(contenu)
+
+# 3. Lire en liste de lignes
+with open(&quot;villes.txt&quot;, &quot;r&quot;) as f:
+    lignes = f.readlines()
+print(f&quot;readlines() : {lignes}&quot;)
+
+# 4. Boucle ligne par ligne
+print(&quot;--- Boucle for ---&quot;)
+with open(&quot;villes.txt&quot;, &quot;r&quot;) as f:
+    for ligne in f:
+        print(ligne.strip())
+
+# 5. Deja fait avec with ci-dessus
+# Version nettoyee :
+with open(&quot;villes.txt&quot;, &quot;r&quot;) as f:
+    villes = [ligne.strip() for ligne in f]
+print(f&quot;\nListe nettoyee : {villes}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>--- read() ---
+Paris
+Lyon
+Marseille
+Toulouse
+Bordeaux
+
+readlines() : [&#39;Paris\n&#39;, &#39;Lyon\n&#39;, &#39;Marseille\n&#39;, &#39;Toulouse\n&#39;, &#39;Bordeaux\n&#39;]
+--- Boucle for ---
+Paris
+Lyon
+Marseille
+Toulouse
+Bordeaux
+
+Liste nettoyee : [&#39;Paris&#39;, &#39;Lyon&#39;, &#39;Marseille&#39;, &#39;Toulouse&#39;, &#39;Bordeaux&#39;]
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 5.2 : Écrire dans un fichier [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Ecrivez une liste de courses dans un fichier <code>courses.txt</code> (mode <code>&quot;w&quot;</code>)</li>
+<li>Ajoutez 2 articles supplementaires avec le mode append (<code>&quot;a&quot;</code>)</li>
+<li>Relisez le fichier et affichez le contenu avec les numeros de ligne</li>
+<li>Ecrivez une liste de nombres (1 a 10) dans un fichier, un par ligne, avec <code>writelines()</code></li>
+</ol>
+<p><strong>Indice</strong> : Le mode <code>&quot;w&quot;</code> ecrase le fichier existant. Le mode <code>&quot;a&quot;</code> ajoute a la fin. <code>writelines()</code> n&#39;ajoute pas de retour a la ligne automatiquement.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python"># 1. Ecrire la liste de courses
+articles = [&quot;pain&quot;, &quot;lait&quot;, &quot;beurre&quot;, &quot;oeufs&quot;, &quot;fromage&quot;]
+with open(&quot;courses.txt&quot;, &quot;w&quot;) as f:
+    for article in articles:
+        f.write(article + &quot;\n&quot;)
+
+# 2. Ajouter en mode append
+with open(&quot;courses.txt&quot;, &quot;a&quot;) as f:
+    f.write(&quot;pommes\n&quot;)
+    f.write(&quot;chocolat\n&quot;)
+
+# 3. Relire avec numeros de ligne
+print(&quot;--- Liste de courses ---&quot;)
+with open(&quot;courses.txt&quot;, &quot;r&quot;) as f:
+    for i, ligne in enumerate(f, start=1):
+        print(f&quot;{i}. {ligne.strip()}&quot;)
+
+# 4. writelines()
+nombres = [f&quot;{n}\n&quot; for n in range(1, 11)]
+with open(&quot;nombres.txt&quot;, &quot;w&quot;) as f:
+    f.writelines(nombres)
+
+with open(&quot;nombres.txt&quot;, &quot;r&quot;) as f:
+    print(f&quot;\nnombres.txt : {f.read()}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>--- Liste de courses ---
+1. pain
+2. lait
+3. beurre
+4. oeufs
+5. fromage
+6. pommes
+7. chocolat
+
+nombres.txt : 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 5.3 : Manipuler des CSV [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Creez un fichier <code>employes.csv</code> avec les colonnes : nom, poste, salaire (5 lignes)</li>
+<li>Relisez le fichier avec <code>csv.reader</code> et affichez chaque ligne</li>
+<li>Relisez le fichier avec <code>csv.DictReader</code> et affichez les noms et salaires</li>
+<li>Ajoutez un employe avec <code>csv.writer</code></li>
+<li>Calculez le salaire moyen a partir du fichier</li>
+</ol>
+<p><strong>Indice</strong> : <code>import csv</code>. <code>csv.reader(f)</code> retourne un iterateur de listes. <code>csv.DictReader(f)</code> retourne un iterateur de dictionnaires. <code>csv.writer(f).writerow(liste)</code> ecrit une ligne.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import csv
+
+# 1. Creer le CSV
+with open(&quot;employes.csv&quot;, &quot;w&quot;, newline=&quot;&quot;) as f:
+    writer = csv.writer(f)
+    writer.writerow([&quot;nom&quot;, &quot;poste&quot;, &quot;salaire&quot;])
+    writer.writerow([&quot;Dupont&quot;, &quot;Developpeur&quot;, 45000])
+    writer.writerow([&quot;Martin&quot;, &quot;Designer&quot;, 40000])
+    writer.writerow([&quot;Bernard&quot;, &quot;Chef de projet&quot;, 52000])
+    writer.writerow([&quot;Petit&quot;, &quot;Analyste&quot;, 42000])
+    writer.writerow([&quot;Robert&quot;, &quot;Developpeur&quot;, 47000])
+
+# 2. Lire avec csv.reader
+print(&quot;--- csv.reader ---&quot;)
+with open(&quot;employes.csv&quot;, &quot;r&quot;) as f:
+    reader = csv.reader(f)
+    for ligne in reader:
+        print(ligne)
+
+# 3. Lire avec DictReader
+print(&quot;\n--- csv.DictReader ---&quot;)
+with open(&quot;employes.csv&quot;, &quot;r&quot;) as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        print(f&quot;{row[&#39;nom&#39;]} : {row[&#39;salaire&#39;]} EUR&quot;)
+
+# 4. Ajouter un employe
+with open(&quot;employes.csv&quot;, &quot;a&quot;, newline=&quot;&quot;) as f:
+    writer = csv.writer(f)
+    writer.writerow([&quot;Leroy&quot;, &quot;Stagiaire&quot;, 28000])
+
+# 5. Salaire moyen
+with open(&quot;employes.csv&quot;, &quot;r&quot;) as f:
+    reader = csv.DictReader(f)
+    salaires = [int(row[&quot;salaire&quot;]) for row in reader]
+
+moyenne = sum(salaires) / len(salaires)
+print(f&quot;\nSalaires : {salaires}&quot;)
+print(f&quot;Salaire moyen : {moyenne:.0f} EUR&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>--- csv.reader ---
+[&#39;nom&#39;, &#39;poste&#39;, &#39;salaire&#39;]
+[&#39;Dupont&#39;, &#39;Developpeur&#39;, &#39;45000&#39;]
+[&#39;Martin&#39;, &#39;Designer&#39;, &#39;40000&#39;]
+[&#39;Bernard&#39;, &#39;Chef de projet&#39;, &#39;52000&#39;]
+[&#39;Petit&#39;, &#39;Analyste&#39;, &#39;42000&#39;]
+[&#39;Robert&#39;, &#39;Developpeur&#39;, &#39;47000&#39;]
+
+--- csv.DictReader ---
+Dupont : 45000 EUR
+Martin : 40000 EUR
+Bernard : 52000 EUR
+Petit : 42000 EUR
+Robert : 47000 EUR
+
+Salaires : [45000, 40000, 52000, 42000, 47000, 28000]
+Salaire moyen : 42333 EUR
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 5.4 : Manipuler du JSON [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Creez un dictionnaire Python representant un produit (nom, prix, stock, categories)</li>
+<li>Ecrivez-le dans un fichier <code>produit.json</code> avec <code>json.dump()</code> (indentation de 2)</li>
+<li>Relisez le fichier avec <code>json.load()</code> et affichez le resultat</li>
+<li>Convertissez un dictionnaire en chaine JSON avec <code>json.dumps()</code></li>
+<li>Convertissez une chaine JSON en dictionnaire avec <code>json.loads()</code></li>
+</ol>
+<p><strong>Indice</strong> : <code>import json</code>. <code>json.dump(obj, f, indent=2)</code> ecrit dans un fichier. <code>json.load(f)</code> lit depuis un fichier. <code>json.dumps()</code> et <code>json.loads()</code> travaillent avec des chaines.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import json
+
+# 1. Creer le dictionnaire
+produit = {
+    &quot;nom&quot;: &quot;Laptop Pro&quot;,
+    &quot;prix&quot;: 1299.99,
+    &quot;stock&quot;: 42,
+    &quot;categories&quot;: [&quot;informatique&quot;, &quot;bureautique&quot;],
+    &quot;specs&quot;: {
+        &quot;ram&quot;: &quot;16 Go&quot;,
+        &quot;stockage&quot;: &quot;512 Go SSD&quot;,
+        &quot;ecran&quot;: &quot;14 pouces&quot;
+    }
+}
+
+# 2. Ecrire en JSON
+with open(&quot;produit.json&quot;, &quot;w&quot;) as f:
+    json.dump(produit, f, indent=2, ensure_ascii=False)
+print(&quot;Fichier produit.json cree.&quot;)
+
+# 3. Relire le JSON
+with open(&quot;produit.json&quot;, &quot;r&quot;) as f:
+    data = json.load(f)
+print(f&quot;\nType : {type(data)}&quot;)
+print(f&quot;Nom  : {data[&#39;nom&#39;]}&quot;)
+print(f&quot;Prix : {data[&#39;prix&#39;]} EUR&quot;)
+print(f&quot;RAM  : {data[&#39;specs&#39;][&#39;ram&#39;]}&quot;)
+
+# 4. dumps : dict -&gt; str
+chaine_json = json.dumps(produit, indent=2, ensure_ascii=False)
+print(f&quot;\njson.dumps() :\n{chaine_json}&quot;)
+
+# 5. loads : str -&gt; dict
+texte = &#39;{&quot;ville&quot;: &quot;Paris&quot;, &quot;population&quot;: 2161000, &quot;pays&quot;: &quot;France&quot;}&#39;
+ville = json.loads(texte)
+print(f&quot;\njson.loads() : {ville}&quot;)
+print(f&quot;Type : {type(ville)}&quot;)
+print(f&quot;Population : {ville[&#39;population&#39;]:,}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>Fichier produit.json cree.
+
+Type : &lt;class &#39;dict&#39;&gt;
+Nom  : Laptop Pro
+Prix : 1299.99 EUR
+RAM  : 16 Go
+
+json.dumps() :
+{
+  &quot;nom&quot;: &quot;Laptop Pro&quot;,
+  &quot;prix&quot;: 1299.99,
+  &quot;stock&quot;: 42,
+  &quot;categories&quot;: [
+    &quot;informatique&quot;,
+    &quot;bureautique&quot;
+  ],
+  &quot;specs&quot;: {
+    &quot;ram&quot;: &quot;16 Go&quot;,
+    &quot;stockage&quot;: &quot;512 Go SSD&quot;,
+    &quot;ecran&quot;: &quot;14 pouces&quot;
+  }
+}
+
+json.loads() : {&#39;ville&#39;: &#39;Paris&#39;, &#39;population&#39;: 2161000, &#39;pays&#39;: &#39;France&#39;}
+Type : &lt;class &#39;dict&#39;&gt;
+Population : 2,161,000
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 5.5 : Explorer le système de fichiers [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Importez <code>os</code> et affichez le repertoire de travail actuel avec <code>os.getcwd()</code></li>
+<li>Listez les fichiers du repertoire courant avec <code>os.listdir()</code></li>
+<li>Verifiez si un fichier existe avec <code>os.path.exists()</code></li>
+<li>Obtenez la taille d&#39;un fichier avec <code>os.path.getsize()</code></li>
+<li>Separez nom et extension d&#39;un fichier avec <code>os.path.splitext()</code></li>
+<li>Construisez un chemin avec <code>os.path.join()</code></li>
+</ol>
+<p><strong>Indice</strong> : <code>os.path</code> contient de nombreuses fonctions utiles pour manipuler les chemins. <code>os.listdir(&quot;.&quot;)</code> liste le repertoire courant.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import os
+
+# 1. Repertoire courant
+print(f&quot;Repertoire : {os.getcwd()}&quot;)
+
+# 2. Lister les fichiers
+fichiers = os.listdir(&quot;.&quot;)
+print(f&quot;\nFichiers ({len(fichiers)}) :&quot;)
+for f in sorted(fichiers)[:10]:  # afficher les 10 premiers
+    print(f&quot;  {f}&quot;)
+
+# 3. Verifier l&#39;existence
+print(f&quot;\nproduit.json existe : {os.path.exists(&#39;produit.json&#39;)}&quot;)
+print(f&quot;fantome.txt existe  : {os.path.exists(&#39;fantome.txt&#39;)}&quot;)
+
+# 4. Taille d&#39;un fichier
+if os.path.exists(&quot;produit.json&quot;):
+    taille = os.path.getsize(&quot;produit.json&quot;)
+    print(f&quot;\nTaille de produit.json : {taille} octets&quot;)
+
+# 5. Nom et extension
+exemples = [&quot;rapport.pdf&quot;, &quot;photo.jpg&quot;, &quot;script.py&quot;, &quot;data.csv&quot;]
+for nom in exemples:
+    base, ext = os.path.splitext(nom)
+    print(f&quot;  {nom} -&gt; base=&#39;{base}&#39;, ext=&#39;{ext}&#39;&quot;)
+
+# 6. Construire un chemin
+chemin = os.path.join(&quot;dossier&quot;, &quot;sous-dossier&quot;, &quot;fichier.txt&quot;)
+print(f&quot;\nChemin construit : {chemin}&quot;)
+
+# Bonus : informations sur un fichier
+chemin_abs = os.path.abspath(&quot;produit.json&quot;)
+print(f&quot;Chemin absolu    : {chemin_abs}&quot;)
+print(f&quot;Est un fichier   : {os.path.isfile(&#39;produit.json&#39;)}&quot;)
+print(f&quot;Est un dossier   : {os.path.isdir(&#39;produit.json&#39;)}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>Repertoire : /home/user/projet
+
+Fichiers (X) :
+  courses.txt
+  employes.csv
+  nombres.txt
+  produit.json
+  villes.txt
+
+produit.json existe : True
+fantome.txt existe  : False
+
+Taille de produit.json : 215 octets
+  rapport.pdf -&gt; base=&#39;rapport&#39;, ext=&#39;.pdf&#39;
+  photo.jpg -&gt; base=&#39;photo&#39;, ext=&#39;.jpg&#39;
+  script.py -&gt; base=&#39;script&#39;, ext=&#39;.py&#39;
+  data.csv -&gt; base=&#39;data&#39;, ext=&#39;.csv&#39;
+
+Chemin construit : dossier/sous-dossier/fichier.txt
+Chemin absolu    : /home/user/projet/produit.json
+Est un fichier   : True
+Est un dossier   : False
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 5.6 : Importer et utiliser des modules [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Importez <code>math</code> et utilisez <code>math.sqrt()</code>, <code>math.ceil()</code>, <code>math.floor()</code>, <code>math.log()</code></li>
+<li>Importez <code>datetime</code> et affichez la date du jour, l&#39;heure actuelle, et creez une date specifique</li>
+<li>Importez <code>collections</code> et utilisez <code>Counter</code> pour compter les elements d&#39;une liste</li>
+<li>Montrez les differentes facons d&#39;importer : <code>import</code>, <code>from ... import</code>, <code>as</code></li>
+</ol>
+<p><strong>Indice</strong> : <code>from module import fonction</code> importe directement. <code>import module as alias</code> cree un alias. <code>collections.Counter(liste)</code> compte les occurrences.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python"># 1. Module math
+import math
+
+print(f&quot;sqrt(144)  = {math.sqrt(144)}&quot;)
+print(f&quot;ceil(3.2)  = {math.ceil(3.2)}&quot;)
+print(f&quot;floor(3.8) = {math.floor(3.8)}&quot;)
+print(f&quot;log(100)   = {math.log(100):.4f}&quot;)       # ln
+print(f&quot;log10(100) = {math.log10(100)}&quot;)           # log base 10
+
+# 2. Module datetime
+from datetime import datetime, date, timedelta
+
+aujourd_hui = date.today()
+maintenant = datetime.now()
+noel = date(2026, 12, 25)
+jours_restants = (noel - aujourd_hui).days
+
+print(f&quot;\nDate du jour   : {aujourd_hui}&quot;)
+print(f&quot;Heure actuelle : {maintenant.strftime(&#39;%H:%M:%S&#39;)}&quot;)
+print(f&quot;Noel 2026      : {noel}&quot;)
+print(f&quot;Jours restants : {jours_restants}&quot;)
+
+# 3. Module collections
+from collections import Counter
+
+fruits = [&quot;pomme&quot;, &quot;banane&quot;, &quot;pomme&quot;, &quot;orange&quot;, &quot;banane&quot;, &quot;pomme&quot;, &quot;kiwi&quot;]
+compteur = Counter(fruits)
+print(f&quot;\nCompteur : {compteur}&quot;)
+print(f&quot;Top 2    : {compteur.most_common(2)}&quot;)
+
+# 4. Differentes facons d&#39;importer
+import random                       # import complet
+from math import pi, e              # import specifique
+import datetime as dt               # alias
+
+print(f&quot;\nrandom.choice : {random.choice([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;])}&quot;)
+print(f&quot;pi = {pi:.6f}&quot;)
+print(f&quot;e  = {e:.6f}&quot;)
+print(f&quot;dt.date.today() = {dt.date.today()}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>sqrt(144)  = 12.0
+ceil(3.2)  = 4
+floor(3.8) = 3
+log(100)   = 4.6052
+log10(100) = 2.0
+
+Date du jour   : 2026-03-16
+Heure actuelle : 14:30:22
+Noel 2026      : 2026-12-25
+Jours restants : 284
+
+Compteur : Counter({&#39;pomme&#39;: 3, &#39;banane&#39;: 2, &#39;orange&#39;: 1, &#39;kiwi&#39;: 1})
+Top 2    : [(&#39;pomme&#39;, 3), (&#39;banane&#39;, 2)]
+
+random.choice : b
+pi = 3.141593
+e  = 2.718282
+dt.date.today() = 2026-03-16
+</code></pre>
+</details>
+
+<hr>
+<h2>Module 6 : NumPy et pandas</h2>
+<hr>
+<h3>Exercice 6.1 : NumPy — Créer des arrays [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Creez un array NumPy a partir de la liste <code>[1, 2, 3, 4, 5]</code></li>
+<li>Creez un array de 0 a 19 avec <code>np.arange()</code></li>
+<li>Creez un array de 10 valeurs uniformement reparties entre 0 et 1 avec <code>np.linspace()</code></li>
+<li>Creez une matrice 3x4 de zeros, puis une de uns</li>
+<li>Creez une matrice identite 4x4 avec <code>np.eye()</code></li>
+<li>Affichez le type, la forme et la dimension de chaque array</li>
+</ol>
+<p><strong>Indice</strong> : <code>import numpy as np</code>. <code>np.arange(start, stop, step)</code> est similaire a <code>range()</code>. <code>np.linspace(start, stop, num)</code> inclut les bornes.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import numpy as np
+
+# 1. Depuis une liste
+a = np.array([1, 2, 3, 4, 5])
+print(f&quot;a = {a}&quot;)
+
+# 2. arange
+b = np.arange(20)
+print(f&quot;b = {b}&quot;)
+
+# 3. linspace
+c = np.linspace(0, 1, 10)
+print(f&quot;c = {c}&quot;)
+
+# 4. zeros et ones
+zeros = np.zeros((3, 4))
+uns = np.ones((3, 4))
+print(f&quot;\nZeros :\n{zeros}&quot;)
+print(f&quot;\nOnes :\n{uns}&quot;)
+
+# 5. Matrice identite
+identite = np.eye(4)
+print(f&quot;\nIdentite :\n{identite}&quot;)
+
+# 6. Proprietes
+for nom, arr in [(&quot;a&quot;, a), (&quot;b&quot;, b), (&quot;c&quot;, c), (&quot;zeros&quot;, zeros)]:
+    print(f&quot;\n{nom} : dtype={arr.dtype}, shape={arr.shape}, ndim={arr.ndim}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>a = [1 2 3 4 5]
+b = [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19]
+c = [0.         0.11111111 0.22222222 0.33333333 0.44444444 0.55555556
+ 0.66666667 0.77777778 0.88888889 1.        ]
+
+Zeros :
+[[0. 0. 0. 0.]
+ [0. 0. 0. 0.]
+ [0. 0. 0. 0.]]
+
+Ones :
+[[1. 1. 1. 1.]
+ [1. 1. 1. 1.]
+ [1. 1. 1. 1.]]
+
+Identite :
+[[1. 0. 0. 0.]
+ [0. 1. 0. 0.]
+ [0. 0. 1. 0.]
+ [0. 0. 0. 1.]]
+
+a : dtype=int64, shape=(5,), ndim=1
+b : dtype=int64, shape=(20,), ndim=1
+c : dtype=float64, shape=(10,), ndim=1
+zeros : dtype=float64, shape=(3, 4), ndim=2
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 6.2 : NumPy — Opérations vectorisées [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Creez un array <code>a = np.array([10, 20, 30, 40, 50])</code> et effectuez : <code>a + 5</code>, <code>a * 2</code>, <code>a ** 2</code></li>
+<li>Creez un array <code>b = np.array([1, 2, 3, 4, 5])</code> et calculez <code>a + b</code>, <code>a * b</code>, <code>a / b</code></li>
+<li>Utilisez les comparaisons : <code>a &gt; 25</code>, et l&#39;indexation booleenne <code>a[a &gt; 25]</code></li>
+<li>Calculez les statistiques : <code>mean()</code>, <code>std()</code>, <code>min()</code>, <code>max()</code>, <code>sum()</code>, <code>cumsum()</code></li>
+<li>Generez 1000 nombres aleatoires (distribution normale) et calculez moyenne et ecart-type</li>
+</ol>
+<p><strong>Indice</strong> : NumPy applique les operations element par element (vectorisation). L&#39;indexation booleenne permet de filtrer avec un masque. <code>np.random.randn(n)</code> genere une distribution normale.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import numpy as np
+
+# 1. Operations scalaires
+a = np.array([10, 20, 30, 40, 50])
+print(f&quot;a       = {a}&quot;)
+print(f&quot;a + 5   = {a + 5}&quot;)
+print(f&quot;a * 2   = {a * 2}&quot;)
+print(f&quot;a ** 2  = {a ** 2}&quot;)
+
+# 2. Operations entre arrays
+b = np.array([1, 2, 3, 4, 5])
+print(f&quot;\na + b = {a + b}&quot;)
+print(f&quot;a * b = {a * b}&quot;)
+print(f&quot;a / b = {a / b}&quot;)
+
+# 3. Comparaisons et indexation booleenne
+masque = a &gt; 25
+print(f&quot;\na &gt; 25       = {masque}&quot;)
+print(f&quot;a[a &gt; 25]    = {a[masque]}&quot;)
+print(f&quot;a[a % 20 == 0] = {a[a % 20 == 0]}&quot;)
+
+# 4. Statistiques
+print(f&quot;\nmean = {a.mean()}&quot;)
+print(f&quot;std  = {a.std():.2f}&quot;)
+print(f&quot;min  = {a.min()}, max = {a.max()}&quot;)
+print(f&quot;sum  = {a.sum()}&quot;)
+print(f&quot;cumsum = {a.cumsum()}&quot;)
+
+# 5. Distribution normale
+np.random.seed(42)
+donnees = np.random.randn(1000)
+print(f&quot;\n1000 valeurs normales :&quot;)
+print(f&quot;  Moyenne    : {donnees.mean():.4f}&quot;)
+print(f&quot;  Ecart-type : {donnees.std():.4f}&quot;)
+print(f&quot;  Min        : {donnees.min():.4f}&quot;)
+print(f&quot;  Max        : {donnees.max():.4f}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>a       = [10 20 30 40 50]
+a + 5   = [15 25 35 45 55]
+a * 2   = [ 20  40  60  80 100]
+a ** 2  = [ 100  400  900 1600 2500]
+
+a + b = [11 22 33 44 55]
+a * b = [ 10  40  90 160 250]
+a / b = [10. 10. 10. 10. 10.]
+
+a &gt; 25       = [False False  True  True  True]
+a[a &gt; 25]    = [30 40 50]
+a[a % 20 == 0] = [20 40]
+
+mean = 30.0
+std  = 14.14
+min  = 10, max = 50
+sum  = 150
+cumsum = [ 10  30  60 100 150]
+
+1000 valeurs normales :
+  Moyenne    : -0.0116
+  Ecart-type : 0.9904
+  Min        : -2.8832
+  Max        : 3.2528
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 6.3 : Créer un DataFrame [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Creez un DataFrame a partir d&#39;un dictionnaire avec les colonnes : <code>nom</code>, <code>age</code>, <code>ville</code>, <code>salaire</code></li>
+<li>Creez un DataFrame a partir d&#39;une liste de dictionnaires</li>
+<li>Affichez les 3 premieres lignes avec <code>head(3)</code></li>
+<li>Affichez les types de colonnes avec <code>dtypes</code></li>
+<li>Renommez une colonne avec <code>rename()</code></li>
+</ol>
+<p><strong>Indice</strong> : <code>import pandas as pd</code>. <code>pd.DataFrame(dict)</code> cree un DataFrame depuis un dictionnaire. <code>pd.DataFrame(liste_de_dicts)</code> fonctionne aussi.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import pandas as pd
+
+# 1. Depuis un dictionnaire
+data = {
+    &quot;nom&quot;: [&quot;Alice&quot;, &quot;Bob&quot;, &quot;Clara&quot;, &quot;David&quot;, &quot;Emma&quot;],
+    &quot;age&quot;: [28, 35, 22, 41, 30],
+    &quot;ville&quot;: [&quot;Paris&quot;, &quot;Lyon&quot;, &quot;Paris&quot;, &quot;Marseille&quot;, &quot;Lyon&quot;],
+    &quot;salaire&quot;: [45000, 52000, 38000, 61000, 48000],
+}
+df = pd.DataFrame(data)
+print(&quot;--- Depuis dictionnaire ---&quot;)
+print(df)
+
+# 2. Depuis une liste de dictionnaires
+liste_dicts = [
+    {&quot;produit&quot;: &quot;Laptop&quot;, &quot;prix&quot;: 999, &quot;stock&quot;: 15},
+    {&quot;produit&quot;: &quot;Souris&quot;, &quot;prix&quot;: 29, &quot;stock&quot;: 150},
+    {&quot;produit&quot;: &quot;Clavier&quot;, &quot;prix&quot;: 59, &quot;stock&quot;: 80},
+]
+df2 = pd.DataFrame(liste_dicts)
+print(&quot;\n--- Depuis liste de dicts ---&quot;)
+print(df2)
+
+# 3. Head
+print(&quot;\n--- head(3) ---&quot;)
+print(df.head(3))
+
+# 4. Types
+print(f&quot;\n--- dtypes ---\n{df.dtypes}&quot;)
+
+# 5. Renommer
+df = df.rename(columns={&quot;salaire&quot;: &quot;salaire_annuel&quot;})
+print(f&quot;\n--- Colonnes renommees ---\n{df.columns.tolist()}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>--- Depuis dictionnaire ---
+     nom  age      ville  salaire
+0  Alice   28      Paris    45000
+1    Bob   35       Lyon    52000
+2  Clara   22      Paris    38000
+3  David   41  Marseille    61000
+4   Emma   30       Lyon    48000
+
+--- Depuis liste de dicts ---
+  produit  prix  stock
+0  Laptop   999     15
+1  Souris    29    150
+2  Clavier    59     80
+
+--- head(3) ---
+     nom  age  ville  salaire
+0  Alice   28  Paris    45000
+1    Bob   35   Lyon    52000
+2  Clara   22  Paris    38000
+
+--- dtypes ---
+nom        object
+age         int64
+ville      object
+salaire     int64
+dtype: object
+
+--- Colonnes renommees ---
+[&#39;nom&#39;, &#39;age&#39;, &#39;ville&#39;, &#39;salaire_annuel&#39;]
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 6.4 : Charger et explorer [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Chargez le dataset <code>tips</code> de seaborn : <code>import seaborn as sns; tips = sns.load_dataset(&quot;tips&quot;)</code></li>
+<li>Affichez les 5 premieres lignes avec <code>head()</code></li>
+<li>Affichez les informations avec <code>info()</code></li>
+<li>Affichez les statistiques descriptives avec <code>describe()</code></li>
+<li>Affichez la forme du DataFrame avec <code>shape</code></li>
+<li>Affichez les noms de colonnes et les types</li>
+</ol>
+<p><strong>Indice</strong> : <code>sns.load_dataset(&quot;tips&quot;)</code> charge un DataFrame pret a l&#39;emploi. <code>info()</code> affiche les types et les valeurs non-nulles. <code>describe()</code> donne les statistiques des colonnes numeriques.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import pandas as pd
+import seaborn as sns
+
+# 1. Charger le dataset
+tips = sns.load_dataset(&quot;tips&quot;)
+
+# 2. Premieres lignes
+print(&quot;--- head() ---&quot;)
+print(tips.head())
+
+# 3. Info
+print(&quot;\n--- info() ---&quot;)
+tips.info()
+
+# 4. Statistiques descriptives
+print(&quot;\n--- describe() ---&quot;)
+print(tips.describe())
+
+# 5. Forme
+print(f&quot;\n--- shape ---&quot;)
+print(f&quot;Lignes   : {tips.shape[0]}&quot;)
+print(f&quot;Colonnes : {tips.shape[1]}&quot;)
+
+# 6. Colonnes et types
+print(f&quot;\nColonnes : {tips.columns.tolist()}&quot;)
+print(f&quot;\nTypes :\n{tips.dtypes}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>--- head() ---
+   total_bill   tip     sex smoker  day    time  size
+0       16.99  1.01  Female     No  Sun  Dinner     2
+1       10.34  1.66    Male     No  Sun  Dinner     3
+2       21.01  3.50    Male     No  Sun  Dinner     3
+3       23.68  3.31    Male     No  Sun  Dinner     2
+4       24.59  3.61  Female     No  Sun  Dinner     4
+
+--- info() ---
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 244 entries, 0 to 243
+...
+
+--- describe() ---
+       total_bill         tip        size
+count  244.000000  244.000000  244.000000
+mean    19.785943    2.998279    2.569672
+std      8.902412    1.383638    0.951100
+...
+
+--- shape ---
+Lignes   : 244
+Colonnes : 7
+
+Colonnes : [&#39;total_bill&#39;, &#39;tip&#39;, &#39;sex&#39;, &#39;smoker&#39;, &#39;day&#39;, &#39;time&#39;, &#39;size&#39;]
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 6.5 : Sélection et filtrage [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : En utilisant le dataset <code>tips</code> :</p>
+<ol>
+<li>Selectionnez la colonne <code>total_bill</code> (Series)</li>
+<li>Selectionnez les colonnes <code>total_bill</code> et <code>tip</code> (DataFrame)</li>
+<li>Selectionnez les lignes 10 a 15 avec <code>iloc</code></li>
+<li>Selectionnez les lignes ou <code>total_bill &gt; 40</code></li>
+<li>Selectionnez les repas du dimanche (<code>day == &quot;Sun&quot;</code>) avec un pourboire &gt; 5</li>
+<li>Utilisez <code>query()</code> pour filtrer et <code>isin()</code> pour les jours du week-end</li>
+</ol>
+<p><strong>Indice</strong> : <code>df[&quot;col&quot;]</code> retourne une Series. <code>df[[&quot;col1&quot;, &quot;col2&quot;]]</code> retourne un DataFrame. <code>df.loc[condition]</code> filtre par condition booleenne. <code>df.iloc[start:end]</code> filtre par position.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import pandas as pd
+import seaborn as sns
+
+tips = sns.load_dataset(&quot;tips&quot;)
+
+# 1. Une colonne (Series)
+bills = tips[&quot;total_bill&quot;]
+print(f&quot;Type : {type(bills).__name__}&quot;)
+print(bills.head())
+
+# 2. Plusieurs colonnes (DataFrame)
+subset = tips[[&quot;total_bill&quot;, &quot;tip&quot;]]
+print(f&quot;\n{subset.head()}&quot;)
+
+# 3. iloc : lignes 10 a 15
+print(f&quot;\n--- iloc[10:16] ---&quot;)
+print(tips.iloc[10:16])
+
+# 4. Filtrage : total_bill &gt; 40
+gros = tips[tips[&quot;total_bill&quot;] &gt; 40]
+print(f&quot;\n--- total_bill &gt; 40 ({len(gros)} lignes) ---&quot;)
+print(gros)
+
+# 5. Filtrage combine
+dimanche_genereux = tips[(tips[&quot;day&quot;] == &quot;Sun&quot;) &amp; (tips[&quot;tip&quot;] &gt; 5)]
+print(f&quot;\n--- Dimanche + tip &gt; 5 ({len(dimanche_genereux)} lignes) ---&quot;)
+print(dimanche_genereux.head())
+
+# 6. query() et isin()
+weekend = tips.query(&quot;day.isin([&#39;Sat&#39;, &#39;Sun&#39;]) and total_bill &gt; 30&quot;)
+print(f&quot;\n--- query week-end + bill &gt; 30 ({len(weekend)} lignes) ---&quot;)
+print(weekend.head())
+
+# Alternative avec isin
+jours_we = tips[tips[&quot;day&quot;].isin([&quot;Sat&quot;, &quot;Sun&quot;])]
+print(f&quot;\nRepas le week-end : {len(jours_we)}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>Type : Series
+0    16.99
+1    10.34
+2    21.01
+3    23.68
+4    24.59
+Name: total_bill, dtype: float64
+
+   total_bill   tip
+0       16.99  1.01
+1       10.34  1.66
+2       21.01  3.50
+3       23.68  3.31
+4       24.59  3.61
+
+--- iloc[10:16] ---
+    total_bill   tip     sex smoker  day    time  size
+10       10.27  1.71    Male     No  Sun  Dinner     2
+11       35.26  5.00  Female     No  Sun  Dinner     4
+...
+
+--- total_bill &gt; 40 (X lignes) ---
+...
+
+--- Dimanche + tip &gt; 5 (X lignes) ---
+...
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 6.6 : Tri et colonnes calculées [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : En utilisant le dataset <code>tips</code> :</p>
+<ol>
+<li>Triez par <code>total_bill</code> decroissant</li>
+<li>Triez par <code>day</code> puis par <code>total_bill</code> croissant</li>
+<li>Creez une colonne <code>tip_pct</code> = tip / total_bill * 100</li>
+<li>Creez une colonne <code>categorie</code> basee sur <code>total_bill</code> avec <code>apply()</code> (&lt; 15: &quot;Petit&quot;, &lt; 30: &quot;Moyen&quot;, &gt;= 30: &quot;Gros&quot;)</li>
+<li>Utilisez <code>map()</code> pour traduire la colonne <code>day</code> en francais</li>
+</ol>
+<p><strong>Indice</strong> : <code>sort_values(by, ascending)</code> trie. <code>df[&quot;col&quot;] = expression</code> cree une colonne. <code>apply(fonction)</code> applique une fonction ligne par ligne. <code>map(dict)</code> remplace les valeurs.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import pandas as pd
+import seaborn as sns
+
+tips = sns.load_dataset(&quot;tips&quot;)
+
+# 1. Tri decroissant
+top5 = tips.sort_values(&quot;total_bill&quot;, ascending=False).head()
+print(&quot;--- Top 5 additions ---&quot;)
+print(top5[[&quot;total_bill&quot;, &quot;tip&quot;, &quot;day&quot;]])
+
+# 2. Tri multi-colonnes
+tri_multi = tips.sort_values([&quot;day&quot;, &quot;total_bill&quot;]).head(10)
+print(f&quot;\n--- Tri day + total_bill ---&quot;)
+print(tri_multi[[&quot;day&quot;, &quot;total_bill&quot;, &quot;tip&quot;]])
+
+# 3. Colonne calculee
+tips[&quot;tip_pct&quot;] = (tips[&quot;tip&quot;] / tips[&quot;total_bill&quot;] * 100).round(1)
+print(f&quot;\n--- tip_pct ---&quot;)
+print(tips[[&quot;total_bill&quot;, &quot;tip&quot;, &quot;tip_pct&quot;]].head())
+
+# 4. Colonne avec apply
+def categoriser(montant):
+    if montant &lt; 15:
+        return &quot;Petit&quot;
+    elif montant &lt; 30:
+        return &quot;Moyen&quot;
+    else:
+        return &quot;Gros&quot;
+
+tips[&quot;categorie&quot;] = tips[&quot;total_bill&quot;].apply(categoriser)
+print(f&quot;\n--- Repartition ---&quot;)
+print(tips[&quot;categorie&quot;].value_counts())
+
+# 5. map() pour traduire
+jours_fr = {&quot;Sun&quot;: &quot;Dimanche&quot;, &quot;Sat&quot;: &quot;Samedi&quot;, &quot;Thur&quot;: &quot;Jeudi&quot;, &quot;Fri&quot;: &quot;Vendredi&quot;}
+tips[&quot;jour_fr&quot;] = tips[&quot;day&quot;].map(jours_fr)
+print(f&quot;\n--- Jours traduits ---&quot;)
+print(tips[[&quot;day&quot;, &quot;jour_fr&quot;]].drop_duplicates())
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>--- Top 5 additions ---
+     total_bill   tip  day
+170       50.81 10.00  Sat
+212       48.33  9.00  Sat
+...
+
+--- Tri day + total_bill ---
+     day  total_bill   tip
+...
+
+--- tip_pct ---
+   total_bill   tip  tip_pct
+0       16.99  1.01      5.9
+1       10.34  1.66     16.1
+2       21.01  3.50     16.7
+...
+
+--- Repartition ---
+Moyen    X
+Petit    X
+Gros     X
+Name: categorie, dtype: int64
+
+--- Jours traduits ---
+     day    jour_fr
+0    Sun  Dimanche
+5    Sat    Samedi
+77  Thur     Jeudi
+90   Fri  Vendredi
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 6.7 : Merge et concat [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Creez deux DataFrames : <code>employes</code> (id, nom, dept_id) et <code>departements</code> (dept_id, dept_nom)</li>
+<li>Faites un merge inner sur <code>dept_id</code></li>
+<li>Faites un merge left pour garder tous les employes (meme sans departement)</li>
+<li>Faites un merge outer pour tout garder</li>
+<li>Concatenez deux DataFrames de meme structure avec <code>pd.concat()</code></li>
+</ol>
+<p><strong>Indice</strong> : <code>pd.merge(df1, df2, on=&quot;cle&quot;, how=&quot;inner&quot;)</code> fusionne. <code>how</code> peut etre <code>&quot;inner&quot;</code>, <code>&quot;left&quot;</code>, <code>&quot;right&quot;</code>, <code>&quot;outer&quot;</code>. <code>pd.concat([df1, df2])</code> empile verticalement.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import pandas as pd
+
+# 1. Creer les DataFrames
+employes = pd.DataFrame({
+    &quot;id&quot;: [1, 2, 3, 4, 5],
+    &quot;nom&quot;: [&quot;Alice&quot;, &quot;Bob&quot;, &quot;Clara&quot;, &quot;David&quot;, &quot;Emma&quot;],
+    &quot;dept_id&quot;: [10, 20, 10, 30, 99],  # 99 n&#39;existe pas
+})
+
+departements = pd.DataFrame({
+    &quot;dept_id&quot;: [10, 20, 30, 40],  # 40 sans employe
+    &quot;dept_nom&quot;: [&quot;IT&quot;, &quot;Marketing&quot;, &quot;Finance&quot;, &quot;RH&quot;],
+})
+
+print(&quot;--- Employes ---&quot;)
+print(employes)
+print(&quot;\n--- Departements ---&quot;)
+print(departements)
+
+# 2. Inner merge
+inner = pd.merge(employes, departements, on=&quot;dept_id&quot;, how=&quot;inner&quot;)
+print(f&quot;\n--- Inner merge ({len(inner)} lignes) ---&quot;)
+print(inner)
+
+# 3. Left merge
+left = pd.merge(employes, departements, on=&quot;dept_id&quot;, how=&quot;left&quot;)
+print(f&quot;\n--- Left merge ({len(left)} lignes) ---&quot;)
+print(left)
+
+# 4. Outer merge
+outer = pd.merge(employes, departements, on=&quot;dept_id&quot;, how=&quot;outer&quot;)
+print(f&quot;\n--- Outer merge ({len(outer)} lignes) ---&quot;)
+print(outer)
+
+# 5. Concat
+ventes_q1 = pd.DataFrame({&quot;mois&quot;: [&quot;Jan&quot;, &quot;Fev&quot;, &quot;Mar&quot;], &quot;ca&quot;: [100, 120, 110]})
+ventes_q2 = pd.DataFrame({&quot;mois&quot;: [&quot;Avr&quot;, &quot;Mai&quot;, &quot;Jun&quot;], &quot;ca&quot;: [130, 115, 140]})
+
+ventes = pd.concat([ventes_q1, ventes_q2], ignore_index=True)
+print(f&quot;\n--- Concat ---&quot;)
+print(ventes)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>--- Employes ---
+   id    nom  dept_id
+0   1  Alice       10
+1   2    Bob       20
+2   3  Clara       10
+3   4  David       30
+4   5   Emma       99
+
+--- Departements ---
+   dept_id dept_nom
+0       10       IT
+1       20 Marketing
+2       30  Finance
+3       40       RH
+
+--- Inner merge (4 lignes) ---
+   id    nom  dept_id  dept_nom
+0   1  Alice       10        IT
+1   3  Clara       10        IT
+2   2    Bob       20  Marketing
+3   4  David       30   Finance
+
+--- Left merge (5 lignes) ---
+   id    nom  dept_id  dept_nom
+0   1  Alice       10        IT
+1   2    Bob       20  Marketing
+2   3  Clara       10        IT
+3   4  David       30   Finance
+4   5   Emma       99       NaN
+
+--- Outer merge (6 lignes) ---
+    id    nom  dept_id dept_nom
+0  1.0  Alice       10       IT
+1  3.0  Clara       10       IT
+2  2.0    Bob       20 Marketing
+3  4.0  David       30  Finance
+4  5.0   Emma       99      NaN
+5  NaN    NaN       40       RH
+
+--- Concat ---
+  mois   ca
+0  Jan  100
+1  Fev  120
+2  Mar  110
+3  Avr  130
+4  Mai  115
+5  Jun  140
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 6.8 : Groupby et agrégation [Difficulté : Avancé]</h3>
+<p><strong>Énoncé</strong> : En utilisant le dataset <code>tips</code> :</p>
+<ol>
+<li>Calculez le pourboire moyen par jour avec <code>groupby(&quot;day&quot;)[&quot;tip&quot;].mean()</code></li>
+<li>Calculez plusieurs statistiques par jour avec <code>agg()</code></li>
+<li>Groupez par <code>day</code> et <code>time</code>, calculez la moyenne de <code>total_bill</code></li>
+<li>Utilisez <code>transform()</code> pour ajouter la moyenne du groupe a chaque ligne</li>
+<li>Creez un <code>pivot_table</code> : lignes = day, colonnes = time, valeurs = mean(tip)</li>
+</ol>
+<p><strong>Indice</strong> : <code>groupby(col)</code> cree des groupes. <code>agg({&quot;col&quot;: [&quot;mean&quot;, &quot;sum&quot;]})</code> applique plusieurs fonctions. <code>transform()</code> retourne un resultat de meme taille. <code>pd.pivot_table()</code> cree un tableau croise.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import pandas as pd
+import seaborn as sns
+
+tips = sns.load_dataset(&quot;tips&quot;)
+
+# 1. Moyenne par jour
+print(&quot;--- Tip moyen par jour ---&quot;)
+print(tips.groupby(&quot;day&quot;)[&quot;tip&quot;].mean().round(2))
+
+# 2. Agregations multiples
+print(&quot;\n--- Agregations par jour ---&quot;)
+stats = tips.groupby(&quot;day&quot;).agg(
+    tip_mean=(&quot;tip&quot;, &quot;mean&quot;),
+    tip_sum=(&quot;tip&quot;, &quot;sum&quot;),
+    bill_mean=(&quot;total_bill&quot;, &quot;mean&quot;),
+    count=(&quot;total_bill&quot;, &quot;count&quot;),
+).round(2)
+print(stats)
+
+# 3. Groupby multiple
+print(&quot;\n--- Moyenne par day + time ---&quot;)
+multi = tips.groupby([&quot;day&quot;, &quot;time&quot;])[&quot;total_bill&quot;].mean().round(2)
+print(multi)
+
+# 4. Transform
+tips[&quot;tip_moy_jour&quot;] = tips.groupby(&quot;day&quot;)[&quot;tip&quot;].transform(&quot;mean&quot;).round(2)
+tips[&quot;diff_moy&quot;] = (tips[&quot;tip&quot;] - tips[&quot;tip_moy_jour&quot;]).round(2)
+print(&quot;\n--- Transform ---&quot;)
+print(tips[[&quot;day&quot;, &quot;tip&quot;, &quot;tip_moy_jour&quot;, &quot;diff_moy&quot;]].head(10))
+
+# 5. Pivot table
+print(&quot;\n--- Pivot table ---&quot;)
+pivot = pd.pivot_table(
+    tips,
+    values=&quot;tip&quot;,
+    index=&quot;day&quot;,
+    columns=&quot;time&quot;,
+    aggfunc=&quot;mean&quot;,
+).round(2)
+print(pivot)
+
+# Bonus : pivot avec marges
+print(&quot;\n--- Pivot avec marges ---&quot;)
+pivot_m = pd.pivot_table(
+    tips,
+    values=&quot;tip&quot;,
+    index=&quot;day&quot;,
+    columns=&quot;sex&quot;,
+    aggfunc=[&quot;mean&quot;, &quot;count&quot;],
+    margins=True,
+).round(2)
+print(pivot_m)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>--- Tip moyen par jour ---
+day
+Thur    2.77
+Fri     2.73
+Sat     2.99
+Sun     3.26
+Name: tip, dtype: float64
+
+--- Agregations par jour ---
+      tip_mean  tip_sum  bill_mean  count
+day
+Thur      2.77    43.56      17.68     62
+Fri       2.73    51.96      17.15     19
+Sat       2.99   260.40      20.44     87
+Sun       3.26   247.40      21.41     76
+
+--- Moyenne par day + time ---
+day   time
+Thur  Lunch     2.77
+      Dinner    3.00
+Fri   Lunch     2.38
+      Dinner    2.94
+...
+
+--- Pivot table ---
+time  Dinner  Lunch
+day
+Thur    3.00   2.77
+Fri     2.94   2.38
+Sat     2.99    NaN
+Sun     3.26    NaN
+</code></pre>
+</details>
+
+<hr>
+<h2>Module 7 : Visualisation</h2>
+<hr>
+<h3>Exercice 7.1 : Nuage de points [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Chargez le dataset <code>tips</code> avec seaborn</li>
+<li>Creez un nuage de points : <code>total_bill</code> (x) vs <code>tip</code> (y)</li>
+<li>Colorez les points selon le sexe (<code>sex</code>)</li>
+<li>Ajustez la taille des points selon <code>size</code></li>
+<li>Ajoutez une droite de regression avec <code>numpy</code></li>
+<li>Ajoutez titre, labels des axes et legende</li>
+</ol>
+<p><strong>Indice</strong> : <code>plt.scatter(x, y, c=couleurs, s=tailles)</code>. Pour la regression : <code>np.polyfit(x, y, 1)</code> donne les coefficients, <code>np.poly1d(coeffs)</code> cree la fonction.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
+tips = sns.load_dataset(&quot;tips&quot;)
+
+fig, ax = plt.subplots(figsize=(8, 6))
+
+# Couleurs par sexe
+couleurs = {&quot;Male&quot;: &quot;#2196F3&quot;, &quot;Female&quot;: &quot;#E91E63&quot;}
+for sexe, groupe in tips.groupby(&quot;sex&quot;):
+    ax.scatter(
+        groupe[&quot;total_bill&quot;],
+        groupe[&quot;tip&quot;],
+        c=couleurs[sexe],
+        s=groupe[&quot;size&quot;] * 20,
+        alpha=0.6,
+        label=sexe,
+        edgecolors=&quot;white&quot;,
+        linewidth=0.5,
+    )
+
+# Droite de regression
+coeffs = np.polyfit(tips[&quot;total_bill&quot;], tips[&quot;tip&quot;], 1)
+x_line = np.linspace(tips[&quot;total_bill&quot;].min(), tips[&quot;total_bill&quot;].max(), 100)
+ax.plot(x_line, np.poly1d(coeffs)(x_line), &quot;k--&quot;, linewidth=1.5, label=&quot;Regression&quot;)
+
+ax.set_xlabel(&quot;Addition ($)&quot;)
+ax.set_ylabel(&quot;Pourboire ($)&quot;)
+ax.set_title(&quot;Relation addition / pourboire&quot;)
+ax.legend()
+plt.tight_layout()
+plt.savefig(&quot;scatter.png&quot;, dpi=150)
+plt.show()
+</code></pre>
+<p><strong>Résultat attendu</strong> : Un nuage de points colore avec droite de regression, enregistre en <code>scatter.png</code>.</p>
+</details>
+
+<hr>
+<h3>Exercice 7.2 : Histogramme [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Creez un histogramme de la colonne <code>total_bill</code> du dataset <code>tips</code></li>
+<li>Utilisez 20 bins</li>
+<li>Ajoutez des lignes verticales pour la moyenne (rouge) et la mediane (vert)</li>
+<li>Ajoutez titre, labels et legende</li>
+<li>Affichez les valeurs de moyenne et mediane dans la legende</li>
+</ol>
+<p><strong>Indice</strong> : <code>plt.hist(data, bins=20)</code>. <code>plt.axvline(x, color, linestyle, label)</code> trace une ligne verticale.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import matplotlib.pyplot as plt
+import seaborn as sns
+
+tips = sns.load_dataset(&quot;tips&quot;)
+
+fig, ax = plt.subplots(figsize=(8, 5))
+
+# Histogramme
+ax.hist(tips[&quot;total_bill&quot;], bins=20, color=&quot;#42A5F5&quot;, edgecolor=&quot;white&quot;, alpha=0.8)
+
+# Moyenne et mediane
+moy = tips[&quot;total_bill&quot;].mean()
+med = tips[&quot;total_bill&quot;].median()
+
+ax.axvline(moy, color=&quot;red&quot;, linestyle=&quot;--&quot;, linewidth=2, label=f&quot;Moyenne : {moy:.2f} $&quot;)
+ax.axvline(med, color=&quot;green&quot;, linestyle=&quot;-.&quot;, linewidth=2, label=f&quot;Mediane : {med:.2f} $&quot;)
+
+ax.set_xlabel(&quot;Addition ($)&quot;)
+ax.set_ylabel(&quot;Frequence&quot;)
+ax.set_title(&quot;Distribution des additions&quot;)
+ax.legend()
+plt.tight_layout()
+plt.savefig(&quot;histogramme.png&quot;, dpi=150)
+plt.show()
+</code></pre>
+<p><strong>Résultat attendu</strong> : Un histogramme avec 20 bins, une ligne rouge pour la moyenne et une ligne verte pour la mediane.</p>
+</details>
+
+<hr>
+<h3>Exercice 7.3 : Boxplot [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Creez un boxplot des pourboires (<code>tip</code>) par jour (<code>day</code>)</li>
+<li>Creez un boxplot horizontal des additions par moment (<code>time</code>)</li>
+<li>Personnalisez : couleurs, medianes en rouge, outliers en losange</li>
+<li>Ajoutez un titre et des labels clairs</li>
+</ol>
+<p><strong>Indice</strong> : <code>ax.boxplot(data, labels=labels)</code>. Pour grouper, preparez les donnees par groupe. <code>vert=False</code> pour un boxplot horizontal. <code>medianprops</code>, <code>flierprops</code> pour personnaliser.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import matplotlib.pyplot as plt
+import seaborn as sns
+
+tips = sns.load_dataset(&quot;tips&quot;)
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+# 1. Boxplot vertical : tip par jour
+jours = [&quot;Thur&quot;, &quot;Fri&quot;, &quot;Sat&quot;, &quot;Sun&quot;]
+data_jours = [tips[tips[&quot;day&quot;] == j][&quot;tip&quot;].values for j in jours]
+
+bp1 = axes[0].boxplot(
+    data_jours,
+    labels=[&quot;Jeudi&quot;, &quot;Vendredi&quot;, &quot;Samedi&quot;, &quot;Dimanche&quot;],
+    patch_artist=True,
+    medianprops=dict(color=&quot;red&quot;, linewidth=2),
+    flierprops=dict(marker=&quot;D&quot;, markerfacecolor=&quot;orange&quot;, markersize=5),
+)
+couleurs = [&quot;#BBDEFB&quot;, &quot;#C8E6C9&quot;, &quot;#FFE0B2&quot;, &quot;#F8BBD0&quot;]
+for patch, color in zip(bp1[&quot;boxes&quot;], couleurs):
+    patch.set_facecolor(color)
+
+axes[0].set_ylabel(&quot;Pourboire ($)&quot;)
+axes[0].set_title(&quot;Pourboires par jour&quot;)
+
+# 2. Boxplot horizontal : total_bill par time
+times = [&quot;Lunch&quot;, &quot;Dinner&quot;]
+data_times = [tips[tips[&quot;time&quot;] == t][&quot;total_bill&quot;].values for t in times]
+
+bp2 = axes[1].boxplot(
+    data_times,
+    labels=[&quot;Dejeuner&quot;, &quot;Diner&quot;],
+    vert=False,
+    patch_artist=True,
+    medianprops=dict(color=&quot;red&quot;, linewidth=2),
+    flierprops=dict(marker=&quot;D&quot;, markerfacecolor=&quot;orange&quot;, markersize=5),
+)
+for patch, color in zip(bp2[&quot;boxes&quot;], [&quot;#B3E5FC&quot;, &quot;#FFCCBC&quot;]):
+    patch.set_facecolor(color)
+
+axes[1].set_xlabel(&quot;Addition ($)&quot;)
+axes[1].set_title(&quot;Additions par moment&quot;)
+
+plt.tight_layout()
+plt.savefig(&quot;boxplot.png&quot;, dpi=150)
+plt.show()
+</code></pre>
+<p><strong>Résultat attendu</strong> : Deux boxplots cote a cote — un vertical (tip par jour) et un horizontal (bill par time) — avec medianes rouges et outliers en losange.</p>
+</details>
+
+<hr>
+<h3>Exercice 7.4 : Barplot [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Creez un barplot simple : pourboire moyen par jour</li>
+<li>Creez un barplot groupe : pourboire moyen par jour ET par moment (Lunch/Dinner)</li>
+<li>Ajoutez les valeurs au-dessus de chaque barre</li>
+<li>Personnalisez les couleurs et le style</li>
+</ol>
+<p><strong>Indice</strong> : <code>ax.bar(x, hauteurs)</code> pour un barplot simple. Pour un barplot groupe, decalez les positions avec <code>np.arange</code> et une largeur de barre.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
+tips = sns.load_dataset(&quot;tips&quot;)
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+# 1. Barplot simple
+jours = [&quot;Thur&quot;, &quot;Fri&quot;, &quot;Sat&quot;, &quot;Sun&quot;]
+jours_fr = [&quot;Jeudi&quot;, &quot;Vendredi&quot;, &quot;Samedi&quot;, &quot;Dimanche&quot;]
+moyennes = [tips[tips[&quot;day&quot;] == j][&quot;tip&quot;].mean() for j in jours]
+
+bars = axes[0].bar(jours_fr, moyennes, color=[&quot;#42A5F5&quot;, &quot;#66BB6A&quot;, &quot;#FFA726&quot;, &quot;#EF5350&quot;])
+for bar, val in zip(bars, moyennes):
+    axes[0].text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.05,
+                 f&quot;{val:.2f}&quot;, ha=&quot;center&quot;, fontweight=&quot;bold&quot;)
+
+axes[0].set_ylabel(&quot;Pourboire moyen ($)&quot;)
+axes[0].set_title(&quot;Pourboire moyen par jour&quot;)
+
+# 2. Barplot groupe
+pivot = tips.groupby([&quot;day&quot;, &quot;time&quot;])[&quot;tip&quot;].mean().unstack(fill_value=0)
+pivot = pivot.reindex(jours)
+
+x = np.arange(len(jours))
+largeur = 0.35
+
+b1 = axes[1].bar(x - largeur / 2, pivot.get(&quot;Lunch&quot;, [0] * 4), largeur,
+                  label=&quot;Dejeuner&quot;, color=&quot;#42A5F5&quot;)
+b2 = axes[1].bar(x + largeur / 2, pivot.get(&quot;Dinner&quot;, [0] * 4), largeur,
+                  label=&quot;Diner&quot;, color=&quot;#EF5350&quot;)
+
+# Valeurs sur les barres
+for bars in [b1, b2]:
+    for bar in bars:
+        h = bar.get_height()
+        if h &gt; 0:
+            axes[1].text(bar.get_x() + bar.get_width() / 2, h + 0.05,
+                         f&quot;{h:.2f}&quot;, ha=&quot;center&quot;, fontsize=9)
+
+axes[1].set_xticks(x)
+axes[1].set_xticklabels(jours_fr)
+axes[1].set_ylabel(&quot;Pourboire moyen ($)&quot;)
+axes[1].set_title(&quot;Pourboire moyen par jour et moment&quot;)
+axes[1].legend()
+
+plt.tight_layout()
+plt.savefig(&quot;barplot.png&quot;, dpi=150)
+plt.show()
+</code></pre>
+<p><strong>Résultat attendu</strong> : Deux barplots — un simple avec valeurs, un groupe par jour et moment (Lunch/Dinner).</p>
+</details>
+
+<hr>
+<h3>Exercice 7.5 : Multi-graphiques [Difficulté : Avancé]</h3>
+<p><strong>Énoncé</strong> : Creez un dashboard de 4 graphiques (2x2) a partir du dataset <code>tips</code> :</p>
+<ol>
+<li>(Haut-gauche) Scatter : total_bill vs tip</li>
+<li>(Haut-droite) Histogramme : distribution de total_bill</li>
+<li>(Bas-gauche) Boxplot : tip par jour</li>
+<li>(Bas-droite) Barplot : nombre de repas par jour</li>
+</ol>
+<p>Utilisez <code>fig, axes = plt.subplots(2, 2)</code> et personnalisez chaque graphique.</p>
+<p><strong>Indice</strong> : <code>plt.subplots(2, 2, figsize=(12, 10))</code> cree une grille 2x2. Accedez aux axes avec <code>axes[0, 0]</code>, <code>axes[0, 1]</code>, etc. <code>fig.suptitle()</code> pour un titre global.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
+tips = sns.load_dataset(&quot;tips&quot;)
+
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+fig.suptitle(&quot;Dashboard — Dataset Tips&quot;, fontsize=16, fontweight=&quot;bold&quot;)
+
+# 1. Scatter : total_bill vs tip
+ax = axes[0, 0]
+ax.scatter(tips[&quot;total_bill&quot;], tips[&quot;tip&quot;], alpha=0.5, c=&quot;#2196F3&quot;, edgecolors=&quot;white&quot;)
+coeffs = np.polyfit(tips[&quot;total_bill&quot;], tips[&quot;tip&quot;], 1)
+x_line = np.linspace(0, 55, 100)
+ax.plot(x_line, np.poly1d(coeffs)(x_line), &quot;r--&quot;, linewidth=1.5)
+ax.set_xlabel(&quot;Addition ($)&quot;)
+ax.set_ylabel(&quot;Pourboire ($)&quot;)
+ax.set_title(&quot;Addition vs Pourboire&quot;)
+
+# 2. Histogramme : distribution total_bill
+ax = axes[0, 1]
+ax.hist(tips[&quot;total_bill&quot;], bins=20, color=&quot;#66BB6A&quot;, edgecolor=&quot;white&quot;, alpha=0.8)
+ax.axvline(tips[&quot;total_bill&quot;].mean(), color=&quot;red&quot;, linestyle=&quot;--&quot;, label=&quot;Moyenne&quot;)
+ax.set_xlabel(&quot;Addition ($)&quot;)
+ax.set_ylabel(&quot;Frequence&quot;)
+ax.set_title(&quot;Distribution des additions&quot;)
+ax.legend()
+
+# 3. Boxplot : tip par jour
+ax = axes[1, 0]
+jours = [&quot;Thur&quot;, &quot;Fri&quot;, &quot;Sat&quot;, &quot;Sun&quot;]
+data = [tips[tips[&quot;day&quot;] == j][&quot;tip&quot;].values for j in jours]
+bp = ax.boxplot(data, labels=[&quot;Jeu&quot;, &quot;Ven&quot;, &quot;Sam&quot;, &quot;Dim&quot;], patch_artist=True,
+                medianprops=dict(color=&quot;red&quot;, linewidth=2))
+couleurs = [&quot;#BBDEFB&quot;, &quot;#C8E6C9&quot;, &quot;#FFE0B2&quot;, &quot;#F8BBD0&quot;]
+for patch, c in zip(bp[&quot;boxes&quot;], couleurs):
+    patch.set_facecolor(c)
+ax.set_ylabel(&quot;Pourboire ($)&quot;)
+ax.set_title(&quot;Pourboire par jour&quot;)
+
+# 4. Barplot : nombre de repas par jour
+ax = axes[1, 1]
+compte = tips[&quot;day&quot;].value_counts().reindex(jours)
+bars = ax.bar([&quot;Jeu&quot;, &quot;Ven&quot;, &quot;Sam&quot;, &quot;Dim&quot;], compte.values,
+              color=[&quot;#42A5F5&quot;, &quot;#66BB6A&quot;, &quot;#FFA726&quot;, &quot;#EF5350&quot;])
+for bar, val in zip(bars, compte.values):
+    ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 1,
+            str(val), ha=&quot;center&quot;, fontweight=&quot;bold&quot;)
+ax.set_ylabel(&quot;Nombre de repas&quot;)
+ax.set_title(&quot;Repas par jour&quot;)
+
+plt.tight_layout()
+plt.savefig(&quot;dashboard.png&quot;, dpi=150)
+plt.show()
+</code></pre>
+<p><strong>Résultat attendu</strong> : Un dashboard 2x2 avec scatter, histogramme, boxplot et barplot, enregistre en <code>dashboard.png</code>.</p>
+</details>
+
+<hr>
+<h3>Exercice 7.6 : Personnalisation avancée [Difficulté : Avancé]</h3>
+<p><strong>Énoncé</strong> : Creez un graphique professionnel montrant l&#39;evolution du pourboire moyen par taille de table :</p>
+<ol>
+<li>Calculez le pourboire moyen et le nombre d&#39;observations par <code>size</code></li>
+<li>Creez un graphique en lignes avec marqueurs</li>
+<li>Ajoutez une zone grisee pour l&#39;ecart-type (fill_between)</li>
+<li>Annotez le point maximum</li>
+<li>Ajoutez une grille, une legende soignee et un style professionnel</li>
+<li>Exportez en PNG haute resolution</li>
+</ol>
+<p><strong>Indice</strong> : <code>ax.fill_between(x, y-std, y+std, alpha=0.2)</code> cree une zone. <code>ax.annotate(&quot;texte&quot;, xy, xytext, arrowprops)</code> ajoute une annotation avec fleche.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
+tips = sns.load_dataset(&quot;tips&quot;)
+
+# Calculs
+stats = tips.groupby(&quot;size&quot;)[&quot;tip&quot;].agg([&quot;mean&quot;, &quot;std&quot;, &quot;count&quot;]).reset_index()
+stats.columns = [&quot;size&quot;, &quot;tip_mean&quot;, &quot;tip_std&quot;, &quot;count&quot;]
+
+fig, ax = plt.subplots(figsize=(10, 6))
+
+# Ligne principale
+ax.plot(stats[&quot;size&quot;], stats[&quot;tip_mean&quot;], &quot;o-&quot;, color=&quot;#1565C0&quot;,
+        linewidth=2.5, markersize=8, label=&quot;Pourboire moyen&quot;, zorder=3)
+
+# Zone ecart-type
+ax.fill_between(
+    stats[&quot;size&quot;],
+    stats[&quot;tip_mean&quot;] - stats[&quot;tip_std&quot;],
+    stats[&quot;tip_mean&quot;] + stats[&quot;tip_std&quot;],
+    alpha=0.2, color=&quot;#42A5F5&quot;, label=&quot;Ecart-type (+/- 1 sd)&quot;
+)
+
+# Annotation du maximum
+idx_max = stats[&quot;tip_mean&quot;].idxmax()
+x_max = stats.loc[idx_max, &quot;size&quot;]
+y_max = stats.loc[idx_max, &quot;tip_mean&quot;]
+ax.annotate(
+    f&quot;Max : {y_max:.2f} $\n(table de {x_max})&quot;,
+    xy=(x_max, y_max),
+    xytext=(x_max + 0.8, y_max + 0.5),
+    fontsize=10,
+    arrowprops=dict(arrowstyle=&quot;-&gt;&quot;, color=&quot;#333&quot;),
+    bbox=dict(boxstyle=&quot;round,pad=0.3&quot;, facecolor=&quot;#FFF9C4&quot;, edgecolor=&quot;#F9A825&quot;),
+)
+
+# Ajouter le nombre d&#39;observations
+for _, row in stats.iterrows():
+    ax.text(row[&quot;size&quot;], row[&quot;tip_mean&quot;] - 0.35, f&quot;n={int(row[&#39;count&#39;])}&quot;,
+            ha=&quot;center&quot;, fontsize=8, color=&quot;gray&quot;)
+
+# Style
+ax.set_xlabel(&quot;Taille de la table (personnes)&quot;, fontsize=12)
+ax.set_ylabel(&quot;Pourboire moyen ($)&quot;, fontsize=12)
+ax.set_title(&quot;Pourboire moyen selon la taille de la table&quot;, fontsize=14, fontweight=&quot;bold&quot;)
+ax.set_xticks(stats[&quot;size&quot;])
+ax.grid(True, alpha=0.3, linestyle=&quot;--&quot;)
+ax.legend(loc=&quot;upper left&quot;, framealpha=0.9)
+ax.set_xlim(0.5, stats[&quot;size&quot;].max() + 0.5)
+
+plt.tight_layout()
+plt.savefig(&quot;graphique_pro.png&quot;, dpi=200, bbox_inches=&quot;tight&quot;)
+plt.show()
+</code></pre>
+<p><strong>Résultat attendu</strong> : Un graphique professionnel avec ligne, zone d&#39;ecart-type, annotation du maximum, grille et nombres d&#39;observations — exporte en <code>graphique_pro.png</code>.</p>
+</details>
+
+</body>
+</html>

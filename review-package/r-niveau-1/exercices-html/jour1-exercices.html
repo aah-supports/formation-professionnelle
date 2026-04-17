@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jour1 Exercices</title>
+<style>
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#2d3436;line-height:1.7;max-width:800px;margin:0 auto;padding:30px 24px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
+h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+h4{font-size:.95rem;margin:16px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid #dfe6e9;padding:8px 12px;text-align:left;font-size:.9rem}
+th{background:#f1f2f6;font-weight:600}
+tr:nth-child(even){background:#f8f9fa}
+blockquote{border-left:4px solid #74b9ff;margin:12px 0;padding:8px 16px;background:#f8f9fa;color:#636e72}
+strong{color:#2d3436}
+hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
+.header-bar{background:#0984e3;color:#fff;padding:12px 20px;border-radius:8px;margin-bottom:24px;font-size:.85rem}
+.header-bar strong{color:#fff}
+</style>
+</head>
+<body>
+<div class="header-bar"><strong>R Niveau I</strong></div>
+<h1>R Niveau I — Exercices Jour 1</h1>
+<h2>Module 1 : Premiers pas avec R</h2>
+<hr>
+<h3>Exercice 1.1 : La console comme calculatrice [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> : Utilisez la console R pour calculer les expressions suivantes :</p>
+<ol>
+<li>45 + 32</li>
+<li>256 / 8</li>
+<li>2 puissance 10</li>
+<li>Le reste de la division de 17 par 5</li>
+<li>La division entière de 17 par 5</li>
+</ol>
+<p><strong>Indice</strong> : L&#39;opérateur puissance en R est <code>^</code>. Le modulo se note <code>%%</code> et la division entière <code>%/%</code>.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r">45 + 32
+256 / 8
+2^10
+17 %% 5
+17 %/% 5
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>[1] 77
+[1] 32
+[1] 1024
+[1] 2
+[1] 3
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 1.2 : Créer et manipuler des variables [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Créez une variable <code>prix_ht</code> contenant la valeur 85.50</li>
+<li>Créez une variable <code>tva</code> contenant 0.20</li>
+<li>Calculez le prix TTC et stockez-le dans <code>prix_ttc</code></li>
+<li>Affichez le prix TTC</li>
+</ol>
+<p><strong>Indice</strong> : L&#39;opérateur d&#39;assignation en R est <code>&lt;-</code>. Le prix TTC = prix HT × (1 + TVA).</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r">prix_ht &lt;- 85.50
+tva &lt;- 0.20
+prix_ttc &lt;- prix_ht * (1 + tva)
+prix_ttc
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>[1] 102.6
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 1.3 : Écrire un script complet [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> : Écrivez un script R qui :</p>
+<ol>
+<li>Définit le rayon d&#39;un cercle (<code>rayon &lt;- 7</code>)</li>
+<li>Calcule le périmètre (2 × pi × r)</li>
+<li>Calcule l&#39;aire (pi × r²)</li>
+<li>Affiche les deux résultats avec <code>cat()</code></li>
+</ol>
+<p><strong>Indice</strong> : La constante pi est disponible dans R via <code>pi</code>. Utilisez <code>cat()</code> pour un affichage formaté avec <code>\n</code> pour les retours à la ligne.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r">rayon &lt;- 7
+perimetre &lt;- 2 * pi * rayon
+aire &lt;- pi * rayon^2
+
+cat(&quot;Rayon :&quot;, rayon, &quot;\n&quot;)
+cat(&quot;Périmètre :&quot;, perimetre, &quot;\n&quot;)
+cat(&quot;Aire :&quot;, aire, &quot;\n&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>Rayon : 7
+Périmètre : 43.9823
+Aire : 153.938
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 1.4 : Utiliser l&#39;aide [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Consultez l&#39;aide de la fonction <code>round()</code></li>
+<li>Arrondissez la valeur 3.14159265 à 2 décimales</li>
+<li>Arrondissez la même valeur à 4 décimales</li>
+<li>Utilisez <code>floor()</code>, <code>ceiling()</code> et <code>trunc()</code> sur la valeur -3.7 et comparez les résultats</li>
+</ol>
+<p><strong>Indice</strong> : Tapez <code>?round</code> ou <code>help(round)</code> pour accéder à l&#39;aide. Le paramètre <code>digits</code> contrôle le nombre de décimales.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r">?round
+
+round(3.14159265, digits = 2)
+round(3.14159265, digits = 4)
+
+floor(-3.7)
+ceiling(-3.7)
+trunc(-3.7)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>[1] 3.14
+[1] 3.1416
+[1] -4
+[1] -3
+[1] -3
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 1.5 : Environnement de travail [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Créez les variables <code>a &lt;- 10</code>, <code>b &lt;- 20</code>, <code>c &lt;- 30</code></li>
+<li>Listez les objets présents dans l&#39;environnement avec <code>ls()</code></li>
+<li>Supprimez la variable <code>b</code> avec <code>rm()</code></li>
+<li>Vérifiez que <code>b</code> n&#39;existe plus avec <code>exists()</code></li>
+<li>Affichez le répertoire de travail courant</li>
+</ol>
+<p><strong>Indice</strong> : <code>rm()</code> supprime un objet, <code>exists()</code> prend le nom de la variable entre guillemets, et <code>getwd()</code> affiche le répertoire courant.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r">a &lt;- 10
+b &lt;- 20
+c &lt;- 30
+
+ls()
+
+rm(b)
+exists(&quot;b&quot;)
+
+getwd()
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>[1] &quot;a&quot; &quot;b&quot; &quot;c&quot;
+[1] FALSE
+[1] &quot;/votre/repertoire/courant&quot;
+</code></pre>
+</details>
+
+<hr>
+<h2>Module 2 : Structures de données</h2>
+<hr>
+<h3>Exercice 2.1 : Types de données fondamentaux [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Créez une variable de chaque type : <code>numeric</code>, <code>integer</code>, <code>character</code>, <code>logical</code>, <code>complex</code></li>
+<li>Vérifiez le type de chaque variable avec <code>class()</code> et <code>typeof()</code></li>
+<li>Testez si chaque variable est numérique avec <code>is.numeric()</code></li>
+</ol>
+<p><strong>Indice</strong> : Pour créer un integer explicite, ajoutez <code>L</code> après le nombre (ex: <code>5L</code>). Un complexe s&#39;écrit avec <code>i</code> (ex: <code>3+2i</code>).</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r">x_num &lt;- 3.14
+x_int &lt;- 5L
+x_char &lt;- &quot;Bonjour&quot;
+x_log &lt;- TRUE
+x_comp &lt;- 3 + 2i
+
+cat(&quot;numeric :&quot;, class(x_num), &quot;/&quot;, typeof(x_num), &quot;\n&quot;)
+cat(&quot;integer :&quot;, class(x_int), &quot;/&quot;, typeof(x_int), &quot;\n&quot;)
+cat(&quot;character :&quot;, class(x_char), &quot;/&quot;, typeof(x_char), &quot;\n&quot;)
+cat(&quot;logical :&quot;, class(x_log), &quot;/&quot;, typeof(x_log), &quot;\n&quot;)
+cat(&quot;complex :&quot;, class(x_comp), &quot;/&quot;, typeof(x_comp), &quot;\n&quot;)
+
+cat(&quot;\nis.numeric() :\n&quot;)
+cat(&quot;x_num :&quot;, is.numeric(x_num), &quot;\n&quot;)
+cat(&quot;x_int :&quot;, is.numeric(x_int), &quot;\n&quot;)
+cat(&quot;x_char :&quot;, is.numeric(x_char), &quot;\n&quot;)
+cat(&quot;x_log :&quot;, is.numeric(x_log), &quot;\n&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>numeric : numeric / double
+integer : integer / integer
+character : character / character
+logical : logical / logical
+complex : complex / complex
+
+is.numeric() :
+x_num : TRUE
+x_int : TRUE
+x_char : FALSE
+x_log : FALSE
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 2.2 : Création de vecteurs [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> : Créez les vecteurs suivants :</p>
+<ol>
+<li><code>v1</code> : les nombres de 1 à 20</li>
+<li><code>v2</code> : les nombres pairs de 2 à 30</li>
+<li><code>v3</code> : une séquence de 0 à 1 par pas de 0.1</li>
+<li><code>v4</code> : le mot &quot;R&quot; répété 5 fois</li>
+<li><code>v5</code> : les valeurs c(4, 8, 15, 16, 23, 42)</li>
+</ol>
+<p>Affichez la longueur de chaque vecteur.</p>
+<p><strong>Indice</strong> : Utilisez <code>1:20</code> pour des séquences simples, <code>seq()</code> pour des pas personnalisés, et <code>rep()</code> pour la répétition.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r">v1 &lt;- 1:20
+v2 &lt;- seq(2, 30, by = 2)
+v3 &lt;- seq(0, 1, by = 0.1)
+v4 &lt;- rep(&quot;R&quot;, 5)
+v5 &lt;- c(4, 8, 15, 16, 23, 42)
+
+cat(&quot;Longueur v1 :&quot;, length(v1), &quot;\n&quot;)
+cat(&quot;Longueur v2 :&quot;, length(v2), &quot;\n&quot;)
+cat(&quot;Longueur v3 :&quot;, length(v3), &quot;\n&quot;)
+cat(&quot;Longueur v4 :&quot;, length(v4), &quot;\n&quot;)
+cat(&quot;Longueur v5 :&quot;, length(v5), &quot;\n&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>Longueur v1 : 20
+Longueur v2 : 15
+Longueur v3 : 11
+Longueur v4 : 5
+Longueur v5 : 6
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 2.3 : Indexation de vecteurs [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Soit le vecteur <code>notes &lt;- c(12, 15, 8, 17, 14, 9, 11, 16, 7, 13)</code>.</p>
+<ol>
+<li>Extrayez la 3e note</li>
+<li>Extrayez les notes de la position 2 à 5</li>
+<li>Extrayez la première et la dernière note</li>
+<li>Extrayez toutes les notes sauf la 4e</li>
+<li>Extrayez les notes supérieures ou égales à 12 (indexation logique)</li>
+<li>Combien d&#39;étudiants ont eu la moyenne (&gt;= 10) ?</li>
+</ol>
+<p><strong>Indice</strong> : L&#39;indexation négative exclut des éléments. L&#39;indexation logique utilise une condition dans les crochets. <code>sum()</code> sur un vecteur logique compte les <code>TRUE</code>.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r">notes &lt;- c(12, 15, 8, 17, 14, 9, 11, 16, 7, 13)
+
+# 1. 3e note
+notes[3]
+
+# 2. Positions 2 à 5
+notes[2:5]
+
+# 3. Première et dernière
+notes[c(1, length(notes))]
+
+# 4. Toutes sauf la 4e
+notes[-4]
+
+# 5. Notes &gt;= 12
+notes[notes &gt;= 12]
+
+# 6. Nombre ayant la moyenne
+sum(notes &gt;= 10)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>[1] 8
+[1] 15  8 17 14
+[1] 12 13
+[1] 12 15  8 14  9 11 16  7 13
+[1] 12 15 17 14 16 13
+[1] 7
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 2.4 : Opérations vectorisées [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Soit <code>temperatures_c &lt;- c(0, 10, 20, 25, 30, 37, 100)</code> (en degrés Celsius).</p>
+<ol>
+<li>Convertissez en Fahrenheit : F = C x 9/5 + 32</li>
+<li>Identifiez les températures Celsius supérieures à 25°C</li>
+<li>Remplacez toute température Celsius supérieure à 37 par la valeur 37 (plafonnement)</li>
+<li>Calculez la différence entre chaque température successive avec <code>diff()</code></li>
+</ol>
+<p><strong>Indice</strong> : Les opérations arithmétiques sur un vecteur s&#39;appliquent élément par élément. Pour le plafonnement, utilisez l&#39;indexation logique pour l&#39;assignation.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r">temperatures_c &lt;- c(0, 10, 20, 25, 30, 37, 100)
+
+# 1. Conversion en Fahrenheit
+temperatures_f &lt;- temperatures_c * 9/5 + 32
+temperatures_f
+
+# 2. Températures &gt; 25
+temperatures_c[temperatures_c &gt; 25]
+
+# 3. Plafonnement à 37
+temp_plafonnees &lt;- temperatures_c
+temp_plafonnees[temp_plafonnees &gt; 37] &lt;- 37
+temp_plafonnees
+
+# 4. Différences successives
+diff(temperatures_c)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>[1]  32.0  50.0  68.0  77.0  86.0  98.6 212.0
+[1]  30  37 100
+[1]  0 10 20 25 30 37 37
+[1] 10 10  5  5  7 63
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 2.5 : Matrices [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Créez une matrice 3x4 contenant les nombres de 1 à 12, remplie par ligne</li>
+<li>Affichez les dimensions de la matrice</li>
+<li>Extrayez l&#39;élément à la ligne 2, colonne 3</li>
+<li>Extrayez la 2e ligne complète</li>
+<li>Extrayez la 3e colonne complète</li>
+<li>Calculez la somme de chaque colonne et de chaque ligne</li>
+<li>Nommez les lignes (&quot;L1&quot;, &quot;L2&quot;, &quot;L3&quot;) et les colonnes (&quot;C1&quot;, &quot;C2&quot;, &quot;C3&quot;, &quot;C4&quot;)</li>
+</ol>
+<p><strong>Indice</strong> : <code>matrix()</code> avec <code>byrow = TRUE</code> remplit par ligne. <code>colSums()</code> et <code>rowSums()</code> calculent les sommes.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1. Création
+m &lt;- matrix(1:12, nrow = 3, ncol = 4, byrow = TRUE)
+m
+
+# 2. Dimensions
+dim(m)
+
+# 3. Élément [2,3]
+m[2, 3]
+
+# 4. 2e ligne
+m[2, ]
+
+# 5. 3e colonne
+m[, 3]
+
+# 6. Sommes
+colSums(m)
+rowSums(m)
+
+# 7. Nommage
+rownames(m) &lt;- c(&quot;L1&quot;, &quot;L2&quot;, &quot;L3&quot;)
+colnames(m) &lt;- c(&quot;C1&quot;, &quot;C2&quot;, &quot;C3&quot;, &quot;C4&quot;)
+m
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>     [,1] [,2] [,3] [,4]
+[1,]    1    2    3    4
+[2,]    5    6    7    8
+[3,]    9   10   11   12
+[1] 3 4
+[1] 7
+[1] 5 6 7 8
+[1]  3  7 11
+[1] 15 18 21 24
+[1] 10 26 42
+    C1 C2 C3 C4
+L1  1  2  3  4
+L2  5  6  7  8
+L3  9 10 11 12
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 2.6 : Listes [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Créez une liste <code>etudiant</code> contenant :</p>
+<ul>
+<li><code>nom</code> : &quot;Dupont&quot;</li>
+<li><code>prenom</code> : &quot;Marie&quot;</li>
+<li><code>age</code> : 22</li>
+<li><code>notes</code> : c(14, 16, 12, 18, 15)</li>
+<li><code>redoublant</code> : FALSE</li>
+</ul>
+<p>Puis :</p>
+<ol>
+<li>Affichez la structure de la liste avec <code>str()</code></li>
+<li>Accédez au prénom avec <code>$</code> et avec <code>[[ ]]</code></li>
+<li>Calculez la moyenne des notes</li>
+<li>Ajoutez un élément <code>moyenne</code> à la liste</li>
+<li>Affichez le nombre d&#39;éléments de la liste</li>
+</ol>
+<p><strong>Indice</strong> : On accède aux éléments d&#39;une liste avec <code>$nom</code> ou <code>[[&quot;nom&quot;]]</code>. <code>str()</code> affiche la structure complète d&#39;un objet.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r">etudiant &lt;- list(
+  nom = &quot;Dupont&quot;,
+  prenom = &quot;Marie&quot;,
+  age = 22,
+  notes = c(14, 16, 12, 18, 15),
+  redoublant = FALSE
+)
+
+# 1. Structure
+str(etudiant)
+
+# 2. Accès au prénom
+etudiant$prenom
+etudiant[[&quot;prenom&quot;]]
+
+# 3. Moyenne des notes
+mean(etudiant$notes)
+
+# 4. Ajout de la moyenne
+etudiant$moyenne &lt;- mean(etudiant$notes)
+
+# 5. Nombre d&#39;éléments
+length(etudiant)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>List of 5
+ $ nom       : chr &quot;Dupont&quot;
+ $ prenom    : chr &quot;Marie&quot;
+ $ age       : num 22
+ $ notes     : num [1:5] 14 16 12 18 15
+ $ redoublant: logi FALSE
+[1] &quot;Marie&quot;
+[1] &quot;Marie&quot;
+[1] 15
+[1] 6
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 2.7 : Data frames [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Créez un data frame <code>classe</code> avec les colonnes suivantes :</p>
+<ul>
+<li><code>nom</code> : c(&quot;Alice&quot;, &quot;Bob&quot;, &quot;Clara&quot;, &quot;David&quot;, &quot;Emma&quot;)</li>
+<li><code>maths</code> : c(15, 12, 17, 9, 14)</li>
+<li><code>francais</code> : c(14, 16, 13, 11, 18)</li>
+<li><code>sport</code> : c(12, 18, 10, 15, 16)</li>
+</ul>
+<p>Puis :</p>
+<ol>
+<li>Affichez la structure du data frame</li>
+<li>Affichez un résumé statistique</li>
+<li>Accédez à la colonne <code>maths</code></li>
+<li>Affichez les données d&#39;Emma (5e ligne)</li>
+<li>Ajoutez une colonne <code>moyenne</code> (moyenne des 3 matières pour chaque élève)</li>
+<li>Triez le data frame par moyenne décroissante</li>
+</ol>
+<p><strong>Indice</strong> : <code>str()</code> et <code>summary()</code> sont vos alliés. La moyenne par ligne se calcule avec <code>rowMeans()</code> sur les colonnes numériques. <code>order()</code> avec <code>decreasing = TRUE</code> pour trier.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r">classe &lt;- data.frame(
+  nom = c(&quot;Alice&quot;, &quot;Bob&quot;, &quot;Clara&quot;, &quot;David&quot;, &quot;Emma&quot;),
+  maths = c(15, 12, 17, 9, 14),
+  francais = c(14, 16, 13, 11, 18),
+  sport = c(12, 18, 10, 15, 16)
+)
+
+# 1. Structure
+str(classe)
+
+# 2. Résumé
+summary(classe)
+
+# 3. Colonne maths
+classe$maths
+
+# 4. Données d&#39;Emma
+classe[5, ]
+
+# 5. Colonne moyenne
+classe$moyenne &lt;- rowMeans(classe[, c(&quot;maths&quot;, &quot;francais&quot;, &quot;sport&quot;)])
+classe
+
+# 6. Tri par moyenne décroissante
+classe[order(classe$moyenne, decreasing = TRUE), ]
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>&#39;data.frame&#39;:	5 obs. of  4 variables:
+ $ nom     : chr  &quot;Alice&quot; &quot;Bob&quot; &quot;Clara&quot; &quot;David&quot; ...
+ $ maths   : num  15 12 17 9 14
+ $ francais: num  14 16 13 11 18
+ $ sport   : num  12 18 10 15 16
+[1] 15 12 17  9 14
+    nom maths francais sport
+5 Emma    14       18    16
+    nom maths francais sport  moyenne
+1 Alice    15       14    12 13.66667
+2   Bob    12       16    18 15.33333
+3 Clara    17       13    10 13.33333
+4 David     9       11    15 11.66667
+5  Emma    14       18    16 16.00000
+    nom maths francais sport  moyenne
+5  Emma    14       18    16 16.00000
+2   Bob    12       16    18 15.33333
+1 Alice    15       14    12 13.66667
+3 Clara    17       13    10 13.33333
+4 David     9       11    15 11.66667
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 2.8 : Facteurs [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Créez un vecteur <code>tailles</code> contenant : &quot;M&quot;, &quot;S&quot;, &quot;L&quot;, &quot;XL&quot;, &quot;M&quot;, &quot;S&quot;, &quot;S&quot;, &quot;L&quot;, &quot;M&quot;, &quot;XL&quot;</li>
+<li>Convertissez-le en facteur</li>
+<li>Affichez les niveaux (levels) du facteur</li>
+<li>Créez un facteur ordonné avec les niveaux dans l&#39;ordre : S &lt; M &lt; L &lt; XL</li>
+<li>Affichez le tableau de fréquences avec <code>table()</code></li>
+<li>Vérifiez que S &lt; M donne TRUE avec le facteur ordonné</li>
+</ol>
+<p><strong>Indice</strong> : <code>factor()</code> crée un facteur. Utilisez <code>ordered = TRUE</code> et le paramètre <code>levels</code> pour spécifier l&#39;ordre.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1. Vecteur
+tailles &lt;- c(&quot;M&quot;, &quot;S&quot;, &quot;L&quot;, &quot;XL&quot;, &quot;M&quot;, &quot;S&quot;, &quot;S&quot;, &quot;L&quot;, &quot;M&quot;, &quot;XL&quot;)
+
+# 2. Conversion en facteur
+tailles_f &lt;- factor(tailles)
+tailles_f
+
+# 3. Niveaux
+levels(tailles_f)
+
+# 4. Facteur ordonné
+tailles_ord &lt;- factor(tailles,
+                      levels = c(&quot;S&quot;, &quot;M&quot;, &quot;L&quot;, &quot;XL&quot;),
+                      ordered = TRUE)
+tailles_ord
+
+# 5. Tableau de fréquences
+table(tailles_ord)
+
+# 6. Comparaison
+tailles_ord[2] &lt; tailles_ord[1]  # S &lt; M
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code> [1] M  S  L  XL M  S  S  L  M  XL
+Levels: L M S XL
+[1] &quot;L&quot;  &quot;M&quot;  &quot;S&quot;  &quot;XL&quot;
+ [1] M  S  L  XL M  S  S  L  M  XL
+Levels: S &lt; M &lt; L &lt; XL
+tailles_ord
+ S  M  L XL
+ 3  3  2  2
+[1] TRUE
+</code></pre>
+</details>
+
+<hr>
+<h2>Module 3 : Fonctions essentielles</h2>
+<hr>
+<h3>Exercice 3.1 : Fonctions mathématiques [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> : Soit <code>x &lt;- c(16, 25, 49, 81, 144)</code>.</p>
+<ol>
+<li>Calculez la racine carrée de chaque élément</li>
+<li>Calculez le logarithme naturel (ln) de chaque élément</li>
+<li>Calculez le logarithme en base 10</li>
+<li>Calculez la valeur absolue de <code>c(-5, 3, -2, 7, -1)</code></li>
+<li>Calculez la somme cumulative de <code>1:10</code> avec <code>cumsum()</code></li>
+</ol>
+<p><strong>Indice</strong> : <code>sqrt()</code> pour la racine, <code>log()</code> pour ln, <code>log10()</code> pour log base 10, <code>abs()</code> pour la valeur absolue.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r">x &lt;- c(16, 25, 49, 81, 144)
+
+# 1. Racine carrée
+sqrt(x)
+
+# 2. Logarithme naturel
+log(x)
+
+# 3. Logarithme base 10
+log10(x)
+
+# 4. Valeur absolue
+abs(c(-5, 3, -2, 7, -1))
+
+# 5. Somme cumulative
+cumsum(1:10)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>[1]  4  5  7  9 12
+[1] 2.772589 3.218876 3.891820 4.394449 4.969813
+[1] 1.204120 1.397940 1.690196 1.908485 2.158362
+[1] 5 3 2 7 1
+[1]  1  3  6 10 15 21 28 36 45 55
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 3.2 : Fonctions statistiques [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> : Soit <code>donnees &lt;- c(23, 45, 12, 67, 34, 56, 89, 21, 43, 78)</code>.</p>
+<ol>
+<li>Calculez la moyenne, la médiane, l&#39;écart-type et la variance</li>
+<li>Trouvez le minimum et le maximum</li>
+<li>Calculez l&#39;étendue (max - min)</li>
+<li>Trouvez les quantiles (0%, 25%, 50%, 75%, 100%)</li>
+<li>Calculez la somme et le produit de tous les éléments</li>
+</ol>
+<p><strong>Indice</strong> : <code>mean()</code>, <code>median()</code>, <code>sd()</code>, <code>var()</code>, <code>min()</code>, <code>max()</code>, <code>range()</code>, <code>quantile()</code>, <code>sum()</code>, <code>prod()</code>.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r">donnees &lt;- c(23, 45, 12, 67, 34, 56, 89, 21, 43, 78)
+
+# 1. Stats descriptives
+cat(&quot;Moyenne :&quot;, mean(donnees), &quot;\n&quot;)
+cat(&quot;Médiane :&quot;, median(donnees), &quot;\n&quot;)
+cat(&quot;Écart-type :&quot;, sd(donnees), &quot;\n&quot;)
+cat(&quot;Variance :&quot;, var(donnees), &quot;\n&quot;)
+
+# 2. Min et max
+cat(&quot;Min :&quot;, min(donnees), &quot;\n&quot;)
+cat(&quot;Max :&quot;, max(donnees), &quot;\n&quot;)
+
+# 3. Étendue
+cat(&quot;Étendue :&quot;, diff(range(donnees)), &quot;\n&quot;)
+
+# 4. Quantiles
+quantile(donnees)
+
+# 5. Somme et produit
+cat(&quot;Somme :&quot;, sum(donnees), &quot;\n&quot;)
+cat(&quot;Produit :&quot;, prod(donnees), &quot;\n&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>Moyenne : 46.8
+Médiane : 44
+Écart-type : 25.00242
+Variance : 625.1211
+Min : 12
+Max : 89
+Étendue : 77
+  0%  25%  50%  75% 100%
+12.0 24.5 44.0 63.25 89.0
+Somme : 468
+Produit : 1.956187e+14
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 3.3 : Fonctions de chaînes de caractères [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Soit <code>phrase &lt;- &quot;La programmation en R est puissante et flexible&quot;</code>.</p>
+<ol>
+<li>Comptez le nombre de caractères</li>
+<li>Convertissez en majuscules puis en minuscules</li>
+<li>Extrayez les caractères de la position 4 à 17 avec <code>substr()</code></li>
+<li>Remplacez &quot;puissante&quot; par &quot;élégante&quot; avec <code>sub()</code></li>
+<li>Séparez la phrase en mots avec <code>strsplit()</code></li>
+<li>Collez les mots &quot;R&quot;, &quot;est&quot;, &quot;génial&quot; avec <code>paste()</code></li>
+</ol>
+<p><strong>Indice</strong> : <code>nchar()</code>, <code>toupper()</code>, <code>tolower()</code>, <code>substr()</code>, <code>sub()</code>, <code>strsplit()</code>, <code>paste()</code>.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r">phrase &lt;- &quot;La programmation en R est puissante et flexible&quot;
+
+# 1. Nombre de caractères
+nchar(phrase)
+
+# 2. Majuscules / minuscules
+toupper(phrase)
+tolower(phrase)
+
+# 3. Extraction
+substr(phrase, 4, 17)
+
+# 4. Remplacement
+sub(&quot;puissante&quot;, &quot;élégante&quot;, phrase)
+
+# 5. Séparation en mots
+strsplit(phrase, &quot; &quot;)
+
+# 6. Collage
+paste(&quot;R&quot;, &quot;est&quot;, &quot;génial&quot;)
+paste0(&quot;R&quot;, &quot;_&quot;, &quot;langage&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>[1] 48
+[1] &quot;LA PROGRAMMATION EN R EST PUISSANTE ET FLEXIBLE&quot;
+[1] &quot;la programmation en r est puissante et flexible&quot;
+[1] &quot;programmation&quot;
+[1] &quot;La programmation en R est élégante et flexible&quot;
+[[1]]
+[1] &quot;La&quot;            &quot;programmation&quot; &quot;en&quot;            &quot;R&quot;
+[5] &quot;est&quot;           &quot;puissante&quot;     &quot;et&quot;            &quot;flexible&quot;
+[1] &quot;R est génial&quot;
+[1] &quot;R_langage&quot;
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 3.4 : Opérations logiques et conditions [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Soit <code>ages &lt;- c(15, 22, 17, 30, 12, 45, 18, 16, 25, 19)</code>.</p>
+<ol>
+<li>Identifiez les personnes majeures (&gt;= 18)</li>
+<li>Comptez le nombre de majeurs et de mineurs</li>
+<li>Identifiez les personnes entre 18 et 30 ans (inclus)</li>
+<li>Utilisez <code>which()</code> pour trouver les positions des majeurs</li>
+<li>Utilisez <code>ifelse()</code> pour créer un vecteur &quot;majeur&quot;/&quot;mineur&quot;</li>
+<li>Utilisez <code>any()</code> et <code>all()</code> pour vérifier si au moins un / tous sont majeurs</li>
+</ol>
+<p><strong>Indice</strong> : <code>&amp;</code> est le ET logique, <code>|</code> est le OU. <code>which()</code> retourne les positions. <code>ifelse(test, oui, non)</code> est vectorisé.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r">ages &lt;- c(15, 22, 17, 30, 12, 45, 18, 16, 25, 19)
+
+# 1. Majeurs
+ages &gt;= 18
+
+# 2. Comptage
+cat(&quot;Majeurs :&quot;, sum(ages &gt;= 18), &quot;\n&quot;)
+cat(&quot;Mineurs :&quot;, sum(ages &lt; 18), &quot;\n&quot;)
+
+# 3. Entre 18 et 30
+ages[ages &gt;= 18 &amp; ages &lt;= 30]
+
+# 4. Positions des majeurs
+which(ages &gt;= 18)
+
+# 5. Vecteur majeur/mineur
+statut &lt;- ifelse(ages &gt;= 18, &quot;majeur&quot;, &quot;mineur&quot;)
+statut
+
+# 6. any() et all()
+cat(&quot;Au moins un majeur :&quot;, any(ages &gt;= 18), &quot;\n&quot;)
+cat(&quot;Tous majeurs :&quot;, all(ages &gt;= 18), &quot;\n&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code> [1] FALSE  TRUE FALSE  TRUE FALSE  TRUE  TRUE FALSE  TRUE  TRUE
+Majeurs : 6
+Mineurs : 4
+[1] 22 30 18 25 19
+[1]  2  4  6  7  9 10
+ [1] &quot;mineur&quot; &quot;majeur&quot; &quot;mineur&quot; &quot;majeur&quot; &quot;mineur&quot; &quot;majeur&quot; &quot;majeur&quot;
+ [8] &quot;mineur&quot; &quot;majeur&quot; &quot;majeur&quot;
+Au moins un majeur : TRUE
+Tous majeurs : FALSE
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 3.5 : Valeurs manquantes (NA) [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Soit <code>mesures &lt;- c(23.5, NA, 19.8, 22.1, NA, 25.3, 20.7, NA, 24.6, 21.9)</code>.</p>
+<ol>
+<li>Identifiez les positions des valeurs manquantes avec <code>is.na()</code></li>
+<li>Comptez le nombre de NA</li>
+<li>Calculez la moyenne en ignorant les NA</li>
+<li>Remplacez les NA par la moyenne des valeurs non-manquantes</li>
+<li>Créez un vecteur sans les NA avec <code>na.omit()</code></li>
+</ol>
+<p><strong>Indice</strong> : La plupart des fonctions statistiques acceptent <code>na.rm = TRUE</code> pour ignorer les NA. <code>na.omit()</code> supprime les NA.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r">mesures &lt;- c(23.5, NA, 19.8, 22.1, NA, 25.3, 20.7, NA, 24.6, 21.9)
+
+# 1. Positions des NA
+which(is.na(mesures))
+
+# 2. Nombre de NA
+sum(is.na(mesures))
+
+# 3. Moyenne sans NA
+mean(mesures, na.rm = TRUE)
+
+# 4. Remplacement des NA par la moyenne
+mesures_imputees &lt;- mesures
+mesures_imputees[is.na(mesures_imputees)] &lt;- mean(mesures, na.rm = TRUE)
+mesures_imputees
+
+# 5. Vecteur sans NA
+mesures_propres &lt;- na.omit(mesures)
+mesures_propres
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>[1] 2 5 8
+[1] 3
+[1] 22.55714
+ [1] 23.50000 22.55714 19.80000 22.10000 22.55714 25.30000 20.70000
+ [8] 22.55714 24.60000 21.90000
+[1] 23.5 19.8 22.1 25.3 20.7 24.6 21.9
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 3.6 : Écrire ses propres fonctions [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Écrivez une fonction <code>celsius_to_fahrenheit(c)</code> qui convertit Celsius en Fahrenheit</li>
+<li>Écrivez une fonction <code>imc(poids, taille)</code> qui calcule l&#39;indice de masse corporelle (poids en kg, taille en m)</li>
+<li>Écrivez une fonction <code>description_stats(x)</code> qui retourne une liste contenant : moyenne, médiane, écart-type, min, max d&#39;un vecteur numérique</li>
+<li>Testez chaque fonction</li>
+</ol>
+<p><strong>Indice</strong> : La syntaxe est <code>ma_fonction &lt;- function(arg1, arg2) { ... }</code>. La dernière expression évaluée est la valeur de retour, ou utilisez <code>return()</code>.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1. Conversion Celsius -&gt; Fahrenheit
+celsius_to_fahrenheit &lt;- function(c) {
+  f &lt;- c * 9/5 + 32
+  return(f)
+}
+
+celsius_to_fahrenheit(100)
+celsius_to_fahrenheit(c(0, 20, 37, 100))
+
+# 2. IMC
+imc &lt;- function(poids, taille) {
+  resultat &lt;- poids / taille^2
+  return(round(resultat, 2))
+}
+
+imc(75, 1.80)
+imc(60, 1.65)
+
+# 3. Description statistique
+description_stats &lt;- function(x) {
+  stats &lt;- list(
+    moyenne = mean(x, na.rm = TRUE),
+    mediane = median(x, na.rm = TRUE),
+    ecart_type = sd(x, na.rm = TRUE),
+    minimum = min(x, na.rm = TRUE),
+    maximum = max(x, na.rm = TRUE)
+  )
+  return(stats)
+}
+
+donnees &lt;- c(23, 45, 12, 67, 34, 56, 89, 21, 43, 78)
+resultat &lt;- description_stats(donnees)
+str(resultat)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>[1] 212
+[1]  32.0  68.0  98.6 212.0
+[1] 23.15
+[1] 22.04
+List of 5
+ $ moyenne   : num 46.8
+ $ mediane   : num 44
+ $ ecart_type: num 25
+ $ minimum   : num 12
+ $ maximum   : num 89
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 3.7 : Appliquer des fonctions avec apply/sapply/lapply [Difficulté : Avancé]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Créez une matrice 4x5 de nombres aléatoires entre 1 et 100 (utilisez <code>set.seed(42)</code> pour la reproductibilité)</li>
+<li>Utilisez <code>apply()</code> pour calculer la moyenne de chaque ligne</li>
+<li>Utilisez <code>apply()</code> pour calculer l&#39;écart-type de chaque colonne</li>
+<li>Soit <code>nombres &lt;- list(a = 1:10, b = 20:30, c = 50:100)</code>. Utilisez <code>sapply()</code> pour calculer la moyenne de chaque élément</li>
+<li>Utilisez <code>lapply()</code> pour obtenir le résumé (<code>summary</code>) de chaque élément</li>
+<li>Utilisez <code>sapply()</code> avec une fonction anonyme pour calculer le coefficient de variation (sd/mean x 100) de chaque élément</li>
+</ol>
+<p><strong>Indice</strong> : <code>apply(X, MARGIN, FUN)</code> où MARGIN=1 pour les lignes, MARGIN=2 pour les colonnes. <code>sapply()</code> simplifie le résultat, <code>lapply()</code> retourne une liste.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1. Matrice aléatoire
+set.seed(42)
+m &lt;- matrix(sample(1:100, 20, replace = TRUE), nrow = 4, ncol = 5)
+m
+
+# 2. Moyenne par ligne
+apply(m, 1, mean)
+
+# 3. Écart-type par colonne
+apply(m, 2, sd)
+
+# 4. Moyennes avec sapply
+nombres &lt;- list(a = 1:10, b = 20:30, c = 50:100)
+sapply(nombres, mean)
+
+# 5. Résumé avec lapply
+lapply(nombres, summary)
+
+# 6. Coefficient de variation
+sapply(nombres, function(x) sd(x) / mean(x) * 100)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>     [,1] [,2] [,3] [,4] [,5]
+[1,]   49   97   63   91   60
+[2,]   65   22   57    7   50
+[3,]   25   66    5   10   72
+[4,]   74   13   21   68   97
+[1] 72.0 40.2 35.6 54.6
+[1] 21.85560 39.01709 27.32520 40.90893 20.10968
+       a        b        c
+ 5.50000 25.00000 75.00000
+$a
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+   1.00    3.25    5.50    5.50    7.75   10.00
+
+$b
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+  20.00   22.50   25.00   25.00   27.50   30.00
+
+$c
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.
+  50.00   62.75   75.00   75.00   87.25  100.00
+
+       a        b        c
+55.04819 13.14656 19.79899
+</code></pre>
+</details>
+
+</body>
+</html>

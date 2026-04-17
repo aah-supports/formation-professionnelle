@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solutions Completes</title>
+<style>
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#2d3436;line-height:1.7;max-width:800px;margin:0 auto;padding:30px 24px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
+h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+h4{font-size:.95rem;margin:16px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid #dfe6e9;padding:8px 12px;text-align:left;font-size:.9rem}
+th{background:#f1f2f6;font-weight:600}
+tr:nth-child(even){background:#f8f9fa}
+blockquote{border-left:4px solid #74b9ff;margin:12px 0;padding:8px 16px;background:#f8f9fa;color:#636e72}
+strong{color:#2d3436}
+hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
+.header-bar{background:#0984e3;color:#fff;padding:12px 20px;border-radius:8px;margin-bottom:24px;font-size:.85rem}
+.header-bar strong{color:#fff}
+</style>
+</head>
+<body>
+<div class="header-bar"><strong>Python Niveau I</strong></div>
+<h1>Solutions complètes — Python Niveau I</h1>
+<h2>Jour 1</h2>
+<h3>Module 1 : Premiers pas avec Python</h3>
+<p><strong>Exercice 1.1 : La console comme calculatrice</strong></p>
+<pre><code class="language-python">45 + 32        # 77
+256 / 8        # 32.0
+2 ** 10        # 1024
+17 % 5         # 2
+17 // 5        # 3
+</code></pre>
+<p><strong>Exercice 1.2 : Créer et manipuler des variables</strong></p>
+<pre><code class="language-python">prix_ht = 85.50
+tva = 0.20
+prix_ttc = prix_ht * (1 + tva)
+print(f&quot;Le prix TTC est de {prix_ttc} euros&quot;)
+print(type(prix_ht), type(tva), type(prix_ttc))
+</code></pre>
+<p><strong>Exercice 1.3 : Écrire un script complet</strong></p>
+<pre><code class="language-python">from math import pi
+
+rayon = 7
+perimetre = 2 * pi * rayon
+aire = pi * rayon ** 2
+print(f&quot;Perimetre : {perimetre:.2f}&quot;)  # 43.98
+print(f&quot;Aire : {aire:.2f}&quot;)            # 153.94
+</code></pre>
+<p><strong>Exercice 1.4 : Utiliser l&#39;aide</strong></p>
+<pre><code class="language-python">help(round)
+print(round(3.14159265, 2))   # 3.14
+print(round(3.14159265, 4))   # 3.1416
+print(type(42), type(3.14), type(&quot;bonjour&quot;), type(True))
+print([m for m in dir(&quot;texte&quot;) if not m.startswith(&quot;_&quot;)])
+</code></pre>
+<p><strong>Exercice 1.5 : Environnement de travail</strong></p>
+<pre><code class="language-python">import sys, math, datetime
+
+print(sys.version)
+print(f&quot;pi = {math.pi}, e = {math.e}&quot;)
+print(math.sqrt(144), math.factorial(6))
+print(datetime.date.today())
+print([f for f in dir(math) if not f.startswith(&quot;_&quot;)])
+</code></pre>
+<hr>
+<h3>Module 2 : Structures de données</h3>
+<p><strong>Exercice 2.1 : Types fondamentaux</strong></p>
+<pre><code class="language-python">x_int, x_float, x_str, x_bool = 42, 3.14, &quot;Bonjour&quot;, True
+print(type(x_int), type(x_float), type(x_str), type(x_bool))
+print(isinstance(x_int, int), isinstance(x_float, float))
+print(int(&quot;42&quot;), float(&quot;3.14&quot;), str(100), bool(0), bool(1), bool(&quot;&quot;), bool(&quot;texte&quot;))
+</code></pre>
+<p><strong>Exercice 2.2 : Création de listes</strong></p>
+<pre><code class="language-python">l1 = list(range(1, 21))
+l2 = list(range(2, 31, 2))
+l3 = [0] * 5
+l4 = [x ** 2 for x in range(1, 11)]
+l5 = [4, 8, 15, 16, 23, 42]
+for nom, lst in [(&quot;l1&quot;,l1),(&quot;l2&quot;,l2),(&quot;l3&quot;,l3),(&quot;l4&quot;,l4),(&quot;l5&quot;,l5)]:
+    print(f&quot;{nom} ({len(lst)}) = {lst}&quot;)
+</code></pre>
+<p><strong>Exercice 2.3 : Indexation et slicing</strong></p>
+<pre><code class="language-python">notes = [12, 15, 8, 17, 14, 9, 11, 16, 7, 13]
+print(notes[2])       # 8
+print(notes[-1])      # 13
+print(notes[1:5])     # [15, 8, 17, 14]
+print(notes[::2])     # [12, 8, 14, 11, 7]
+print(notes[::-1])    # liste inversee
+print(notes[-3:])     # [16, 7, 13]
+</code></pre>
+<p><strong>Exercice 2.4 : Opérations sur listes</strong></p>
+<pre><code class="language-python">fruits = [&quot;pomme&quot;, &quot;banane&quot;, &quot;orange&quot;]
+fruits.append(&quot;fraise&quot;)
+fruits.insert(1, &quot;kiwi&quot;)
+fruits.extend([&quot;mangue&quot;, &quot;ananas&quot;])
+fruits.remove(&quot;banane&quot;)
+fruits.sort()
+fruits.reverse()
+print(fruits)
+</code></pre>
+<p><strong>Exercice 2.5 : Tuples</strong></p>
+<pre><code class="language-python">coordonnees = (48.8566, 2.3522)
+lat, lon = coordonnees
+villes = ((&quot;Paris&quot;, 48.8566, 2.3522), (&quot;Lyon&quot;, 45.7640, 4.8357), (&quot;Marseille&quot;, 43.2965, 5.3698))
+for nom, lat, lon in villes:
+    print(f&quot;{nom} : {lat}, {lon}&quot;)
+try:
+    coordonnees[0] = 0
+except TypeError as e:
+    print(f&quot;Erreur : {e}&quot;)
+distances = {(&quot;Paris&quot;, &quot;Lyon&quot;): 465, (&quot;Paris&quot;, &quot;Marseille&quot;): 775}
+print(distances[(&quot;Paris&quot;, &quot;Lyon&quot;)])
+</code></pre>
+<p><strong>Exercice 2.6 : Dictionnaires</strong></p>
+<pre><code class="language-python">etudiant = {&quot;nom&quot;: &quot;Dupont&quot;, &quot;prenom&quot;: &quot;Marie&quot;, &quot;age&quot;: 22, &quot;notes&quot;: [14, 16, 12, 18, 15]}
+print(etudiant[&quot;prenom&quot;], etudiant.get(&quot;prenom&quot;))
+etudiant[&quot;email&quot;] = &quot;marie.dupont@univ.fr&quot;
+print(list(etudiant.keys()))
+print(list(etudiant.values()))
+for cle, valeur in etudiant.items():
+    print(f&quot;  {cle} : {valeur}&quot;)
+print(etudiant.get(&quot;telephone&quot;, &quot;Non renseigne&quot;))
+</code></pre>
+<p><strong>Exercice 2.7 : Ensembles (sets)</strong></p>
+<pre><code class="language-python">a, b = {1, 2, 3, 4, 5}, {4, 5, 6, 7, 8}
+print(a | b)      # union
+print(a &amp; b)      # intersection
+print(a - b)      # difference
+print(a ^ b)      # difference symetrique
+print(3 in a)     # True
+print(set([1, 2, 2, 3, 3, 3]))  # {1, 2, 3}
+</code></pre>
+<p><strong>Exercice 2.8 : Conversions et mutabilité</strong></p>
+<pre><code class="language-python">ma_liste = [1, 2, 3, 4, 5]
+mon_tuple = tuple(ma_liste)
+mon_set = set(mon_tuple)
+ma_liste[0] = 99  # OK
+try:
+    mon_tuple[0] = 99
+except TypeError as e:
+    print(e)
+a = [1, 2, 3]
+b = a           # reference
+c = a.copy()    # copie
+a[0] = 999
+print(b)  # [999, 2, 3] — modifie
+print(c)  # [1, 2, 3]   — intact
+</code></pre>
+<hr>
+<h3>Module 3 : Fonctions et contrôle</h3>
+<p><strong>Exercice 3.1 : Conditions if/elif/else</strong></p>
+<pre><code class="language-python">age = 25
+if age &lt; 18:      categorie = &quot;Mineur&quot;
+elif age &lt; 30:    categorie = &quot;Jeune adulte&quot;
+elif age &lt; 60:    categorie = &quot;Adulte&quot;
+else:             categorie = &quot;Senior&quot;
+print(f&quot;Age {age} : {categorie}&quot;)
+
+note = 14
+if   note &gt;= 16: mention = &quot;Excellent&quot;
+elif note &gt;= 14: mention = &quot;Bien&quot;
+elif note &gt;= 12: mention = &quot;Assez bien&quot;
+elif note &gt;= 10: mention = &quot;Passable&quot;
+else:            mention = &quot;Insuffisant&quot;
+print(f&quot;Note {note} : {mention}&quot;)
+</code></pre>
+<p><strong>Exercice 3.2 : Boucles for</strong></p>
+<pre><code class="language-python">for i in range(1, 11):
+    print(i, end=&quot; &quot;)
+print()
+
+fruits = [&quot;pomme&quot;, &quot;banane&quot;, &quot;orange&quot;, &quot;fraise&quot;]
+for i, fruit in enumerate(fruits):
+    print(f&quot;{i} : {fruit}&quot;)
+
+total = sum(range(1, 101))
+print(f&quot;Somme 1-100 : {total}&quot;)
+
+for cle, val in {&quot;a&quot;: 1, &quot;b&quot;: 2, &quot;c&quot;: 3}.items():
+    print(f&quot;{cle} -&gt; {val}&quot;)
+</code></pre>
+<p><strong>Exercice 3.3 : Boucles while</strong></p>
+<pre><code class="language-python">import random
+
+n = 10
+while n &gt;= 0:
+    print(n, end=&quot; &quot;)
+    n -= 1
+print(&quot;Decollage !&quot;)
+
+n, fact, i = 7, 1, 1
+while i &lt;= n:
+    fact *= i; i += 1
+print(f&quot;{n}! = {fact}&quot;)
+
+n = 0
+while 2 ** n &lt;= 1000:
+    n += 1
+print(f&quot;n = {n}, 2^{n} = {2**n}&quot;)
+
+random.seed(42)
+de, lancers = 0, 0
+while de != 6:
+    de = random.randint(1, 6)
+    lancers += 1
+print(f&quot;{lancers} lancers pour obtenir un 6&quot;)
+</code></pre>
+<p><strong>Exercice 3.4 : Fonctions simples</strong></p>
+<pre><code class="language-python">def celsius_to_fahrenheit(c):
+    return c * 9 / 5 + 32
+
+def imc(poids, taille):
+    return round(poids / taille ** 2, 2)
+
+def est_premier(n):
+    if n &lt; 2: return False
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0: return False
+    return True
+
+print(celsius_to_fahrenheit(0), celsius_to_fahrenheit(100))
+print(imc(75, 1.80))
+print([n for n in range(1, 21) if est_premier(n)])
+</code></pre>
+<p>*<em>Exercice 3.5 : Arguments par défaut et <em>args</em></em></p>
+<pre><code class="language-python">def saluer(nom, salutation=&quot;Bonjour&quot;):
+    return f&quot;{salutation}, {nom} !&quot;
+
+def puissance(base, exposant=2):
+    return base ** exposant
+
+def moyenne(*args):
+    return sum(args) / len(args) if args else 0
+
+def fiche(**kwargs):
+    for cle, val in kwargs.items():
+        print(f&quot;  {cle} : {val}&quot;)
+
+print(saluer(&quot;Marie&quot;))
+print(puissance(5), puissance(2, 10))
+print(moyenne(10, 20, 30))
+fiche(nom=&quot;Dupont&quot;, prenom=&quot;Marie&quot;, age=22)
+</code></pre>
+<p><strong>Exercice 3.6 : Compréhensions de liste</strong></p>
+<pre><code class="language-python">carres = [x ** 2 for x in range(1, 16)]
+pairs = [x for x in range(1, 31) if x % 2 == 0]
+mots = [&quot;Python&quot;, &quot;est&quot;, &quot;un&quot;, &quot;langage&quot;, &quot;puissant&quot;]
+longueurs = [len(m) for m in mots]
+mots_longs = [m for m in mots if len(m) &gt; 3]
+paires = [(x, x ** 2) for x in range(1, 11)]
+plat = [e for sous in [[1,2],[3,4],[5,6]] for e in sous]
+print(carres, pairs, longueurs, mots_longs, paires, plat, sep=&quot;\n&quot;)
+</code></pre>
+<p><strong>Exercice 3.7 : Fonctions avancées</strong></p>
+<pre><code class="language-python">carre = lambda x: x ** 2
+print(carre(5))
+
+celsius = [0, 10, 20, 25, 30, 37, 100]
+fahrenheit = list(map(lambda c: c * 9/5 + 32, celsius))
+print(fahrenheit)
+
+nombres = [-3, 7, -1, 4, -8, 2, 0, 5]
+positifs = list(filter(lambda x: x &gt; 0, nombres))
+print(positifs)
+
+personnes = [(&quot;Alice&quot;, 30), (&quot;Bob&quot;, 22), (&quot;Clara&quot;, 27), (&quot;David&quot;, 19)]
+par_age = sorted(personnes, key=lambda p: p[1])
+print(par_age)
+
+pairs_carres = list(map(lambda x: x**2, filter(lambda x: x%2==0, range(1,21))))
+print(pairs_carres)
+
+mots = [&quot;banane&quot;, &quot;pomme&quot;, &quot;kiwi&quot;, &quot;fraise&quot;, &quot;ananas&quot;]
+print(sorted(mots, key=lambda m: m[-1]))
+</code></pre>
+<hr>
+<h2>Jour 2</h2>
+<h3>Module 5 : Fichiers et modules</h3>
+<p><strong>Exercice 5.1 : Lire un fichier texte</strong></p>
+<pre><code class="language-python">with open(&quot;villes.txt&quot;, &quot;w&quot;) as f:
+    for v in [&quot;Paris&quot;, &quot;Lyon&quot;, &quot;Marseille&quot;, &quot;Toulouse&quot;, &quot;Bordeaux&quot;]:
+        f.write(v + &quot;\n&quot;)
+
+with open(&quot;villes.txt&quot;, &quot;r&quot;) as f:
+    print(f.read())
+
+with open(&quot;villes.txt&quot;, &quot;r&quot;) as f:
+    villes = [l.strip() for l in f]
+print(villes)
+</code></pre>
+<p><strong>Exercice 5.2 : Écrire dans un fichier</strong></p>
+<pre><code class="language-python">with open(&quot;courses.txt&quot;, &quot;w&quot;) as f:
+    for a in [&quot;pain&quot;, &quot;lait&quot;, &quot;beurre&quot;, &quot;oeufs&quot;, &quot;fromage&quot;]:
+        f.write(a + &quot;\n&quot;)
+with open(&quot;courses.txt&quot;, &quot;a&quot;) as f:
+    f.write(&quot;pommes\nchocolat\n&quot;)
+with open(&quot;courses.txt&quot;) as f:
+    for i, l in enumerate(f, 1):
+        print(f&quot;{i}. {l.strip()}&quot;)
+</code></pre>
+<p><strong>Exercice 5.3 : Manipuler des CSV</strong></p>
+<pre><code class="language-python">import csv
+
+with open(&quot;employes.csv&quot;, &quot;w&quot;, newline=&quot;&quot;) as f:
+    w = csv.writer(f)
+    w.writerow([&quot;nom&quot;, &quot;poste&quot;, &quot;salaire&quot;])
+    w.writerows([[&quot;Dupont&quot;,&quot;Dev&quot;,45000],[&quot;Martin&quot;,&quot;Design&quot;,40000],
+                 [&quot;Bernard&quot;,&quot;Chef&quot;,52000],[&quot;Petit&quot;,&quot;Analyste&quot;,42000],[&quot;Robert&quot;,&quot;Dev&quot;,47000]])
+
+with open(&quot;employes.csv&quot;) as f:
+    for row in csv.DictReader(f):
+        print(f&quot;{row[&#39;nom&#39;]} : {row[&#39;salaire&#39;]} EUR&quot;)
+
+with open(&quot;employes.csv&quot;) as f:
+    salaires = [int(r[&quot;salaire&quot;]) for r in csv.DictReader(f)]
+print(f&quot;Moyenne : {sum(salaires)/len(salaires):.0f} EUR&quot;)
+</code></pre>
+<p><strong>Exercice 5.4 : Manipuler du JSON</strong></p>
+<pre><code class="language-python">import json
+
+produit = {&quot;nom&quot;: &quot;Laptop Pro&quot;, &quot;prix&quot;: 1299.99, &quot;stock&quot;: 42,
+           &quot;categories&quot;: [&quot;informatique&quot;, &quot;bureautique&quot;],
+           &quot;specs&quot;: {&quot;ram&quot;: &quot;16 Go&quot;, &quot;stockage&quot;: &quot;512 Go SSD&quot;}}
+
+with open(&quot;produit.json&quot;, &quot;w&quot;) as f:
+    json.dump(produit, f, indent=2, ensure_ascii=False)
+
+with open(&quot;produit.json&quot;) as f:
+    data = json.load(f)
+print(data[&quot;nom&quot;], data[&quot;prix&quot;])
+
+chaine = json.dumps(produit, indent=2, ensure_ascii=False)
+ville = json.loads(&#39;{&quot;ville&quot;: &quot;Paris&quot;, &quot;population&quot;: 2161000}&#39;)
+print(ville)
+</code></pre>
+<p><strong>Exercice 5.5 : Explorer le système de fichiers</strong></p>
+<pre><code class="language-python">import os
+
+print(os.getcwd())
+print(os.listdir(&quot;.&quot;)[:10])
+print(os.path.exists(&quot;produit.json&quot;))
+print(os.path.getsize(&quot;produit.json&quot;))
+
+for nom in [&quot;rapport.pdf&quot;, &quot;photo.jpg&quot;, &quot;script.py&quot;]:
+    base, ext = os.path.splitext(nom)
+    print(f&quot;{nom} -&gt; base=&#39;{base}&#39;, ext=&#39;{ext}&#39;&quot;)
+
+print(os.path.join(&quot;dossier&quot;, &quot;sous-dossier&quot;, &quot;fichier.txt&quot;))
+</code></pre>
+<p><strong>Exercice 5.6 : Importer et utiliser des modules</strong></p>
+<pre><code class="language-python">import math
+from datetime import date
+from collections import Counter
+
+print(math.sqrt(144), math.ceil(3.2), math.floor(3.8))
+print(date.today())
+compteur = Counter([&quot;pomme&quot;,&quot;banane&quot;,&quot;pomme&quot;,&quot;orange&quot;,&quot;banane&quot;,&quot;pomme&quot;])
+print(compteur.most_common(2))
+</code></pre>
+<hr>
+<h3>Module 6 : NumPy et pandas</h3>
+<p><strong>Exercice 6.1 : NumPy — Créer des arrays</strong></p>
+<pre><code class="language-python">import numpy as np
+
+a = np.array([1, 2, 3, 4, 5])
+b = np.arange(20)
+c = np.linspace(0, 1, 10)
+zeros = np.zeros((3, 4))
+uns = np.ones((3, 4))
+identite = np.eye(4)
+
+for nom, arr in [(&quot;a&quot;,a),(&quot;b&quot;,b),(&quot;c&quot;,c),(&quot;zeros&quot;,zeros)]:
+    print(f&quot;{nom}: dtype={arr.dtype}, shape={arr.shape}, ndim={arr.ndim}&quot;)
+</code></pre>
+<p><strong>Exercice 6.2 : NumPy — Opérations vectorisées</strong></p>
+<pre><code class="language-python">import numpy as np
+
+a = np.array([10, 20, 30, 40, 50])
+b = np.array([1, 2, 3, 4, 5])
+print(a + 5, a * 2, a ** 2)
+print(a + b, a * b, a / b)
+print(a[a &gt; 25])
+print(f&quot;mean={a.mean()}, std={a.std():.2f}, sum={a.sum()}&quot;)
+print(f&quot;cumsum={a.cumsum()}&quot;)
+
+np.random.seed(42)
+data = np.random.randn(1000)
+print(f&quot;Normal: mean={data.mean():.4f}, std={data.std():.4f}&quot;)
+</code></pre>
+<p><strong>Exercice 6.3 : Créer un DataFrame</strong></p>
+<pre><code class="language-python">import pandas as pd
+
+df = pd.DataFrame({&quot;nom&quot;: [&quot;Alice&quot;,&quot;Bob&quot;,&quot;Clara&quot;,&quot;David&quot;,&quot;Emma&quot;],
+                    &quot;age&quot;: [28,35,22,41,30], &quot;ville&quot;: [&quot;Paris&quot;,&quot;Lyon&quot;,&quot;Paris&quot;,&quot;Marseille&quot;,&quot;Lyon&quot;],
+                    &quot;salaire&quot;: [45000,52000,38000,61000,48000]})
+print(df.head(3))
+print(df.dtypes)
+df = df.rename(columns={&quot;salaire&quot;: &quot;salaire_annuel&quot;})
+</code></pre>
+<p><strong>Exercice 6.4 : Charger et explorer</strong></p>
+<pre><code class="language-python">import pandas as pd
+import seaborn as sns
+
+tips = sns.load_dataset(&quot;tips&quot;)
+print(tips.head())
+tips.info()
+print(tips.describe())
+print(f&quot;Shape : {tips.shape}&quot;)
+print(tips.columns.tolist())
+</code></pre>
+<p><strong>Exercice 6.5 : Sélection et filtrage</strong></p>
+<pre><code class="language-python">import pandas as pd, seaborn as sns
+tips = sns.load_dataset(&quot;tips&quot;)
+
+bills = tips[&quot;total_bill&quot;]
+subset = tips[[&quot;total_bill&quot;, &quot;tip&quot;]]
+print(tips.iloc[10:16])
+print(tips[tips[&quot;total_bill&quot;] &gt; 40])
+print(tips[(tips[&quot;day&quot;] == &quot;Sun&quot;) &amp; (tips[&quot;tip&quot;] &gt; 5)])
+print(tips.query(&quot;day.isin([&#39;Sat&#39;,&#39;Sun&#39;]) and total_bill &gt; 30&quot;))
+print(tips[tips[&quot;day&quot;].isin([&quot;Sat&quot;, &quot;Sun&quot;])].shape[0])
+</code></pre>
+<p><strong>Exercice 6.6 : Tri et colonnes calculées</strong></p>
+<pre><code class="language-python">import pandas as pd, seaborn as sns
+tips = sns.load_dataset(&quot;tips&quot;)
+
+print(tips.sort_values(&quot;total_bill&quot;, ascending=False).head())
+tips[&quot;tip_pct&quot;] = (tips[&quot;tip&quot;] / tips[&quot;total_bill&quot;] * 100).round(1)
+tips[&quot;categorie&quot;] = tips[&quot;total_bill&quot;].apply(
+    lambda x: &quot;Petit&quot; if x &lt; 15 else (&quot;Moyen&quot; if x &lt; 30 else &quot;Gros&quot;))
+jours_fr = {&quot;Sun&quot;:&quot;Dimanche&quot;,&quot;Sat&quot;:&quot;Samedi&quot;,&quot;Thur&quot;:&quot;Jeudi&quot;,&quot;Fri&quot;:&quot;Vendredi&quot;}
+tips[&quot;jour_fr&quot;] = tips[&quot;day&quot;].map(jours_fr)
+print(tips[&quot;categorie&quot;].value_counts())
+</code></pre>
+<p><strong>Exercice 6.7 : Merge et concat</strong></p>
+<pre><code class="language-python">import pandas as pd
+
+employes = pd.DataFrame({&quot;id&quot;:[1,2,3,4,5], &quot;nom&quot;:[&quot;Alice&quot;,&quot;Bob&quot;,&quot;Clara&quot;,&quot;David&quot;,&quot;Emma&quot;],
+                          &quot;dept_id&quot;:[10,20,10,30,99]})
+departements = pd.DataFrame({&quot;dept_id&quot;:[10,20,30,40], &quot;dept_nom&quot;:[&quot;IT&quot;,&quot;Marketing&quot;,&quot;Finance&quot;,&quot;RH&quot;]})
+
+print(pd.merge(employes, departements, on=&quot;dept_id&quot;, how=&quot;inner&quot;))
+print(pd.merge(employes, departements, on=&quot;dept_id&quot;, how=&quot;left&quot;))
+print(pd.merge(employes, departements, on=&quot;dept_id&quot;, how=&quot;outer&quot;))
+
+q1 = pd.DataFrame({&quot;mois&quot;:[&quot;Jan&quot;,&quot;Fev&quot;,&quot;Mar&quot;], &quot;ca&quot;:[100,120,110]})
+q2 = pd.DataFrame({&quot;mois&quot;:[&quot;Avr&quot;,&quot;Mai&quot;,&quot;Jun&quot;], &quot;ca&quot;:[130,115,140]})
+print(pd.concat([q1, q2], ignore_index=True))
+</code></pre>
+<p><strong>Exercice 6.8 : Groupby et agrégation</strong></p>
+<pre><code class="language-python">import pandas as pd, seaborn as sns
+tips = sns.load_dataset(&quot;tips&quot;)
+
+print(tips.groupby(&quot;day&quot;)[&quot;tip&quot;].mean().round(2))
+print(tips.groupby(&quot;day&quot;).agg(tip_mean=(&quot;tip&quot;,&quot;mean&quot;), tip_sum=(&quot;tip&quot;,&quot;sum&quot;),
+                               count=(&quot;total_bill&quot;,&quot;count&quot;)).round(2))
+print(tips.groupby([&quot;day&quot;,&quot;time&quot;])[&quot;total_bill&quot;].mean().round(2))
+
+tips[&quot;tip_moy_jour&quot;] = tips.groupby(&quot;day&quot;)[&quot;tip&quot;].transform(&quot;mean&quot;).round(2)
+
+pivot = pd.pivot_table(tips, values=&quot;tip&quot;, index=&quot;day&quot;, columns=&quot;time&quot;, aggfunc=&quot;mean&quot;).round(2)
+print(pivot)
+</code></pre>
+<hr>
+<h3>Module 7 : Visualisation</h3>
+<p><strong>Exercice 7.1 : Nuage de points</strong></p>
+<pre><code class="language-python">import matplotlib.pyplot as plt, seaborn as sns, numpy as np
+tips = sns.load_dataset(&quot;tips&quot;)
+
+fig, ax = plt.subplots(figsize=(8, 6))
+couleurs = {&quot;Male&quot;: &quot;#2196F3&quot;, &quot;Female&quot;: &quot;#E91E63&quot;}
+for sexe, grp in tips.groupby(&quot;sex&quot;):
+    ax.scatter(grp[&quot;total_bill&quot;], grp[&quot;tip&quot;], c=couleurs[sexe],
+               s=grp[&quot;size&quot;]*20, alpha=0.6, label=sexe, edgecolors=&quot;white&quot;)
+coeffs = np.polyfit(tips[&quot;total_bill&quot;], tips[&quot;tip&quot;], 1)
+x_line = np.linspace(tips[&quot;total_bill&quot;].min(), tips[&quot;total_bill&quot;].max(), 100)
+ax.plot(x_line, np.poly1d(coeffs)(x_line), &quot;k--&quot;, label=&quot;Regression&quot;)
+ax.set_xlabel(&quot;Addition ($)&quot;); ax.set_ylabel(&quot;Pourboire ($)&quot;)
+ax.set_title(&quot;Addition vs Pourboire&quot;); ax.legend()
+plt.tight_layout(); plt.savefig(&quot;scatter.png&quot;, dpi=150); plt.show()
+</code></pre>
+<p><strong>Exercice 7.2 : Histogramme</strong></p>
+<pre><code class="language-python">import matplotlib.pyplot as plt, seaborn as sns
+tips = sns.load_dataset(&quot;tips&quot;)
+
+fig, ax = plt.subplots(figsize=(8, 5))
+ax.hist(tips[&quot;total_bill&quot;], bins=20, color=&quot;#42A5F5&quot;, edgecolor=&quot;white&quot;)
+moy, med = tips[&quot;total_bill&quot;].mean(), tips[&quot;total_bill&quot;].median()
+ax.axvline(moy, color=&quot;red&quot;, linestyle=&quot;--&quot;, label=f&quot;Moyenne : {moy:.2f}&quot;)
+ax.axvline(med, color=&quot;green&quot;, linestyle=&quot;-.&quot;, label=f&quot;Mediane : {med:.2f}&quot;)
+ax.set_xlabel(&quot;Addition ($)&quot;); ax.set_ylabel(&quot;Frequence&quot;)
+ax.set_title(&quot;Distribution des additions&quot;); ax.legend()
+plt.tight_layout(); plt.savefig(&quot;histogramme.png&quot;, dpi=150); plt.show()
+</code></pre>
+<p><strong>Exercice 7.3 : Boxplot</strong></p>
+<pre><code class="language-python">import matplotlib.pyplot as plt, seaborn as sns
+tips = sns.load_dataset(&quot;tips&quot;)
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+jours = [&quot;Thur&quot;, &quot;Fri&quot;, &quot;Sat&quot;, &quot;Sun&quot;]
+data = [tips[tips[&quot;day&quot;] == j][&quot;tip&quot;].values for j in jours]
+
+bp = axes[0].boxplot(data, labels=[&quot;Jeu&quot;,&quot;Ven&quot;,&quot;Sam&quot;,&quot;Dim&quot;], patch_artist=True,
+                     medianprops=dict(color=&quot;red&quot;, linewidth=2))
+for p, c in zip(bp[&quot;boxes&quot;], [&quot;#BBDEFB&quot;,&quot;#C8E6C9&quot;,&quot;#FFE0B2&quot;,&quot;#F8BBD0&quot;]):
+    p.set_facecolor(c)
+axes[0].set_ylabel(&quot;Pourboire ($)&quot;); axes[0].set_title(&quot;Pourboires par jour&quot;)
+
+data_t = [tips[tips[&quot;time&quot;]==t][&quot;total_bill&quot;].values for t in [&quot;Lunch&quot;,&quot;Dinner&quot;]]
+axes[1].boxplot(data_t, labels=[&quot;Dejeuner&quot;,&quot;Diner&quot;], vert=False, patch_artist=True)
+axes[1].set_xlabel(&quot;Addition ($)&quot;); axes[1].set_title(&quot;Additions par moment&quot;)
+plt.tight_layout(); plt.savefig(&quot;boxplot.png&quot;, dpi=150); plt.show()
+</code></pre>
+<p><strong>Exercice 7.4 : Barplot</strong></p>
+<pre><code class="language-python">import matplotlib.pyplot as plt, seaborn as sns, numpy as np
+tips = sns.load_dataset(&quot;tips&quot;)
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+jours = [&quot;Thur&quot;, &quot;Fri&quot;, &quot;Sat&quot;, &quot;Sun&quot;]
+jours_fr = [&quot;Jeu&quot;, &quot;Ven&quot;, &quot;Sam&quot;, &quot;Dim&quot;]
+moy = [tips[tips[&quot;day&quot;]==j][&quot;tip&quot;].mean() for j in jours]
+
+bars = axes[0].bar(jours_fr, moy, color=[&quot;#42A5F5&quot;,&quot;#66BB6A&quot;,&quot;#FFA726&quot;,&quot;#EF5350&quot;])
+for b, v in zip(bars, moy):
+    axes[0].text(b.get_x()+b.get_width()/2, b.get_height()+0.05, f&quot;{v:.2f}&quot;, ha=&quot;center&quot;)
+axes[0].set_ylabel(&quot;Tip moyen ($)&quot;); axes[0].set_title(&quot;Tip moyen par jour&quot;)
+
+pivot = tips.groupby([&quot;day&quot;,&quot;time&quot;])[&quot;tip&quot;].mean().unstack(fill_value=0).reindex(jours)
+x, w = np.arange(4), 0.35
+axes[1].bar(x-w/2, pivot.get(&quot;Lunch&quot;,[0]*4), w, label=&quot;Dejeuner&quot;, color=&quot;#42A5F5&quot;)
+axes[1].bar(x+w/2, pivot.get(&quot;Dinner&quot;,[0]*4), w, label=&quot;Diner&quot;, color=&quot;#EF5350&quot;)
+axes[1].set_xticks(x); axes[1].set_xticklabels(jours_fr)
+axes[1].set_ylabel(&quot;Tip moyen ($)&quot;); axes[1].set_title(&quot;Par jour + moment&quot;); axes[1].legend()
+plt.tight_layout(); plt.savefig(&quot;barplot.png&quot;, dpi=150); plt.show()
+</code></pre>
+<p><strong>Exercice 7.5 : Multi-graphiques</strong></p>
+<pre><code class="language-python">import matplotlib.pyplot as plt, seaborn as sns, numpy as np
+tips = sns.load_dataset(&quot;tips&quot;)
+
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+fig.suptitle(&quot;Dashboard Tips&quot;, fontsize=16, fontweight=&quot;bold&quot;)
+
+# Scatter
+ax = axes[0,0]
+ax.scatter(tips[&quot;total_bill&quot;], tips[&quot;tip&quot;], alpha=0.5, c=&quot;#2196F3&quot;, edgecolors=&quot;white&quot;)
+c = np.polyfit(tips[&quot;total_bill&quot;], tips[&quot;tip&quot;], 1)
+ax.plot(np.linspace(0,55,100), np.poly1d(c)(np.linspace(0,55,100)), &quot;r--&quot;)
+ax.set_xlabel(&quot;Addition ($)&quot;); ax.set_ylabel(&quot;Tip ($)&quot;); ax.set_title(&quot;Bill vs Tip&quot;)
+
+# Histogramme
+ax = axes[0,1]
+ax.hist(tips[&quot;total_bill&quot;], bins=20, color=&quot;#66BB6A&quot;, edgecolor=&quot;white&quot;)
+ax.axvline(tips[&quot;total_bill&quot;].mean(), color=&quot;red&quot;, linestyle=&quot;--&quot;, label=&quot;Moyenne&quot;)
+ax.set_title(&quot;Distribution&quot;); ax.legend()
+
+# Boxplot
+ax = axes[1,0]
+jours = [&quot;Thur&quot;,&quot;Fri&quot;,&quot;Sat&quot;,&quot;Sun&quot;]
+bp = ax.boxplot([tips[tips[&quot;day&quot;]==j][&quot;tip&quot;].values for j in jours],
+                labels=[&quot;Jeu&quot;,&quot;Ven&quot;,&quot;Sam&quot;,&quot;Dim&quot;], patch_artist=True)
+for p, col in zip(bp[&quot;boxes&quot;], [&quot;#BBDEFB&quot;,&quot;#C8E6C9&quot;,&quot;#FFE0B2&quot;,&quot;#F8BBD0&quot;]):
+    p.set_facecolor(col)
+ax.set_title(&quot;Tip par jour&quot;)
+
+# Barplot
+ax = axes[1,1]
+compte = tips[&quot;day&quot;].value_counts().reindex(jours)
+ax.bar([&quot;Jeu&quot;,&quot;Ven&quot;,&quot;Sam&quot;,&quot;Dim&quot;], compte.values, color=[&quot;#42A5F5&quot;,&quot;#66BB6A&quot;,&quot;#FFA726&quot;,&quot;#EF5350&quot;])
+ax.set_title(&quot;Repas par jour&quot;)
+
+plt.tight_layout(); plt.savefig(&quot;dashboard.png&quot;, dpi=150); plt.show()
+</code></pre>
+<p><strong>Exercice 7.6 : Personnalisation avancée</strong></p>
+<pre><code class="language-python">import matplotlib.pyplot as plt, seaborn as sns, numpy as np
+tips = sns.load_dataset(&quot;tips&quot;)
+
+stats = tips.groupby(&quot;size&quot;)[&quot;tip&quot;].agg([&quot;mean&quot;,&quot;std&quot;,&quot;count&quot;]).reset_index()
+fig, ax = plt.subplots(figsize=(10, 6))
+
+ax.plot(stats[&quot;size&quot;], stats[&quot;mean&quot;], &quot;o-&quot;, color=&quot;#1565C0&quot;, lw=2.5, ms=8, label=&quot;Tip moyen&quot;, zorder=3)
+ax.fill_between(stats[&quot;size&quot;], stats[&quot;mean&quot;]-stats[&quot;std&quot;], stats[&quot;mean&quot;]+stats[&quot;std&quot;],
+                alpha=0.2, color=&quot;#42A5F5&quot;, label=&quot;+/- 1 sd&quot;)
+
+idx = stats[&quot;mean&quot;].idxmax()
+ax.annotate(f&quot;Max : {stats.loc[idx,&#39;mean&#39;]:.2f} $\n(table de {stats.loc[idx,&#39;size&#39;]})&quot;,
+            xy=(stats.loc[idx,&quot;size&quot;], stats.loc[idx,&quot;mean&quot;]),
+            xytext=(stats.loc[idx,&quot;size&quot;]+0.8, stats.loc[idx,&quot;mean&quot;]+0.5),
+            arrowprops=dict(arrowstyle=&quot;-&gt;&quot;), bbox=dict(boxstyle=&quot;round&quot;, fc=&quot;#FFF9C4&quot;, ec=&quot;#F9A825&quot;))
+
+for _, r in stats.iterrows():
+    ax.text(r[&quot;size&quot;], r[&quot;mean&quot;]-0.35, f&quot;n={int(r[&#39;count&#39;])}&quot;, ha=&quot;center&quot;, fontsize=8, color=&quot;gray&quot;)
+
+ax.set_xlabel(&quot;Taille de la table&quot;); ax.set_ylabel(&quot;Pourboire moyen ($)&quot;)
+ax.set_title(&quot;Pourboire selon la taille de la table&quot;, fontweight=&quot;bold&quot;)
+ax.grid(True, alpha=0.3, linestyle=&quot;--&quot;); ax.legend()
+plt.tight_layout(); plt.savefig(&quot;graphique_pro.png&quot;, dpi=200); plt.show()
+</code></pre>
+
+</body>
+</html>

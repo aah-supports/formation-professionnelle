@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projet Integrateur</title>
+<style>
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#2d3436;line-height:1.7;max-width:800px;margin:0 auto;padding:30px 24px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
+h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+h4{font-size:.95rem;margin:16px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid #dfe6e9;padding:8px 12px;text-align:left;font-size:.9rem}
+th{background:#f1f2f6;font-weight:600}
+tr:nth-child(even){background:#f8f9fa}
+blockquote{border-left:4px solid #74b9ff;margin:12px 0;padding:8px 16px;background:#f8f9fa;color:#636e72}
+strong{color:#2d3436}
+hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
+.header-bar{background:#0984e3;color:#fff;padding:12px 20px;border-radius:8px;margin-bottom:24px;font-size:.85rem}
+.header-bar strong{color:#fff}
+</style>
+</head>
+<body>
+<div class="header-bar"><strong>Python Niveau I</strong></div>
+<h1>Projet intégrateur — Python Niveau I</h1>
+<h2>Analyse des pourboires dans un restaurant</h2>
+<p><strong>Durée</strong> : 1h45
+<strong>Dataset</strong> : tips (via seaborn)
+<strong>Livrable</strong> : un script <code>.py</code> commenté</p>
+<hr>
+<h3>Contexte</h3>
+<p>Vous êtes analyste de données dans une chaine de restaurants. La direction vous demande d&#39;analyser les pourboires pour mieux comprendre le comportement des clients et optimiser le service.</p>
+<h3>Dataset</h3>
+<pre><code class="language-python">import seaborn as sns
+tips = sns.load_dataset(&quot;tips&quot;)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Colonne</th>
+<th>Description</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>total_bill</code></td>
+<td>Montant de l&#39;addition ($)</td>
+<td>float64</td>
+</tr>
+<tr>
+<td><code>tip</code></td>
+<td>Montant du pourboire ($)</td>
+<td>float64</td>
+</tr>
+<tr>
+<td><code>sex</code></td>
+<td>Sexe du payeur</td>
+<td>category</td>
+</tr>
+<tr>
+<td><code>smoker</code></td>
+<td>Fumeur (Yes/No)</td>
+<td>category</td>
+</tr>
+<tr>
+<td><code>day</code></td>
+<td>Jour de la semaine</td>
+<td>category</td>
+</tr>
+<tr>
+<td><code>time</code></td>
+<td>Moment (Lunch/Dinner)</td>
+<td>category</td>
+</tr>
+<tr>
+<td><code>size</code></td>
+<td>Taille de la table (personnes)</td>
+<td>int64</td>
+</tr>
+</tbody></table>
+<hr>
+<h3>Étape 1 : Import et exploration (20 min)</h3>
+<ol>
+<li>Importez les librairies nécessaires (<code>pandas</code>, <code>numpy</code>, <code>matplotlib.pyplot</code>, <code>seaborn</code>)</li>
+<li>Chargez le dataset avec <code>sns.load_dataset(&quot;tips&quot;)</code></li>
+<li>Affichez les 5 premières et 5 dernières lignes</li>
+<li>Affichez les dimensions avec <code>shape</code></li>
+<li>Affichez les types de colonnes avec <code>dtypes</code></li>
+<li>Utilisez <code>info()</code> pour vérifier les valeurs manquantes</li>
+<li>Affichez les statistiques descriptives avec <code>describe()</code></li>
+<li>Affichez les valeurs uniques des colonnes catégoriques</li>
+</ol>
+<hr>
+<h3>Étape 2 : Nettoyage et préparation (15 min)</h3>
+<ol>
+<li>Créez une colonne <code>tip_pct</code> = pourboire en pourcentage de l&#39;addition</li>
+<li>Créez une colonne <code>bill_cat</code> catégorisant les additions :<ul>
+<li><code>&quot;Petit&quot;</code> si total_bill &lt; 15</li>
+<li><code>&quot;Moyen&quot;</code> si 15 &lt;= total_bill &lt; 30</li>
+<li><code>&quot;Gros&quot;</code> si total_bill &gt;= 30</li>
+</ul>
+</li>
+<li>Traduisez la colonne <code>day</code> en français avec <code>map()</code></li>
+<li>Vérifiez les types de vos nouvelles colonnes</li>
+</ol>
+<hr>
+<h3>Étape 3 : Statistiques descriptives (20 min)</h3>
+<ol>
+<li>Calculez le pourboire moyen par jour</li>
+<li>Calculez le pourboire moyen par sexe</li>
+<li>Calculez le pourboire moyen par jour ET moment (Lunch/Dinner)</li>
+<li>Calculez la corrélation entre <code>total_bill</code> et <code>tip</code></li>
+<li>Créez un tableau croisé (<code>pd.crosstab</code>) : jour x fumeur/non-fumeur</li>
+</ol>
+<hr>
+<h3>Étape 4 : Visualisations (30 min)</h3>
+<p>Créez un dashboard de 4 graphiques avec <code>fig, axes = plt.subplots(2, 2, figsize=(14, 10))</code> :</p>
+<ol>
+<li><strong>Scatter</strong> (haut-gauche) : <code>total_bill</code> vs <code>tip</code>, coloré par <code>sex</code>, avec droite de régression</li>
+<li><strong>Histogramme</strong> (haut-droite) : distribution de <code>tip_pct</code>, avec lignes pour moyenne et médiane</li>
+<li><strong>Boxplot</strong> (bas-gauche) : <code>tip</code> par <code>day</code></li>
+<li><strong>Barplot</strong> (bas-droite) : pourboire moyen par jour et moment (barplot groupé)</li>
+</ol>
+<p>Ajoutez un titre global avec <code>fig.suptitle()</code>. Exportez en PNG avec <code>plt.savefig(&quot;dashboard_tips.png&quot;, dpi=200)</code>.</p>
+<hr>
+<h3>Étape 5 : Synthèse (20 min)</h3>
+<p>Écrivez 5 conclusions en commentaires dans votre script. Exemples de questions à adresser :</p>
+<ul>
+<li>Quel jour génère les pourboires les plus généreux ?</li>
+<li>Y a-t-il une différence significative entre hommes et femmes ?</li>
+<li>Les fumeurs sont-ils plus ou moins généreux ?</li>
+<li>Quelle est la relation entre le montant de l&#39;addition et le pourboire ?</li>
+<li>Le moment (déjeuner/dîner) influence-t-il le pourboire ?</li>
+</ul>
+<hr>
+<h3>Barème</h3>
+<table>
+<thead>
+<tr>
+<th>Critère</th>
+<th>Points</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Import et exploration correcte</td>
+<td>15</td>
+</tr>
+<tr>
+<td>Nettoyage et colonnes calculées</td>
+<td>15</td>
+</tr>
+<tr>
+<td>Statistiques descriptives</td>
+<td>20</td>
+</tr>
+<tr>
+<td>Dashboard 4 graphiques</td>
+<td>30</td>
+</tr>
+<tr>
+<td>Conclusions pertinentes</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Qualité du code et commentaires</td>
+<td>10</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>100</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h3>Solution complète</h3>
+<pre><code class="language-python"># ============================================================
+# Projet integrateur — Analyse des pourboires
+# Python Niveau I
+# ============================================================
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# -----------------------------------------------------------
+# Etape 1 : Import et exploration
+# -----------------------------------------------------------
+
+tips = sns.load_dataset(&quot;tips&quot;)
+
+print(&quot;=== EXPLORATION ===&quot;)
+print(f&quot;Dimensions : {tips.shape[0]} lignes x {tips.shape[1]} colonnes\n&quot;)
+
+print(&quot;--- Premieres lignes ---&quot;)
+print(tips.head())
+
+print(&quot;\n--- Dernieres lignes ---&quot;)
+print(tips.tail())
+
+print(&quot;\n--- Info ---&quot;)
+tips.info()
+
+print(&quot;\n--- Statistiques ---&quot;)
+print(tips.describe())
+
+print(&quot;\n--- Valeurs uniques ---&quot;)
+for col in tips.select_dtypes(include=&quot;category&quot;).columns:
+    print(f&quot;  {col} : {tips[col].unique().tolist()}&quot;)
+
+# -----------------------------------------------------------
+# Etape 2 : Nettoyage et preparation
+# -----------------------------------------------------------
+
+print(&quot;\n=== NETTOYAGE ===&quot;)
+
+# Pourcentage de pourboire
+tips[&quot;tip_pct&quot;] = (tips[&quot;tip&quot;] / tips[&quot;total_bill&quot;] * 100).round(1)
+
+# Categorisation des additions
+def categoriser_bill(montant):
+    if montant &lt; 15:
+        return &quot;Petit&quot;
+    elif montant &lt; 30:
+        return &quot;Moyen&quot;
+    else:
+        return &quot;Gros&quot;
+
+tips[&quot;bill_cat&quot;] = tips[&quot;total_bill&quot;].apply(categoriser_bill)
+
+# Traduction des jours
+jours_fr = {&quot;Sun&quot;: &quot;Dimanche&quot;, &quot;Sat&quot;: &quot;Samedi&quot;, &quot;Thur&quot;: &quot;Jeudi&quot;, &quot;Fri&quot;: &quot;Vendredi&quot;}
+tips[&quot;jour_fr&quot;] = tips[&quot;day&quot;].map(jours_fr)
+
+print(tips[[&quot;total_bill&quot;, &quot;tip&quot;, &quot;tip_pct&quot;, &quot;bill_cat&quot;, &quot;jour_fr&quot;]].head(10))
+print(f&quot;\nRepartition bill_cat :\n{tips[&#39;bill_cat&#39;].value_counts()}&quot;)
+
+# -----------------------------------------------------------
+# Etape 3 : Statistiques descriptives
+# -----------------------------------------------------------
+
+print(&quot;\n=== STATISTIQUES ===&quot;)
+
+# Pourboire moyen par jour
+print(&quot;--- Tip moyen par jour ---&quot;)
+print(tips.groupby(&quot;jour_fr&quot;)[&quot;tip&quot;].mean().round(2))
+
+# Pourboire moyen par sexe
+print(&quot;\n--- Tip moyen par sexe ---&quot;)
+print(tips.groupby(&quot;sex&quot;)[&quot;tip&quot;].mean().round(2))
+
+# Pourboire moyen par jour et moment
+print(&quot;\n--- Tip moyen par jour + moment ---&quot;)
+print(tips.groupby([&quot;jour_fr&quot;, &quot;time&quot;])[&quot;tip&quot;].mean().round(2))
+
+# Correlation
+corr = tips[&quot;total_bill&quot;].corr(tips[&quot;tip&quot;])
+print(f&quot;\nCorrelation total_bill / tip : {corr:.4f}&quot;)
+
+# Tableau croise
+print(&quot;\n--- Crosstab jour x fumeur ---&quot;)
+ct = pd.crosstab(tips[&quot;jour_fr&quot;], tips[&quot;smoker&quot;], margins=True)
+print(ct)
+
+# -----------------------------------------------------------
+# Etape 4 : Visualisations
+# -----------------------------------------------------------
+
+fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+fig.suptitle(&quot;Analyse des pourboires — Restaurant&quot;, fontsize=16, fontweight=&quot;bold&quot;)
+
+# 1. Scatter : total_bill vs tip
+ax = axes[0, 0]
+couleurs_sex = {&quot;Male&quot;: &quot;#2196F3&quot;, &quot;Female&quot;: &quot;#E91E63&quot;}
+for sexe, grp in tips.groupby(&quot;sex&quot;):
+    ax.scatter(grp[&quot;total_bill&quot;], grp[&quot;tip&quot;], c=couleurs_sex[sexe],
+               alpha=0.6, label=sexe, edgecolors=&quot;white&quot;, linewidth=0.5)
+
+coeffs = np.polyfit(tips[&quot;total_bill&quot;], tips[&quot;tip&quot;], 1)
+x_line = np.linspace(0, 55, 100)
+ax.plot(x_line, np.poly1d(coeffs)(x_line), &quot;k--&quot;, linewidth=1.5, label=&quot;Regression&quot;)
+ax.set_xlabel(&quot;Addition ($)&quot;)
+ax.set_ylabel(&quot;Pourboire ($)&quot;)
+ax.set_title(&quot;Addition vs Pourboire&quot;)
+ax.legend(fontsize=9)
+
+# 2. Histogramme : distribution de tip_pct
+ax = axes[0, 1]
+ax.hist(tips[&quot;tip_pct&quot;], bins=25, color=&quot;#66BB6A&quot;, edgecolor=&quot;white&quot;, alpha=0.8)
+moy_pct = tips[&quot;tip_pct&quot;].mean()
+med_pct = tips[&quot;tip_pct&quot;].median()
+ax.axvline(moy_pct, color=&quot;red&quot;, linestyle=&quot;--&quot;, linewidth=2,
+           label=f&quot;Moyenne : {moy_pct:.1f}%&quot;)
+ax.axvline(med_pct, color=&quot;blue&quot;, linestyle=&quot;-.&quot;, linewidth=2,
+           label=f&quot;Mediane : {med_pct:.1f}%&quot;)
+ax.set_xlabel(&quot;Pourboire (%)&quot;)
+ax.set_ylabel(&quot;Frequence&quot;)
+ax.set_title(&quot;Distribution du % de pourboire&quot;)
+ax.legend(fontsize=9)
+
+# 3. Boxplot : tip par jour
+ax = axes[1, 0]
+jours_ordre = [&quot;Thur&quot;, &quot;Fri&quot;, &quot;Sat&quot;, &quot;Sun&quot;]
+data_box = [tips[tips[&quot;day&quot;] == j][&quot;tip&quot;].values for j in jours_ordre]
+bp = ax.boxplot(data_box, labels=[&quot;Jeu&quot;, &quot;Ven&quot;, &quot;Sam&quot;, &quot;Dim&quot;],
+                patch_artist=True, medianprops=dict(color=&quot;red&quot;, linewidth=2))
+couleurs_box = [&quot;#BBDEFB&quot;, &quot;#C8E6C9&quot;, &quot;#FFE0B2&quot;, &quot;#F8BBD0&quot;]
+for patch, c in zip(bp[&quot;boxes&quot;], couleurs_box):
+    patch.set_facecolor(c)
+ax.set_ylabel(&quot;Pourboire ($)&quot;)
+ax.set_title(&quot;Pourboire par jour&quot;)
+
+# 4. Barplot groupe : tip moyen par jour + time
+ax = axes[1, 1]
+pivot = tips.groupby([&quot;day&quot;, &quot;time&quot;])[&quot;tip&quot;].mean().unstack(fill_value=0)
+pivot = pivot.reindex(jours_ordre)
+x = np.arange(len(jours_ordre))
+w = 0.35
+
+b1 = ax.bar(x - w / 2, pivot.get(&quot;Lunch&quot;, [0] * 4), w,
+            label=&quot;Dejeuner&quot;, color=&quot;#42A5F5&quot;)
+b2 = ax.bar(x + w / 2, pivot.get(&quot;Dinner&quot;, [0] * 4), w,
+            label=&quot;Diner&quot;, color=&quot;#EF5350&quot;)
+for bars in [b1, b2]:
+    for bar in bars:
+        h = bar.get_height()
+        if h &gt; 0:
+            ax.text(bar.get_x() + bar.get_width() / 2, h + 0.05,
+                    f&quot;{h:.2f}&quot;, ha=&quot;center&quot;, fontsize=8)
+ax.set_xticks(x)
+ax.set_xticklabels([&quot;Jeu&quot;, &quot;Ven&quot;, &quot;Sam&quot;, &quot;Dim&quot;])
+ax.set_ylabel(&quot;Pourboire moyen ($)&quot;)
+ax.set_title(&quot;Pourboire moyen par jour et moment&quot;)
+ax.legend(fontsize=9)
+
+plt.tight_layout()
+plt.savefig(&quot;dashboard_tips.png&quot;, dpi=200, bbox_inches=&quot;tight&quot;)
+plt.show()
+print(&quot;\nDashboard exporte : dashboard_tips.png&quot;)
+
+# -----------------------------------------------------------
+# Etape 5 : Conclusions
+# -----------------------------------------------------------
+
+# 1. Le dimanche genere les pourboires moyens les plus eleves (~3.26 $),
+#    probablement lie a des repas en famille plus consequents.
+#
+# 2. Les hommes laissent un pourboire moyen legerement superieur en valeur
+#    absolue, mais les femmes sont souvent plus genereuses en pourcentage.
+#
+# 3. Il n&#39;y a pas de difference notable entre fumeurs et non-fumeurs
+#    en termes de pourboire moyen.
+#
+# 4. La correlation entre l&#39;addition et le pourboire est forte (~0.68),
+#    confirmant que les pourboires augmentent avec le montant de l&#39;addition.
+#
+# 5. Le diner genere des pourboires plus eleves que le dejeuner,
+#    ce qui s&#39;explique par des additions generalement plus importantes le soir.
+</code></pre>
+
+</body>
+</html>

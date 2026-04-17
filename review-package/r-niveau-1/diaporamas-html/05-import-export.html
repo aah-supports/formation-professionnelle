@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Importer et exporter des données</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080808; --bg2: #111111; --text: #ffffff; --body: #d1d5db;
+      --muted: #888888; --dim: #444444; --border: #222222;
+      --cyan: #00f3ff; --purple: #a78bfa; --orange: #ff6b00; --green: #10b981;
+    }
+    * { box-sizing: border-box; }
+    .reveal { font-family: 'Inter', sans-serif; font-size: 24px; background: var(--bg); }
+    .reveal .slides { text-align: left; }
+    .reveal .slides > section {
+      display: flex !important; flex-direction: column; justify-content: center;
+      align-items: center; height: 100%; padding: 40px 60px;
+    }
+    .reveal .slides > section > * { width: 100%; max-width: 1200px; }
+    .reveal h1 { font-weight: 800; font-size: 2.4em; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 0.3em; }
+    .reveal h2 { font-weight: 700; font-size: 1.6em; color: #fff; margin-bottom: 0.2em; letter-spacing: -0.02em; }
+    .reveal p { color: var(--body); line-height: 1.6; }
+    .subtitle { font-size: 1.1em; color: var(--muted); margin-top: 0.3em; }
+    .slide-subtitle { font-size: 0.85em; font-weight: 600; margin-bottom: 0.8em; }
+    .slide-header { margin-bottom: 1em; }
+    .slide-body { display: flex; gap: 40px; align-items: flex-start; }
+    .two-col .col-text, .two-col .col-code { flex: 1.2; }
+    .two-col .col-visual { flex: 0.8; display: flex; justify-content: center; align-items: center; }
+
+    /* Code */
+    pre { background: var(--bg2) !important; border: 1px solid var(--border); border-radius: 12px;
+          padding: 20px !important; margin: 0 !important; font-size: 0.7em !important; overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', monospace !important; line-height: 1.7 !important; }
+
+    /* Bullets */
+    .bullet-list, .summary-list { list-style: none; padding: 0; margin: 0; }
+    .bullet-list li, .summary-list li {
+      padding: 8px 0; border-bottom: 1px solid var(--border); color: var(--body);
+      font-size: 0.9em; line-height: 1.5;
+    }
+    .bullet-list li:last-child, .summary-list li:last-child { border-bottom: none; }
+    .check { font-weight: 700; margin-right: 8px; }
+
+    /* Schemas */
+    .schema { display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; padding: 20px; }
+    .schema-label { font-size: 0.75em; font-weight: 600; color: var(--accent, var(--cyan)); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+    .schema-row { display: flex; gap: 12px; align-items: center; justify-content: center; }
+    .schema-stack-grid { display: flex; gap: 10px; align-items: center; }
+    .schema-box {
+      background: var(--bg2); border: 2px solid var(--accent, var(--cyan)); border-radius: 8px;
+      padding: 12px 20px; color: var(--text); font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8em; text-align: center; min-width: 60px;
+      animation: fadeSlideUp 0.5s ease-out both;
+    }
+    .schema-box.active { background: var(--accent, var(--cyan)); color: var(--bg); font-weight: 700; }
+    .schema-box.highlight { background: rgba(0, 243, 255, 0.15); border-color: var(--accent, var(--cyan)); }
+    .schema-box.dim { opacity: 0.3; }
+    .schema-box.strike { text-decoration: line-through; opacity: 0.5; }
+    .schema-box.glow { box-shadow: 0 0 20px var(--accent, var(--cyan)); }
+    .schema-box.messy { border-style: dashed; opacity: 0.6; }
+    .schema-box.clean-box { border-color: var(--green); box-shadow: 0 0 12px rgba(16, 185, 129, 0.3); }
+    .schema-arrow { color: var(--accent, var(--cyan)); font-size: 1.5em; font-weight: 700; }
+    .schema-ptr { color: var(--accent, var(--cyan)); font-size: 1.2em; animation: bounce 1s ease infinite; }
+    .schema-loop { color: var(--accent, var(--cyan)); font-size: 2em; font-weight: 700; animation: spin 3s linear infinite; }
+    .schema-method {
+      background: var(--bg2); border: 2px solid var(--accent, var(--cyan)); border-radius: 24px;
+      padding: 10px 24px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--text);
+    }
+    .schema-check { color: var(--accent, var(--cyan)); font-size: 1.1em; font-weight: 600; }
+    .schema-pipe { display: flex; gap: 8px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.8em; }
+    .pipe-in { color: var(--muted); } .pipe-out { color: var(--green); font-weight: 700; }
+    .pipe-filter { color: var(--accent, var(--cyan)); background: var(--bg2); padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border); }
+
+    /* Progress bar */
+    .progress-bar { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 10; }
+    .progress-fill { height: 100%; transition: width 0.5s ease; border-radius: 0 2px 2px 0; }
+
+    /* Footer */
+    .slide-footer { position: absolute; bottom: 16px; right: 24px; }
+    .slide-num { font-size: 0.65em; color: var(--dim); font-family: 'JetBrains Mono', monospace; }
+
+    /* Python-specific schemas */
+    .schema-kv { display: flex; flex-direction: column; gap: 6px; }
+    .kv-row { display: flex; gap: 8px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75em; }
+    .kv-key { color: var(--cyan); background: var(--bg2); padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border); }
+    .kv-val { color: var(--body); }
+    .kv-sep { color: var(--accent, var(--cyan)); font-weight: 700; }
+    .schema-table { border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 0.7em; }
+    .schema-table th { background: var(--accent, var(--cyan)); color: var(--bg); padding: 6px 14px; font-weight: 600; }
+    .schema-table td { background: var(--bg2); border: 1px solid var(--border); padding: 6px 14px; color: var(--body); text-align: center; }
+    .schema-table .row-idx { color: var(--muted); font-weight: 600; background: var(--bg); }
+    .schema-type-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .type-box { font-family: 'JetBrains Mono', monospace; font-size: 0.8em; padding: 8px 16px !important; min-width: auto !important; }
+    .schema-flow { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: center; }
+    .schema-chart { display: flex; gap: 6px; align-items: flex-end; height: 80px; padding-top: 10px; }
+    .chart-bar { width: 20px; background: var(--accent, var(--cyan)); border-radius: 3px 3px 0 0; animation: fadeSlideUp 0.5s ease-out both; opacity: 0.8; }
+    .schema-venn { position: relative; width: 120px; height: 80px; }
+    .venn-circle { position: absolute; width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--accent, var(--cyan)); display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.8em; color: var(--text); background: rgba(0,243,255,0.05); }
+    .venn-left { left: 0; } .venn-right { left: 45px; }
+
+    /* Animations */
+    @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .anim-build { animation: fadeSlideUp 0.5s ease-out both; }
+
+    /* Print / PDF */
+    @media print {
+      .reveal .slides > section { page-break-after: always; }
+      .progress-bar { display: none; }
+      .fragment { opacity: 1 !important; visibility: visible !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:13%; background:#00f3ff"></div></div>
+      
+      <h1 style="color: #00f3ff; font-size: 2.2em">Importer et exporter</h1>
+      <p class="subtitle">Connecter R au monde extérieur</p>
+      
+    <div class="schema" style="--accent: #00f3ff">
+      <div class="schema-label">Import de données</div>
+      <div class="schema-row">
+        <div class="schema-box anim-build" style="animation-delay:0.2s">[ ]</div>
+        <div class="schema-arrow">→</div>
+        <div class="schema-box anim-build" style="animation-delay:0.5s">[a, b]</div>
+        <div class="schema-arrow">→</div>
+        <div class="schema-box anim-build glow" style="animation-delay:0.8s">[a, b, c]</div>
+      </div>
+    </div>
+      <div class="slide-footer">
+        <span class="slide-num">1 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:25%; background:#a78bfa"></div></div>
+      
+      <div class="slide-header">
+        <h2>read.csv() et read.table()</h2>
+        <p class="slide-subtitle" style="color: #a78bfa">Les classiques de l'import</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-r"># CSV standard (virgule)
+df &lt;- read.csv(&quot;donnees.csv&quot;, fileEncoding = &quot;UTF-8&quot;)
+
+# CSV français (point-virgule, décimale virgule)
+df &lt;- read.csv2(&quot;donnees_fr.csv&quot;, fileEncoding = &quot;UTF-8&quot;)
+
+# Personnalisé
+df &lt;- read.table(&quot;donnees.txt&quot;,
+  sep = &quot;\t&quot;,       # tabulation
+  header = TRUE,
+  dec = &quot;,&quot;,
+  na.strings = c(&quot;&quot;, &quot;NA&quot;, &quot;N/A&quot;),
+  fileEncoding = &quot;UTF-8&quot;
+)</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #a78bfa">
+      <div class="schema-label">Lire un fichier</div>
+      <div class="schema-stack-grid">
+        <div class="schema-box" style="animation-delay:0.1s">Lire un fichier</div>
+        <div class="schema-box" style="animation-delay:0.30000000000000004s">…</div>
+        <div class="schema-box" style="animation-delay:0.5s">…</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">2 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:38%; background:#10b981"></div></div>
+      
+      <div class="slide-header">
+        <h2>Lire du Excel</h2>
+        <p class="slide-subtitle" style="color: #10b981">Le package readxl</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-r"># Installer une seule fois
+install.packages(&quot;readxl&quot;)
+library(readxl)
+
+# Lire la première feuille
+df &lt;- read_excel(&quot;rapport.xlsx&quot;)
+
+# Feuille et plage spécifiques
+df &lt;- read_excel(&quot;rapport.xlsx&quot;,
+  sheet = &quot;Ventes&quot;,
+  range = &quot;A1:D50&quot;
+)</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #10b981">
+      <div class="schema-label">Feuille Excel</div>
+      <div class="schema-row">
+        <div class="schema-box dim">[1]</div>
+        <div class="schema-box highlight">[2]</div>
+        <div class="schema-box highlight">[3]</div>
+        <div class="schema-box dim">[4]</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">3 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:50%; background:#ff6b00"></div></div>
+      
+      <div class="slide-header">
+        <h2>RDS : le format natif</h2>
+        <p class="slide-subtitle" style="color: #ff6b00">Rapide et fidèle</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-r"># Sauvegarder
+saveRDS(df, &quot;donnees.rds&quot;)
+
+# Recharger
+df &lt;- readRDS(&quot;donnees.rds&quot;)
+
+# Exporter en CSV
+write.csv(df, &quot;export.csv&quot;, row.names = FALSE)
+write.csv2(df, &quot;export_fr.csv&quot;, row.names = FALSE)</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #ff6b00">
+      <div class="schema-label">Format natif</div>
+      <div class="schema-row">
+        <div class="schema-box">Format natif</div>
+        <div class="schema-arrow">→</div>
+        <div class="schema-box clean-box">sauvegarde fidèle</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">4 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:63%; background:#00f3ff"></div></div>
+      
+      <div class="slide-header">
+        <h2>Exploration initiale</h2>
+        <p class="slide-subtitle" style="color: #00f3ff">Les 6 réflexes après l'import</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-r">data(iris)  # jeu de données intégré
+
+str(iris)       # structure
+head(iris)      # 6 premières lignes
+dim(iris)       # 150 x 5
+names(iris)     # noms des colonnes
+summary(iris)   # stats par colonne
+class(iris$Species)  # &quot;factor&quot;</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #00f3ff">
+      <div class="schema-label">6 réflexes</div>
+      <div class="schema-row">
+        <div class="schema-method">6 réflexes</div>
+        
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">5 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:75%; background:#a78bfa"></div></div>
+      
+      <div class="slide-header">
+        <h2>Valeurs manquantes</h2>
+        <p class="slide-subtitle" style="color: #a78bfa">Gérer les NA</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-r">x &lt;- c(10, NA, 30, NA, 50)
+
+is.na(x)       # FALSE TRUE FALSE TRUE FALSE
+sum(is.na(x))  # 2 manquants
+
+mean(x)              # NA !
+mean(x, na.rm = TRUE) # 30
+
+# Dans un data.frame
+df_clean &lt;- na.omit(df)
+# ou
+df[complete.cases(df), ]</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #a78bfa">
+      <div class="schema-label">Gérer les NA</div>
+      <div class="schema-pipe">
+        <span class="pipe-in">données</span>
+        <span class="pipe-filter">▸ Gérer les NA ▸</span>
+        <span class="pipe-out">résultat</span>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">6 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:88%; background:#ff6b00"></div></div>
+      
+      <div class="slide-header">
+        <h2>Encodage et pièges courants</h2>
+        <p class="slide-subtitle" style="color: #ff6b00">Éviter les erreurs classiques</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-text">
+          <ul class="bullet-list"><li class="fragment" data-fragment-index="0" style="animation-delay: 0s">Encodage : encoding = &quot;UTF-8&quot; ou &quot;latin1&quot;</li>
+<li class="fragment" data-fragment-index="1" style="animation-delay: 0.15s">Séparateur : sep = &quot;,&quot; ou &quot;;&quot; ou &quot;\t&quot;</li>
+<li class="fragment" data-fragment-index="2" style="animation-delay: 0.3s">Répertoire : getwd() / setwd() / projets RStudio</li>
+<li class="fragment" data-fragment-index="3" style="animation-delay: 0.44999999999999996s">stringsAsFactors = FALSE (recommandé)</li></ul>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #ff6b00">
+      <div class="schema-label">Paramètres d’import</div>
+      <div class="schema-row">
+        <div class="schema-box">Paramètres d’import</div>
+        <div class="schema-arrow">→</div>
+        <div class="schema-box clean-box">données correctement lues</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">7 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:100%; background:#10b981"></div></div>
+      
+      <div class="slide-header">
+        <h2 style="color: #10b981">Récapitulatif</h2>
+        <p class="slide-subtitle">Données chargées, prêtes à manipuler</p>
+      </div>
+      <ul class="summary-list"><li class="fragment" data-fragment-index="0">
+        <span class="check" style="color: #10b981">✓</span> read.csv / read.csv2 : fichiers CSV
+      </li>
+<li class="fragment" data-fragment-index="1">
+        <span class="check" style="color: #10b981">✓</span> read_excel : fichiers Excel
+      </li>
+<li class="fragment" data-fragment-index="2">
+        <span class="check" style="color: #10b981">✓</span> readRDS / saveRDS : format natif R
+      </li>
+<li class="fragment" data-fragment-index="3">
+        <span class="check" style="color: #10b981">✓</span> 6 réflexes : str, head, dim, names, summary, is.na
+      </li>
+<li class="fragment" data-fragment-index="4">
+        <span class="check" style="color: #10b981">✓</span> na.rm = TRUE pour ignorer les NA
+      </li></ul>
+      <div class="slide-footer">
+        <span class="slide-num">8 / 8</span>
+      </div>
+    </section>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      width: 1920, height: 1080,
+      margin: 0,
+      center: false,
+      controls: true,
+      progress: false,
+      slideNumber: false,
+      plugins: []
+    });
+    hljs.highlightAll();
+  </script>
+</body>
+</html>

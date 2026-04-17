@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de Cours</title>
+<style>
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#2d3436;line-height:1.7;max-width:800px;margin:0 auto;padding:30px 24px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
+h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+h4{font-size:.95rem;margin:16px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid #dfe6e9;padding:8px 12px;text-align:left;font-size:.9rem}
+th{background:#f1f2f6;font-weight:600}
+tr:nth-child(even){background:#f8f9fa}
+blockquote{border-left:4px solid #74b9ff;margin:12px 0;padding:8px 16px;background:#f8f9fa;color:#636e72}
+strong{color:#2d3436}
+hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
+.header-bar{background:#0984e3;color:#fff;padding:12px 20px;border-radius:8px;margin-bottom:24px;font-size:.85rem}
+.header-bar strong{color:#fff}
+</style>
+</head>
+<body>
+<div class="header-bar"><strong>R Niveau I</strong></div>
+<h1>R Niveau I — Plan de cours détaillé</h1>
+<p><strong>Formation</strong> : Initiation au langage R
+<strong>Durée</strong> : 2 jours (14 heures)
+<strong>Horaires</strong> : 9h00 – 17h00</p>
+<hr>
+<h2>JOUR 1 — Découverte de R</h2>
+<hr>
+<h3>Module 1 : Introduction à R et RStudio (9h00 – 10h30)</h3>
+<p><strong>Objectifs</strong> : Installer R et RStudio, comprendre l&#39;interface, exécuter ses premières commandes.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Pourquoi R ?</strong> (15 min)</p>
+<ul>
+<li>R dans l&#39;écosystème data science (comparaison Python, SAS, Excel)</li>
+<li>Open source, communauté active, reproductibilité</li>
+<li>Cas d&#39;usage : statistique, bioinformatique, finance, sciences sociales</li>
+</ul>
+</li>
+<li><p><strong>Installation de R et RStudio</strong> (15 min)</p>
+<ul>
+<li>Téléchargement depuis CRAN et posit.co</li>
+<li>Démonstration de l&#39;installation pas à pas</li>
+<li>Vérification de l&#39;installation</li>
+</ul>
+</li>
+<li><p><strong>L&#39;interface RStudio</strong> (20 min)</p>
+<ul>
+<li>Les 4 panneaux : Console, Source, Environment/History, Files/Plots/Help</li>
+<li>Personnalisation : thème, disposition, raccourcis clavier</li>
+<li>Créer un nouveau script R</li>
+</ul>
+</li>
+<li><p><strong>La console R</strong> (20 min)</p>
+<ul>
+<li>R comme calculatrice : opérations arithmétiques</li>
+<li>Affectation avec <code>&lt;-</code> et <code>=</code></li>
+<li>Afficher et inspecter des valeurs</li>
+<li>L&#39;historique des commandes</li>
+</ul>
+</li>
+<li><p><strong>Les scripts R</strong> (10 min)</p>
+<ul>
+<li>Créer, sauvegarder, exécuter un script (.R)</li>
+<li>Commentaires avec <code>#</code></li>
+<li>Exécuter ligne par ligne vs bloc</li>
+</ul>
+</li>
+<li><p><strong>Obtenir de l&#39;aide</strong> (10 min)</p>
+<ul>
+<li><code>?fonction</code>, <code>help(fonction)</code>, <code>??mot_clé</code></li>
+<li>Onglet Help de RStudio</li>
+<li>Exemples avec <code>example(mean)</code></li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Créer un script qui effectue 10 calculs variés et les affecte à des variables nommées.</p>
+<hr>
+<h3>Module 2 : Les objets R (10h45 – 12h15)</h3>
+<p><strong>Objectifs</strong> : Identifier et créer les objets fondamentaux de R, comprendre les types de données.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Les types atomiques</strong> (15 min)</p>
+<ul>
+<li><code>numeric</code> (double), <code>integer</code> (suffixe L), <code>character</code>, <code>logical</code></li>
+<li><code>complex</code> (mention rapide)</li>
+<li>Vérifier un type : <code>class()</code>, <code>typeof()</code>, <code>is.numeric()</code>, <code>is.character()</code></li>
+</ul>
+</li>
+<li><p><strong>Les vecteurs</strong> (20 min)</p>
+<ul>
+<li>Création : <code>c()</code>, <code>seq()</code>, <code>rep()</code>, opérateur <code>:</code></li>
+<li>Vecteurs nommés : <code>names()</code></li>
+<li>Propriété fondamentale : un seul type par vecteur (coercition automatique)</li>
+<li>Opérations vectorisées : addition, multiplication, recyclage</li>
+</ul>
+</li>
+<li><p><strong>L&#39;indexation de vecteurs</strong> (15 min)</p>
+<ul>
+<li>Par position : <code>v[1]</code>, <code>v[c(1,3)]</code></li>
+<li>Par exclusion : <code>v[-2]</code></li>
+<li>Par condition logique : <code>v[v &gt; 5]</code></li>
+<li>Par nom : <code>v[&quot;nom&quot;]</code></li>
+</ul>
+</li>
+<li><p><strong>Les matrices</strong> (10 min)</p>
+<ul>
+<li><code>matrix()</code> : <code>nrow</code>, <code>ncol</code>, <code>byrow</code></li>
+<li>Dimensions : <code>dim()</code>, <code>nrow()</code>, <code>ncol()</code></li>
+<li>Indexation : <code>m[i, j]</code>, <code>m[i, ]</code>, <code>m[, j]</code></li>
+</ul>
+</li>
+<li><p><strong>Les listes</strong> (15 min)</p>
+<ul>
+<li><code>list()</code> : conteneur hétérogène</li>
+<li>Accès : <code>$nom</code>, <code>[[ ]]</code> (élément), <code>[ ]</code> (sous-liste)</li>
+<li>Listes nommées</li>
+<li>Quand utiliser une liste vs un vecteur</li>
+</ul>
+</li>
+<li><p><strong>Les data.frames</strong> (10 min)</p>
+<ul>
+<li><code>data.frame()</code> : le tableau de données</li>
+<li>Accès colonnes : <code>df$col</code>, <code>df[, &quot;col&quot;]</code>, <code>df[, c(&quot;a&quot;,&quot;b&quot;)]</code></li>
+<li>Accès lignes : <code>df[1:5, ]</code></li>
+<li><code>str()</code>, <code>head()</code>, <code>summary()</code></li>
+</ul>
+</li>
+<li><p><strong>Les facteurs</strong> (5 min)</p>
+<ul>
+<li><code>factor()</code> : variables catégorielles</li>
+<li><code>levels()</code>, facteurs ordonnés</li>
+<li>Utilité pour les modèles statistiques et les graphiques</li>
+</ul>
+</li>
+<li><p><strong>Conversions de types</strong> (5 min)</p>
+<ul>
+<li><code>as.numeric()</code>, <code>as.character()</code>, <code>as.logical()</code>, <code>as.integer()</code></li>
+<li><code>as.data.frame()</code>, <code>as.matrix()</code></li>
+<li>Pièges courants de la coercition</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Créer un data.frame de 5 étudiants (nom, âge, note, réussite) et le manipuler.</p>
+<hr>
+<h3>Module 3 : Les fonctions de base (13h30 – 15h00)</h3>
+<p><strong>Objectifs</strong> : Utiliser les fonctions intégrées de R et écrire ses premières fonctions personnalisées.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Fonctions mathématiques</strong> (15 min)</p>
+<ul>
+<li><code>sqrt()</code>, <code>abs()</code>, <code>round()</code>, <code>ceiling()</code>, <code>floor()</code></li>
+<li><code>log()</code>, <code>log10()</code>, <code>exp()</code></li>
+<li><code>max()</code>, <code>min()</code>, <code>range()</code>, <code>sum()</code>, <code>prod()</code>, <code>cumsum()</code></li>
+</ul>
+</li>
+<li><p><strong>Fonctions statistiques</strong> (20 min)</p>
+<ul>
+<li><code>mean()</code>, <code>median()</code>, <code>sd()</code>, <code>var()</code></li>
+<li><code>quantile()</code>, <code>IQR()</code></li>
+<li><code>summary()</code> : résumé en une ligne</li>
+<li><code>cor()</code> : corrélation entre deux vecteurs</li>
+<li><code>table()</code> : tableau de fréquences</li>
+</ul>
+</li>
+<li><p><strong>Manipulation de chaînes</strong> (15 min)</p>
+<ul>
+<li><code>paste()</code> et <code>paste0()</code> : concaténation</li>
+<li><code>nchar()</code> : longueur</li>
+<li><code>substr()</code>, <code>substring()</code> : extraction</li>
+<li><code>toupper()</code>, <code>tolower()</code> : casse</li>
+<li><code>gsub()</code>, <code>sub()</code> : remplacement</li>
+<li><code>grep()</code>, <code>grepl()</code> : recherche de motifs</li>
+</ul>
+</li>
+<li><p><strong>Fonctions logiques</strong> (10 min)</p>
+<ul>
+<li><code>any()</code>, <code>all()</code> : au moins un / tous vrais</li>
+<li><code>which()</code> : indices des vrais</li>
+<li><code>ifelse()</code> : condition vectorisée</li>
+<li>Opérateurs <code>&amp;</code>, <code>|</code>, <code>!</code>, <code>&amp;&amp;</code>, <code>||</code></li>
+</ul>
+</li>
+<li><p><strong>Créer ses propres fonctions</strong> (25 min)</p>
+<ul>
+<li>Syntaxe : <code>function(arg1, arg2 = default) { ... }</code></li>
+<li><code>return()</code> explicite vs implicite</li>
+<li>Arguments par défaut</li>
+<li>Portée des variables (scope)</li>
+<li>Exemple : fonction qui calcule un z-score</li>
+</ul>
+</li>
+<li><p><strong>Appliquer une fonction</strong> (5 min)</p>
+<ul>
+<li><code>sapply()</code>, <code>lapply()</code> : aperçu rapide</li>
+<li>Appliquer une fonction custom à un vecteur</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Écrire 3 fonctions — calcul d&#39;IMC, standardisation z-score, nettoyage de texte.</p>
+<hr>
+<h3>Module 4 : Atelier pratique Jour 1 (15h15 – 17h00)</h3>
+<p><strong>Objectifs</strong> : Consolider les acquis des Modules 1 à 3 par la pratique guidée.</p>
+<p><strong>Contenu</strong> :</p>
+<ol>
+<li><p><strong>Exercice guidé 1</strong> (20 min) — Vecteurs et indexation</p>
+<ul>
+<li>Créer des vecteurs de températures, les filtrer, calculer des statistiques</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé 2</strong> (20 min) — Data.frames</p>
+<ul>
+<li>Construire un data.frame de ventes, ajouter des colonnes calculées</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé 3</strong> (20 min) — Fonctions</p>
+<ul>
+<li>Écrire une fonction de conversion Celsius/Fahrenheit</li>
+<li>L&#39;appliquer à un vecteur de mesures</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé 4</strong> (25 min) — Mini-analyse</p>
+<ul>
+<li>Créer un jeu de données complet, calculer des statistiques par groupe</li>
+</ul>
+</li>
+<li><p><strong>Correction collective et questions</strong> (20 min)</p>
+</li>
+</ol>
+<hr>
+<h2>JOUR 2 — Manipulation de données</h2>
+<hr>
+<h3>Module 5 : Importer et exporter des données (9h00 – 10h30)</h3>
+<p><strong>Objectifs</strong> : Charger des données depuis des sources variées et les explorer.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>read.csv() et read.table()</strong> (20 min)</p>
+<ul>
+<li>Paramètres essentiels : <code>sep</code>, <code>header</code>, <code>dec</code>, <code>stringsAsFactors</code></li>
+<li><code>na.strings</code> : gérer les valeurs manquantes à l&#39;import</li>
+<li><code>encoding</code> : UTF-8, Latin1</li>
+<li><code>read.csv2()</code> pour les fichiers français (<code>;</code> et <code>,</code>)</li>
+</ul>
+</li>
+<li><p><strong>read.xlsx avec le package readxl</strong> (10 min)</p>
+<ul>
+<li><code>install.packages(&quot;readxl&quot;)</code> et <code>library(readxl)</code></li>
+<li><code>read_excel()</code> : paramètres <code>sheet</code>, <code>range</code>, <code>col_names</code></li>
+</ul>
+</li>
+<li><p><strong>readRDS et saveRDS</strong> (10 min)</p>
+<ul>
+<li>Format natif R : compact, rapide, préserve les types</li>
+<li><code>saveRDS(objet, &quot;fichier.rds&quot;)</code> / <code>readRDS(&quot;fichier.rds&quot;)</code></li>
+</ul>
+</li>
+<li><p><strong>write.csv et write.table</strong> (10 min)</p>
+<ul>
+<li><code>row.names = FALSE</code></li>
+<li><code>write.csv2()</code> pour le format français</li>
+</ul>
+</li>
+<li><p><strong>Exploration initiale</strong> (25 min)</p>
+<ul>
+<li><code>str()</code> : structure complète</li>
+<li><code>head()</code>, <code>tail()</code> : premières / dernières lignes</li>
+<li><code>summary()</code> : résumé statistique</li>
+<li><code>dim()</code>, <code>nrow()</code>, <code>ncol()</code> : dimensions</li>
+<li><code>names()</code>, <code>colnames()</code> : noms de colonnes</li>
+<li><code>class()</code> : type de chaque colonne</li>
+</ul>
+</li>
+<li><p><strong>Gestion des valeurs manquantes</strong> (15 min)</p>
+<ul>
+<li><code>is.na()</code>, <code>sum(is.na(df))</code></li>
+<li><code>complete.cases()</code></li>
+<li><code>na.rm = TRUE</code> dans les fonctions</li>
+<li><code>na.omit()</code> : supprimer les lignes incomplètes</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Importer un CSV avec des problèmes (encodage, séparateur, NA), le nettoyer et l&#39;explorer.</p>
+<hr>
+<h3>Module 6 : Manipulation de data.frames (10h45 – 12h15)</h3>
+<p><strong>Objectifs</strong> : Maîtriser les opérations courantes de manipulation tabulaire en base R.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Sélection de colonnes</strong> (10 min)</p>
+<ul>
+<li><code>df$col</code>, <code>df[, &quot;col&quot;]</code>, <code>df[, c(&quot;a&quot;, &quot;b&quot;)]</code></li>
+<li>Sélection par indice numérique</li>
+</ul>
+</li>
+<li><p><strong>Filtrage de lignes</strong> (15 min)</p>
+<ul>
+<li>Conditions logiques : <code>df[df$age &gt; 30, ]</code></li>
+<li><code>subset(df, age &gt; 30, select = c(nom, age))</code></li>
+<li>Combinaison de conditions : <code>&amp;</code>, <code>|</code></li>
+</ul>
+</li>
+<li><p><strong>Tri</strong> (10 min)</p>
+<ul>
+<li><code>order()</code> : retourne les indices triés</li>
+<li><code>df[order(df$note), ]</code> : tri croissant</li>
+<li><code>df[order(-df$note), ]</code> : tri décroissant</li>
+<li>Tri multi-critères</li>
+</ul>
+</li>
+<li><p><strong>Ajout de colonnes calculées</strong> (10 min)</p>
+<ul>
+<li><code>df$nouvelle &lt;- df$a + df$b</code></li>
+<li><code>transform(df, ratio = a / b)</code></li>
+<li><code>within(df, { ... })</code></li>
+</ul>
+</li>
+<li><p><strong>Merge et jointures</strong> (20 min)</p>
+<ul>
+<li><code>merge(x, y, by = &quot;clé&quot;)</code> : jointure naturelle</li>
+<li><code>all.x = TRUE</code> : left join</li>
+<li><code>all.y = TRUE</code> : right join</li>
+<li><code>all = TRUE</code> : full join</li>
+<li>Jointure sur plusieurs colonnes : <code>by = c(&quot;a&quot;, &quot;b&quot;)</code></li>
+</ul>
+</li>
+<li><p><strong>Reshape</strong> (10 min)</p>
+<ul>
+<li><code>stack()</code> et <code>unstack()</code> : format long ↔ large</li>
+<li><code>reshape()</code> : transformation plus contrôlée</li>
+</ul>
+</li>
+<li><p><strong>Agrégation</strong> (15 min)</p>
+<ul>
+<li><code>aggregate(valeur ~ groupe, data = df, FUN = mean)</code></li>
+<li><code>tapply(df$valeur, df$groupe, summary)</code></li>
+<li>Agrégation multi-fonctions</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Pipeline complet — filtrer, trier, joindre deux tables, agréger par groupe.</p>
+<hr>
+<h3>Module 7 : Introduction à la visualisation (13h30 – 15h00)</h3>
+<p><strong>Objectifs</strong> : Créer des graphiques informatifs avec le système graphique de base de R.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>plot() — Nuage de points</strong> (15 min)</p>
+<ul>
+<li><code>plot(x, y)</code> : scatterplot de base</li>
+<li>Paramètres : <code>main</code>, <code>xlab</code>, <code>ylab</code>, <code>col</code>, <code>pch</code>, <code>cex</code></li>
+<li>Types : <code>type = &quot;p&quot;</code>, <code>&quot;l&quot;</code>, <code>&quot;b&quot;</code>, <code>&quot;h&quot;</code></li>
+</ul>
+</li>
+<li><p><strong>hist() — Histogramme</strong> (10 min)</p>
+<ul>
+<li><code>breaks</code> : nombre de classes</li>
+<li><code>col</code>, <code>border</code></li>
+<li>Ajouter une courbe de densité</li>
+</ul>
+</li>
+<li><p><strong>boxplot() — Boîte à moustaches</strong> (10 min)</p>
+<ul>
+<li><code>boxplot(valeur ~ groupe)</code> : comparaison par groupe</li>
+<li>Interprétation : médiane, quartiles, outliers</li>
+<li><code>horizontal = TRUE</code></li>
+</ul>
+</li>
+<li><p><strong>barplot() — Diagramme en barres</strong> (10 min)</p>
+<ul>
+<li><code>barplot(table(df$var))</code></li>
+<li>Barres empilées et côte à côte</li>
+<li><code>legend.text</code>, <code>args.legend</code></li>
+</ul>
+</li>
+<li><p><strong>Paramètres graphiques avancés</strong> (15 min)</p>
+<ul>
+<li><code>par()</code> : marges, couleurs, polices</li>
+<li><code>pch</code> (1-25), <code>lty</code> (1-6), <code>col</code> (noms, hex, rgb)</li>
+<li><code>cex</code> (taille), <code>lwd</code> (épaisseur)</li>
+</ul>
+</li>
+<li><p><strong>Combiner des graphiques</strong> (10 min)</p>
+<ul>
+<li><code>par(mfrow = c(2, 2))</code> : grille 2×2</li>
+<li><code>layout()</code> : disposition personnalisée</li>
+</ul>
+</li>
+<li><p><strong>Ajouter des éléments</strong> (10 min)</p>
+<ul>
+<li><code>legend()</code>, <code>abline()</code>, <code>text()</code>, <code>points()</code>, <code>lines()</code></li>
+<li><code>title()</code> pour ajouter des titres</li>
+</ul>
+</li>
+<li><p><strong>Exporter des graphiques</strong> (10 min)</p>
+<ul>
+<li><code>pdf(&quot;fichier.pdf&quot;)</code> ... <code>dev.off()</code></li>
+<li><code>png(&quot;fichier.png&quot;, width, height, res)</code></li>
+<li>Depuis RStudio : Export button</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Créer un dashboard de 4 graphiques sur le jeu de données <code>iris</code>.</p>
+<hr>
+<h3>Module 8 : Projet intégrateur (15h15 – 17h00)</h3>
+<p><strong>Objectifs</strong> : Mobiliser l&#39;ensemble des compétences acquises sur un cas concret.</p>
+<p><strong>Contenu</strong> :</p>
+<ol>
+<li><p><strong>Présentation du projet</strong> (10 min)</p>
+<ul>
+<li>Jeu de données : <code>airquality</code> (données de qualité de l&#39;air à New York)</li>
+<li>Objectif : analyser la relation entre température, ozone et vent</li>
+</ul>
+</li>
+<li><p><strong>Étape 1 : Import et exploration</strong> (20 min)</p>
+<ul>
+<li>Charger les données, examiner la structure</li>
+<li>Identifier les valeurs manquantes</li>
+<li>Statistiques descriptives globales</li>
+</ul>
+</li>
+<li><p><strong>Étape 2 : Nettoyage</strong> (15 min)</p>
+<ul>
+<li>Traitement des NA</li>
+<li>Création de variables dérivées (mois en texte, catégories de température)</li>
+</ul>
+</li>
+<li><p><strong>Étape 3 : Statistiques descriptives</strong> (15 min)</p>
+<ul>
+<li>Moyennes par mois, corrélations</li>
+<li>Tableaux de synthèse avec <code>aggregate()</code></li>
+</ul>
+</li>
+<li><p><strong>Étape 4 : Visualisations</strong> (20 min)</p>
+<ul>
+<li>4 graphiques commentés (scatter, hist, boxplot, barplot)</li>
+<li>Dashboard multi-graphiques</li>
+</ul>
+</li>
+<li><p><strong>Étape 5 : Synthèse et interprétation</strong> (10 min)</p>
+<ul>
+<li>Rédiger 5 conclusions en commentaires R</li>
+</ul>
+</li>
+<li><p><strong>Correction collective et bilan</strong> (15 min)</p>
+<ul>
+<li>Tour de table, questions, ressources pour aller plus loin</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>Récapitulatif des livrables</h2>
+<table>
+<thead>
+<tr>
+<th>Livrable</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Slides animées (vidéos)</td>
+<td>8 lesson.json (Remotion)</td>
+</tr>
+<tr>
+<td>Scripts vidéo</td>
+<td>8 fichiers Markdown</td>
+</tr>
+<tr>
+<td>Exercices Jour 1</td>
+<td>Markdown + solutions R</td>
+</tr>
+<tr>
+<td>Exercices Jour 2</td>
+<td>Markdown + solutions R</td>
+</tr>
+<tr>
+<td>Projet intégrateur</td>
+<td>Markdown + solution complète</td>
+</tr>
+<tr>
+<td>Syllabus</td>
+<td>Markdown</td>
+</tr>
+<tr>
+<td>Plan de cours</td>
+<td>Ce document</td>
+</tr>
+</tbody></table>
+
+</body>
+</html>

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualisation avec matplotlib</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080808; --bg2: #111111; --text: #ffffff; --body: #d1d5db;
+      --muted: #888888; --dim: #444444; --border: #222222;
+      --cyan: #00f3ff; --purple: #a78bfa; --orange: #ff6b00; --green: #10b981;
+    }
+    * { box-sizing: border-box; }
+    .reveal { font-family: 'Inter', sans-serif; font-size: 24px; background: var(--bg); }
+    .reveal .slides { text-align: left; }
+    .reveal .slides > section {
+      display: flex !important; flex-direction: column; justify-content: center;
+      align-items: center; height: 100%; padding: 40px 60px;
+    }
+    .reveal .slides > section > * { width: 100%; max-width: 1200px; }
+    .reveal h1 { font-weight: 800; font-size: 2.4em; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 0.3em; }
+    .reveal h2 { font-weight: 700; font-size: 1.6em; color: #fff; margin-bottom: 0.2em; letter-spacing: -0.02em; }
+    .reveal p { color: var(--body); line-height: 1.6; }
+    .subtitle { font-size: 1.1em; color: var(--muted); margin-top: 0.3em; }
+    .slide-subtitle { font-size: 0.85em; font-weight: 600; margin-bottom: 0.8em; }
+    .slide-header { margin-bottom: 1em; }
+    .slide-body { display: flex; gap: 40px; align-items: flex-start; }
+    .two-col .col-text, .two-col .col-code { flex: 1.2; }
+    .two-col .col-visual { flex: 0.8; display: flex; justify-content: center; align-items: center; }
+
+    /* Code */
+    pre { background: var(--bg2) !important; border: 1px solid var(--border); border-radius: 12px;
+          padding: 20px !important; margin: 0 !important; font-size: 0.7em !important; overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', monospace !important; line-height: 1.7 !important; }
+
+    /* Bullets */
+    .bullet-list, .summary-list { list-style: none; padding: 0; margin: 0; }
+    .bullet-list li, .summary-list li {
+      padding: 8px 0; border-bottom: 1px solid var(--border); color: var(--body);
+      font-size: 0.9em; line-height: 1.5;
+    }
+    .bullet-list li:last-child, .summary-list li:last-child { border-bottom: none; }
+    .check { font-weight: 700; margin-right: 8px; }
+
+    /* Schemas */
+    .schema { display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; padding: 20px; }
+    .schema-label { font-size: 0.75em; font-weight: 600; color: var(--accent, var(--cyan)); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+    .schema-row { display: flex; gap: 12px; align-items: center; justify-content: center; }
+    .schema-stack-grid { display: flex; gap: 10px; align-items: center; }
+    .schema-box {
+      background: var(--bg2); border: 2px solid var(--accent, var(--cyan)); border-radius: 8px;
+      padding: 12px 20px; color: var(--text); font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8em; text-align: center; min-width: 60px;
+      animation: fadeSlideUp 0.5s ease-out both;
+    }
+    .schema-box.active { background: var(--accent, var(--cyan)); color: var(--bg); font-weight: 700; }
+    .schema-box.highlight { background: rgba(0, 243, 255, 0.15); border-color: var(--accent, var(--cyan)); }
+    .schema-box.dim { opacity: 0.3; }
+    .schema-box.strike { text-decoration: line-through; opacity: 0.5; }
+    .schema-box.glow { box-shadow: 0 0 20px var(--accent, var(--cyan)); }
+    .schema-box.messy { border-style: dashed; opacity: 0.6; }
+    .schema-box.clean-box { border-color: var(--green); box-shadow: 0 0 12px rgba(16, 185, 129, 0.3); }
+    .schema-arrow { color: var(--accent, var(--cyan)); font-size: 1.5em; font-weight: 700; }
+    .schema-ptr { color: var(--accent, var(--cyan)); font-size: 1.2em; animation: bounce 1s ease infinite; }
+    .schema-loop { color: var(--accent, var(--cyan)); font-size: 2em; font-weight: 700; animation: spin 3s linear infinite; }
+    .schema-method {
+      background: var(--bg2); border: 2px solid var(--accent, var(--cyan)); border-radius: 24px;
+      padding: 10px 24px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--text);
+    }
+    .schema-check { color: var(--accent, var(--cyan)); font-size: 1.1em; font-weight: 600; }
+    .schema-pipe { display: flex; gap: 8px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.8em; }
+    .pipe-in { color: var(--muted); } .pipe-out { color: var(--green); font-weight: 700; }
+    .pipe-filter { color: var(--accent, var(--cyan)); background: var(--bg2); padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border); }
+
+    /* Progress bar */
+    .progress-bar { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 10; }
+    .progress-fill { height: 100%; transition: width 0.5s ease; border-radius: 0 2px 2px 0; }
+
+    /* Footer */
+    .slide-footer { position: absolute; bottom: 16px; right: 24px; }
+    .slide-num { font-size: 0.65em; color: var(--dim); font-family: 'JetBrains Mono', monospace; }
+
+    /* Python-specific schemas */
+    .schema-kv { display: flex; flex-direction: column; gap: 6px; }
+    .kv-row { display: flex; gap: 8px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75em; }
+    .kv-key { color: var(--cyan); background: var(--bg2); padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border); }
+    .kv-val { color: var(--body); }
+    .kv-sep { color: var(--accent, var(--cyan)); font-weight: 700; }
+    .schema-table { border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 0.7em; }
+    .schema-table th { background: var(--accent, var(--cyan)); color: var(--bg); padding: 6px 14px; font-weight: 600; }
+    .schema-table td { background: var(--bg2); border: 1px solid var(--border); padding: 6px 14px; color: var(--body); text-align: center; }
+    .schema-table .row-idx { color: var(--muted); font-weight: 600; background: var(--bg); }
+    .schema-type-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .type-box { font-family: 'JetBrains Mono', monospace; font-size: 0.8em; padding: 8px 16px !important; min-width: auto !important; }
+    .schema-flow { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: center; }
+    .schema-chart { display: flex; gap: 6px; align-items: flex-end; height: 80px; padding-top: 10px; }
+    .chart-bar { width: 20px; background: var(--accent, var(--cyan)); border-radius: 3px 3px 0 0; animation: fadeSlideUp 0.5s ease-out both; opacity: 0.8; }
+    .schema-venn { position: relative; width: 120px; height: 80px; }
+    .venn-circle { position: absolute; width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--accent, var(--cyan)); display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.8em; color: var(--text); background: rgba(0,243,255,0.05); }
+    .venn-left { left: 0; } .venn-right { left: 45px; }
+
+    /* Animations */
+    @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .anim-build { animation: fadeSlideUp 0.5s ease-out both; }
+
+    /* Print / PDF */
+    @media print {
+      .reveal .slides > section { page-break-after: always; }
+      .progress-bar { display: none; }
+      .fragment { opacity: 1 !important; visibility: visible !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:10%; background:#ff6b00"></div></div>
+      
+      <h1 style="color: #ff6b00; font-size: 2.2em">Visualisation avec matplotlib</h1>
+      <p class="subtitle">Raconter une histoire avec des graphiques</p>
+      
+    <div class="schema" style="--accent: #ff6b00">
+      <div class="schema-label">Galerie de graphiques</div>
+      <div class="schema-chart">
+        <div class="chart-bar" style="height:40%; animation-delay:0.1s"></div>
+        <div class="chart-bar" style="height:70%; animation-delay:0.2s"></div>
+        <div class="chart-bar" style="height:55%; animation-delay:0.3s"></div>
+        <div class="chart-bar" style="height:85%; animation-delay:0.4s"></div>
+        <div class="chart-bar" style="height:45%; animation-delay:0.5s"></div>
+      </div>
+    </div>
+      <div class="slide-footer">
+        <span class="slide-num">1 / 10</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:20%; background:#00f3ff"></div></div>
+      
+      <div class="slide-header">
+        <h2>Les bases de matplotlib</h2>
+        <p class="slide-subtitle" style="color: #00f3ff">import, figure et show</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">import matplotlib.pyplot as plt
+
+# Mon premier graphique
+plt.figure(figsize=(8, 5))
+plt.plot([1, 2, 3, 4], [10, 20, 25, 30])
+plt.title('Mon premier graphique')
+plt.xlabel('Temps')
+plt.ylabel('Valeur')
+plt.show()
+
+# En notebook Jupyter, ajoutez :
+# %matplotlib inline</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #00f3ff">
+      <div class="schema-label">Figure → Axes → Données</div>
+      <div class="schema-stack-grid">
+        <div class="schema-box" style="animation-delay:0.1s">Figure</div>
+        <div class="schema-box" style="animation-delay:0.30000000000000004s">Axes</div>
+        <div class="schema-box" style="animation-delay:0.5s">Données</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">2 / 10</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:30%; background:#a78bfa"></div></div>
+      
+      <div class="slide-header">
+        <h2>Nuage de points</h2>
+        <p class="slide-subtitle" style="color: #a78bfa">plt.scatter</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+# Generer des donnees
+np.random.seed(42)
+ages = np.random.randint(18, 65, 50)
+salaires = ages * 500 + np.random.normal(0, 5000, 50)
+
+# Nuage de points
+plt.figure(figsize=(8, 5))
+plt.scatter(ages, salaires, c='#a78bfa', alpha=0.7, s=60)
+plt.title('Salaire en fonction de l\'age')
+plt.xlabel('Age')
+plt.ylabel('Salaire (euros)')
+plt.grid(True, alpha=0.3)
+plt.show()</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #a78bfa">
+      <div class="schema-label">Nuage de points</div>
+      <div class="schema-chart">
+        <div class="chart-bar" style="height:40%; animation-delay:0.1s"></div>
+        <div class="chart-bar" style="height:70%; animation-delay:0.2s"></div>
+        <div class="chart-bar" style="height:55%; animation-delay:0.3s"></div>
+        <div class="chart-bar" style="height:85%; animation-delay:0.4s"></div>
+        <div class="chart-bar" style="height:45%; animation-delay:0.5s"></div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">3 / 10</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:40%; background:#00f3ff"></div></div>
+      
+      <div class="slide-header">
+        <h2>Graphique en ligne</h2>
+        <p class="slide-subtitle" style="color: #00f3ff">plt.plot avec style</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+mois = np.arange(1, 13)
+ventes_2024 = [45, 52, 48, 61, 55, 67, 72, 68, 75, 80, 85, 90]
+ventes_2025 = [50, 58, 55, 70, 65, 73, 78, 82, 88, 92, 95, 100]
+
+plt.figure(figsize=(10, 5))
+plt.plot(mois, ventes_2024, 'o-', color='#00f3ff', label='2024')
+plt.plot(mois, ventes_2025, 's--', color='#ff6b00', label='2025')
+plt.title('Evolution des ventes mensuelles')
+plt.xlabel('Mois')
+plt.ylabel('Ventes (k euros)')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #00f3ff">
+      <div class="schema-label">Courbe temporelle</div>
+      <div class="schema-chart">
+        <div class="chart-bar" style="height:40%; animation-delay:0.1s"></div>
+        <div class="chart-bar" style="height:70%; animation-delay:0.2s"></div>
+        <div class="chart-bar" style="height:55%; animation-delay:0.3s"></div>
+        <div class="chart-bar" style="height:85%; animation-delay:0.4s"></div>
+        <div class="chart-bar" style="height:45%; animation-delay:0.5s"></div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">4 / 10</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:50%; background:#10b981"></div></div>
+      
+      <div class="slide-header">
+        <h2>Histogramme</h2>
+        <p class="slide-subtitle" style="color: #10b981">plt.hist pour les distributions</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+# Simuler des notes d'examen
+np.random.seed(42)
+notes = np.random.normal(12, 3, 200)
+notes = np.clip(notes, 0, 20)  # borner entre 0 et 20
+
+plt.figure(figsize=(8, 5))
+plt.hist(notes, bins=20, color='#10b981',
+         edgecolor='white', alpha=0.8)
+plt.axvline(notes.mean(), color='#ff6b00',
+            linestyle='--', label=f'Moyenne: {notes.mean():.1f}')
+plt.title('Distribution des notes')
+plt.xlabel('Note')
+plt.ylabel('Nombre d\'eleves')
+plt.legend()
+plt.show()</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #10b981">
+      <div class="schema-label">Distribution</div>
+      <div class="schema-chart">
+        <div class="chart-bar" style="height:40%; animation-delay:0.1s"></div>
+        <div class="chart-bar" style="height:70%; animation-delay:0.2s"></div>
+        <div class="chart-bar" style="height:55%; animation-delay:0.3s"></div>
+        <div class="chart-bar" style="height:85%; animation-delay:0.4s"></div>
+        <div class="chart-bar" style="height:45%; animation-delay:0.5s"></div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">5 / 10</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:60%; background:#a78bfa"></div></div>
+      
+      <div class="slide-header">
+        <h2>Boîte à moustaches</h2>
+        <p class="slide-subtitle" style="color: #a78bfa">plt.boxplot pour comparer</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+np.random.seed(42)
+maths = np.random.normal(13, 3, 100)
+physique = np.random.normal(11, 4, 100)
+francais = np.random.normal(14, 2, 100)
+
+plt.figure(figsize=(8, 5))
+bp = plt.boxplot([maths, physique, francais],
+                 labels=['Maths', 'Physique', 'Francais'],
+                 patch_artist=True)
+colors = ['#00f3ff', '#a78bfa', '#ff6b00']
+for patch, color in zip(bp['boxes'], colors):
+    patch.set_facecolor(color)
+plt.title('Comparaison des notes par matiere')
+plt.ylabel('Note')
+plt.grid(True, axis='y', alpha=0.3)
+plt.show()</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #a78bfa">
+      <div class="schema-label">Boîte à moustaches</div>
+      <div class="schema-chart">
+        <div class="chart-bar" style="height:40%; animation-delay:0.1s"></div>
+        <div class="chart-bar" style="height:70%; animation-delay:0.2s"></div>
+        <div class="chart-bar" style="height:55%; animation-delay:0.3s"></div>
+        <div class="chart-bar" style="height:85%; animation-delay:0.4s"></div>
+        <div class="chart-bar" style="height:45%; animation-delay:0.5s"></div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">6 / 10</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:70%; background:#ff6b00"></div></div>
+      
+      <div class="slide-header">
+        <h2>Diagramme en barres</h2>
+        <p class="slide-subtitle" style="color: #ff6b00">plt.bar et plt.barh</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+villes = ['Paris', 'Lyon', 'Marseille', 'Toulouse', 'Bordeaux']
+ventes = [320, 180, 210, 150, 170]
+colors = ['#00f3ff', '#a78bfa', '#ff6b00', '#10b981', '#a78bfa']
+
+plt.figure(figsize=(8, 5))
+bars = plt.bar(villes, ventes, color=colors, edgecolor='white')
+
+# Ajouter les valeurs au-dessus des barres
+for bar, v in zip(bars, ventes):
+    plt.text(bar.get_x() + bar.get_width()/2, v + 5,
+             str(v), ha='center', fontweight='bold')
+
+plt.title('Ventes par ville')
+plt.ylabel('Ventes (k euros)')
+plt.show()</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #ff6b00">
+      <div class="schema-label">Diagramme en barres</div>
+      <div class="schema-chart">
+        <div class="chart-bar" style="height:40%; animation-delay:0.1s"></div>
+        <div class="chart-bar" style="height:70%; animation-delay:0.2s"></div>
+        <div class="chart-bar" style="height:55%; animation-delay:0.3s"></div>
+        <div class="chart-bar" style="height:85%; animation-delay:0.4s"></div>
+        <div class="chart-bar" style="height:45%; animation-delay:0.5s"></div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">7 / 10</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:80%; background:#10b981"></div></div>
+      
+      <div class="slide-header">
+        <h2>Sous-graphiques</h2>
+        <p class="slide-subtitle" style="color: #10b981">fig, axes = plt.subplots(2, 2)</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+
+# Graphique 1 : ligne
+axes[0, 0].plot([1, 2, 3, 4], [10, 20, 15, 25], color='#00f3ff')
+axes[0, 0].set_title('Ligne')
+
+# Graphique 2 : scatter
+axes[0, 1].scatter(np.random.rand(30), np.random.rand(30), c='#a78bfa')
+axes[0, 1].set_title('Nuage')
+
+# Graphique 3 : barres
+axes[1, 0].bar(['A', 'B', 'C'], [5, 8, 3], color='#ff6b00')
+axes[1, 0].set_title('Barres')
+
+# Graphique 4 : histogramme
+axes[1, 1].hist(np.random.normal(0, 1, 200), bins=15, color='#10b981')
+axes[1, 1].set_title('Histogramme')
+
+plt.tight_layout()
+plt.show()</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #10b981">
+      <div class="schema-label">Grille de graphiques</div>
+      <table class="schema-table">
+        <tr><th></th><th>col_A</th><th>col_B</th><th>col_C</th></tr>
+        <tr><td class="row-idx">0</td><td>…</td><td>…</td><td>…</td></tr>
+        <tr><td class="row-idx">1</td><td>…</td><td>…</td><td>…</td></tr>
+        <tr><td class="row-idx">2</td><td>…</td><td>…</td><td>…</td></tr>
+      </table>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">8 / 10</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:90%; background:#00f3ff"></div></div>
+      
+      <div class="slide-header">
+        <h2>Personnalisation et export</h2>
+        <p class="slide-subtitle" style="color: #00f3ff">Styles, annotations et savefig</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">import matplotlib.pyplot as plt
+import numpy as np
+
+# Utiliser un style predéfini
+plt.style.use('seaborn-v0_8-darkgrid')
+
+x = np.linspace(0, 10, 100)
+y = np.sin(x)
+
+fig, ax = plt.subplots(figsize=(10, 5))
+ax.plot(x, y, color='#00f3ff', linewidth=2)
+
+# Annoter un point
+ax.annotate('Maximum', xy=(np.pi/2, 1),
+            xytext=(np.pi/2 + 1, 0.8),
+            arrowprops=dict(arrowstyle='-&gt;', color='#ff6b00'),
+            fontsize=12, color='#ff6b00')
+
+ax.set_title('Sinusoide annotee', fontsize=16)
+
+# Exporter en haute resolution
+fig.savefig('graphique.png', dpi=150, bbox_inches='tight')</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #00f3ff">
+      <div class="schema-label">Brut → Publication</div>
+      <div class="schema-row">
+        <div class="schema-box strike">Brut</div>
+        <div class="schema-arrow">→</div>
+        <div class="schema-box glow">Publication</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">9 / 10</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:100%; background:#ff6b00"></div></div>
+      
+      <div class="slide-header">
+        <h2 style="color: #ff6b00">Récapitulatif</h2>
+        <p class="slide-subtitle">Visualisation avec matplotlib</p>
+      </div>
+      <ul class="summary-list"><li class="fragment" data-fragment-index="0">
+        <span class="check" style="color: #ff6b00">✓</span> scatter : relation entre deux variables
+      </li>
+<li class="fragment" data-fragment-index="1">
+        <span class="check" style="color: #ff6b00">✓</span> plot : évolution dans le temps
+      </li>
+<li class="fragment" data-fragment-index="2">
+        <span class="check" style="color: #ff6b00">✓</span> hist : distribution d'une variable
+      </li>
+<li class="fragment" data-fragment-index="3">
+        <span class="check" style="color: #ff6b00">✓</span> boxplot : comparer des groupes
+      </li>
+<li class="fragment" data-fragment-index="4">
+        <span class="check" style="color: #ff6b00">✓</span> bar : comparer des catégories
+      </li>
+<li class="fragment" data-fragment-index="5">
+        <span class="check" style="color: #ff6b00">✓</span> subplots : plusieurs graphiques combinés
+      </li>
+<li class="fragment" data-fragment-index="6">
+        <span class="check" style="color: #ff6b00">✓</span> savefig : export PNG, PDF, SVG
+      </li></ul>
+      <div class="slide-footer">
+        <span class="slide-num">10 / 10</span>
+      </div>
+    </section>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      width: 1920, height: 1080,
+      margin: 0,
+      center: false,
+      controls: true,
+      progress: false,
+      slideNumber: false,
+      plugins: []
+    });
+    hljs.highlightAll();
+  </script>
+</body>
+</html>

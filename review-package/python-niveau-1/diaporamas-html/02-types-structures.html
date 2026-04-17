@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Types de données et structures</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080808; --bg2: #111111; --text: #ffffff; --body: #d1d5db;
+      --muted: #888888; --dim: #444444; --border: #222222;
+      --cyan: #00f3ff; --purple: #a78bfa; --orange: #ff6b00; --green: #10b981;
+    }
+    * { box-sizing: border-box; }
+    .reveal { font-family: 'Inter', sans-serif; font-size: 24px; background: var(--bg); }
+    .reveal .slides { text-align: left; }
+    .reveal .slides > section {
+      display: flex !important; flex-direction: column; justify-content: center;
+      align-items: center; height: 100%; padding: 40px 60px;
+    }
+    .reveal .slides > section > * { width: 100%; max-width: 1200px; }
+    .reveal h1 { font-weight: 800; font-size: 2.4em; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 0.3em; }
+    .reveal h2 { font-weight: 700; font-size: 1.6em; color: #fff; margin-bottom: 0.2em; letter-spacing: -0.02em; }
+    .reveal p { color: var(--body); line-height: 1.6; }
+    .subtitle { font-size: 1.1em; color: var(--muted); margin-top: 0.3em; }
+    .slide-subtitle { font-size: 0.85em; font-weight: 600; margin-bottom: 0.8em; }
+    .slide-header { margin-bottom: 1em; }
+    .slide-body { display: flex; gap: 40px; align-items: flex-start; }
+    .two-col .col-text, .two-col .col-code { flex: 1.2; }
+    .two-col .col-visual { flex: 0.8; display: flex; justify-content: center; align-items: center; }
+
+    /* Code */
+    pre { background: var(--bg2) !important; border: 1px solid var(--border); border-radius: 12px;
+          padding: 20px !important; margin: 0 !important; font-size: 0.7em !important; overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', monospace !important; line-height: 1.7 !important; }
+
+    /* Bullets */
+    .bullet-list, .summary-list { list-style: none; padding: 0; margin: 0; }
+    .bullet-list li, .summary-list li {
+      padding: 8px 0; border-bottom: 1px solid var(--border); color: var(--body);
+      font-size: 0.9em; line-height: 1.5;
+    }
+    .bullet-list li:last-child, .summary-list li:last-child { border-bottom: none; }
+    .check { font-weight: 700; margin-right: 8px; }
+
+    /* Schemas */
+    .schema { display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; padding: 20px; }
+    .schema-label { font-size: 0.75em; font-weight: 600; color: var(--accent, var(--cyan)); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+    .schema-row { display: flex; gap: 12px; align-items: center; justify-content: center; }
+    .schema-stack-grid { display: flex; gap: 10px; align-items: center; }
+    .schema-box {
+      background: var(--bg2); border: 2px solid var(--accent, var(--cyan)); border-radius: 8px;
+      padding: 12px 20px; color: var(--text); font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8em; text-align: center; min-width: 60px;
+      animation: fadeSlideUp 0.5s ease-out both;
+    }
+    .schema-box.active { background: var(--accent, var(--cyan)); color: var(--bg); font-weight: 700; }
+    .schema-box.highlight { background: rgba(0, 243, 255, 0.15); border-color: var(--accent, var(--cyan)); }
+    .schema-box.dim { opacity: 0.3; }
+    .schema-box.strike { text-decoration: line-through; opacity: 0.5; }
+    .schema-box.glow { box-shadow: 0 0 20px var(--accent, var(--cyan)); }
+    .schema-box.messy { border-style: dashed; opacity: 0.6; }
+    .schema-box.clean-box { border-color: var(--green); box-shadow: 0 0 12px rgba(16, 185, 129, 0.3); }
+    .schema-arrow { color: var(--accent, var(--cyan)); font-size: 1.5em; font-weight: 700; }
+    .schema-ptr { color: var(--accent, var(--cyan)); font-size: 1.2em; animation: bounce 1s ease infinite; }
+    .schema-loop { color: var(--accent, var(--cyan)); font-size: 2em; font-weight: 700; animation: spin 3s linear infinite; }
+    .schema-method {
+      background: var(--bg2); border: 2px solid var(--accent, var(--cyan)); border-radius: 24px;
+      padding: 10px 24px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--text);
+    }
+    .schema-check { color: var(--accent, var(--cyan)); font-size: 1.1em; font-weight: 600; }
+    .schema-pipe { display: flex; gap: 8px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.8em; }
+    .pipe-in { color: var(--muted); } .pipe-out { color: var(--green); font-weight: 700; }
+    .pipe-filter { color: var(--accent, var(--cyan)); background: var(--bg2); padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border); }
+
+    /* Progress bar */
+    .progress-bar { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 10; }
+    .progress-fill { height: 100%; transition: width 0.5s ease; border-radius: 0 2px 2px 0; }
+
+    /* Footer */
+    .slide-footer { position: absolute; bottom: 16px; right: 24px; }
+    .slide-num { font-size: 0.65em; color: var(--dim); font-family: 'JetBrains Mono', monospace; }
+
+    /* Python-specific schemas */
+    .schema-kv { display: flex; flex-direction: column; gap: 6px; }
+    .kv-row { display: flex; gap: 8px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75em; }
+    .kv-key { color: var(--cyan); background: var(--bg2); padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border); }
+    .kv-val { color: var(--body); }
+    .kv-sep { color: var(--accent, var(--cyan)); font-weight: 700; }
+    .schema-table { border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 0.7em; }
+    .schema-table th { background: var(--accent, var(--cyan)); color: var(--bg); padding: 6px 14px; font-weight: 600; }
+    .schema-table td { background: var(--bg2); border: 1px solid var(--border); padding: 6px 14px; color: var(--body); text-align: center; }
+    .schema-table .row-idx { color: var(--muted); font-weight: 600; background: var(--bg); }
+    .schema-type-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .type-box { font-family: 'JetBrains Mono', monospace; font-size: 0.8em; padding: 8px 16px !important; min-width: auto !important; }
+    .schema-flow { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: center; }
+    .schema-chart { display: flex; gap: 6px; align-items: flex-end; height: 80px; padding-top: 10px; }
+    .chart-bar { width: 20px; background: var(--accent, var(--cyan)); border-radius: 3px 3px 0 0; animation: fadeSlideUp 0.5s ease-out both; opacity: 0.8; }
+    .schema-venn { position: relative; width: 120px; height: 80px; }
+    .venn-circle { position: absolute; width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--accent, var(--cyan)); display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.8em; color: var(--text); background: rgba(0,243,255,0.05); }
+    .venn-left { left: 0; } .venn-right { left: 45px; }
+
+    /* Animations */
+    @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .anim-build { animation: fadeSlideUp 0.5s ease-out both; }
+
+    /* Print / PDF */
+    @media print {
+      .reveal .slides > section { page-break-after: always; }
+      .progress-bar { display: none; }
+      .fragment { opacity: 1 !important; visibility: visible !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:10%; background:#a78bfa"></div></div>
+      
+      <h1 style="color: #a78bfa; font-size: 2.2em">Types de données et structures</h1>
+      <p class="subtitle">Les briques de construction de Python</p>
+      
+    <div class="schema" style="--accent: #a78bfa">
+      <div class="schema-label">Types Python</div>
+      <div class="schema-type-grid">
+        <div class="schema-box type-box" style="animation-delay:0.1s">int</div>
+        <div class="schema-box type-box" style="animation-delay:0.2s">float</div>
+        <div class="schema-box type-box" style="animation-delay:0.30000000000000004s">str</div>
+        <div class="schema-box type-box" style="animation-delay:0.4s">bool</div>
+      </div>
+    </div>
+      <div class="slide-footer">
+        <span class="slide-num">1 / 10</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:20%; background:#00f3ff"></div></div>
+      
+      <div class="slide-header">
+        <h2>Types numériques</h2>
+        <p class="slide-subtitle" style="color: #00f3ff">int et float, les nombres de Python</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">age = 25              # int
+pi = 3.14159          # float
+grand = 10 ** 100     # int sans limite !
+
+type(age)    # &lt;class 'int'&gt;
+type(pi)     # &lt;class 'float'&gt;
+
+# Conversion automatique
+resultat = age + pi   # 28.14159 → float
+int(3.7)              # 3 (troncature)
+float(42)             # 42.0</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #00f3ff">
+      <div class="schema-label">int · float</div>
+      <div class="schema-type-grid">
+        <div class="schema-box type-box" style="animation-delay:0.1s">int</div>
+        <div class="schema-box type-box" style="animation-delay:0.2s">float</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">2 / 10</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:30%; background:#a78bfa"></div></div>
+      
+      <div class="slide-header">
+        <h2>Chaînes de caractères</h2>
+        <p class="slide-subtitle" style="color: #a78bfa">str, le texte en Python</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">nom = &quot;Alice&quot;
+prenom = 'Bob'
+phrase = &quot;Bonjour le monde&quot;
+
+# f-strings : injection de variables
+age = 30
+msg = f&quot;{nom} a {age} ans&quot;
+# &quot;Alice a 30 ans&quot;
+
+# Méthodes courantes
+&quot;python&quot;.upper()       # &quot;PYTHON&quot;
+&quot;  salut  &quot;.strip()    # &quot;salut&quot;
+&quot;a,b,c&quot;.split(&quot;,&quot;)     # [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
+len(phrase)            # 16</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #a78bfa">
+      <div class="schema-label">Chaîne indexée</div>
+      <div class="schema-row">
+        <div class="schema-box idx">[0]</div>
+        <div class="schema-box idx active">[1]</div>
+        <div class="schema-box idx">[2]</div>
+        <div class="schema-box idx">[3]</div>
+      </div>
+      <div class="schema-ptr">▲</div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">3 / 10</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:40%; background:#10b981"></div></div>
+      
+      <div class="slide-header">
+        <h2>Booléens et None</h2>
+        <p class="slide-subtitle" style="color: #10b981">Vrai, faux et l'absence de valeur</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">actif = True
+type(actif)        # &lt;class 'bool'&gt;
+
+# Comparaisons → booléens
+5 &gt; 3              # True
+10 == 11           # False
+&quot;a&quot; in &quot;abc&quot;       # True
+
+# None : absence de valeur
+resultat = None
+type(resultat)     # &lt;class 'NoneType'&gt;
+resultat is None   # True (pas ==)</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #10b981">
+      <div class="schema-label">True vs False</div>
+      <div class="schema-row" style="gap: 24px;">
+        <div class="schema-box" style="border-color: var(--muted); opacity:0.6;">True</div>
+        <div style="font-size:1.4em; color: var(--accent, var(--cyan)); font-weight:700;">vs</div>
+        <div class="schema-box glow">False</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">4 / 10</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:50%; background:#ff6b00"></div></div>
+      
+      <div class="slide-header">
+        <h2>Les listes</h2>
+        <p class="slide-subtitle" style="color: #ff6b00">La boîte à compartiments de Python</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">fruits = [&quot;pomme&quot;, &quot;banane&quot;, &quot;cerise&quot;]
+notes = [14, 17, 12, 19, 8]
+mixte = [1, &quot;hello&quot;, True, 3.14]
+
+# Modifier sur place (mutable)
+fruits.append(&quot;mangue&quot;)     # ajoute à la fin
+fruits.remove(&quot;banane&quot;)     # retire par valeur
+notes.sort()                # [8, 12, 14, 17, 19]
+
+len(fruits)    # 3
+&quot;pomme&quot; in fruits  # True</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #ff6b00">
+      <div class="schema-label">[1, 2, 3, ...]</div>
+      <div class="schema-row">
+        <div class="schema-box anim-build" style="animation-delay:0.2s">[ ]</div>
+        <div class="schema-arrow">→</div>
+        <div class="schema-box anim-build" style="animation-delay:0.5s">[a, b]</div>
+        <div class="schema-arrow">→</div>
+        <div class="schema-box anim-build glow" style="animation-delay:0.8s">[a, b, c]</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">5 / 10</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:60%; background:#00f3ff"></div></div>
+      
+      <div class="slide-header">
+        <h2>Indexation et slicing</h2>
+        <p class="slide-subtitle" style="color: #00f3ff">Accéder aux éléments avec précision</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">lettres = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;]
+
+# Indexation
+lettres[0]       # &quot;a&quot; (premier)
+lettres[-1]      # &quot;e&quot; (dernier)
+lettres[-2]      # &quot;d&quot; (avant-dernier)
+
+# Slicing [début:fin:pas]
+lettres[1:3]     # [&quot;b&quot;, &quot;c&quot;]
+lettres[:3]      # [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
+lettres[2:]      # [&quot;c&quot;, &quot;d&quot;, &quot;e&quot;]
+lettres[::2]     # [&quot;a&quot;, &quot;c&quot;, &quot;e&quot;]</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #00f3ff">
+      <div class="schema-label">lst[1:3]</div>
+      <div class="schema-row">
+        <div class="schema-box dim">[0]</div>
+        <div class="schema-box highlight">[1]</div>
+        <div class="schema-box highlight">[2]</div>
+        <div class="schema-box dim">[3]</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">6 / 10</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:70%; background:#a78bfa"></div></div>
+      
+      <div class="slide-header">
+        <h2>Les tuples</h2>
+        <p class="slide-subtitle" style="color: #a78bfa">La boîte scellée de Python</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python"># Tuple : immuable
+coordonnees = (48.8566, 2.3522)  # Paris
+couleur_rgb = (255, 128, 0)
+jours = (&quot;lun&quot;, &quot;mar&quot;, &quot;mer&quot;, &quot;jeu&quot;, &quot;ven&quot;)
+
+coordonnees[0]    # 48.8566
+len(jours)        # 5
+
+# Impossible de modifier !
+# coordonnees[0] = 0  → TypeError
+
+# Déballage (unpacking)
+lat, lon = coordonnees
+print(f&quot;{lat}°N, {lon}°E&quot;)</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #a78bfa">
+      <div class="schema-label">Mutable vs Immutable</div>
+      <div class="schema-row" style="gap: 24px;">
+        <div class="schema-box" style="border-color: var(--muted); opacity:0.6;">Mutable</div>
+        <div style="font-size:1.4em; color: var(--accent, var(--cyan)); font-weight:700;">vs</div>
+        <div class="schema-box glow">Immutable</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">7 / 10</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:80%; background:#ff6b00"></div></div>
+      
+      <div class="slide-header">
+        <h2>Les dictionnaires</h2>
+        <p class="slide-subtitle" style="color: #ff6b00">L'annuaire de Python</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">etudiant = {
+    &quot;nom&quot;: &quot;Alice&quot;,
+    &quot;age&quot;: 22,
+    &quot;notes&quot;: [14, 17, 12]
+}
+
+etudiant[&quot;nom&quot;]           # &quot;Alice&quot;
+etudiant[&quot;moyenne&quot;] = 14.3  # ajouter
+etudiant.get(&quot;ville&quot;, &quot;?&quot;)  # &quot;?&quot; (défaut)
+
+# Parcourir
+for cle, val in etudiant.items():
+    print(f&quot;{cle} → {val}&quot;)
+
+etudiant.keys()    # les clés
+etudiant.values()  # les valeurs</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #ff6b00">
+      <div class="schema-label">clé → valeur</div>
+      <div class="schema-kv">
+        <div class="kv-row"><span class="kv-key">"clé_1"</span><span class="kv-sep">→</span><span class="kv-val">valeur</span></div>
+        <div class="kv-row"><span class="kv-key">"clé_2"</span><span class="kv-sep">→</span><span class="kv-val">valeur</span></div>
+        <div class="kv-row"><span class="kv-key">"clé_3"</span><span class="kv-sep">→</span><span class="kv-val">valeur</span></div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">8 / 10</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:90%; background:#10b981"></div></div>
+      
+      <div class="slide-header">
+        <h2>Les ensembles</h2>
+        <p class="slide-subtitle" style="color: #10b981">L'ensemble mathématique en Python</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">fruits = {&quot;pomme&quot;, &quot;banane&quot;, &quot;cerise&quot;}
+nombres = {1, 2, 3, 2, 1}  # → {1, 2, 3}
+
+fruits.add(&quot;mangue&quot;)
+fruits.add(&quot;pomme&quot;)   # ignoré (déjà présent)
+
+# Éliminer les doublons
+liste = [1, 2, 2, 3, 3, 3]
+uniques = list(set(liste))  # [1, 2, 3]
+
+# Opérations ensemblistes
+a = {1, 2, 3}
+b = {2, 3, 4}
+a | b   # {1, 2, 3, 4} union
+a &amp; b   # {2, 3} intersection
+a - b   # {1} différence</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #10b981">
+      <div class="schema-label">Unique ∩ ∪</div>
+      <div class="schema-venn">
+        <div class="venn-circle venn-left">A</div>
+        <div class="venn-circle venn-right">B</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">9 / 10</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:100%; background:#00f3ff"></div></div>
+      
+      <div class="slide-header">
+        <h2 style="color: #00f3ff">Récapitulatif</h2>
+        <p class="slide-subtitle">Vos briques sont prêtes</p>
+      </div>
+      <ul class="summary-list"><li class="fragment" data-fragment-index="0">
+        <span class="check" style="color: #00f3ff">✓</span> int / float : nombres sans limite et décimaux
+      </li>
+<li class="fragment" data-fragment-index="1">
+        <span class="check" style="color: #00f3ff">✓</span> str : texte immuable avec f-strings
+      </li>
+<li class="fragment" data-fragment-index="2">
+        <span class="check" style="color: #00f3ff">✓</span> bool / None : interrupteurs et absence
+      </li>
+<li class="fragment" data-fragment-index="3">
+        <span class="check" style="color: #00f3ff">✓</span> list : boîte à compartiments (mutable)
+      </li>
+<li class="fragment" data-fragment-index="4">
+        <span class="check" style="color: #00f3ff">✓</span> tuple : boîte scellée (immuable)
+      </li>
+<li class="fragment" data-fragment-index="5">
+        <span class="check" style="color: #00f3ff">✓</span> dict : annuaire clé-valeur
+      </li>
+<li class="fragment" data-fragment-index="6">
+        <span class="check" style="color: #00f3ff">✓</span> set : ensemble sans doublons
+      </li></ul>
+      <div class="slide-footer">
+        <span class="slide-num">10 / 10</span>
+      </div>
+    </section>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      width: 1920, height: 1080,
+      margin: 0,
+      center: false,
+      controls: true,
+      progress: false,
+      slideNumber: false,
+      plugins: []
+    });
+    hljs.highlightAll();
+  </script>
+</body>
+</html>

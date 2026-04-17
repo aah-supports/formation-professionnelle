@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solutions Completes</title>
+<style>
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#2d3436;line-height:1.7;max-width:800px;margin:0 auto;padding:30px 24px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
+h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+h4{font-size:.95rem;margin:16px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid #dfe6e9;padding:8px 12px;text-align:left;font-size:.9rem}
+th{background:#f1f2f6;font-weight:600}
+tr:nth-child(even){background:#f8f9fa}
+blockquote{border-left:4px solid #74b9ff;margin:12px 0;padding:8px 16px;background:#f8f9fa;color:#636e72}
+strong{color:#2d3436}
+hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
+.header-bar{background:#0984e3;color:#fff;padding:12px 20px;border-radius:8px;margin-bottom:24px;font-size:.85rem}
+.header-bar strong{color:#fff}
+</style>
+</head>
+<body>
+<div class="header-bar"><strong>R Niveau II</strong></div>
+<h1>Solutions complètes — R Niveau II</h1>
+<p><strong>Orientation</strong> : bases de données, extraction Excel, requêtes avancées et statistiques descriptives pratiques.</p>
+<hr>
+<h2>Jour 1 — SQL + Excel + requêtes avancées</h2>
+<h3>Module 1 : Connexion et interrogation base</h3>
+<pre><code class="language-r">library(DBI)
+library(RSQLite)
+library(dplyr)
+library(dbplyr)
+
+con &lt;- dbConnect(SQLite(), "business.db")
+
+# Découverte
+dbListTables(con)
+
+# Requête distante
+ventes_tbl &lt;- tbl(con, "ventes")
+
+ca_region &lt;- ventes_tbl |&gt;
+  filter(date &gt;= "2025-01-01") |&gt;
+  group_by(region) |&gt;
+  summarise(ca_total = sum(prix_net, na.rm = TRUE), .groups = "drop")
+
+show_query(ca_region)
+ca_region |&gt; collect()
+</code></pre>
+<h3>Module 2 : Extraction et normalisation Excel</h3>
+<pre><code class="language-r">library(readxl)
+library(janitor)
+library(tidyr)
+library(stringr)
+
+# Import propre
+catalogue &lt;- read_excel("catalogue.xlsx", sheet = "Produits") |&gt;
+  clean_names()
+
+objectifs &lt;- read_excel("objectifs.xlsx", sheet = "Objectifs", skip = 2) |&gt;
+  clean_names() |&gt;
+  mutate(
+    objectif_ca = str_replace_all(objectif_ca, "[ €]", "") |&gt;
+      str_replace(",", ".") |&gt;
+      as.numeric()
+  )
+
+# Wide -&gt; long
+objectifs_tidy &lt;- objectifs |&gt;
+  pivot_longer(
+    cols = starts_with("m_"),
+    names_to = "mois",
+    values_to = "objectif_ca"
+  )
+</code></pre>
+<h3>Module 3 : Jointures et requêtes avancées</h3>
+<pre><code class="language-r">clients_tbl &lt;- tbl(con, "clients")
+
+base_analyse &lt;- ventes_tbl |&gt;
+  left_join(clients_tbl, by = "client_id") |&gt;
+  collect() |&gt;
+  left_join(catalogue, by = "produit_id") |&gt;
+  mutate(montant_commande = quantite * prix_net)
+
+# Produits vendus hors catalogue
+produits_absents &lt;- base_analyse |&gt;
+  distinct(produit_id) |&gt;
+  anti_join(catalogue |&gt; distinct(produit_id), by = "produit_id")
+
+# Top clients par région
+top_clients &lt;- base_analyse |&gt;
+  group_by(region, client_id) |&gt;
+  summarise(ca = sum(montant_commande, na.rm = TRUE), .groups = "drop") |&gt;
+  group_by(region) |&gt;
+  mutate(rang = min_rank(desc(ca))) |&gt;
+  filter(rang &lt;= 5) |&gt;
+  arrange(region, rang)
+</code></pre>
+<h3>Module 4 : Fenêtres et automatisation</h3>
+<pre><code class="language-r">library(purrr)
+
+# Évolution mensuelle
+evo_mensuelle &lt;- base_analyse |&gt;
+  mutate(mois = as.Date(format(date, "%Y-%m-01"))) |&gt;
+  group_by(region, mois) |&gt;
+  summarise(ca = sum(montant_commande, na.rm = TRUE), .groups = "drop") |&gt;
+  group_by(region) |&gt;
+  arrange(mois, .by_group = TRUE) |&gt;
+  mutate(
+    ca_mois_prec = lag(ca),
+    var_mom = (ca - ca_mois_prec) / ca_mois_prec
+  ) |&gt;
+  ungroup()
+
+# Fonction paramétrée
+extraire_kpi &lt;- function(con, date_debut, date_fin, region = NULL) {
+  req &lt;- tbl(con, "ventes") |&gt;
+    filter(date &gt;= date_debut, date &lt;= date_fin)
+
+  if (!is.null(region)) req &lt;- req |&gt; filter(region == !!region)
+
+  req |&gt;
+    summarise(
+      ca_total = sum(prix_net, na.rm = TRUE),
+      nb_commandes = n_distinct(id_commande),
+      panier_moyen = ca_total / nb_commandes
+    ) |&gt;
+    collect()
+}
+
+# Import multi-fichiers robuste
+safe_read_excel &lt;- possibly(
+  ~ read_excel(.x, sheet = "Data") |&gt; clean_names(),
+  otherwise = NULL
+)
+
+imports &lt;- list.files("exports", pattern = "\\.xlsx$", full.names = TRUE) |&gt;
+  set_names() |&gt;
+  map(safe_read_excel)
+
+consolide &lt;- imports |&gt; compact() |&gt; list_rbind(names_to = "source_fichier")
+</code></pre>
+<hr>
+<h2>Jour 2 — Qualité + descriptif + restitution</h2>
+<h3>Module 5 : Contrôles qualité</h3>
+<pre><code class="language-r"># Profil NA et cardinalité
+profil_qc &lt;- base_analyse |&gt;
+  summarise(across(
+    everything(),
+    list(na_n = ~ sum(is.na(.x)), n_distinct = ~ n_distinct(.x))
+  ))
+
+# Doublons de clé commande/date
+doublons &lt;- base_analyse |&gt;
+  count(id_commande, date, name = "n") |&gt;
+  filter(n &gt; 1)
+
+# Réconciliation base vs Excel
+ca_base &lt;- base_analyse |&gt;
+  mutate(mois = as.Date(format(date, "%Y-%m-01"))) |&gt;
+  group_by(mois, region) |&gt;
+  summarise(ca_base = sum(montant_commande, na.rm = TRUE), .groups = "drop")
+
+reco &lt;- ca_base |&gt;
+  full_join(objectifs |> rename(ca_excel = objectif_ca), by = c("mois", "region")) |&gt;
+  mutate(
+    ca_base = coalesce(ca_base, 0),
+    ca_excel = coalesce(ca_excel, 0),
+    ecart = ca_base - ca_excel,
+    ecart_pct = if_else(ca_excel == 0, NA_real_, ecart / ca_excel)
+  )
+</code></pre>
+<h3>Module 6 : Statistiques descriptives pratiques</h3>
+<pre><code class="language-r"># Indicateurs globaux
+kpi_global &lt;- base_analyse |&gt;
+  summarise(
+    ca_total = sum(montant_commande, na.rm = TRUE),
+    panier_moyen = mean(montant_commande, na.rm = TRUE),
+    panier_mediane = median(montant_commande, na.rm = TRUE),
+    iqr_panier = IQR(montant_commande, na.rm = TRUE),
+    nb_clients = n_distinct(client_id)
+  )
+
+# Analyse segment
+desc_segment &lt;- base_analyse |&gt;
+  group_by(segment) |&gt;
+  summarise(
+    nb_clients = n_distinct(client_id),
+    ca_total = sum(montant_commande, na.rm = TRUE),
+    panier_moyen = mean(montant_commande, na.rm = TRUE),
+    panier_mediane = median(montant_commande, na.rm = TRUE),
+    iqr_panier = IQR(montant_commande, na.rm = TRUE),
+    .groups = "drop"
+  ) |&gt;
+  mutate(part_ca = ca_total / sum(ca_total)) |&gt;
+  arrange(desc(ca_total))
+
+# Série temporelle
+serie_mensuelle &lt;- base_analyse |&gt;
+  mutate(mois = as.Date(format(date, "%Y-%m-01"))) |&gt;
+  group_by(mois) |&gt;
+  summarise(ca = sum(montant_commande, na.rm = TRUE), .groups = "drop") |&gt;
+  arrange(mois) |&gt;
+  mutate(
+    ca_mois_prec = lag(ca),
+    var_mom = (ca - ca_mois_prec) / ca_mois_prec,
+    cumul_annuel = cumsum(ca),
+    mm3 = (lag(ca, 2) + lag(ca, 1) + ca) / 3
+  )
+</code></pre>
+<h3>Module 7 : Restitution</h3>
+<pre><code class="language-r">library(gt)
+library(ggplot2)
+library(readr)
+library(openxlsx)
+
+# Tableau de pilotage
+tbl_segment &lt;- desc_segment |&gt;
+  gt() |&gt;
+  fmt_currency(columns = c(ca_total, panier_moyen, panier_mediane), currency = "EUR") |&gt;
+  fmt_percent(columns = part_ca, decimals = 1)
+
+# Graphique tendance
+p_ca &lt;- serie_mensuelle |&gt;
+  ggplot(aes(mois, ca)) +
+  geom_line(linewidth = 1.1, color = "#0984e3") +
+  geom_point(size = 2, color = "#0984e3") +
+  labs(title = "CA mensuel", x = "Mois", y = "CA") +
+  theme_minimal()
+
+# Graphique segment
+p_seg &lt;- desc_segment |&gt;
+  ggplot(aes(reorder(segment, ca_total), ca_total, fill = segment)) +
+  geom_col(show.legend = FALSE) +
+  coord_flip() +
+  labs(title = "Contribution CA par segment", x = "Segment", y = "CA") +
+  theme_minimal()
+
+# Exports
+write_csv(desc_segment, "outputs/desc_segment.csv")
+write.xlsx(reco, "outputs/reco_base_excel.xlsx", overwrite = TRUE)
+ggsave("outputs/ca_mensuel.png", p_ca, width = 9, height = 5, dpi = 150)
+</code></pre>
+<hr>
+<h2>Projet final — Checklist de correction</h2>
+<table>
+<thead>
+<tr>
+<th>Bloc</th>
+<th>Vérification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Extraction</td>
+<td>BDD + Excel chargés, colonnes normalisées, types cohérents</td>
+</tr>
+<tr>
+<td>Qualité</td>
+<td>NA, doublons, réconciliation traités et documentés</td>
+</tr>
+<tr>
+<td>Requêtes avancées</td>
+<td>Jointures correctes, indicateurs calculés sans doublonnage caché</td>
+</tr>
+<tr>
+<td>Descriptif</td>
+<td>KPI centraux + dispersion + segmentation + temporalité</td>
+</tr>
+<tr>
+<td>Restitution</td>
+<td>1 tableau + 2 graphiques + synthèse actionnable</td>
+</tr>
+</tbody></table>
+
+</body>
+</html>

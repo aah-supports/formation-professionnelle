@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de Cours</title>
+<style>
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#2d3436;line-height:1.7;max-width:800px;margin:0 auto;padding:30px 24px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
+h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+h4{font-size:.95rem;margin:16px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid #dfe6e9;padding:8px 12px;text-align:left;font-size:.9rem}
+th{background:#f1f2f6;font-weight:600}
+tr:nth-child(even){background:#f8f9fa}
+blockquote{border-left:4px solid #74b9ff;margin:12px 0;padding:8px 16px;background:#f8f9fa;color:#636e72}
+strong{color:#2d3436}
+hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
+.header-bar{background:#0984e3;color:#fff;padding:12px 20px;border-radius:8px;margin-bottom:24px;font-size:.85rem}
+.header-bar strong{color:#fff}
+</style>
+</head>
+<body>
+<div class="header-bar"><strong>R Niveau II</strong></div>
+<h1>R Niveau II — Plan de cours détaillé</h1>
+<p><strong>Formation</strong> : R avancé orienté bases de données et exploitation Excel
+<strong>Durée</strong> : 2 jours (14 heures)
+<strong>Horaires</strong> : 9h00 – 17h00
+<strong>Prérequis</strong> : R Niveau I ou équivalent</p>
+<p><strong>Adaptation pédagogique</strong> : le fil rouge peut être appliqué à un jeu de données proche du contexte professionnel des apprenants pour couvrir les notions abordées (BDD, extraction tableur, requêtes avancées et statistique descriptive pratique).</p>
+<hr>
+<h2>JOUR 1 — Connexion données, extraction et requêtes avancées</h2>
+<hr>
+<h3>Module 1 : Accéder aux bases de données avec R (9h00 – 10h30)</h3>
+<p><strong>Objectifs</strong> : Se connecter à une base, comprendre la logique table distante, exécuter des requêtes efficaces avec <code>dplyr</code>/<code>dbplyr</code>.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Architecture de données en entreprise</strong> (10 min)</p>
+<ul>
+<li>Différence fichiers plats, tableur et base relationnelle</li>
+<li>Pourquoi éviter de tout charger en mémoire locale</li>
+<li>Logique ETL/ELT dans un flux analytique</li>
+</ul>
+</li>
+<li><p><strong>Connexion DBI</strong> (20 min)</p>
+<ul>
+<li><code>DBI::dbConnect()</code> avec SQLite, PostgreSQL, MySQL, SQL Server</li>
+<li>Gestion des credentials via variables d&#39;environnement</li>
+<li><code>dbListTables()</code>, <code>dbListFields()</code>, <code>dbGetQuery()</code></li>
+</ul>
+</li>
+<li><p><strong>Tables distantes avec dbplyr</strong> (20 min)</p>
+<ul>
+<li><code>tbl(con, &quot;nom_table&quot;)</code> et lazy evaluation</li>
+<li>Utiliser <code>select</code>, <code>filter</code>, <code>mutate</code>, <code>summarise</code> sans ramener la table</li>
+<li><code>show_query()</code> pour visualiser le SQL généré</li>
+</ul>
+</li>
+<li><p><strong>Performance et bonnes pratiques</strong> (15 min)</p>
+<ul>
+<li>Filtrer tôt, sélectionner peu de colonnes</li>
+<li>Limiter les <code>collect()</code> aux jeux finalisés</li>
+<li>Tracer les requêtes coûteuses</li>
+</ul>
+</li>
+<li><p><strong>Atelier guidé</strong> (25 min)</p>
+<ul>
+<li>Connexion à une base de ventes</li>
+<li>Agrégation CA par mois et canal</li>
+<li>Contrôle des résultats SQL vs R local</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Requête de pilotage mensuel 100% poussée côté base.</p>
+<hr>
+<h3>Module 2 : Extraction de fichiers Excel / tableur (10h45 – 12h15)</h3>
+<p><strong>Objectifs</strong> : Importer et fiabiliser des fichiers Excel hétérogènes pour les rendre exploitables dans un pipeline R.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Lecture structurée d&#39;Excel</strong> (20 min)</p>
+<ul>
+<li><code>readxl::excel_sheets()</code>, <code>read_excel()</code></li>
+<li>Choisir <code>sheet</code>, <code>range</code>, <code>skip</code>, <code>col_types</code></li>
+<li>Gestion des formats date, devise, pourcentage</li>
+</ul>
+</li>
+<li><p><strong>Nettoyage de structure tableur</strong> (20 min)</p>
+<ul>
+<li><code>janitor::clean_names()</code> et standardisation des colonnes</li>
+<li>Suppression des lignes vides, notes, totaux parasites</li>
+<li>Normalisation des codes et libellés métier</li>
+</ul>
+</li>
+<li><p><strong>Reshape et normalisation</strong> (20 min)</p>
+<ul>
+<li><code>pivot_longer()</code> pour déplier les colonnes périodiques</li>
+<li><code>separate()</code>, <code>unite()</code>, <code>fill()</code> pour structurer</li>
+<li>Passage vers un format "tidy" prêt pour jointure</li>
+</ul>
+</li>
+<li><p><strong>Industrialisation multi-fichiers</strong> (15 min)</p>
+<ul>
+<li><code>list.files()</code> + <code>purrr::map_dfr()</code></li>
+<li>Traçabilité de la source (<code>.id</code>)</li>
+<li>Gestion d&#39;erreur avec <code>possibly()</code></li>
+</ul>
+</li>
+<li><p><strong>Atelier guidé</strong> (15 min)</p>
+<ul>
+<li>Consolider 12 exports mensuels Excel</li>
+<li>Obtenir une table unique propre et documentée</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Transformer un classeur "messy" en table analytique fiable.</p>
+<hr>
+<h3>Module 3 : Requêtes avancées I (13h30 – 15h00)</h3>
+<p><strong>Objectifs</strong> : Construire des requêtes robustes pour analyser des données relationnelles complexes.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Jointures métier</strong> (20 min)</p>
+<ul>
+<li><code>left_join</code>, <code>inner_join</code>, <code>full_join</code>, <code>anti_join</code>, <code>semi_join</code></li>
+<li>Jointures multi-clés et gestion des collisions de colonnes</li>
+<li>Contrôle du cardinal (1-1, 1-n, n-n)</li>
+</ul>
+</li>
+<li><p><strong>Sous-ensembles et conditions avancées</strong> (20 min)</p>
+<ul>
+<li>Filtres conditionnels multi-règles avec <code>case_when()</code></li>
+<li>Segmentation métier (clients actifs/inactifs, panier élevé/faible)</li>
+<li>Équivalent SQL des sous-requêtes avec pipelines dplyr</li>
+</ul>
+</li>
+<li><p><strong>Déduplication et intégrité</strong> (15 min)</p>
+<ul>
+<li><code>distinct()</code> vs clé métier composite</li>
+<li>Détection de doublons contradictoires</li>
+<li>Règles de priorité pour garder la bonne ligne</li>
+</ul>
+</li>
+<li><p><strong>Atelier guidé</strong> (35 min)</p>
+<ul>
+<li>Fusion ventes + catalogue + clients + objectifs</li>
+<li>Production d&#39;une table d&#39;analyse unique</li>
+<li>Validation de cohérence avant restitution</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Construire un dataset unifié prêt à être diffusé à l&#39;équipe métier.</p>
+<hr>
+<h3>Module 4 : Requêtes avancées II et automatisation (15h15 – 17h00)</h3>
+<p><strong>Objectifs</strong> : Gérer les calculs analytiques avancés et fiabiliser les extractions récurrentes.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Fonctions de fenêtre</strong> (20 min)</p>
+<ul>
+<li><code>row_number()</code>, <code>min_rank()</code>, <code>dense_rank()</code></li>
+<li><code>lag()</code>, <code>lead()</code> pour évolutions temporelles</li>
+<li>Cumulés et parts relatives par groupe</li>
+</ul>
+</li>
+<li><p><strong>Pipelines paramétrables</strong> (20 min)</p>
+<ul>
+<li>Fonctions personnalisées pour requêtes répétables</li>
+<li>Paramètres date, région, canal, produit</li>
+<li>Pattern "une fonction = un livrable"</li>
+</ul>
+</li>
+<li><p><strong>Robustesse opérationnelle</strong> (20 min)</p>
+<ul>
+<li><code>tryCatch()</code>, <code>safely()</code>, journalisation de traitement</li>
+<li>Contrôles bloquants/non bloquants</li>
+<li>Export CSV/Excel automatisé avec nomenclature stable</li>
+</ul>
+</li>
+<li><p><strong>Atelier guidé</strong> (25 min)</p>
+<ul>
+<li>Créer une extraction quotidienne "top clients"</li>
+<li>Ajouter alertes qualité et fichier de log</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Construire un script réutilisable en contexte production.</p>
+<hr>
+<h2>JOUR 2 — Qualité des données et statistiques descriptives pratiques</h2>
+<hr>
+<h3>Module 5 : Qualité des données et consolidation (9h00 – 10h30)</h3>
+<p><strong>Objectifs</strong> : Contrôler la fiabilité des données avant calcul d&#39;indicateurs.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Contrôles structurels</strong> (20 min)</p>
+<ul>
+<li>Taux de valeurs manquantes par variable</li>
+<li>Vérification types et domaines autorisés</li>
+<li>Conformité des clés et unicité</li>
+</ul>
+</li>
+<li><p><strong>Contrôles métier</strong> (25 min)</p>
+<ul>
+<li>Montants négatifs anormaux, dates incohérentes</li>
+<li>Écarts entre export Excel et base transactionnelle</li>
+<li>Seuils d&#39;alerte et indicateurs de confiance</li>
+</ul>
+</li>
+<li><p><strong>Réconciliation multi-sources</strong> (20 min)</p>
+<ul>
+<li>Comparer deux sources via clés communes</li>
+<li>Identifier lignes absentes de l&#39;une ou l&#39;autre</li>
+<li>Produire une table de différentiel</li>
+</ul>
+</li>
+<li><p><strong>Atelier guidé</strong> (25 min)</p>
+<ul>
+<li>Pack de tests qualité sur un dataset brut</li>
+<li>Sortie : "OK pour analyse" ou "à corriger"</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Déployer une check-list qualité réutilisable.</p>
+<hr>
+<h3>Module 6 : Statistiques descriptives pratiques (10h45 – 12h15)</h3>
+<p><strong>Objectifs</strong> : Produire des indicateurs descriptifs robustes et interprétables pour les métiers.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Indicateurs de tendance centrale</strong> (15 min)</p>
+<ul>
+<li>Moyenne, médiane, moyenne tronquée</li>
+<li>Quand privilégier la médiane</li>
+<li>Impact des valeurs extrêmes</li>
+</ul>
+</li>
+<li><p><strong>Dispersion et stabilité</strong> (20 min)</p>
+<ul>
+<li>Écart-type, IQR, coefficient de variation</li>
+<li>Lecture opérationnelle de la variabilité</li>
+<li>Comparaison entre segments</li>
+</ul>
+</li>
+<li><p><strong>Descriptif catégoriel</strong> (15 min)</p>
+<ul>
+<li>Fréquences, proportions, top N</li>
+<li>Tableaux croisés utiles à la décision</li>
+<li>Évolution des parts dans le temps</li>
+</ul>
+</li>
+<li><p><strong>Séries temporelles descriptives</strong> (20 min)</p>
+<ul>
+<li>Variations MoM, YoY, cumul annuel</li>
+<li>Moyennes mobiles et lissage simple</li>
+<li>Détection visuelle des ruptures</li>
+</ul>
+</li>
+<li><p><strong>Atelier guidé</strong> (20 min)</p>
+<ul>
+<li>Construire un tableau d&#39;indicateurs lisible pour un comité métier</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Résumer 100k lignes en 10 KPI exploitables.</p>
+<hr>
+<h3>Module 7 : Restitution et communication des résultats (13h30 – 15h00)</h3>
+<p><strong>Objectifs</strong> : Transformer les sorties analytiques en livrables actionnables.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Tableaux de synthèse</strong> (20 min)</p>
+<ul>
+<li><code>gt</code> et <code>dplyr</code> pour produire des tableaux propres</li>
+<li>Mise en évidence des écarts et alertes</li>
+<li>Formatage des montants, taux, dates</li>
+</ul>
+</li>
+<li><p><strong>Visualisations descriptives utiles</strong> (25 min)</p>
+<ul>
+<li>Barres, lignes, boxplots, heatmaps simples</li>
+<li>Éviter les graphiques décoratifs non décisionnels</li>
+<li>Titres orientés message métier</li>
+</ul>
+</li>
+<li><p><strong>Exports et diffusion</strong> (20 min)</p>
+<ul>
+<li><code>write_csv()</code>, <code>openxlsx::write.xlsx()</code></li>
+<li>Nommage standard, versionnement et archivage</li>
+<li>Préparer un kit de livraison (données + script + note)</li>
+</ul>
+</li>
+<li><p><strong>Atelier guidé</strong> (25 min)</p>
+<ul>
+<li>Construire une page de synthèse hebdomadaire</li>
+<li>Comparer deux périodes et commenter les écarts</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Livraison d&#39;un reporting descriptif prêt à partager.</p>
+<hr>
+<h3>Module 8 : Projet fil rouge de fin de formation (15h15 – 17h00)</h3>
+<p><strong>Objectifs</strong> : Assembler l&#39;ensemble du workflow dans un cas concret de bout en bout.</p>
+<p><strong>Contenu</strong> :</p>
+<ol>
+<li><p><strong>Cadrage du besoin</strong> (10 min)</p>
+<ul>
+<li>Question métier, périmètre, sources disponibles</li>
+<li>Définition des indicateurs de sortie</li>
+<li>Choix possible d&#39;un jeu de données proche du contexte professionnel des apprenants</li>
+</ul>
+</li>
+<li><p><strong>Extraction multi-sources</strong> (20 min)</p>
+<ul>
+<li>Données transactionnelles en base</li>
+<li>Objectifs mensuels en Excel</li>
+<li>Réconciliation et contrôle qualité</li>
+</ul>
+</li>
+<li><p><strong>Requêtes avancées</strong> (20 min)</p>
+<ul>
+<li>Jointures métier, ranking clients, KPI par segment</li>
+<li>Construction d&#39;une table analytique finale</li>
+</ul>
+</li>
+<li><p><strong>Analyse descriptive pratique</strong> (20 min)</p>
+<ul>
+<li>KPI centraux, dispersion, alertes opérationnelles</li>
+<li>Lecture des tendances et recommandations</li>
+</ul>
+</li>
+<li><p><strong>Restitution finale</strong> (20 min)</p>
+<ul>
+<li>Tableau + graphique + synthèse rédigée</li>
+<li>Présentation orale courte des conclusions</li>
+</ul>
+</li>
+<li><p><strong>Bilan et plan d&#39;action</strong> (15 min)</p>
+<ul>
+<li>Checklist de réutilisation en contexte réel</li>
+<li>Axes d&#39;industrialisation après la formation</li>
+</ul>
+</li>
+</ol>
+
+</body>
+</html>

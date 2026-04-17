@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jour1 Exercices</title>
+<style>
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#2d3436;line-height:1.7;max-width:800px;margin:0 auto;padding:30px 24px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
+h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+h4{font-size:.95rem;margin:16px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid #dfe6e9;padding:8px 12px;text-align:left;font-size:.9rem}
+th{background:#f1f2f6;font-weight:600}
+tr:nth-child(even){background:#f8f9fa}
+blockquote{border-left:4px solid #74b9ff;margin:12px 0;padding:8px 16px;background:#f8f9fa;color:#636e72}
+strong{color:#2d3436}
+hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
+.header-bar{background:#0984e3;color:#fff;padding:12px 20px;border-radius:8px;margin-bottom:24px;font-size:.85rem}
+.header-bar strong{color:#fff}
+</style>
+</head>
+<body>
+<div class="header-bar"><strong>Python Niveau I</strong></div>
+<h1>Python Niveau I — Exercices Jour 1</h1>
+<h2>Module 1 : Premiers pas avec Python</h2>
+<hr>
+<h3>Exercice 1.1 : La console comme calculatrice [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> : Utilisez la console Python pour calculer les expressions suivantes :</p>
+<ol>
+<li>45 + 32</li>
+<li>256 / 8</li>
+<li>2 puissance 10</li>
+<li>Le reste de la division de 17 par 5</li>
+<li>La division entiere de 17 par 5</li>
+</ol>
+<p><strong>Indice</strong> : L&#39;operateur puissance en Python est <code>**</code>. Le modulo se note <code>%</code> et la division entiere <code>//</code>.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">45 + 32
+256 / 8
+2 ** 10
+17 % 5
+17 // 5
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>77
+32.0
+1024
+2
+3
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 1.2 : Créer et manipuler des variables [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Creez une variable <code>prix_ht</code> contenant la valeur 85.50</li>
+<li>Creez une variable <code>tva</code> contenant 0.20</li>
+<li>Calculez le prix TTC et stockez-le dans <code>prix_ttc</code></li>
+<li>Affichez le prix TTC avec un f-string : &quot;Le prix TTC est de X euros&quot;</li>
+<li>Verifiez le type de chaque variable avec <code>type()</code></li>
+</ol>
+<p><strong>Indice</strong> : L&#39;assignation en Python utilise <code>=</code>. Les f-strings s&#39;ecrivent <code>f&quot;texte {variable}&quot;</code>. Le prix TTC = prix HT x (1 + TVA).</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">prix_ht = 85.50
+tva = 0.20
+prix_ttc = prix_ht * (1 + tva)
+
+print(f&quot;Le prix TTC est de {prix_ttc} euros&quot;)
+
+print(type(prix_ht))
+print(type(tva))
+print(type(prix_ttc))
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>Le prix TTC est de 102.6 euros
+&lt;class &#39;float&#39;&gt;
+&lt;class &#39;float&#39;&gt;
+&lt;class &#39;float&#39;&gt;
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 1.3 : Écrire un script complet [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> : Ecrivez un script Python qui :</p>
+<ol>
+<li>Definit le rayon d&#39;un cercle (<code>rayon = 7</code>)</li>
+<li>Calcule le perimetre (2 x pi x r)</li>
+<li>Calcule l&#39;aire (pi x r^2)</li>
+<li>Affiche les deux resultats avec des f-strings formates a 2 decimales</li>
+</ol>
+<p><strong>Indice</strong> : Importez pi depuis le module <code>math</code> avec <code>from math import pi</code>. Pour formater a 2 decimales dans un f-string : <code>f&quot;{valeur:.2f}&quot;</code>.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">from math import pi
+
+rayon = 7
+perimetre = 2 * pi * rayon
+aire = pi * rayon ** 2
+
+print(f&quot;Rayon : {rayon}&quot;)
+print(f&quot;Perimetre : {perimetre:.2f}&quot;)
+print(f&quot;Aire : {aire:.2f}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>Rayon : 7
+Perimetre : 43.98
+Aire : 153.94
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 1.4 : Utiliser l&#39;aide [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Consultez l&#39;aide de la fonction <code>round()</code> avec <code>help(round)</code></li>
+<li>Arrondissez la valeur 3.14159265 a 2 decimales</li>
+<li>Arrondissez la meme valeur a 4 decimales</li>
+<li>Utilisez <code>type()</code> sur differentes valeurs : 42, 3.14, &quot;bonjour&quot;, True</li>
+<li>Utilisez <code>dir()</code> sur une chaine de caracteres pour decouvrir ses methodes</li>
+</ol>
+<p><strong>Indice</strong> : <code>help(fonction)</code> affiche l&#39;aide. <code>dir(objet)</code> liste les attributs et methodes disponibles. <code>type(objet)</code> retourne le type.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">help(round)
+
+print(round(3.14159265, 2))
+print(round(3.14159265, 4))
+
+print(type(42))
+print(type(3.14))
+print(type(&quot;bonjour&quot;))
+print(type(True))
+
+# Methodes d&#39;une chaine (filtrer les methodes publiques)
+print([m for m in dir(&quot;texte&quot;) if not m.startswith(&quot;_&quot;)])
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>3.14
+3.1416
+&lt;class &#39;int&#39;&gt;
+&lt;class &#39;float&#39;&gt;
+&lt;class &#39;str&#39;&gt;
+&lt;class &#39;bool&#39;&gt;
+[&#39;capitalize&#39;, &#39;casefold&#39;, &#39;center&#39;, &#39;count&#39;, &#39;encode&#39;, ...]
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 1.5 : Environnement de travail [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Importez le module <code>sys</code> et affichez la version de Python avec <code>sys.version</code></li>
+<li>Importez le module <code>math</code> et affichez la valeur de <code>math.pi</code> et <code>math.e</code></li>
+<li>Utilisez <code>math.sqrt(144)</code> et <code>math.factorial(6)</code></li>
+<li>Importez <code>datetime</code> et affichez la date du jour</li>
+<li>Listez les fonctions disponibles dans le module <code>math</code> (sans les fonctions privees)</li>
+</ol>
+<p><strong>Indice</strong> : <code>import module</code> charge un module. <code>sys.version</code> contient la version Python. <code>datetime.date.today()</code> donne la date du jour.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import sys
+print(sys.version)
+
+import math
+print(f&quot;pi = {math.pi}&quot;)
+print(f&quot;e = {math.e}&quot;)
+
+print(math.sqrt(144))
+print(math.factorial(6))
+
+import datetime
+print(datetime.date.today())
+
+# Fonctions publiques du module math
+print([f for f in dir(math) if not f.startswith(&quot;_&quot;)])
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>3.x.x (selon votre installation)
+pi = 3.141592653589793
+e = 2.718281828459045
+12.0
+720
+2026-03-16
+[&#39;acos&#39;, &#39;acosh&#39;, &#39;asin&#39;, &#39;asinh&#39;, &#39;atan&#39;, &#39;atan2&#39;, ...]
+</code></pre>
+</details>
+
+<hr>
+<h2>Module 2 : Structures de données</h2>
+<hr>
+<h3>Exercice 2.1 : Types fondamentaux [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Creez une variable de chaque type : <code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code></li>
+<li>Verifiez le type de chaque variable avec <code>type()</code></li>
+<li>Testez <code>isinstance()</code> pour verifier si une variable est d&#39;un type donne</li>
+<li>Effectuez des conversions : <code>int(&quot;42&quot;)</code>, <code>float(&quot;3.14&quot;)</code>, <code>str(100)</code>, <code>bool(0)</code>, <code>bool(1)</code>, <code>bool(&quot;&quot;)</code>, <code>bool(&quot;texte&quot;)</code></li>
+</ol>
+<p><strong>Indice</strong> : <code>isinstance(variable, type)</code> retourne <code>True</code> ou <code>False</code>. Les valeurs &quot;falsy&quot; en Python sont : <code>0</code>, <code>0.0</code>, <code>&quot;&quot;</code>, <code>None</code>, <code>[]</code>, <code>{}</code>.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">x_int = 42
+x_float = 3.14
+x_str = &quot;Bonjour&quot;
+x_bool = True
+
+print(f&quot;int    : {type(x_int)}&quot;)
+print(f&quot;float  : {type(x_float)}&quot;)
+print(f&quot;str    : {type(x_str)}&quot;)
+print(f&quot;bool   : {type(x_bool)}&quot;)
+
+print(f&quot;\nisinstance(42, int) : {isinstance(x_int, int)}&quot;)
+print(f&quot;isinstance(3.14, float) : {isinstance(x_float, float)}&quot;)
+print(f&quot;isinstance(&#39;Bonjour&#39;, str) : {isinstance(x_str, str)}&quot;)
+
+print(f&quot;\nConversions :&quot;)
+print(f&quot;int(&#39;42&#39;) = {int(&#39;42&#39;)}&quot;)
+print(f&quot;float(&#39;3.14&#39;) = {float(&#39;3.14&#39;)}&quot;)
+print(f&quot;str(100) = {repr(str(100))}&quot;)
+print(f&quot;bool(0) = {bool(0)}&quot;)
+print(f&quot;bool(1) = {bool(1)}&quot;)
+print(f&quot;bool(&#39;&#39;) = {bool(&#39;&#39;)}&quot;)
+print(f&quot;bool(&#39;texte&#39;) = {bool(&#39;texte&#39;)}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>int    : &lt;class &#39;int&#39;&gt;
+float  : &lt;class &#39;float&#39;&gt;
+str    : &lt;class &#39;str&#39;&gt;
+bool   : &lt;class &#39;bool&#39;&gt;
+
+isinstance(42, int) : True
+isinstance(3.14, float) : True
+isinstance(&#39;Bonjour&#39;, str) : True
+
+Conversions :
+int(&#39;42&#39;) = 42
+float(&#39;3.14&#39;) = 3.14
+str(100) = &#39;100&#39;
+bool(0) = False
+bool(1) = True
+bool(&#39;&#39;) = False
+bool(&#39;texte&#39;) = True
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 2.2 : Création de listes [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> : Creez les listes suivantes :</p>
+<ol>
+<li><code>l1</code> : les nombres de 1 a 20 avec <code>list(range(...))</code></li>
+<li><code>l2</code> : les nombres pairs de 2 a 30</li>
+<li><code>l3</code> : une liste de 5 zeros avec <code>[0] * 5</code></li>
+<li><code>l4</code> : les carres de 1 a 10 avec une comprehension de liste</li>
+<li><code>l5</code> : les valeurs <code>[4, 8, 15, 16, 23, 42]</code></li>
+</ol>
+<p>Affichez la longueur de chaque liste.</p>
+<p><strong>Indice</strong> : <code>range(debut, fin, pas)</code> genere une sequence (fin exclu). <code>list()</code> convertit en liste. Les comprehensions s&#39;ecrivent <code>[expression for x in iterable]</code>.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">l1 = list(range(1, 21))
+l2 = list(range(2, 31, 2))
+l3 = [0] * 5
+l4 = [x ** 2 for x in range(1, 11)]
+l5 = [4, 8, 15, 16, 23, 42]
+
+print(f&quot;l1 = {l1}&quot;)
+print(f&quot;l2 = {l2}&quot;)
+print(f&quot;l3 = {l3}&quot;)
+print(f&quot;l4 = {l4}&quot;)
+print(f&quot;l5 = {l5}&quot;)
+
+print(f&quot;\nLongueur l1 : {len(l1)}&quot;)
+print(f&quot;Longueur l2 : {len(l2)}&quot;)
+print(f&quot;Longueur l3 : {len(l3)}&quot;)
+print(f&quot;Longueur l4 : {len(l4)}&quot;)
+print(f&quot;Longueur l5 : {len(l5)}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>l1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+l2 = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+l3 = [0, 0, 0, 0, 0]
+l4 = [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+l5 = [4, 8, 15, 16, 23, 42]
+
+Longueur l1 : 20
+Longueur l2 : 15
+Longueur l3 : 5
+Longueur l4 : 10
+Longueur l5 : 6
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 2.3 : Indexation et slicing [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Soit la liste <code>notes = [12, 15, 8, 17, 14, 9, 11, 16, 7, 13]</code>.</p>
+<ol>
+<li>Extrayez la 3e note (index 2)</li>
+<li>Extrayez la derniere note avec un index negatif</li>
+<li>Extrayez les notes de l&#39;index 1 a 4 (slice)</li>
+<li>Extrayez un element sur deux avec le pas (step)</li>
+<li>Inversez la liste avec le slicing <code>[::-1]</code></li>
+<li>Extrayez les 3 derniers elements</li>
+</ol>
+<p><strong>Indice</strong> : L&#39;indexation Python commence a 0. Le slicing s&#39;ecrit <code>[debut:fin:pas]</code> ou <code>fin</code> est exclu. Les indices negatifs comptent depuis la fin.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">notes = [12, 15, 8, 17, 14, 9, 11, 16, 7, 13]
+
+# 1. 3e note (index 2)
+print(notes[2])
+
+# 2. Derniere note
+print(notes[-1])
+
+# 3. Index 1 a 4
+print(notes[1:5])
+
+# 4. Un element sur deux
+print(notes[::2])
+
+# 5. Liste inversee
+print(notes[::-1])
+
+# 6. Trois derniers elements
+print(notes[-3:])
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>8
+13
+[15, 8, 17, 14]
+[12, 8, 14, 11, 7]
+[13, 7, 16, 11, 9, 14, 17, 8, 15, 12]
+[16, 7, 13]
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 2.4 : Opérations sur listes [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Soit <code>fruits = [&quot;pomme&quot;, &quot;banane&quot;, &quot;orange&quot;]</code>.</p>
+<ol>
+<li>Ajoutez &quot;fraise&quot; a la fin avec <code>append()</code></li>
+<li>Inserez &quot;kiwi&quot; en position 1 avec <code>insert()</code></li>
+<li>Ajoutez <code>[&quot;mangue&quot;, &quot;ananas&quot;]</code> avec <code>extend()</code></li>
+<li>Supprimez &quot;banane&quot; avec <code>remove()</code></li>
+<li>Triez la liste par ordre alphabetique avec <code>sort()</code></li>
+<li>Inversez l&#39;ordre avec <code>reverse()</code></li>
+<li>Affichez la liste apres chaque operation</li>
+</ol>
+<p><strong>Indice</strong> : <code>append()</code> ajoute a la fin, <code>insert(position, element)</code> insere, <code>extend()</code> ajoute plusieurs elements, <code>remove()</code> supprime par valeur, <code>sort()</code> trie en place, <code>reverse()</code> inverse en place.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">fruits = [&quot;pomme&quot;, &quot;banane&quot;, &quot;orange&quot;]
+print(f&quot;Initial   : {fruits}&quot;)
+
+# 1. Ajout a la fin
+fruits.append(&quot;fraise&quot;)
+print(f&quot;append    : {fruits}&quot;)
+
+# 2. Insertion en position 1
+fruits.insert(1, &quot;kiwi&quot;)
+print(f&quot;insert    : {fruits}&quot;)
+
+# 3. Extension
+fruits.extend([&quot;mangue&quot;, &quot;ananas&quot;])
+print(f&quot;extend    : {fruits}&quot;)
+
+# 4. Suppression
+fruits.remove(&quot;banane&quot;)
+print(f&quot;remove    : {fruits}&quot;)
+
+# 5. Tri
+fruits.sort()
+print(f&quot;sort      : {fruits}&quot;)
+
+# 6. Inversion
+fruits.reverse()
+print(f&quot;reverse   : {fruits}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>Initial   : [&#39;pomme&#39;, &#39;banane&#39;, &#39;orange&#39;]
+append    : [&#39;pomme&#39;, &#39;banane&#39;, &#39;orange&#39;, &#39;fraise&#39;]
+insert    : [&#39;pomme&#39;, &#39;kiwi&#39;, &#39;banane&#39;, &#39;orange&#39;, &#39;fraise&#39;]
+extend    : [&#39;pomme&#39;, &#39;kiwi&#39;, &#39;banane&#39;, &#39;orange&#39;, &#39;fraise&#39;, &#39;mangue&#39;, &#39;ananas&#39;]
+remove    : [&#39;pomme&#39;, &#39;kiwi&#39;, &#39;orange&#39;, &#39;fraise&#39;, &#39;mangue&#39;, &#39;ananas&#39;]
+sort      : [&#39;ananas&#39;, &#39;fraise&#39;, &#39;kiwi&#39;, &#39;mangue&#39;, &#39;orange&#39;, &#39;pomme&#39;]
+reverse   : [&#39;pomme&#39;, &#39;orange&#39;, &#39;mangue&#39;, &#39;kiwi&#39;, &#39;fraise&#39;, &#39;ananas&#39;]
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 2.5 : Tuples [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Creez un tuple <code>coordonnees = (48.8566, 2.3522)</code> (latitude, longitude de Paris)</li>
+<li>Accedez a la latitude et la longitude par indexation</li>
+<li>Utilisez le unpacking : <code>lat, lon = coordonnees</code></li>
+<li>Creez un tuple de tuples representant 3 villes avec leurs coordonnees</li>
+<li>Montrez qu&#39;un tuple est immutable (essayez de modifier un element)</li>
+<li>Utilisez un tuple comme cle de dictionnaire</li>
+</ol>
+<p><strong>Indice</strong> : Les tuples sont immutables : on ne peut pas modifier leurs elements. C&#39;est pour cela qu&#39;on peut les utiliser comme cles de dictionnaire (contrairement aux listes).</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python"># 1. Creation
+coordonnees = (48.8566, 2.3522)
+print(f&quot;Coordonnees : {coordonnees}&quot;)
+
+# 2. Acces par index
+print(f&quot;Latitude  : {coordonnees[0]}&quot;)
+print(f&quot;Longitude : {coordonnees[1]}&quot;)
+
+# 3. Unpacking
+lat, lon = coordonnees
+print(f&quot;lat = {lat}, lon = {lon}&quot;)
+
+# 4. Tuple de tuples
+villes = (
+    (&quot;Paris&quot;, 48.8566, 2.3522),
+    (&quot;Lyon&quot;, 45.7640, 4.8357),
+    (&quot;Marseille&quot;, 43.2965, 5.3698),
+)
+for nom, lat, lon in villes:
+    print(f&quot;{nom} : {lat}, {lon}&quot;)
+
+# 5. Immutabilite
+try:
+    coordonnees[0] = 0
+except TypeError as e:
+    print(f&quot;\nErreur : {e}&quot;)
+
+# 6. Tuple comme cle de dictionnaire
+distances = {
+    (&quot;Paris&quot;, &quot;Lyon&quot;): 465,
+    (&quot;Paris&quot;, &quot;Marseille&quot;): 775,
+    (&quot;Lyon&quot;, &quot;Marseille&quot;): 315,
+}
+print(f&quot;\nParis-Lyon : {distances[(&#39;Paris&#39;, &#39;Lyon&#39;)]} km&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>Coordonnees : (48.8566, 2.3522)
+Latitude  : 48.8566
+Longitude : 2.3522
+lat = 48.8566, lon = 2.3522
+Paris : 48.8566, 2.3522
+Lyon : 45.764, 4.8357
+Marseille : 43.2965, 5.3698
+
+Erreur : &#39;tuple&#39; object does not support item assignment
+Paris-Lyon : 465 km
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 2.6 : Dictionnaires [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Creez un dictionnaire <code>etudiant</code> contenant :</p>
+<ul>
+<li><code>nom</code> : &quot;Dupont&quot;</li>
+<li><code>prenom</code> : &quot;Marie&quot;</li>
+<li><code>age</code> : 22</li>
+<li><code>notes</code> : [14, 16, 12, 18, 15]</li>
+</ul>
+<p>Puis :</p>
+<ol>
+<li>Accedez au prenom avec <code>[]</code> et avec <code>.get()</code></li>
+<li>Ajoutez une cle <code>email</code> avec la valeur &quot;<a href="mailto:marie.dupont@univ.fr">marie.dupont@univ.fr</a>&quot;</li>
+<li>Affichez toutes les cles avec <code>.keys()</code></li>
+<li>Affichez toutes les valeurs avec <code>.values()</code></li>
+<li>Parcourez le dictionnaire avec <code>.items()</code></li>
+<li>Utilisez <code>.get()</code> avec une valeur par defaut pour une cle inexistante</li>
+</ol>
+<p><strong>Indice</strong> : <code>dict[cle]</code> leve une erreur si la cle n&#39;existe pas, tandis que <code>dict.get(cle, defaut)</code> retourne la valeur par defaut.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">etudiant = {
+    &quot;nom&quot;: &quot;Dupont&quot;,
+    &quot;prenom&quot;: &quot;Marie&quot;,
+    &quot;age&quot;: 22,
+    &quot;notes&quot;: [14, 16, 12, 18, 15],
+}
+
+# 1. Acces
+print(etudiant[&quot;prenom&quot;])
+print(etudiant.get(&quot;prenom&quot;))
+
+# 2. Ajout
+etudiant[&quot;email&quot;] = &quot;marie.dupont@univ.fr&quot;
+
+# 3. Cles
+print(f&quot;\nCles    : {list(etudiant.keys())}&quot;)
+
+# 4. Valeurs
+print(f&quot;Valeurs : {list(etudiant.values())}&quot;)
+
+# 5. Parcours
+print(&quot;\nContenu :&quot;)
+for cle, valeur in etudiant.items():
+    print(f&quot;  {cle} : {valeur}&quot;)
+
+# 6. get() avec defaut
+print(f&quot;\nTelephone : {etudiant.get(&#39;telephone&#39;, &#39;Non renseigne&#39;)}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>Marie
+Marie
+
+Cles    : [&#39;nom&#39;, &#39;prenom&#39;, &#39;age&#39;, &#39;notes&#39;, &#39;email&#39;]
+Valeurs : [&#39;Dupont&#39;, &#39;Marie&#39;, 22, [14, 16, 12, 18, 15], &#39;marie.dupont@univ.fr&#39;]
+
+Contenu :
+  nom : Dupont
+  prenom : Marie
+  age : 22
+  notes : [14, 16, 12, 18, 15]
+  email : marie.dupont@univ.fr
+
+Telephone : Non renseigne
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 2.7 : Ensembles (sets) [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Creez deux ensembles : <code>a = {1, 2, 3, 4, 5}</code> et <code>b = {4, 5, 6, 7, 8}</code></li>
+<li>Calculez l&#39;union de <code>a</code> et <code>b</code></li>
+<li>Calculez l&#39;intersection</li>
+<li>Calculez la difference <code>a - b</code> et <code>b - a</code></li>
+<li>Calculez la difference symetrique</li>
+<li>Verifiez si 3 est dans <code>a</code> (test d&#39;appartenance)</li>
+<li>Creez un ensemble a partir d&#39;une liste avec doublons et observez la deduplication</li>
+</ol>
+<p><strong>Indice</strong> : <code>|</code> pour l&#39;union, <code>&amp;</code> pour l&#39;intersection, <code>-</code> pour la difference, <code>^</code> pour la difference symetrique. <code>in</code> pour l&#39;appartenance.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">a = {1, 2, 3, 4, 5}
+b = {4, 5, 6, 7, 8}
+
+# 2. Union
+print(f&quot;Union        : {a | b}&quot;)
+
+# 3. Intersection
+print(f&quot;Intersection : {a &amp; b}&quot;)
+
+# 4. Differences
+print(f&quot;a - b        : {a - b}&quot;)
+print(f&quot;b - a        : {b - a}&quot;)
+
+# 5. Difference symetrique
+print(f&quot;Diff sym.    : {a ^ b}&quot;)
+
+# 6. Appartenance
+print(f&quot;\n3 in a : {3 in a}&quot;)
+print(f&quot;6 in a : {6 in a}&quot;)
+
+# 7. Deduplication
+liste_doublons = [1, 2, 2, 3, 3, 3, 4, 4, 4, 4]
+ensemble = set(liste_doublons)
+print(f&quot;\nListe    : {liste_doublons}&quot;)
+print(f&quot;Ensemble : {ensemble}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>Union        : {1, 2, 3, 4, 5, 6, 7, 8}
+Intersection : {4, 5}
+a - b        : {1, 2, 3}
+b - a        : {6, 7, 8}
+Diff sym.    : {1, 2, 3, 6, 7, 8}
+
+3 in a : True
+6 in a : False
+
+Liste    : [1, 2, 2, 3, 3, 3, 4, 4, 4, 4]
+Ensemble : {1, 2, 3, 4}
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 2.8 : Conversions et mutabilité [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Creez une liste, un tuple et un set contenant les memes elements <code>[1, 2, 3, 4, 5]</code></li>
+<li>Convertissez la liste en tuple, le tuple en set, le set en liste</li>
+<li>Montrez que la liste est mutable (modifiez un element)</li>
+<li>Montrez que le tuple est immutable (essayez de modifier un element)</li>
+<li>Montrez qu&#39;un set ne garde pas l&#39;ordre et n&#39;accepte pas les doublons</li>
+<li>Creez une copie superficielle d&#39;une liste et montrez la difference avec <code>=</code></li>
+</ol>
+<p><strong>Indice</strong> : <code>list()</code>, <code>tuple()</code>, <code>set()</code> permettent les conversions. Pour copier une liste : <code>liste.copy()</code> ou <code>liste[:]</code>. L&#39;assignation <code>b = a</code> ne copie pas, elle cree une reference.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python"># 1. Trois structures
+ma_liste = [1, 2, 3, 4, 5]
+mon_tuple = (1, 2, 3, 4, 5)
+mon_set = {1, 2, 3, 4, 5}
+
+print(f&quot;Liste : {ma_liste} (type: {type(ma_liste).__name__})&quot;)
+print(f&quot;Tuple : {mon_tuple} (type: {type(mon_tuple).__name__})&quot;)
+print(f&quot;Set   : {mon_set} (type: {type(mon_set).__name__})&quot;)
+
+# 2. Conversions
+print(f&quot;\nListe -&gt; Tuple : {tuple(ma_liste)}&quot;)
+print(f&quot;Tuple -&gt; Set   : {set(mon_tuple)}&quot;)
+print(f&quot;Set   -&gt; Liste : {sorted(list(mon_set))}&quot;)
+
+# 3. Liste mutable
+ma_liste[0] = 99
+print(f&quot;\nListe modifiee : {ma_liste}&quot;)
+
+# 4. Tuple immutable
+try:
+    mon_tuple[0] = 99
+except TypeError as e:
+    print(f&quot;Erreur tuple : {e}&quot;)
+
+# 5. Set : pas d&#39;ordre, pas de doublons
+s = {3, 1, 4, 1, 5, 9, 2, 6, 5, 3}
+print(f&quot;\nSet avec doublons : {s}&quot;)
+
+# 6. Copie vs reference
+a = [1, 2, 3]
+b = a           # reference (meme objet)
+c = a.copy()    # copie superficielle
+
+a[0] = 999
+print(f&quot;\na (modifie) : {a}&quot;)
+print(f&quot;b (reference) : {b}&quot;)    # modifie aussi !
+print(f&quot;c (copie)     : {c}&quot;)    # non modifie
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>Liste : [1, 2, 3, 4, 5] (type: list)
+Tuple : (1, 2, 3, 4, 5) (type: tuple)
+Set   : {1, 2, 3, 4, 5} (type: set)
+
+Liste -&gt; Tuple : (1, 2, 3, 4, 5)
+Tuple -&gt; Set   : {1, 2, 3, 4, 5}
+Set   -&gt; Liste : [1, 2, 3, 4, 5]
+
+Liste modifiee : [99, 2, 3, 4, 5]
+Erreur tuple : &#39;tuple&#39; object does not support item assignment
+
+Set avec doublons : {1, 2, 3, 4, 5, 6, 9}
+
+a (modifie) : [999, 2, 3]
+b (reference) : [999, 2, 3]
+c (copie)     : [1, 2, 3]
+</code></pre>
+</details>
+
+<hr>
+<h2>Module 3 : Fonctions et contrôle</h2>
+<hr>
+<h3>Exercice 3.1 : Conditions if/elif/else [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Ecrivez un programme qui demande un age (utilisez une variable <code>age = 25</code>) et affiche :<ul>
+<li>&quot;Mineur&quot; si age &lt; 18</li>
+<li>&quot;Jeune adulte&quot; si 18 &lt;= age &lt; 30</li>
+<li>&quot;Adulte&quot; si 30 &lt;= age &lt; 60</li>
+<li>&quot;Senior&quot; si age &gt;= 60</li>
+</ul>
+</li>
+<li>Ecrivez un programme qui categorise une note (variable <code>note = 14</code>) :<ul>
+<li>&quot;Excellent&quot; si &gt;= 16</li>
+<li>&quot;Bien&quot; si &gt;= 14</li>
+<li>&quot;Assez bien&quot; si &gt;= 12</li>
+<li>&quot;Passable&quot; si &gt;= 10</li>
+<li>&quot;Insuffisant&quot; si &lt; 10</li>
+</ul>
+</li>
+</ol>
+<p><strong>Indice</strong> : La syntaxe est <code>if condition:</code>, <code>elif condition:</code>, <code>else:</code>. L&#39;indentation (4 espaces) est obligatoire en Python.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python"># 1. Categorie d&#39;age
+age = 25
+
+if age &lt; 18:
+    categorie = &quot;Mineur&quot;
+elif age &lt; 30:
+    categorie = &quot;Jeune adulte&quot;
+elif age &lt; 60:
+    categorie = &quot;Adulte&quot;
+else:
+    categorie = &quot;Senior&quot;
+
+print(f&quot;Age {age} : {categorie}&quot;)
+
+# 2. Categorie de note
+note = 14
+
+if note &gt;= 16:
+    mention = &quot;Excellent&quot;
+elif note &gt;= 14:
+    mention = &quot;Bien&quot;
+elif note &gt;= 12:
+    mention = &quot;Assez bien&quot;
+elif note &gt;= 10:
+    mention = &quot;Passable&quot;
+else:
+    mention = &quot;Insuffisant&quot;
+
+print(f&quot;Note {note} : {mention}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>Age 25 : Jeune adulte
+Note 14 : Bien
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 3.2 : Boucles for [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Affichez les nombres de 1 a 10 avec <code>range()</code></li>
+<li>Parcourez la liste <code>fruits = [&quot;pomme&quot;, &quot;banane&quot;, &quot;orange&quot;, &quot;fraise&quot;]</code> et affichez chaque fruit</li>
+<li>Utilisez <code>enumerate()</code> pour afficher l&#39;index et le fruit</li>
+<li>Calculez la somme des nombres de 1 a 100 avec une boucle <code>for</code></li>
+<li>Parcourez un dictionnaire <code>{&quot;a&quot;: 1, &quot;b&quot;: 2, &quot;c&quot;: 3}</code> avec <code>.items()</code></li>
+</ol>
+<p><strong>Indice</strong> : <code>range(1, 11)</code> genere 1 a 10. <code>enumerate(liste)</code> retourne des paires <code>(index, element)</code>.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python"># 1. Nombres de 1 a 10
+for i in range(1, 11):
+    print(i, end=&quot; &quot;)
+print()
+
+# 2. Parcours de liste
+fruits = [&quot;pomme&quot;, &quot;banane&quot;, &quot;orange&quot;, &quot;fraise&quot;]
+for fruit in fruits:
+    print(f&quot;J&#39;aime les {fruit}s&quot;)
+
+# 3. Avec enumerate
+print()
+for i, fruit in enumerate(fruits):
+    print(f&quot;{i} : {fruit}&quot;)
+
+# 4. Somme de 1 a 100
+total = 0
+for i in range(1, 101):
+    total += i
+print(f&quot;\nSomme de 1 a 100 : {total}&quot;)
+
+# 5. Parcours de dictionnaire
+print()
+d = {&quot;a&quot;: 1, &quot;b&quot;: 2, &quot;c&quot;: 3}
+for cle, valeur in d.items():
+    print(f&quot;{cle} -&gt; {valeur}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>1 2 3 4 5 6 7 8 9 10
+J&#39;aime les pommes
+J&#39;aime les bananes
+J&#39;aime les oranges
+J&#39;aime les fraises
+
+0 : pomme
+1 : banane
+2 : orange
+3 : fraise
+
+Somme de 1 a 100 : 5050
+
+a -&gt; 1
+b -&gt; 2
+c -&gt; 3
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 3.3 : Boucles while [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Ecrivez un compte a rebours de 10 a 0 avec <code>while</code></li>
+<li>Calculez la factorielle de 7 avec une boucle <code>while</code></li>
+<li>Trouvez le plus petit entier <code>n</code> tel que <code>2**n &gt; 1000</code></li>
+<li>Simulez un lancer de de : generez des nombres aleatoires entre 1 et 6 jusqu&#39;a obtenir un 6 (utilisez <code>random.randint</code>)</li>
+</ol>
+<p><strong>Indice</strong> : La syntaxe est <code>while condition:</code>. Attention aux boucles infinies ! <code>import random</code> puis <code>random.randint(1, 6)</code> pour un de.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python">import random
+
+# 1. Compte a rebours
+n = 10
+while n &gt;= 0:
+    print(n, end=&quot; &quot;)
+    n -= 1
+print(&quot;Decollage !&quot;)
+
+# 2. Factorielle de 7
+n = 7
+factorielle = 1
+i = 1
+while i &lt;= n:
+    factorielle *= i
+    i += 1
+print(f&quot;\n{n}! = {factorielle}&quot;)
+
+# 3. Plus petit n tel que 2^n &gt; 1000
+n = 0
+while 2 ** n &lt;= 1000:
+    n += 1
+print(f&quot;\nPlus petit n tel que 2^n &gt; 1000 : n = {n} (2^{n} = {2**n})&quot;)
+
+# 4. Lancer de de
+random.seed(42)  # pour reproductibilite
+lancers = 0
+de = 0
+while de != 6:
+    de = random.randint(1, 6)
+    lancers += 1
+    print(f&quot;Lancer {lancers} : {de}&quot;)
+print(f&quot;Il a fallu {lancers} lancers pour obtenir un 6&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>10 9 8 7 6 5 4 3 2 1 0 Decollage !
+
+7! = 5040
+
+Plus petit n tel que 2^n &gt; 1000 : n = 10 (2^10 = 1024)
+
+Lancer 1 : 1
+Lancer 2 : 1
+...
+Lancer X : 6
+Il a fallu X lancers pour obtenir un 6
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 3.4 : Fonctions simples [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Ecrivez une fonction <code>celsius_to_fahrenheit(c)</code> qui convertit Celsius en Fahrenheit (F = C x 9/5 + 32)</li>
+<li>Ecrivez une fonction <code>imc(poids, taille)</code> qui calcule l&#39;indice de masse corporelle (poids en kg, taille en m)</li>
+<li>Ecrivez une fonction <code>est_premier(n)</code> qui retourne <code>True</code> si <code>n</code> est un nombre premier</li>
+<li>Testez chaque fonction avec plusieurs valeurs</li>
+</ol>
+<p><strong>Indice</strong> : La syntaxe est <code>def nom_fonction(parametre):</code>. Utilisez <code>return</code> pour retourner une valeur. Un nombre premier n&#39;est divisible que par 1 et lui-meme.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python"># 1. Conversion Celsius -&gt; Fahrenheit
+def celsius_to_fahrenheit(c):
+    return c * 9 / 5 + 32
+
+print(celsius_to_fahrenheit(0))
+print(celsius_to_fahrenheit(100))
+print(celsius_to_fahrenheit(37))
+
+# 2. IMC
+def imc(poids, taille):
+    return round(poids / taille ** 2, 2)
+
+print(f&quot;\nIMC(75, 1.80) = {imc(75, 1.80)}&quot;)
+print(f&quot;IMC(60, 1.65) = {imc(60, 1.65)}&quot;)
+
+# 3. Nombre premier
+def est_premier(n):
+    if n &lt; 2:
+        return False
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+print(&quot;\nNombres premiers de 1 a 20 :&quot;)
+print([n for n in range(1, 21) if est_premier(n)])
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>32.0
+212.0
+98.60000000000001
+
+IMC(75, 1.80) = 23.15
+IMC(60, 1.65) = 22.04
+
+Nombres premiers de 1 a 20 :
+[2, 3, 5, 7, 11, 13, 17, 19]
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 3.5 : Arguments par défaut et *args [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Ecrivez une fonction <code>saluer(nom, salutation=&quot;Bonjour&quot;)</code> avec un argument par defaut</li>
+<li>Ecrivez une fonction <code>puissance(base, exposant=2)</code> qui calcule base^exposant</li>
+<li>Ecrivez une fonction <code>moyenne(*args)</code> qui accepte un nombre variable d&#39;arguments et retourne leur moyenne</li>
+<li>Ecrivez une fonction <code>fiche(**kwargs)</code> qui affiche toutes les paires cle-valeur passees en argument</li>
+</ol>
+<p><strong>Indice</strong> : <code>*args</code> recoit les arguments positionnels en tuple. <code>**kwargs</code> recoit les arguments nommes en dictionnaire.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python"># 1. Argument par defaut
+def saluer(nom, salutation=&quot;Bonjour&quot;):
+    return f&quot;{salutation}, {nom} !&quot;
+
+print(saluer(&quot;Marie&quot;))
+print(saluer(&quot;Pierre&quot;, &quot;Salut&quot;))
+
+# 2. Puissance avec defaut
+def puissance(base, exposant=2):
+    return base ** exposant
+
+print(f&quot;\npuissance(5) = {puissance(5)}&quot;)
+print(f&quot;puissance(2, 10) = {puissance(2, 10)}&quot;)
+print(f&quot;puissance(3, 3) = {puissance(3, 3)}&quot;)
+
+# 3. Moyenne avec *args
+def moyenne(*args):
+    if len(args) == 0:
+        return 0
+    return sum(args) / len(args)
+
+print(f&quot;\nmoyenne(10, 20, 30) = {moyenne(10, 20, 30)}&quot;)
+print(f&quot;moyenne(5) = {moyenne(5)}&quot;)
+print(f&quot;moyenne(1, 2, 3, 4, 5) = {moyenne(1, 2, 3, 4, 5)}&quot;)
+
+# 4. Fiche avec **kwargs
+def fiche(**kwargs):
+    print(&quot;--- Fiche ---&quot;)
+    for cle, valeur in kwargs.items():
+        print(f&quot;  {cle} : {valeur}&quot;)
+
+fiche(nom=&quot;Dupont&quot;, prenom=&quot;Marie&quot;, age=22, ville=&quot;Paris&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>Bonjour, Marie !
+Salut, Pierre !
+
+puissance(5) = 25
+puissance(2, 10) = 1024
+puissance(3, 3) = 27
+
+moyenne(10, 20, 30) = 20.0
+moyenne(5) = 5.0
+moyenne(1, 2, 3, 4, 5) = 3.0
+
+--- Fiche ---
+  nom : Dupont
+  prenom : Marie
+  age : 22
+  ville : Paris
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 3.6 : Compréhensions de liste [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Creez une liste des carres des nombres de 1 a 15</li>
+<li>Creez une liste des nombres pairs de 1 a 30</li>
+<li>A partir de <code>mots = [&quot;Python&quot;, &quot;est&quot;, &quot;un&quot;, &quot;langage&quot;, &quot;puissant&quot;]</code>, creez une liste des longueurs de chaque mot</li>
+<li>Filtrez les mots de plus de 3 caracteres</li>
+<li>Creez une liste de tuples <code>(nombre, carre)</code> pour les nombres de 1 a 10</li>
+<li>Aplatissez une liste de listes : <code>[[1, 2], [3, 4], [5, 6]]</code> en une seule liste</li>
+</ol>
+<p><strong>Indice</strong> : Syntaxe : <code>[expression for x in iterable]</code> ou <code>[expression for x in iterable if condition]</code>. Pour aplatir : <code>[elem for sous_liste in liste for elem in sous_liste]</code>.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python"># 1. Carres
+carres = [x ** 2 for x in range(1, 16)]
+print(f&quot;Carres : {carres}&quot;)
+
+# 2. Pairs
+pairs = [x for x in range(1, 31) if x % 2 == 0]
+print(f&quot;Pairs  : {pairs}&quot;)
+
+# 3. Longueurs des mots
+mots = [&quot;Python&quot;, &quot;est&quot;, &quot;un&quot;, &quot;langage&quot;, &quot;puissant&quot;]
+longueurs = [len(m) for m in mots]
+print(f&quot;Longueurs : {longueurs}&quot;)
+
+# 4. Mots &gt; 3 caracteres
+mots_longs = [m for m in mots if len(m) &gt; 3]
+print(f&quot;Mots longs : {mots_longs}&quot;)
+
+# 5. Tuples (nombre, carre)
+paires = [(x, x ** 2) for x in range(1, 11)]
+print(f&quot;Paires : {paires}&quot;)
+
+# 6. Aplatir
+listes = [[1, 2], [3, 4], [5, 6]]
+plat = [elem for sous in listes for elem in sous]
+print(f&quot;Aplati : {plat}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>Carres : [1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225]
+Pairs  : [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+Longueurs : [6, 3, 2, 7, 8]
+Mots longs : [&#39;Python&#39;, &#39;langage&#39;, &#39;puissant&#39;]
+Paires : [(1, 1), (2, 4), (3, 9), (4, 16), (5, 25), (6, 36), (7, 49), (8, 64), (9, 81), (10, 100)]
+Aplati : [1, 2, 3, 4, 5, 6]
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 3.7 : Fonctions avancées [Difficulté : Avancé]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Creez une fonction lambda qui calcule le carre d&#39;un nombre et testez-la</li>
+<li>Utilisez <code>map()</code> pour convertir une liste de temperatures Celsius en Fahrenheit</li>
+<li>Utilisez <code>filter()</code> pour garder uniquement les nombres positifs de <code>[-3, 7, -1, 4, -8, 2, 0, 5]</code></li>
+<li>Utilisez <code>sorted()</code> avec le parametre <code>key</code> pour trier une liste de tuples <code>(&quot;nom&quot;, age)</code> par age</li>
+<li>Combinez <code>map()</code> et <code>filter()</code> : a partir d&#39;une liste de nombres, gardez les pairs et calculez leurs carres</li>
+<li>Utilisez <code>sorted()</code> avec une lambda pour trier des mots par leur derniere lettre</li>
+</ol>
+<p><strong>Indice</strong> : <code>lambda x: expression</code> cree une fonction anonyme. <code>map(fonction, iterable)</code> applique une fonction. <code>filter(fonction, iterable)</code> filtre. <code>sorted(iterable, key=fonction)</code> trie.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-python"># 1. Lambda
+carre = lambda x: x ** 2
+print(f&quot;carre(5) = {carre(5)}&quot;)
+print(f&quot;carre(12) = {carre(12)}&quot;)
+
+# 2. map() : Celsius -&gt; Fahrenheit
+celsius = [0, 10, 20, 25, 30, 37, 100]
+fahrenheit = list(map(lambda c: c * 9/5 + 32, celsius))
+print(f&quot;\nCelsius    : {celsius}&quot;)
+print(f&quot;Fahrenheit : {fahrenheit}&quot;)
+
+# 3. filter() : nombres positifs
+nombres = [-3, 7, -1, 4, -8, 2, 0, 5]
+positifs = list(filter(lambda x: x &gt; 0, nombres))
+print(f&quot;\nNombres  : {nombres}&quot;)
+print(f&quot;Positifs : {positifs}&quot;)
+
+# 4. sorted() avec key : trier par age
+personnes = [(&quot;Alice&quot;, 30), (&quot;Bob&quot;, 22), (&quot;Clara&quot;, 27), (&quot;David&quot;, 19)]
+par_age = sorted(personnes, key=lambda p: p[1])
+print(f&quot;\nTrie par age : {par_age}&quot;)
+
+# 5. Combiner filter + map
+nombres = list(range(1, 21))
+pairs_carres = list(map(lambda x: x ** 2, filter(lambda x: x % 2 == 0, nombres)))
+print(f&quot;\nCarres des pairs de 1-20 : {pairs_carres}&quot;)
+
+# 6. Trier par derniere lettre
+mots = [&quot;banane&quot;, &quot;pomme&quot;, &quot;kiwi&quot;, &quot;fraise&quot;, &quot;ananas&quot;]
+par_derniere = sorted(mots, key=lambda m: m[-1])
+print(f&quot;\nTrie par derniere lettre : {par_derniere}&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>carre(5) = 25
+carre(12) = 144
+
+Celsius    : [0, 10, 20, 25, 30, 37, 100]
+Fahrenheit : [32.0, 50.0, 68.0, 77.0, 86.0, 98.60000000000001, 212.0]
+
+Nombres  : [-3, 7, -1, 4, -8, 2, 0, 5]
+Positifs : [7, 4, 2, 5]
+
+Trie par age : [(&#39;David&#39;, 19), (&#39;Bob&#39;, 22), (&#39;Clara&#39;, 27), (&#39;Alice&#39;, 30)]
+
+Carres des pairs de 1-20 : [4, 16, 36, 64, 100, 144, 196, 256, 324, 400]
+
+Trie par derniere lettre : [&#39;banane&#39;, &#39;pomme&#39;, &#39;fraise&#39;, &#39;ananas&#39;, &#39;kiwi&#39;]
+</code></pre>
+</details>
+
+</body>
+</html>

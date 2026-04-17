@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introduction à la visualisation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080808; --bg2: #111111; --text: #ffffff; --body: #d1d5db;
+      --muted: #888888; --dim: #444444; --border: #222222;
+      --cyan: #00f3ff; --purple: #a78bfa; --orange: #ff6b00; --green: #10b981;
+    }
+    * { box-sizing: border-box; }
+    .reveal { font-family: 'Inter', sans-serif; font-size: 24px; background: var(--bg); }
+    .reveal .slides { text-align: left; }
+    .reveal .slides > section {
+      display: flex !important; flex-direction: column; justify-content: center;
+      align-items: center; height: 100%; padding: 40px 60px;
+    }
+    .reveal .slides > section > * { width: 100%; max-width: 1200px; }
+    .reveal h1 { font-weight: 800; font-size: 2.4em; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 0.3em; }
+    .reveal h2 { font-weight: 700; font-size: 1.6em; color: #fff; margin-bottom: 0.2em; letter-spacing: -0.02em; }
+    .reveal p { color: var(--body); line-height: 1.6; }
+    .subtitle { font-size: 1.1em; color: var(--muted); margin-top: 0.3em; }
+    .slide-subtitle { font-size: 0.85em; font-weight: 600; margin-bottom: 0.8em; }
+    .slide-header { margin-bottom: 1em; }
+    .slide-body { display: flex; gap: 40px; align-items: flex-start; }
+    .two-col .col-text, .two-col .col-code { flex: 1.2; }
+    .two-col .col-visual { flex: 0.8; display: flex; justify-content: center; align-items: center; }
+
+    /* Code */
+    pre { background: var(--bg2) !important; border: 1px solid var(--border); border-radius: 12px;
+          padding: 20px !important; margin: 0 !important; font-size: 0.7em !important; overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', monospace !important; line-height: 1.7 !important; }
+
+    /* Bullets */
+    .bullet-list, .summary-list { list-style: none; padding: 0; margin: 0; }
+    .bullet-list li, .summary-list li {
+      padding: 8px 0; border-bottom: 1px solid var(--border); color: var(--body);
+      font-size: 0.9em; line-height: 1.5;
+    }
+    .bullet-list li:last-child, .summary-list li:last-child { border-bottom: none; }
+    .check { font-weight: 700; margin-right: 8px; }
+
+    /* Schemas */
+    .schema { display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; padding: 20px; }
+    .schema-label { font-size: 0.75em; font-weight: 600; color: var(--accent, var(--cyan)); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+    .schema-row { display: flex; gap: 12px; align-items: center; justify-content: center; }
+    .schema-stack-grid { display: flex; gap: 10px; align-items: center; }
+    .schema-box {
+      background: var(--bg2); border: 2px solid var(--accent, var(--cyan)); border-radius: 8px;
+      padding: 12px 20px; color: var(--text); font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8em; text-align: center; min-width: 60px;
+      animation: fadeSlideUp 0.5s ease-out both;
+    }
+    .schema-box.active { background: var(--accent, var(--cyan)); color: var(--bg); font-weight: 700; }
+    .schema-box.highlight { background: rgba(0, 243, 255, 0.15); border-color: var(--accent, var(--cyan)); }
+    .schema-box.dim { opacity: 0.3; }
+    .schema-box.strike { text-decoration: line-through; opacity: 0.5; }
+    .schema-box.glow { box-shadow: 0 0 20px var(--accent, var(--cyan)); }
+    .schema-box.messy { border-style: dashed; opacity: 0.6; }
+    .schema-box.clean-box { border-color: var(--green); box-shadow: 0 0 12px rgba(16, 185, 129, 0.3); }
+    .schema-arrow { color: var(--accent, var(--cyan)); font-size: 1.5em; font-weight: 700; }
+    .schema-ptr { color: var(--accent, var(--cyan)); font-size: 1.2em; animation: bounce 1s ease infinite; }
+    .schema-loop { color: var(--accent, var(--cyan)); font-size: 2em; font-weight: 700; animation: spin 3s linear infinite; }
+    .schema-method {
+      background: var(--bg2); border: 2px solid var(--accent, var(--cyan)); border-radius: 24px;
+      padding: 10px 24px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--text);
+    }
+    .schema-check { color: var(--accent, var(--cyan)); font-size: 1.1em; font-weight: 600; }
+    .schema-pipe { display: flex; gap: 8px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.8em; }
+    .pipe-in { color: var(--muted); } .pipe-out { color: var(--green); font-weight: 700; }
+    .pipe-filter { color: var(--accent, var(--cyan)); background: var(--bg2); padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border); }
+    .plot-card {
+      width: 100%;
+      max-width: 360px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .plot-title {
+      font-size: 0.7em;
+      color: var(--accent, var(--cyan));
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .plot-svg { width: 100%; height: auto; display: block; }
+
+    /* Progress bar */
+    .progress-bar { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 10; }
+    .progress-fill { height: 100%; transition: width 0.5s ease; border-radius: 0 2px 2px 0; }
+
+    /* Footer */
+    .slide-footer { position: absolute; bottom: 16px; right: 24px; }
+    .slide-num { font-size: 0.65em; color: var(--dim); font-family: 'JetBrains Mono', monospace; }
+
+    /* Python-specific schemas */
+    .schema-kv { display: flex; flex-direction: column; gap: 6px; }
+    .kv-row { display: flex; gap: 8px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75em; }
+    .kv-key { color: var(--cyan); background: var(--bg2); padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border); }
+    .kv-val { color: var(--body); }
+    .kv-sep { color: var(--accent, var(--cyan)); font-weight: 700; }
+    .schema-table { border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 0.7em; }
+    .schema-table th { background: var(--accent, var(--cyan)); color: var(--bg); padding: 6px 14px; font-weight: 600; }
+    .schema-table td { background: var(--bg2); border: 1px solid var(--border); padding: 6px 14px; color: var(--body); text-align: center; }
+    .schema-table .row-idx { color: var(--muted); font-weight: 600; background: var(--bg); }
+    .schema-type-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .type-box { font-family: 'JetBrains Mono', monospace; font-size: 0.8em; padding: 8px 16px !important; min-width: auto !important; }
+    .schema-flow { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: center; }
+    .schema-chart { display: flex; gap: 6px; align-items: flex-end; height: 80px; padding-top: 10px; }
+    .chart-bar { width: 20px; background: var(--accent, var(--cyan)); border-radius: 3px 3px 0 0; animation: fadeSlideUp 0.5s ease-out both; opacity: 0.8; }
+    .schema-venn { position: relative; width: 120px; height: 80px; }
+    .venn-circle { position: absolute; width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--accent, var(--cyan)); display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.8em; color: var(--text); background: rgba(0,243,255,0.05); }
+    .venn-left { left: 0; } .venn-right { left: 45px; }
+
+    /* Animations */
+    @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .anim-build { animation: fadeSlideUp 0.5s ease-out both; }
+
+    /* Print / PDF */
+    @media print {
+      .reveal .slides > section { page-break-after: always; }
+      .progress-bar { display: none; }
+      .fragment { opacity: 1 !important; visibility: visible !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:13%; background:#00f3ff"></div></div>
+      
+      <h1 style="color: #00f3ff; font-size: 2.2em">Visualisation</h1>
+      <p class="subtitle">Donner une image à vos données</p>
+      
+    <div class="schema" style="--accent: #00f3ff">
+      <div class="schema-label">Graphiques R</div>
+      <div class="schema-row">
+        <div class="schema-box anim-build" style="animation-delay:0.2s">[ ]</div>
+        <div class="schema-arrow">→</div>
+        <div class="schema-box anim-build" style="animation-delay:0.5s">[a, b]</div>
+        <div class="schema-arrow">→</div>
+        <div class="schema-box anim-build glow" style="animation-delay:0.8s">[a, b, c]</div>
+      </div>
+    </div>
+      <div class="slide-footer">
+        <span class="slide-num">1 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:25%; background:#a78bfa"></div></div>
+      
+      <div class="slide-header">
+        <h2>plot() — Nuage de points</h2>
+        <p class="slide-subtitle" style="color: #a78bfa">La fonction graphique universelle</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-r">plot(mtcars$wt, mtcars$mpg,
+  main = &quot;Poids vs Consommation&quot;,
+  xlab = &quot;Poids (1000 lbs)&quot;,
+  ylab = &quot;Miles par gallon&quot;,
+  col  = &quot;steelblue&quot;,
+  pch  = 19,   # point plein
+  cex  = 1.2   # taille
+)
+abline(lm(mpg ~ wt, data = mtcars),
+  col = &quot;red&quot;, lwd = 2)</code></pre>
+        </div>
+        <div class="col-visual">
+          <div class="plot-card" style="--accent: #a78bfa">
+            <div class="plot-title">Nuage de points</div>
+            <svg class="plot-svg" viewBox="0 0 320 200" aria-label="Nuage de points poids versus mpg">
+              <line x1="35" y1="165" x2="300" y2="165" stroke="#6b7280" stroke-width="2"/>
+              <line x1="35" y1="165" x2="35" y2="20" stroke="#6b7280" stroke-width="2"/>
+              <circle cx="58" cy="62" r="5" fill="#60a5fa"/>
+              <circle cx="66" cy="78" r="5" fill="#60a5fa"/>
+              <circle cx="74" cy="90" r="5" fill="#60a5fa"/>
+              <circle cx="86" cy="70" r="5" fill="#60a5fa"/>
+              <circle cx="98" cy="96" r="5" fill="#60a5fa"/>
+              <circle cx="110" cy="84" r="5" fill="#60a5fa"/>
+              <circle cx="124" cy="104" r="5" fill="#60a5fa"/>
+              <circle cx="136" cy="116" r="5" fill="#60a5fa"/>
+              <circle cx="148" cy="124" r="5" fill="#60a5fa"/>
+              <circle cx="162" cy="108" r="5" fill="#60a5fa"/>
+              <circle cx="176" cy="132" r="5" fill="#60a5fa"/>
+              <circle cx="190" cy="120" r="5" fill="#60a5fa"/>
+              <circle cx="206" cy="140" r="5" fill="#60a5fa"/>
+              <circle cx="220" cy="146" r="5" fill="#60a5fa"/>
+              <circle cx="236" cy="150" r="5" fill="#60a5fa"/>
+              <circle cx="252" cy="156" r="5" fill="#60a5fa"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">2 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:38%; background:#ff6b00"></div></div>
+      
+      <div class="slide-header">
+        <h2>hist() — Histogramme</h2>
+        <p class="slide-subtitle" style="color: #ff6b00">La distribution d'une variable</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-r">hist(mtcars$mpg,
+  breaks = 10,
+  col    = &quot;#a78bfa&quot;,
+  border = &quot;white&quot;,
+  main   = &quot;Distribution de mpg&quot;,
+  xlab   = &quot;Miles par gallon&quot;
+)
+
+# Ajouter la courbe de densité
+lines(density(mtcars$mpg),
+  col = &quot;red&quot;, lwd = 2)</code></pre>
+        </div>
+        <div class="col-visual">
+          <div class="plot-card" style="--accent: #ff6b00">
+            <div class="plot-title">Histogramme + densité</div>
+            <svg class="plot-svg" viewBox="0 0 320 200" aria-label="Histogramme de la distribution">
+              <line x1="35" y1="165" x2="300" y2="165" stroke="#6b7280" stroke-width="2"/>
+              <line x1="35" y1="165" x2="35" y2="20" stroke="#6b7280" stroke-width="2"/>
+              <rect x="55" y="130" width="26" height="35" fill="#a78bfa"/>
+              <rect x="86" y="108" width="26" height="57" fill="#a78bfa"/>
+              <rect x="117" y="88" width="26" height="77" fill="#a78bfa"/>
+              <rect x="148" y="66" width="26" height="99" fill="#a78bfa"/>
+              <rect x="179" y="82" width="26" height="83" fill="#a78bfa"/>
+              <rect x="210" y="104" width="26" height="61" fill="#a78bfa"/>
+              <rect x="241" y="126" width="26" height="39" fill="#a78bfa"/>
+              <path d="M52 145 C95 95, 140 58, 178 66 C214 74, 250 110, 286 140" fill="none" stroke="#ef4444" stroke-width="3"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">3 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:50%; background:#10b981"></div></div>
+      
+      <div class="slide-header">
+        <h2>boxplot() — Boîte à moustaches</h2>
+        <p class="slide-subtitle" style="color: #10b981">Comparer des groupes</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-r">boxplot(mpg ~ cyl, data = mtcars,
+  main = &quot;Consommation par cylindres&quot;,
+  xlab = &quot;Nombre de cylindres&quot;,
+  ylab = &quot;Miles par gallon&quot;,
+  col  = c(&quot;#00f3ff&quot;, &quot;#a78bfa&quot;, &quot;#ff6b00&quot;),
+  border = &quot;gray30&quot;
+)</code></pre>
+        </div>
+        <div class="col-visual">
+          <div class="plot-card" style="--accent: #10b981">
+            <div class="plot-title">Boîtes par groupe</div>
+            <svg class="plot-svg" viewBox="0 0 320 200" aria-label="Boxplot comparant plusieurs groupes">
+              <line x1="35" y1="165" x2="300" y2="165" stroke="#6b7280" stroke-width="2"/>
+              <line x1="35" y1="165" x2="35" y2="20" stroke="#6b7280" stroke-width="2"/>
+              <line x1="85" y1="55" x2="85" y2="145" stroke="#00f3ff" stroke-width="3"/>
+              <rect x="65" y="85" width="40" height="36" fill="none" stroke="#00f3ff" stroke-width="3"/>
+              <line x1="65" y1="102" x2="105" y2="102" stroke="#00f3ff" stroke-width="3"/>
+              <line x1="160" y1="70" x2="160" y2="150" stroke="#a78bfa" stroke-width="3"/>
+              <rect x="140" y="98" width="40" height="30" fill="none" stroke="#a78bfa" stroke-width="3"/>
+              <line x1="140" y1="112" x2="180" y2="112" stroke="#a78bfa" stroke-width="3"/>
+              <line x1="235" y1="88" x2="235" y2="158" stroke="#ff6b00" stroke-width="3"/>
+              <rect x="215" y="112" width="40" height="28" fill="none" stroke="#ff6b00" stroke-width="3"/>
+              <line x1="215" y1="124" x2="255" y2="124" stroke="#ff6b00" stroke-width="3"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">4 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:63%; background:#00f3ff"></div></div>
+      
+      <div class="slide-header">
+        <h2>barplot() — Diagramme en barres</h2>
+        <p class="slide-subtitle" style="color: #00f3ff">Compter et comparer</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-r"># Compter par catégorie
+freqs &lt;- table(mtcars$cyl)
+
+barplot(freqs,
+  main = &quot;Nombre de voitures par cylindres&quot;,
+  xlab = &quot;Cylindres&quot;,
+  ylab = &quot;Nombre&quot;,
+  col  = c(&quot;#00f3ff&quot;, &quot;#a78bfa&quot;, &quot;#ff6b00&quot;)
+)
+
+# Ajouter une légende
+legend(&quot;topright&quot;, legend = names(freqs),
+  fill = c(&quot;#00f3ff&quot;, &quot;#a78bfa&quot;, &quot;#ff6b00&quot;))</code></pre>
+        </div>
+        <div class="col-visual">
+          <div class="plot-card" style="--accent: #00f3ff">
+            <div class="plot-title">Diagramme en barres</div>
+            <svg class="plot-svg" viewBox="0 0 320 200" aria-label="Barplot de fréquences">
+              <line x1="35" y1="165" x2="300" y2="165" stroke="#6b7280" stroke-width="2"/>
+              <line x1="35" y1="165" x2="35" y2="20" stroke="#6b7280" stroke-width="2"/>
+              <rect x="72" y="95" width="40" height="70" fill="#00f3ff"/>
+              <rect x="140" y="65" width="40" height="100" fill="#a78bfa"/>
+              <rect x="208" y="112" width="40" height="53" fill="#ff6b00"/>
+              <text x="82" y="184" fill="#d1d5db" font-size="14">4</text>
+              <text x="150" y="184" fill="#d1d5db" font-size="14">6</text>
+              <text x="218" y="184" fill="#d1d5db" font-size="14">8</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">5 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:75%; background:#ff6b00"></div></div>
+      
+      <div class="slide-header">
+        <h2>Combiner des graphiques</h2>
+        <p class="slide-subtitle" style="color: #ff6b00">Dashboard en une commande</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-r">par(mfrow = c(2, 2))
+
+plot(mtcars$wt, mtcars$mpg, main = &quot;Poids vs MPG&quot;)
+hist(mtcars$mpg, main = &quot;Distribution MPG&quot;, col = &quot;#a78bfa&quot;)
+boxplot(mpg ~ cyl, data = mtcars, main = &quot;MPG par Cyl&quot;)
+barplot(table(mtcars$gear), main = &quot;Vitesses&quot;, col = &quot;#10b981&quot;)
+
+par(mfrow = c(1, 1))  # remettre à 1</code></pre>
+        </div>
+        <div class="col-visual">
+          <div class="plot-card" style="--accent: #ff6b00">
+            <div class="plot-title">Disposition 2 x 2</div>
+            <svg class="plot-svg" viewBox="0 0 320 200" aria-label="Grille de quatre graphiques">
+              <rect x="45" y="28" width="110" height="65" fill="none" stroke="#60a5fa" stroke-width="2"/>
+              <line x1="55" y1="82" x2="145" y2="40" stroke="#60a5fa" stroke-width="2"/>
+              <rect x="165" y="28" width="110" height="65" fill="none" stroke="#a78bfa" stroke-width="2"/>
+              <rect x="178" y="74" width="18" height="18" fill="#a78bfa"/>
+              <rect x="200" y="58" width="18" height="34" fill="#a78bfa"/>
+              <rect x="222" y="44" width="18" height="48" fill="#a78bfa"/>
+              <rect x="244" y="66" width="18" height="26" fill="#a78bfa"/>
+              <rect x="45" y="103" width="110" height="65" fill="none" stroke="#10b981" stroke-width="2"/>
+              <rect x="60" y="124" width="25" height="24" fill="none" stroke="#10b981" stroke-width="2"/>
+              <rect x="91" y="114" width="25" height="32" fill="none" stroke="#10b981" stroke-width="2"/>
+              <rect x="122" y="120" width="25" height="26" fill="none" stroke="#10b981" stroke-width="2"/>
+              <rect x="165" y="103" width="110" height="65" fill="none" stroke="#f59e0b" stroke-width="2"/>
+              <rect x="186" y="138" width="16" height="20" fill="#f59e0b"/>
+              <rect x="208" y="126" width="16" height="32" fill="#f59e0b"/>
+              <rect x="230" y="114" width="16" height="44" fill="#f59e0b"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">6 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:88%; background:#a78bfa"></div></div>
+      
+      <div class="slide-header">
+        <h2>Exporter un graphique</h2>
+        <p class="slide-subtitle" style="color: #a78bfa">PDF, PNG et plus</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-r"># Exporter en PNG
+png(&quot;mon_graphique.png&quot;,
+  width = 800, height = 600, res = 150)
+plot(mtcars$wt, mtcars$mpg,
+  main = &quot;Poids vs Consommation&quot;,
+  col = &quot;steelblue&quot;, pch = 19)
+dev.off()
+
+# Exporter en PDF
+pdf(&quot;mon_graphique.pdf&quot;, width = 8, height = 6)
+hist(mtcars$mpg, col = &quot;#a78bfa&quot;)
+dev.off()</code></pre>
+        </div>
+        <div class="col-visual">
+          <div class="plot-card" style="--accent: #a78bfa">
+            <div class="plot-title">Export PNG / PDF</div>
+            <svg class="plot-svg" viewBox="0 0 320 200" aria-label="Export de graphique vers des fichiers">
+              <rect x="45" y="35" width="150" height="95" rx="6" fill="none" stroke="#a78bfa" stroke-width="2"/>
+              <line x1="58" y1="118" x2="180" y2="118" stroke="#6b7280" stroke-width="2"/>
+              <line x1="58" y1="118" x2="58" y2="52" stroke="#6b7280" stroke-width="2"/>
+              <polyline points="66,108 88,96 105,101 128,82 150,88 176,70" fill="none" stroke="#00f3ff" stroke-width="3"/>
+              <line x1="205" y1="68" x2="290" y2="68" stroke="#6b7280" stroke-width="2"/>
+              <line x1="205" y1="98" x2="290" y2="98" stroke="#6b7280" stroke-width="2"/>
+              <rect x="214" y="52" width="50" height="24" rx="4" fill="#10b981"/>
+              <text x="222" y="69" fill="#080808" font-size="12" font-weight="700">PNG</text>
+              <rect x="214" y="82" width="50" height="24" rx="4" fill="#ff6b00"/>
+              <text x="223" y="99" fill="#080808" font-size="12" font-weight="700">PDF</text>
+              <line x1="190" y1="83" x2="205" y2="83" stroke="#a78bfa" stroke-width="2"/>
+              <polygon points="205,83 198,79 198,87" fill="#a78bfa"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">7 / 8</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:100%; background:#10b981"></div></div>
+      
+      <div class="slide-header">
+        <h2 style="color: #10b981">Récapitulatif</h2>
+        <p class="slide-subtitle">Vos données ont une image</p>
+      </div>
+      <ul class="summary-list"><li class="fragment" data-fragment-index="0">
+        <span class="check" style="color: #10b981">✓</span> plot() : nuage de points
+      </li>
+<li class="fragment" data-fragment-index="1">
+        <span class="check" style="color: #10b981">✓</span> hist() : distribution
+      </li>
+<li class="fragment" data-fragment-index="2">
+        <span class="check" style="color: #10b981">✓</span> boxplot() : comparaison de groupes
+      </li>
+<li class="fragment" data-fragment-index="3">
+        <span class="check" style="color: #10b981">✓</span> barplot() : comptages par catégorie
+      </li>
+<li class="fragment" data-fragment-index="4">
+        <span class="check" style="color: #10b981">✓</span> par(mfrow) : grille de graphiques
+      </li>
+<li class="fragment" data-fragment-index="5">
+        <span class="check" style="color: #10b981">✓</span> png() / pdf() + dev.off() : export
+      </li></ul>
+      <div class="slide-footer">
+        <span class="slide-num">8 / 8</span>
+      </div>
+    </section>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      width: 1920, height: 1080,
+      margin: 0,
+      center: false,
+      controls: true,
+      progress: false,
+      slideNumber: false,
+      plugins: []
+    });
+    hljs.highlightAll();
+  </script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projet Analyse Complete</title>
+<style>
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#2d3436;line-height:1.7;max-width:800px;margin:0 auto;padding:30px 24px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
+h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+h4{font-size:.95rem;margin:16px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid #dfe6e9;padding:8px 12px;text-align:left;font-size:.9rem}
+th{background:#f1f2f6;font-weight:600}
+tr:nth-child(even){background:#f8f9fa}
+blockquote{border-left:4px solid #74b9ff;margin:12px 0;padding:8px 16px;background:#f8f9fa;color:#636e72}
+strong{color:#2d3436}
+hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
+.header-bar{background:#0984e3;color:#fff;padding:12px 20px;border-radius:8px;margin-bottom:24px;font-size:.85rem}
+.header-bar strong{color:#fff}
+</style>
+</head>
+<body>
+<div class="header-bar"><strong>R Niveau II</strong></div>
+<h1>Projet fil rouge — R Niveau II</h1>
+<h2>Exploiter une base SQL et des exports Excel pour un reporting descriptif</h2>
+<p><strong>Durée</strong> : 1h45
+<strong>Sources</strong> : base SQL (<code>business.db</code>) + classeurs Excel (<code>catalogue.xlsx</code>, <code>objectifs.xlsx</code>)
+<strong>Livrable</strong> : script R reproductible + note de synthèse descriptive</p>
+<hr>
+<h2>Contexte métier</h2>
+<p>Vous accompagnez l&#39;équipe commerciale d&#39;une entreprise multi-régions. Les ventes détaillées sont stockées en base SQL, mais les objectifs et certaines données produits sont diffusés sous Excel. Le management demande un reporting fiable avec focus descriptif :</p>
+<ul>
+<li>où le chiffre d&#39;affaires progresse / recule,</li>
+<li>quels segments client tirent la performance,</li>
+<li>quels écarts existent entre réalisé et objectif.</li>
+</ul>
+<hr>
+<h2>Étape 1 : Extraction multi-sources (20 min)</h2>
+<ol>
+<li>Connexion à la base avec <code>DBI::dbConnect()</code></li>
+<li>Lecture des tables SQL <code>ventes</code> et <code>clients</code> en mode distant</li>
+<li>Import des fichiers Excel <code>catalogue.xlsx</code> et <code>objectifs.xlsx</code></li>
+<li>Nettoyage minimal (<code>clean_names()</code>, typage, valeurs manquantes évidentes)</li>
+</ol>
+<p><strong>Attendu</strong> : 4 objets propres prêts à être joints.</p>
+<hr>
+<h2>Étape 2 : Contrôles qualité (20 min)</h2>
+<ol>
+<li>Vérifier unicité de la clé <code>id_commande</code></li>
+<li>Calculer le taux de NA des colonnes critiques (<code>date</code>, <code>client_id</code>, <code>prix_net</code>)</li>
+<li>Détecter les produits vendus mais absents du catalogue (<code>anti_join</code>)</li>
+<li>Produire un mini tableau de contrôle (OK / Alerte)</li>
+</ol>
+<p><strong>Attendu</strong> : un bloc qualité explicite avant toute analyse.</p>
+<hr>
+<h2>Étape 3 : Requêtes avancées et table analytique (25 min)</h2>
+<ol>
+<li>Construire une table unifiée (ventes + clients + produits)</li>
+<li>Calculer <code>montant_commande = quantite * prix_net</code></li>
+<li>Agréger par mois, région, segment</li>
+<li>Joindre les objectifs Excel par mois/région</li>
+<li>Calculer <code>ecart_obj</code> et <code>taux_atteinte</code></li>
+</ol>
+<p><strong>Attendu</strong> : table finale de pilotage avec métriques métier.</p>
+<hr>
+<h2>Étape 4 : Statistiques descriptives pratiques (25 min)</h2>
+<p>Produire une synthèse descriptive actionnable :</p>
+<ol>
+<li>3 KPI globaux : CA total, panier moyen, nombre de clients actifs</li>
+<li>Descriptif par segment : médiane panier, dispersion (IQR), part de CA</li>
+<li>Évolution temporelle : variation MoM (%) et cumul annuel</li>
+<li>Top 5 clients par région avec ranking</li>
+</ol>
+<p><strong>Attendu</strong> : interprétation courte de chaque résultat (pas seulement des chiffres).</p>
+<hr>
+<h2>Étape 5 : Restitution (15 min)</h2>
+<ol>
+<li>Créer un tableau final avec <code>gt</code> (ou tableau dplyr propre)</li>
+<li>Créer 2 graphiques descriptifs utiles (ligne temporelle + barres segment)</li>
+<li>Exporter les résultats (CSV/Excel + PNG)</li>
+<li>Rédiger une synthèse de 8 à 10 lignes : constats + recommandations</li>
+</ol>
+<hr>
+<h2>Barème</h2>
+<table>
+<thead>
+<tr>
+<th>Critère</th>
+<th>Points</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Extraction SQL + Excel correcte</td>
+<td>/20</td>
+</tr>
+<tr>
+<td>Contrôles qualité explicites</td>
+<td>/20</td>
+</tr>
+<tr>
+<td>Requêtes avancées et jointures fiables</td>
+<td>/25</td>
+</tr>
+<tr>
+<td>Analyse descriptive pertinente</td>
+<td>/20</td>
+</tr>
+<tr>
+<td>Restitution claire et exploitable</td>
+<td>/15</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>/100</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Correction type (squelette)</h2>
+<pre><code class="language-r">library(DBI)
+library(RSQLite)
+library(dplyr)
+library(dbplyr)
+library(readxl)
+library(janitor)
+library(gt)
+
+# 1) Extraction
+con &lt;- dbConnect(SQLite(), "business.db")
+ventes_tbl  &lt;- tbl(con, "ventes")
+clients_tbl &lt;- tbl(con, "clients")
+
+catalogue &lt;- read_excel("catalogue.xlsx", sheet = "Produits") |&gt; clean_names()
+objectifs &lt;- read_excel("objectifs.xlsx", sheet = "Objectifs", skip = 2) |&gt;
+  clean_names()
+
+# 2) Contrôles qualité (exemples)
+qc_na &lt;- ventes_tbl |&gt;
+  summarise(
+    na_date = sum(is.na(date)),
+    na_client = sum(is.na(client_id)),
+    na_prix = sum(is.na(prix_net))
+  ) |&gt; collect()
+
+produits_absents &lt;- ventes_tbl |&gt;
+  distinct(produit_id) |&gt;
+  collect() |&gt;
+  anti_join(catalogue |&gt; distinct(produit_id), by = "produit_id")
+
+# 3) Table analytique
+pilotage &lt;- ventes_tbl |&gt;
+  left_join(clients_tbl, by = "client_id") |&gt;
+  collect() |&gt;
+  left_join(catalogue, by = "produit_id") |&gt;
+  mutate(
+    mois = as.Date(format(date, "%Y-%m-01")),
+    montant_commande = quantite * prix_net
+  ) |&gt;
+  group_by(mois, region, segment) |&gt;
+  summarise(
+    ca = sum(montant_commande, na.rm = TRUE),
+    clients_actifs = n_distinct(client_id),
+    panier_moyen = mean(montant_commande, na.rm = TRUE),
+    .groups = "drop"
+  ) |&gt;
+  left_join(objectifs, by = c("mois", "region")) |&gt;
+  mutate(
+    ecart_obj = ca - objectif_ca,
+    taux_atteinte = ca / objectif_ca
+  )
+
+# 4) Descriptif segment
+desc_segment &lt;- pilotage |&gt;
+  group_by(segment) |&gt;
+  summarise(
+    ca_total = sum(ca, na.rm = TRUE),
+    mediane_panier = median(panier_moyen, na.rm = TRUE),
+    iqr_panier = IQR(panier_moyen, na.rm = TRUE),
+    .groups = "drop"
+  ) |&gt;
+  mutate(part_ca = ca_total / sum(ca_total))
+
+# 5) Restitution
+desc_segment |&gt;
+  gt() |&gt;
+  fmt_currency(columns = c(ca_total, mediane_panier), currency = "EUR") |&gt;
+  fmt_percent(columns = part_ca)
+
+dbDisconnect(con)
+</code></pre>
+
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syllabus</title>
+<style>
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#2d3436;line-height:1.7;max-width:800px;margin:0 auto;padding:30px 24px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
+h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+h4{font-size:.95rem;margin:16px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid #dfe6e9;padding:8px 12px;text-align:left;font-size:.9rem}
+th{background:#f1f2f6;font-weight:600}
+tr:nth-child(even){background:#f8f9fa}
+blockquote{border-left:4px solid #74b9ff;margin:12px 0;padding:8px 16px;background:#f8f9fa;color:#636e72}
+strong{color:#2d3436}
+hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
+.header-bar{background:#0984e3;color:#fff;padding:12px 20px;border-radius:8px;margin-bottom:24px;font-size:.85rem}
+.header-bar strong{color:#fff}
+</style>
+</head>
+<body>
+<div class="header-bar"><strong>R Niveau I</strong></div>
+<h1>R Niveau I — Syllabus</h1>
+<h2>Initiation au langage R</h2>
+<p><strong>Durée</strong> : 2 jours (14 heures)
+<strong>Format</strong> : Présentiel ou distanciel synchrone</p>
+<hr>
+<h2>Description</h2>
+<p>Formation de deux jours pour découvrir R et RStudio. Les stagiaires acquièrent les bases pour manipuler une session R, distinguer les objets du langage et mettre en œuvre les fonctions essentielles pour explorer et transformer un jeu de données.</p>
+<hr>
+<h2>Public cible</h2>
+<ul>
+<li>Analystes de données débutants en R</li>
+<li>Statisticiens migrant depuis Excel, SPSS ou SAS</li>
+<li>Étudiants en data science, biologie, économie, sciences sociales</li>
+<li>Professionnels souhaitant automatiser des traitements de données</li>
+</ul>
+<h2>Prérequis</h2>
+<ul>
+<li>Notions de statistique descriptive (moyenne, médiane, écart-type)</li>
+<li>Aisance informatique de base</li>
+<li>Aucune expérience en programmation requise</li>
+</ul>
+<hr>
+<h2>Objectifs pédagogiques</h2>
+<ol>
+<li><strong>Installer et configurer</strong> R et RStudio</li>
+<li><strong>Naviguer dans RStudio</strong> : console, éditeur, environnement, aide</li>
+<li><strong>Identifier et créer</strong> les objets R : vecteurs, matrices, listes, data.frames, facteurs</li>
+<li><strong>Maîtriser les types de données</strong> : numeric, character, logical, integer et leurs conversions</li>
+<li><strong>Utiliser les fonctions de base</strong> : math, stats, chaînes de caractères, logique</li>
+<li><strong>Écrire ses propres fonctions</strong> pour automatiser des traitements</li>
+<li><strong>Importer et exporter</strong> des données (CSV, Excel, RDS)</li>
+<li><strong>Manipuler un data.frame</strong> : sélection, filtrage, tri, jointures, agrégation</li>
+<li><strong>Créer des graphiques de base</strong> : scatter, histogramme, boxplot, barplot</li>
+<li><strong>Mener une analyse exploratoire complète</strong> de l&#39;import à la visualisation</li>
+</ol>
+<hr>
+<h2>Programme</h2>
+<h3>Jour 1 — Découverte de R</h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. Introduction à R et RStudio</td>
+<td>Installation, interface RStudio (4 panneaux), console, scripts, obtenir de l&#39;aide</td>
+</tr>
+<tr>
+<td>2. Les objets R</td>
+<td>Types atomiques, vecteurs, indexation, matrices, listes, data.frames, facteurs, conversions</td>
+</tr>
+<tr>
+<td>3. Les fonctions de base</td>
+<td>Fonctions math, stats (mean, sd, summary), chaînes (paste, gsub), logique, fonctions custom</td>
+</tr>
+<tr>
+<td>4. Atelier pratique</td>
+<td>Exercices guidés consolidant les modules 1 à 3</td>
+</tr>
+</tbody></table>
+<h3>Jour 2 — Manipulation de données</h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>5. Import et export</td>
+<td>read.csv, read.table, readxl, readRDS, write.csv, exploration (str, head, summary)</td>
+</tr>
+<tr>
+<td>6. Manipulation de data.frames</td>
+<td>Sélection, filtrage, tri, colonnes calculées, merge/jointures, agrégation</td>
+</tr>
+<tr>
+<td>7. Visualisation de base</td>
+<td>plot(), hist(), boxplot(), barplot(), paramètres graphiques, multi-graphiques, export</td>
+</tr>
+<tr>
+<td>8. Projet intégrateur</td>
+<td>Analyse complète sur <code>airquality</code> : import, nettoyage, stats, visualisation</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Compétences acquises</h2>
+<table>
+<thead>
+<tr>
+<th>Compétence</th>
+<th>Niveau</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Session R et RStudio</td>
+<td>Maîtrise</td>
+</tr>
+<tr>
+<td>Objets R et types</td>
+<td>Maîtrise</td>
+</tr>
+<tr>
+<td>Fonctions de base</td>
+<td>Maîtrise</td>
+</tr>
+<tr>
+<td>Import/export</td>
+<td>Autonomie</td>
+</tr>
+<tr>
+<td>Manipulation de data.frames</td>
+<td>Autonomie</td>
+</tr>
+<tr>
+<td>Visualisation de base</td>
+<td>Initiation</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Évaluation</h2>
+<ul>
+<li>Exercices pratiques à la fin de chaque module</li>
+<li>Projet intégrateur en fin de formation (Module 8)</li>
+<li>Attestation de participation</li>
+</ul>
+<h2>Méthodes pédagogiques</h2>
+<ul>
+<li>Vidéos animées par module avec narration et code en direct</li>
+<li>Démonstrations live dans RStudio</li>
+<li>Exercices progressifs (facile → intermédiaire → avancé)</li>
+<li>Projet intégrateur sur données réelles</li>
+<li>Slides, scripts R commentés, fiches mémo</li>
+</ul>
+<h2>Outils</h2>
+<table>
+<thead>
+<tr>
+<th>Outil</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>R</td>
+<td>≥ 4.3</td>
+</tr>
+<tr>
+<td>RStudio Desktop</td>
+<td>≥ 2024.04</td>
+</tr>
+</tbody></table>
+<p>Aucun package externe requis (base R uniquement).</p>
+
+</body>
+</html>

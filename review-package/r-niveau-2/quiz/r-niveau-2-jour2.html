@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz de fin de Jour 2 — R Niveau II</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f5f6fa;color:#2d3436;line-height:1.6;padding:0 0 60px}
+.container{max-width:780px;margin:0 auto;padding:20px}
+header{text-align:center;padding:32px 0 24px;border-bottom:2px solid #dfe6e9;margin-bottom:28px}
+h1{font-size:1.5rem;color:#2d3436;margin-bottom:6px}
+.subtitle{font-size:.95rem;color:#636e72}
+.meta{display:flex;gap:16px;justify-content:center;margin-top:10px;font-size:.85rem;color:#636e72}
+.meta span{background:#dfe6e9;padding:3px 10px;border-radius:12px}
+.question{background:#fff;border-radius:10px;padding:22px 26px;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,.06);border-left:4px solid #74b9ff;transition:border-color .3s}
+.question.correct{border-left-color:#00b894}
+.question.wrong{border-left-color:#d63031}
+.question.unanswered{border-left-color:#fdcb6e}
+.q-header{font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;color:#74b9ff;margin-bottom:8px}
+.q-text{font-size:1rem;margin-bottom:14px}
+.q-text code,.choice-text code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+.code-block{background:#2d3436;color:#dfe6e9;padding:14px 18px;border-radius:6px;overflow-x:auto;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.82rem;line-height:1.5;margin:10px 0}
+.code-block code{background:none;padding:0;color:inherit;font-size:inherit}
+.choices{display:flex;flex-direction:column;gap:6px}
+.choice{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;border-radius:6px;cursor:pointer;transition:background .15s}
+.choice:hover{background:#f1f2f6}
+.choice input[type=radio]{margin-top:4px;accent-color:#0984e3;flex-shrink:0}
+.choice .letter{font-weight:600;color:#636e72;min-width:20px;flex-shrink:0}
+.choice-text{flex:1}
+.choice.selected-correct{background:#d4edda}
+.choice.selected-wrong{background:#f8d7da}
+.choice.is-correct{background:#d4edda}
+.feedback{margin-top:8px;font-size:.85rem;font-weight:600;display:none}
+.feedback.show{display:block}
+.feedback.ok{color:#00b894}
+.feedback.ko{color:#d63031}
+.feedback.skip{color:#fdcb6e}
+.actions{text-align:center;margin:30px 0 20px}
+#submit-btn{background:#0984e3;color:#fff;border:none;padding:14px 48px;font-size:1.05rem;border-radius:8px;cursor:pointer;font-weight:600;transition:background .2s}
+#submit-btn:hover{background:#0770c2}
+#submit-btn:disabled{background:#b2bec3;cursor:default}
+#results{background:#fff;border-radius:10px;padding:28px 30px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.score-big{text-align:center;font-size:2.8rem;font-weight:800;margin:10px 0}
+.score-big.pass{color:#00b894}
+.score-big.fail{color:#d63031}
+.verdict{text-align:center;font-size:1.1rem;margin-bottom:20px;padding:10px 20px;border-radius:8px;font-weight:600}
+.verdict.pass{background:#d4edda;color:#155724}
+.verdict.fail{background:#f8d7da;color:#721c24}
+.section-scores{margin:20px 0}
+.section-scores h3{font-size:.95rem;margin-bottom:10px;color:#636e72}
+.section-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #f1f2f6}
+.section-name{flex:1;font-size:.9rem}
+.section-bar-wrap{width:120px;height:8px;background:#dfe6e9;border-radius:4px;overflow:hidden}
+.section-bar{height:100%;border-radius:4px;transition:width .5s}
+.section-bar.good{background:#00b894}
+.section-bar.mid{background:#fdcb6e}
+.section-bar.bad{background:#d63031}
+.section-score{font-size:.85rem;font-weight:600;min-width:40px;text-align:right}
+.grading{margin-top:20px}
+.grading h3{font-size:.95rem;margin-bottom:8px;color:#636e72}
+.grading-row{display:flex;gap:12px;padding:4px 0;font-size:.85rem}
+.grading-range{font-weight:700;min-width:60px}
+.back-link{text-align:center;margin-top:24px}
+.back-link a{color:#0984e3;text-decoration:none;font-weight:500}
+.back-link a:hover{text-decoration:underline}
+#reset-btn{background:#636e72;color:#fff;border:none;padding:10px 32px;font-size:.95rem;border-radius:8px;cursor:pointer;font-weight:500;margin-top:14px;transition:background .2s}
+#reset-btn:hover{background:#4a5568}
+@media(max-width:600px){
+  .container{padding:12px}
+  .question{padding:16px 18px}
+  h1{font-size:1.25rem}
+  .code-block{font-size:.75rem;padding:10px 12px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Quiz de fin de Jour 2 — R Niveau II</h1>
+    <p class="subtitle">R Niveau II — Qualité des données et statistiques descriptives pratiques</p>
+    <div class="meta">
+      <span>20 questions</span>
+      <span>~15 min</span>
+      <span>Seuil : ≥ 14/20</span>
+    </div>
+  </header>
+
+  <div id="quiz-form"></div>
+
+  <div class="actions">
+    <button id="submit-btn" onclick="submitQuiz()">Valider mes réponses</button>
+  </div>
+
+  <div id="results" style="display:none"></div>
+
+  <div class="back-link">
+    <a href="index.html">← Retour à l'accueil</a>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    id: 1,
+    section: "Module 5 : Qualité des données",
+    text: "Quel indicateur sert à mesurer rapidement la complétude d'une colonne ?",
+    choices: [
+      { letter: "a", text: "Le nombre de valeurs manquantes (<code>sum(is.na(col))</code>)" },
+      { letter: "b", text: "Le nombre de caractères uniques" },
+      { letter: "c", text: "Le rang moyen" },
+      { letter: "d", text: "Le R²" }
+    ],
+    answer: "a"
+  },
+  {
+    id: 2,
+    section: "Module 5 : Qualité des données",
+    text: "Pour vérifier l'unicité d'une clé métier <code>id_commande</code>, on compare :",
+    choices: [
+      { letter: "a", text: "<code>nrow(df)</code> et <code>n_distinct(id_commande)</code>" },
+      { letter: "b", text: "<code>mean(id_commande)</code> et <code>median(id_commande)</code>" },
+      { letter: "c", text: "<code>min(id_commande)</code> et <code>max(id_commande)</code>" },
+      { letter: "d", text: "<code>sd(id_commande)</code> et <code>IQR(id_commande)</code>" }
+    ],
+    answer: "a"
+  },
+  {
+    id: 3,
+    section: "Module 5 : Qualité des données",
+    text: "Quelle jointure est utile pour identifier les lignes présentes dans Excel mais absentes en base ?",
+    choices: [
+      { letter: "a", text: "<code>inner_join()</code>" },
+      { letter: "b", text: "<code>left_join()</code>" },
+      { letter: "c", text: "<code>anti_join(excel, base)</code>" },
+      { letter: "d", text: "<code>full_join()</code>" }
+    ],
+    answer: "c"
+  },
+  {
+    id: 4,
+    section: "Module 5 : Qualité des données",
+    text: "Si un montant est négatif alors que la règle métier l'interdit, on parle :",
+    choices: [
+      { letter: "a", text: "D'une variation saisonnière" },
+      { letter: "b", text: "D'une anomalie de cohérence métier" },
+      { letter: "c", text: "D'un outlier forcément à conserver" },
+      { letter: "d", text: "D'une erreur de visualisation" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 5,
+    section: "Module 5 : Qualité des données",
+    text: "Que doit produire un contrôle qualité automatisé ?",
+    choices: [
+      { letter: "a", text: "Seulement un graphique" },
+      { letter: "b", text: "Un statut (OK / KO) et la liste des anomalies" },
+      { letter: "c", text: "Un modèle de machine learning" },
+      { letter: "d", text: "Un fichier binaire" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 6,
+    section: "Module 6 : Statistiques descriptives",
+    text: "Quand les données contiennent des valeurs extrêmes, quel indicateur de tendance centrale est le plus robuste ?",
+    choices: [
+      { letter: "a", text: "La moyenne" },
+      { letter: "b", text: "La médiane" },
+      { letter: "c", text: "Le minimum" },
+      { letter: "d", text: "Le maximum" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 7,
+    section: "Module 6 : Statistiques descriptives",
+    text: "Quel couple d'indicateurs décrit le mieux la dispersion robuste ?",
+    choices: [
+      { letter: "a", text: "Min et max" },
+      { letter: "b", text: "Moyenne et écart-type" },
+      { letter: "c", text: "Q1, médiane, Q3 et IQR" },
+      { letter: "d", text: "R² et p-value" }
+    ],
+    answer: "c"
+  },
+  {
+    id: 8,
+    section: "Module 6 : Statistiques descriptives",
+    text: "Que calcule <code>n_distinct(client_id)</code> ?",
+    choices: [
+      { letter: "a", text: "Le nombre total de lignes" },
+      { letter: "b", text: "Le nombre de clients uniques" },
+      { letter: "c", text: "La fréquence moyenne par client" },
+      { letter: "d", text: "Le nombre de doublons" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 9,
+    section: "Module 6 : Statistiques descriptives",
+    text: "Quel code produit un taux de marge en pourcentage ?",
+    code: "df |>\n  mutate(taux_marge = marge / chiffre_affaires)",
+    choices: [
+      { letter: "a", text: "Il calcule une valeur absolue" },
+      { letter: "b", text: "Il calcule une proportion (à formater en %)" },
+      { letter: "c", text: "Il crée une erreur systématique" },
+      { letter: "d", text: "Il supprime la colonne marge" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 10,
+    section: "Module 6 : Statistiques descriptives",
+    text: "Que représente une variation MoM ?",
+    choices: [
+      { letter: "a", text: "La comparaison mois courant vs mois précédent" },
+      { letter: "b", text: "La comparaison année courante vs année précédente" },
+      { letter: "c", text: "La variance intra-journalière" },
+      { letter: "d", text: "La médiane mobile" }
+    ],
+    answer: "a"
+  },
+  {
+    id: 11,
+    section: "Module 6 : Statistiques descriptives",
+    text: "Dans une synthèse métier, quel principe est recommandé ?",
+    choices: [
+      { letter: "a", text: "Montrer tous les indicateurs possibles" },
+      { letter: "b", text: "Limiter aux KPI utiles à la décision" },
+      { letter: "c", text: "Éviter toute segmentation" },
+      { letter: "d", text: "Ne pas commenter les écarts" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 12,
+    section: "Module 7 : Restitution",
+    text: "Quel package est adapté pour produire des tableaux de restitution lisibles ?",
+    choices: [
+      { letter: "a", text: "<code>gt</code>" },
+      { letter: "b", text: "<code>xml2</code>" },
+      { letter: "c", text: "<code>survival</code>" },
+      { letter: "d", text: "<code>MASS</code>" }
+    ],
+    answer: "a"
+  },
+  {
+    id: 13,
+    section: "Module 7 : Restitution",
+    text: "Le meilleur titre de graphique pour un public métier est :",
+    choices: [
+      { letter: "a", text: "Graphique 1" },
+      { letter: "b", text: "Résultats" },
+      { letter: "c", text: "Le CA mensuel baisse de 12% sur le segment PME" },
+      { letter: "d", text: "Visualisation ggplot" }
+    ],
+    answer: "c"
+  },
+  {
+    id: 14,
+    section: "Module 7 : Restitution",
+    text: "Quel format est le plus pratique pour un échange inter-outils (BI, Excel, scripts) ?",
+    choices: [
+      { letter: "a", text: "<code>.csv</code>" },
+      { letter: "b", text: "<code>.rds</code>" },
+      { letter: "c", text: "<code>.png</code>" },
+      { letter: "d", text: "<code>.pptx</code>" }
+    ],
+    answer: "a"
+  },
+  {
+    id: 15,
+    section: "Module 7 : Restitution",
+    text: "Pourquoi conserver une nomenclature d'export stable (date + version + périmètre) ?",
+    choices: [
+      { letter: "a", text: "Pour compliquer les échanges" },
+      { letter: "b", text: "Pour faciliter la traçabilité et éviter les erreurs de version" },
+      { letter: "c", text: "Pour réduire la taille des fichiers" },
+      { letter: "d", text: "Pour supprimer les métadonnées" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 16,
+    section: "Module 7 : Restitution",
+    text: "Quel type de graphique est souvent le plus clair pour comparer des catégories ?",
+    choices: [
+      { letter: "a", text: "Nuage 3D" },
+      { letter: "b", text: "Diagramme en barres" },
+      { letter: "c", text: "Radar multi-axes" },
+      { letter: "d", text: "Sankey pour 3 lignes" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 17,
+    section: "Module 8 : Projet fil rouge",
+    text: "Dans le projet final, quelle séquence est correcte ?",
+    choices: [
+      { letter: "a", text: "Extraction BDD/Excel → contrôles qualité → requêtes avancées → synthèse descriptive" },
+      { letter: "b", text: "Synthèse descriptive → extraction → nettoyage" },
+      { letter: "c", text: "Machine learning d'abord" },
+      { letter: "d", text: "Exporter sans validation" }
+    ],
+    answer: "a"
+  },
+  {
+    id: 18,
+    section: "Module 8 : Projet fil rouge",
+    text: "Quel livrable est attendu en priorité ?",
+    choices: [
+      { letter: "a", text: "Une table analytique + quelques KPI commentés" },
+      { letter: "b", text: "Un script non exécuté" },
+      { letter: "c", text: "Un logo" },
+      { letter: "d", text: "Un package R CRAN" }
+    ],
+    answer: "a"
+  },
+  {
+    id: 19,
+    section: "Module 8 : Projet fil rouge",
+    text: "Que signifie "reproductible" dans ce contexte ?",
+    choices: [
+      { letter: "a", text: "Le résultat dépend du poste utilisateur" },
+      { letter: "b", text: "Le script redonne le même résultat avec les mêmes données" },
+      { letter: "c", text: "Il faut exécuter des étapes manuelles cachées" },
+      { letter: "d", text: "Le code doit rester non commenté" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 20,
+    section: "Module 8 : Projet fil rouge",
+    text: "La conclusion attendue doit surtout contenir :",
+    choices: [
+      { letter: "a", text: "Des p-values uniquement" },
+      { letter: "b", text: "Des recommandations opérationnelles basées sur les indicateurs descriptifs" },
+      { letter: "c", text: "La liste complète des packages R" },
+      { letter: "d", text: "Un dump SQL brut" }
+    ],
+    answer: "b"
+  }
+];
+
+const SECTIONS = [
+  { title: "Module 5 : Qualité des données", ids: [1,2,3,4,5] },
+  { title: "Module 6 : Statistiques descriptives", ids: [6,7,8,9,10,11] },
+  { title: "Module 7 : Restitution", ids: [12,13,14,15,16] },
+  { title: "Module 8 : Projet fil rouge", ids: [17,18,19,20] }
+];
+
+const GRADING = [
+  { range: "18-20", label: "Excellent — analyse descriptive maîtrisée" },
+  { range: "14-17", label: "Validé — bonne autonomie" },
+  { range: "10-13", label: "À consolider — retravailler les sections faibles" },
+  { range: "< 10", label: "Insuffisant — pratique guidée recommandée" }
+];
+
+function renderQuiz() {
+  const container = document.getElementById('quiz-form');
+  container.innerHTML = QUESTIONS.map((q) => {
+    const choices = q.choices.map((c) =>
+      `<label class="choice" data-letter="${c.letter}">
+        <input type="radio" name="q${q.id}" value="${c.letter}">
+        <span class="letter">${c.letter})</span>
+        <span class="choice-text">${c.text}</span>
+      </label>`).join('');
+
+    const code = q.code ? `<pre class="code-block"><code>${escapeHtml(q.code)}</code></pre>` : '';
+
+    return `<div class="question" id="q${q.id}">
+      <div class="q-header">Question ${q.id}</div>
+      <p class="q-text">${q.text}</p>
+      ${code}
+      <div class="choices">${choices}</div>
+      <div class="feedback"></div>
+    </div>`;
+  }).join('');
+}
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function submitQuiz() {
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Corrigé';
+
+  let total = 0;
+  const answerMap = Object.fromEntries(QUESTIONS.map(q => [String(q.id), q.answer]));
+  const sectionScores = SECTIONS.map(s => ({ ...s, correct: 0, total: s.ids.length }));
+
+  for (const [qid, correct] of Object.entries(answerMap)) {
+    const el = document.getElementById('q' + qid);
+    const selected = document.querySelector(`input[name="q${qid}"]:checked`);
+    const fb = el.querySelector('.feedback');
+    fb.classList.add('show');
+
+    const secIdx = SECTIONS.findIndex(s => s.ids.includes(parseInt(qid, 10)));
+
+    if (!selected) {
+      el.classList.add('unanswered');
+      fb.classList.add('skip');
+      fb.textContent = 'Non répondu — Réponse : ' + correct + ')';
+      const correctChoice = el.querySelector(`.choice[data-letter="${correct}"]`);
+      if (correctChoice) correctChoice.classList.add('is-correct');
+    } else if (selected.value === correct) {
+      total++;
+      el.classList.add('correct');
+      fb.classList.add('ok');
+      fb.textContent = 'Correct !';
+      selected.closest('.choice').classList.add('selected-correct');
+      if (secIdx >= 0) sectionScores[secIdx].correct++;
+    } else {
+      el.classList.add('wrong');
+      fb.classList.add('ko');
+      fb.textContent = 'Incorrect — Réponse : ' + correct + ')';
+      selected.closest('.choice').classList.add('selected-wrong');
+      const correctChoice = el.querySelector(`.choice[data-letter="${correct}"]`);
+      if (correctChoice) correctChoice.classList.add('is-correct');
+    }
+
+    el.querySelectorAll('input[type=radio]').forEach(r => r.disabled = true);
+  }
+
+  const pass = total >= 14;
+  let gradingLabel = '';
+  for (const g of GRADING) {
+    const r = g.range;
+    if (r.includes('-')) {
+      const [lo, hi] = r.split('-').map(Number);
+      if (total >= lo && total <= hi) { gradingLabel = g.label; break; }
+    } else {
+      const v = parseInt(r.replace(/[^0-9]/g, ''), 10);
+      if (total < v) { gradingLabel = g.label; break; }
+    }
+  }
+
+  const sectionsHTML = sectionScores.map((s) => {
+    const pct = s.total > 0 ? Math.round((s.correct / s.total) * 100) : 0;
+    const cls = pct >= 70 ? 'good' : pct >= 50 ? 'mid' : 'bad';
+    return `<div class="section-row">
+      <span class="section-name">${s.title}</span>
+      <div class="section-bar-wrap"><div class="section-bar ${cls}" style="width:${pct}%"></div></div>
+      <span class="section-score">${s.correct}/${s.total}</span>
+    </div>`;
+  }).join('');
+
+  const gradingHTML = GRADING.map((g) =>
+    `<div class="grading-row"><span class="grading-range">${g.range}</span><span>${g.label}</span></div>`
+  ).join('');
+
+  const res = document.getElementById('results');
+  res.style.display = 'block';
+  res.innerHTML =
+    `<div class="score-big ${pass ? 'pass' : 'fail'}">${total} / 20</div>` +
+    `<div class="verdict ${pass ? 'pass' : 'fail'}">${pass ? 'Validé' : 'Non validé'}${gradingLabel ? ' — ' + gradingLabel : ''}</div>` +
+    `<div class="section-scores"><h3>Score par section</h3>${sectionsHTML}</div>` +
+    `<div class="grading"><h3>Barème</h3>${gradingHTML}</div>` +
+    `<div style="text-align:center"><button id="reset-btn" onclick="resetQuiz()">Recommencer</button></div>`;
+
+  res.scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+  document.querySelectorAll('.question').forEach(el => {
+    el.classList.remove('correct', 'wrong', 'unanswered');
+    el.querySelectorAll('input[type=radio]').forEach(r => { r.disabled = false; r.checked = false; });
+    el.querySelectorAll('.choice').forEach(c => c.classList.remove('selected-correct', 'selected-wrong', 'is-correct'));
+    const fb = el.querySelector('.feedback');
+    fb.classList.remove('show', 'ok', 'ko', 'skip');
+    fb.textContent = '';
+  });
+
+  document.getElementById('results').style.display = 'none';
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = false;
+  btn.textContent = 'Valider mes réponses';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+renderQuiz();
+</script>
+</body>
+</html>

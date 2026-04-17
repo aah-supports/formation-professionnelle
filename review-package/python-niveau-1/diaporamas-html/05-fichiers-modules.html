@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fichiers et modules</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080808; --bg2: #111111; --text: #ffffff; --body: #d1d5db;
+      --muted: #888888; --dim: #444444; --border: #222222;
+      --cyan: #00f3ff; --purple: #a78bfa; --orange: #ff6b00; --green: #10b981;
+    }
+    * { box-sizing: border-box; }
+    .reveal { font-family: 'Inter', sans-serif; font-size: 24px; background: var(--bg); }
+    .reveal .slides { text-align: left; }
+    .reveal .slides > section {
+      display: flex !important; flex-direction: column; justify-content: center;
+      align-items: center; height: 100%; padding: 40px 60px;
+    }
+    .reveal .slides > section > * { width: 100%; max-width: 1200px; }
+    .reveal h1 { font-weight: 800; font-size: 2.4em; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 0.3em; }
+    .reveal h2 { font-weight: 700; font-size: 1.6em; color: #fff; margin-bottom: 0.2em; letter-spacing: -0.02em; }
+    .reveal p { color: var(--body); line-height: 1.6; }
+    .subtitle { font-size: 1.1em; color: var(--muted); margin-top: 0.3em; }
+    .slide-subtitle { font-size: 0.85em; font-weight: 600; margin-bottom: 0.8em; }
+    .slide-header { margin-bottom: 1em; }
+    .slide-body { display: flex; gap: 40px; align-items: flex-start; }
+    .two-col .col-text, .two-col .col-code { flex: 1.2; }
+    .two-col .col-visual { flex: 0.8; display: flex; justify-content: center; align-items: center; }
+
+    /* Code */
+    pre { background: var(--bg2) !important; border: 1px solid var(--border); border-radius: 12px;
+          padding: 20px !important; margin: 0 !important; font-size: 0.7em !important; overflow-x: auto; }
+    code { font-family: 'JetBrains Mono', monospace !important; line-height: 1.7 !important; }
+
+    /* Bullets */
+    .bullet-list, .summary-list { list-style: none; padding: 0; margin: 0; }
+    .bullet-list li, .summary-list li {
+      padding: 8px 0; border-bottom: 1px solid var(--border); color: var(--body);
+      font-size: 0.9em; line-height: 1.5;
+    }
+    .bullet-list li:last-child, .summary-list li:last-child { border-bottom: none; }
+    .check { font-weight: 700; margin-right: 8px; }
+
+    /* Schemas */
+    .schema { display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; padding: 20px; }
+    .schema-label { font-size: 0.75em; font-weight: 600; color: var(--accent, var(--cyan)); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+    .schema-row { display: flex; gap: 12px; align-items: center; justify-content: center; }
+    .schema-stack-grid { display: flex; gap: 10px; align-items: center; }
+    .schema-box {
+      background: var(--bg2); border: 2px solid var(--accent, var(--cyan)); border-radius: 8px;
+      padding: 12px 20px; color: var(--text); font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8em; text-align: center; min-width: 60px;
+      animation: fadeSlideUp 0.5s ease-out both;
+    }
+    .schema-box.active { background: var(--accent, var(--cyan)); color: var(--bg); font-weight: 700; }
+    .schema-box.highlight { background: rgba(0, 243, 255, 0.15); border-color: var(--accent, var(--cyan)); }
+    .schema-box.dim { opacity: 0.3; }
+    .schema-box.strike { text-decoration: line-through; opacity: 0.5; }
+    .schema-box.glow { box-shadow: 0 0 20px var(--accent, var(--cyan)); }
+    .schema-box.messy { border-style: dashed; opacity: 0.6; }
+    .schema-box.clean-box { border-color: var(--green); box-shadow: 0 0 12px rgba(16, 185, 129, 0.3); }
+    .schema-arrow { color: var(--accent, var(--cyan)); font-size: 1.5em; font-weight: 700; }
+    .schema-ptr { color: var(--accent, var(--cyan)); font-size: 1.2em; animation: bounce 1s ease infinite; }
+    .schema-loop { color: var(--accent, var(--cyan)); font-size: 2em; font-weight: 700; animation: spin 3s linear infinite; }
+    .schema-method {
+      background: var(--bg2); border: 2px solid var(--accent, var(--cyan)); border-radius: 24px;
+      padding: 10px 24px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--text);
+    }
+    .schema-check { color: var(--accent, var(--cyan)); font-size: 1.1em; font-weight: 600; }
+    .schema-pipe { display: flex; gap: 8px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.8em; }
+    .pipe-in { color: var(--muted); } .pipe-out { color: var(--green); font-weight: 700; }
+    .pipe-filter { color: var(--accent, var(--cyan)); background: var(--bg2); padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border); }
+
+    /* Progress bar */
+    .progress-bar { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 10; }
+    .progress-fill { height: 100%; transition: width 0.5s ease; border-radius: 0 2px 2px 0; }
+
+    /* Footer */
+    .slide-footer { position: absolute; bottom: 16px; right: 24px; }
+    .slide-num { font-size: 0.65em; color: var(--dim); font-family: 'JetBrains Mono', monospace; }
+
+    /* Python-specific schemas */
+    .schema-kv { display: flex; flex-direction: column; gap: 6px; }
+    .kv-row { display: flex; gap: 8px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75em; }
+    .kv-key { color: var(--cyan); background: var(--bg2); padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border); }
+    .kv-val { color: var(--body); }
+    .kv-sep { color: var(--accent, var(--cyan)); font-weight: 700; }
+    .schema-table { border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 0.7em; }
+    .schema-table th { background: var(--accent, var(--cyan)); color: var(--bg); padding: 6px 14px; font-weight: 600; }
+    .schema-table td { background: var(--bg2); border: 1px solid var(--border); padding: 6px 14px; color: var(--body); text-align: center; }
+    .schema-table .row-idx { color: var(--muted); font-weight: 600; background: var(--bg); }
+    .schema-type-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .type-box { font-family: 'JetBrains Mono', monospace; font-size: 0.8em; padding: 8px 16px !important; min-width: auto !important; }
+    .schema-flow { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: center; }
+    .schema-chart { display: flex; gap: 6px; align-items: flex-end; height: 80px; padding-top: 10px; }
+    .chart-bar { width: 20px; background: var(--accent, var(--cyan)); border-radius: 3px 3px 0 0; animation: fadeSlideUp 0.5s ease-out both; opacity: 0.8; }
+    .schema-venn { position: relative; width: 120px; height: 80px; }
+    .venn-circle { position: absolute; width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--accent, var(--cyan)); display: flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.8em; color: var(--text); background: rgba(0,243,255,0.05); }
+    .venn-left { left: 0; } .venn-right { left: 45px; }
+
+    /* Animations */
+    @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .anim-build { animation: fadeSlideUp 0.5s ease-out both; }
+
+    /* Print / PDF */
+    @media print {
+      .reveal .slides > section { page-break-after: always; }
+      .progress-bar { display: none; }
+      .fragment { opacity: 1 !important; visibility: visible !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:11%; background:#00f3ff"></div></div>
+      
+      <h1 style="color: #00f3ff; font-size: 2.2em">Fichiers et modules</h1>
+      <p class="subtitle">Lire, écrire et organiser</p>
+      
+    <div class="schema" style="--accent: #00f3ff">
+      <div class="schema-label">Fichiers et modules</div>
+      <div class="schema-row">
+        <div class="schema-box">📄 fichier</div>
+        <div class="schema-arrow">↔</div>
+        <div class="schema-box glow">🐍 Python</div>
+      </div>
+    </div>
+      <div class="slide-footer">
+        <span class="slide-num">1 / 9</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:22%; background:#a78bfa"></div></div>
+      
+      <div class="slide-header">
+        <h2>Lire un fichier texte</h2>
+        <p class="slide-subtitle" style="color: #a78bfa">open, read et readlines</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python"># Lire tout le contenu d'un coup
+f = open('notes.txt', 'r')
+contenu = f.read()
+print(contenu)
+f.close()
+
+# Lire ligne par ligne dans une liste
+f = open('notes.txt', 'r')
+lignes = f.readlines()
+for ligne in lignes:
+    print(ligne.strip())
+f.close()</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #a78bfa">
+      <div class="schema-label">Lire ligne par ligne</div>
+      <div class="schema-row">
+        <div class="schema-box">📄 fichier</div>
+        <div class="schema-arrow">↔</div>
+        <div class="schema-box glow">🐍 Python</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">2 / 9</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:33%; background:#10b981"></div></div>
+      
+      <div class="slide-header">
+        <h2>Le bloc with</h2>
+        <p class="slide-subtitle" style="color: #10b981">Le gardien qui ferme la porte</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python"># Le gardien qui ferme la porte derriere vous
+with open('notes.txt', 'r') as f:
+    contenu = f.read()
+    print(contenu)
+# Ici, f est automatiquement ferme
+
+# Lire ligne par ligne (economise la memoire)
+with open('notes.txt', 'r') as f:
+    for ligne in f:
+        print(ligne.strip())</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #10b981">
+      <div class="schema-label">with : gardien automatique</div>
+      <div class="schema-row">
+        <div class="schema-box messy">with : gardien automatique</div>
+        <div class="schema-arrow">✨→</div>
+        <div class="schema-box clean-box">propre</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">3 / 9</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:44%; background:#ff6b00"></div></div>
+      
+      <div class="slide-header">
+        <h2>Écrire dans un fichier</h2>
+        <p class="slide-subtitle" style="color: #ff6b00">Modes w et a</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python"># Ecrire (ecrase le fichier existant)
+with open('resultat.txt', 'w') as f:
+    f.write('Ligne 1\n')
+    f.write('Ligne 2\n')
+
+# Ajouter a la fin du fichier
+with open('resultat.txt', 'a') as f:
+    f.write('Ligne 3 ajoutee\n')
+
+# Ecrire plusieurs lignes d'un coup
+lignes = ['Alice: 18\n', 'Bob: 15\n', 'Clara: 20\n']
+with open('notes_eleves.txt', 'w') as f:
+    f.writelines(lignes)</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #ff6b00">
+      <div class="schema-label">Écrire dans un fichier</div>
+      <div class="schema-row">
+        <div class="schema-box">📄 fichier</div>
+        <div class="schema-arrow">↔</div>
+        <div class="schema-box glow">🐍 Python</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">4 / 9</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:56%; background:#00f3ff"></div></div>
+      
+      <div class="slide-header">
+        <h2>Le module csv</h2>
+        <p class="slide-subtitle" style="color: #00f3ff">csv.reader et DictReader</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">import csv
+
+# csv.reader : chaque ligne est une liste
+with open('eleves.csv', 'r') as f:
+    lecteur = csv.reader(f)
+    for ligne in lecteur:
+        print(ligne)  # ['Alice', '18', 'Paris']
+
+# csv.DictReader : chaque ligne est un dict
+with open('eleves.csv', 'r') as f:
+    lecteur = csv.DictReader(f)
+    for eleve in lecteur:
+        print(eleve['nom'], eleve['note'])</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #00f3ff">
+      <div class="schema-label">Données tabulaires CSV</div>
+      <table class="schema-table">
+        <tr><th></th><th>col_A</th><th>col_B</th><th>col_C</th></tr>
+        <tr><td class="row-idx">0</td><td>…</td><td>…</td><td>…</td></tr>
+        <tr><td class="row-idx">1</td><td>…</td><td>…</td><td>…</td></tr>
+        <tr><td class="row-idx">2</td><td>…</td><td>…</td><td>…</td></tr>
+      </table>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">5 / 9</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:67%; background:#a78bfa"></div></div>
+      
+      <div class="slide-header">
+        <h2>Le module json</h2>
+        <p class="slide-subtitle" style="color: #a78bfa">load, dump, loads, dumps</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">import json
+
+# Lire un fichier JSON
+with open('config.json', 'r') as f:
+    data = json.load(f)
+    print(data['nom'])  # acces comme un dict
+
+# Ecrire un fichier JSON
+resultat = {'score': 95, 'eleve': 'Alice'}
+with open('sortie.json', 'w') as f:
+    json.dump(resultat, f, indent=2)
+
+# Depuis/vers une chaine (le 's' = string)
+texte = json.dumps(resultat)
+obj = json.loads(texte)</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #a78bfa">
+      <div class="schema-label">Structure JSON</div>
+      <div class="schema-kv">
+        <div class="kv-row"><span class="kv-key">"Structure JSON_1"</span><span class="kv-sep">→</span><span class="kv-val">valeur</span></div>
+        <div class="kv-row"><span class="kv-key">"Structure JSON_2"</span><span class="kv-sep">→</span><span class="kv-val">valeur</span></div>
+        <div class="kv-row"><span class="kv-key">"Structure JSON_3"</span><span class="kv-sep">→</span><span class="kv-val">valeur</span></div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">6 / 9</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:78%; background:#10b981"></div></div>
+      
+      <div class="slide-header">
+        <h2>Chemins et dossiers</h2>
+        <p class="slide-subtitle" style="color: #10b981">os et pathlib</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">import os
+from pathlib import Path
+
+# Verifier si un fichier existe
+print(os.path.exists('notes.txt'))  # True/False
+
+# Lister les fichiers d'un dossier
+for nom in os.listdir('.'):
+    print(nom)
+
+# pathlib : la methode moderne
+chemin = Path('data') / 'notes.txt'
+print(chemin.exists())
+print(chemin.suffix)   # .txt
+print(chemin.stem)     # notes
+
+# Creer un dossier s'il n'existe pas
+Path('resultats').mkdir(exist_ok=True)</code></pre>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #10b981">
+      <div class="schema-label">Arborescence fichiers</div>
+      <div class="schema-stack-grid">
+        <div class="schema-box" style="animation-delay:0.1s">Arborescence fichiers</div>
+        <div class="schema-box" style="animation-delay:0.30000000000000004s">…</div>
+        <div class="schema-box" style="animation-delay:0.5s">…</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">7 / 9</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:89%; background:#ff6b00"></div></div>
+      
+      <div class="slide-header">
+        <h2>Importer des modules</h2>
+        <p class="slide-subtitle" style="color: #ff6b00">import, from...import, pip</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-text">
+          <ul class="bullet-list"><li class="fragment" data-fragment-index="0" style="animation-delay: 0s">import math → math.sqrt(16)</li>
+<li class="fragment" data-fragment-index="1" style="animation-delay: 0.15s">from math import sqrt → sqrt(16)</li>
+<li class="fragment" data-fragment-index="2" style="animation-delay: 0.3s">import numpy as np → alias pratique</li>
+<li class="fragment" data-fragment-index="3" style="animation-delay: 0.44999999999999996s">pip install pandas → installe depuis PyPI</li>
+<li class="fragment" data-fragment-index="4" style="animation-delay: 0.6s">Vos propres fichiers .py sont des modules</li></ul>
+        </div>
+        <div class="col-visual">
+    <div class="schema" style="--accent: #ff6b00">
+      <div class="schema-label">import : boîte à outils</div>
+      <div class="schema-row">
+        <div class="schema-box anim-build" style="animation-delay:0.2s">[ ]</div>
+        <div class="schema-arrow">→</div>
+        <div class="schema-box anim-build" style="animation-delay:0.5s">[a, b]</div>
+        <div class="schema-arrow">→</div>
+        <div class="schema-box anim-build glow" style="animation-delay:0.8s">[a, b, c]</div>
+      </div>
+    </div></div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">8 / 9</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:100%; background:#00f3ff"></div></div>
+      
+      <div class="slide-header">
+        <h2 style="color: #00f3ff">Récapitulatif</h2>
+        <p class="slide-subtitle">Fichiers et modules</p>
+      </div>
+      <ul class="summary-list"><li class="fragment" data-fragment-index="0">
+        <span class="check" style="color: #00f3ff">✓</span> with open() : lecture et écriture sécurisées
+      </li>
+<li class="fragment" data-fragment-index="1">
+        <span class="check" style="color: #00f3ff">✓</span> csv.reader / DictReader pour les tableaux
+      </li>
+<li class="fragment" data-fragment-index="2">
+        <span class="check" style="color: #00f3ff">✓</span> json.load/dump (fichiers) vs loads/dumps (chaînes)
+      </li>
+<li class="fragment" data-fragment-index="3">
+        <span class="check" style="color: #00f3ff">✓</span> pathlib pour les chemins modernes
+      </li>
+<li class="fragment" data-fragment-index="4">
+        <span class="check" style="color: #00f3ff">✓</span> import et pip pour étendre Python
+      </li></ul>
+      <div class="slide-footer">
+        <span class="slide-num">9 / 9</span>
+      </div>
+    </section>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      transition: 'slide',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      width: 1920, height: 1080,
+      margin: 0,
+      center: false,
+      controls: true,
+      progress: false,
+      slideNumber: false,
+      plugins: []
+    });
+    hljs.highlightAll();
+  </script>
+</body>
+</html>

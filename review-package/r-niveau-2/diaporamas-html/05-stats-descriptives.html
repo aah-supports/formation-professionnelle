@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qualité des données</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#080808; --bg2:#111111; --text:#ffffff; --body:#d1d5db; --muted:#888888; --dim:#444444; --border:#222222; --cyan:#00f3ff; --purple:#a78bfa; --orange:#ff6b00; --green:#10b981; }
+    * { box-sizing:border-box; }
+    .reveal { font-family:'Inter',sans-serif; font-size:24px; background:var(--bg); }
+    .reveal .slides { text-align:left; }
+    .reveal .slides > section { display:flex !important; flex-direction:column; justify-content:center; align-items:center; height:100%; padding:40px 60px; }
+    .reveal .slides > section > * { width:100%; max-width:1200px; }
+    .reveal h1 { font-weight:800; font-size:2.4em; letter-spacing:-0.03em; line-height:1.1; margin-bottom:0.3em; }
+    .reveal h2 { font-weight:700; font-size:1.6em; color:#fff; margin-bottom:0.2em; letter-spacing:-0.02em; }
+    .reveal p { color:var(--body); line-height:1.6; }
+    .subtitle { font-size:1.1em; color:var(--muted); margin-top:0.3em; }
+    .slide-header { margin-bottom:1em; }
+    pre { background:var(--bg2) !important; border:1px solid var(--border); border-radius:12px; padding:20px !important; margin:0 !important; font-size:0.7em !important; overflow-x:auto; }
+    code { font-family:'JetBrains Mono',monospace !important; line-height:1.7 !important; }
+    .bullet-list, .summary-list { list-style:none; padding:0; margin:0; }
+    .bullet-list li, .summary-list li { padding:8px 0; border-bottom:1px solid var(--border); color:var(--body); font-size:0.9em; line-height:1.5; }
+    .bullet-list li:last-child, .summary-list li:last-child { border-bottom:none; }
+    .check { font-weight:700; margin-right:8px; }
+    .progress-bar { position:absolute; top:0; left:0; width:100%; height:3px; background:var(--border); z-index:10; }
+    .progress-fill { height:100%; transition:width .5s ease; border-radius:0 2px 2px 0; }
+    .slide-footer { position:absolute; bottom:16px; right:24px; }
+    .slide-num { font-size:0.65em; color:var(--dim); font-family:'JetBrains Mono',monospace; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:10%; background:#00f3ff"></div></div>
+      <h1 style="color:#00f3ff; font-size:2.2em">Module 5 — Qualité des données</h1>
+      <p class="subtitle">Contrôler avant de calculer</p>
+      <div class="slide-footer"><span class="slide-num">1 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:20%; background:#a78bfa"></div></div>
+      <div class="slide-header"><h2>Pourquoi ce module ?</h2></div>
+      <ul class="bullet-list">
+        <li>Un indicateur faux peut conduire à une mauvaise décision</li>
+        <li>Les erreurs de clé sont souvent invisibles</li>
+        <li>La qualité doit être mesurée, pas supposée</li>
+        <li>Chaque extraction doit embarquer des contrôles</li>
+      </ul>
+      <div class="slide-footer"><span class="slide-num">2 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:30%; background:#00f3ff"></div></div>
+      <div class="slide-header"><h2>Profil qualité rapide</h2></div>
+      <pre><code class="language-r">profil_qc &lt;- df |&gt;
+  summarise(across(
+    everything(),
+    list(
+      na_n = ~ sum(is.na(.x)),
+      na_pct = ~ round(mean(is.na(.x)) * 100, 2),
+      n_distinct = ~ n_distinct(.x)
+    )
+  ))</code></pre>
+      <div class="slide-footer"><span class="slide-num">3 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:40%; background:#ff6b00"></div></div>
+      <div class="slide-header"><h2>Unicité des clés</h2></div>
+      <pre><code class="language-r">test_unicite &lt;- df |&gt;
+  summarise(
+    nb_lignes = n(),
+    nb_cles = n_distinct(id_commande)
+  ) |&gt;
+  mutate(ok = nb_lignes == nb_cles)
+
+test_unicite</code></pre>
+      <div class="slide-footer"><span class="slide-num">4 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:50%; background:#a78bfa"></div></div>
+      <div class="slide-header"><h2>Contrôles métier</h2></div>
+      <ul class="bullet-list">
+        <li>Montants négatifs interdits (hors avoirs)</li>
+        <li>Dates futures non autorisées</li>
+        <li>Codes segment hors référentiel</li>
+        <li>Volumes anormaux par région</li>
+      </ul>
+      <div class="slide-footer"><span class="slide-num">5 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:60%; background:#00f3ff"></div></div>
+      <div class="slide-header"><h2>Réconciliation base vs Excel</h2></div>
+      <pre><code class="language-r">reco &lt;- ca_base |&gt;
+  full_join(ca_excel, by = c("mois", "region")) |&gt;
+  mutate(
+    ca_base = coalesce(ca_base, 0),
+    ca_excel = coalesce(ca_excel, 0),
+    ecart = ca_base - ca_excel,
+    ecart_pct = if_else(ca_excel == 0, NA_real_, ecart / ca_excel)
+  )</code></pre>
+      <div class="slide-footer"><span class="slide-num">6 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:70%; background:#ff6b00"></div></div>
+      <div class="slide-header"><h2>Sortie qualité attendue</h2></div>
+      <ul class="bullet-list">
+        <li>Statut global : OK / ALERTE</li>
+        <li>Liste des anomalies bloquantes</li>
+        <li>Écarts chiffrés par source</li>
+        <li>Décision : poursuivre ou corriger</li>
+      </ul>
+      <div class="slide-footer"><span class="slide-num">7 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:80%; background:#a78bfa"></div></div>
+      <div class="slide-header"><h2>Pattern recommandé</h2></div>
+      <ul class="bullet-list">
+        <li>Extraction</li>
+        <li>Contrôles structurels</li>
+        <li>Contrôles métier</li>
+        <li>Réconciliation</li>
+        <li>Validation d'analyse</li>
+      </ul>
+      <div class="slide-footer"><span class="slide-num">8 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:90%; background:#00f3ff"></div></div>
+      <div class="slide-header"><h2>Atelier du module</h2></div>
+      <ul class="bullet-list">
+        <li>Créer une check-list automatique de contrôles</li>
+        <li>Isoler les anomalies critiques</li>
+        <li>Produire un tableau de réconciliation</li>
+        <li>Décider si la donnée est exploitable</li>
+      </ul>
+      <div class="slide-footer"><span class="slide-num">9 / 10</span></div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:100%; background:#00f3ff"></div></div>
+      <div class="slide-header"><h2 style="color:#00f3ff">Récapitulatif</h2></div>
+      <ul class="summary-list">
+        <li><span class="check" style="color:#00f3ff">✓</span>La qualité est un prérequis à toute analyse</li>
+        <li><span class="check" style="color:#00f3ff">✓</span>Contrôles structurels + métier indispensables</li>
+        <li><span class="check" style="color:#00f3ff">✓</span>Réconciliation multi-sources chiffrée</li>
+        <li><span class="check" style="color:#00f3ff">✓</span>Sortie qualité formalisée pour décision</li>
+      </ul>
+      <div class="slide-footer"><span class="slide-num">10 / 10</span></div>
+    </section>
+
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
+  <script>
+    Reveal.initialize({ hash:true, transition:'slide', transitionSpeed:'default', backgroundTransition:'fade', width:1920, height:1080, margin:0, center:false, controls:true, progress:false, slideNumber:false, plugins:[] });
+    hljs.highlightAll();
+  </script>
+</body>
+</html>

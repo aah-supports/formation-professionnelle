@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz de fin de Jour 1 — R Niveau II</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f5f6fa;color:#2d3436;line-height:1.6;padding:0 0 60px}
+.container{max-width:780px;margin:0 auto;padding:20px}
+header{text-align:center;padding:32px 0 24px;border-bottom:2px solid #dfe6e9;margin-bottom:28px}
+h1{font-size:1.5rem;color:#2d3436;margin-bottom:6px}
+.subtitle{font-size:.95rem;color:#636e72}
+.meta{display:flex;gap:16px;justify-content:center;margin-top:10px;font-size:.85rem;color:#636e72}
+.meta span{background:#dfe6e9;padding:3px 10px;border-radius:12px}
+.question{background:#fff;border-radius:10px;padding:22px 26px;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,.06);border-left:4px solid #74b9ff;transition:border-color .3s}
+.question.correct{border-left-color:#00b894}
+.question.wrong{border-left-color:#d63031}
+.question.unanswered{border-left-color:#fdcb6e}
+.q-header{font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;color:#74b9ff;margin-bottom:8px}
+.q-text{font-size:1rem;margin-bottom:14px}
+.q-text code,.choice-text code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+.code-block{background:#2d3436;color:#dfe6e9;padding:14px 18px;border-radius:6px;overflow-x:auto;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.82rem;line-height:1.5;margin:10px 0}
+.code-block code{background:none;padding:0;color:inherit;font-size:inherit}
+.choices{display:flex;flex-direction:column;gap:6px}
+.choice{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;border-radius:6px;cursor:pointer;transition:background .15s}
+.choice:hover{background:#f1f2f6}
+.choice input[type=radio]{margin-top:4px;accent-color:#0984e3;flex-shrink:0}
+.choice .letter{font-weight:600;color:#636e72;min-width:20px;flex-shrink:0}
+.choice-text{flex:1}
+.choice.selected-correct{background:#d4edda}
+.choice.selected-wrong{background:#f8d7da}
+.choice.is-correct{background:#d4edda}
+.feedback{margin-top:8px;font-size:.85rem;font-weight:600;display:none}
+.feedback.show{display:block}
+.feedback.ok{color:#00b894}
+.feedback.ko{color:#d63031}
+.feedback.skip{color:#fdcb6e}
+.actions{text-align:center;margin:30px 0 20px}
+#submit-btn{background:#0984e3;color:#fff;border:none;padding:14px 48px;font-size:1.05rem;border-radius:8px;cursor:pointer;font-weight:600;transition:background .2s}
+#submit-btn:hover{background:#0770c2}
+#submit-btn:disabled{background:#b2bec3;cursor:default}
+#results{background:#fff;border-radius:10px;padding:28px 30px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.score-big{text-align:center;font-size:2.8rem;font-weight:800;margin:10px 0}
+.score-big.pass{color:#00b894}
+.score-big.fail{color:#d63031}
+.verdict{text-align:center;font-size:1.1rem;margin-bottom:20px;padding:10px 20px;border-radius:8px;font-weight:600}
+.verdict.pass{background:#d4edda;color:#155724}
+.verdict.fail{background:#f8d7da;color:#721c24}
+.section-scores{margin:20px 0}
+.section-scores h3{font-size:.95rem;margin-bottom:10px;color:#636e72}
+.section-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #f1f2f6}
+.section-name{flex:1;font-size:.9rem}
+.section-bar-wrap{width:120px;height:8px;background:#dfe6e9;border-radius:4px;overflow:hidden}
+.section-bar{height:100%;border-radius:4px;transition:width .5s}
+.section-bar.good{background:#00b894}
+.section-bar.mid{background:#fdcb6e}
+.section-bar.bad{background:#d63031}
+.section-score{font-size:.85rem;font-weight:600;min-width:40px;text-align:right}
+.grading{margin-top:20px}
+.grading h3{font-size:.95rem;margin-bottom:8px;color:#636e72}
+.grading-row{display:flex;gap:12px;padding:4px 0;font-size:.85rem}
+.grading-range{font-weight:700;min-width:60px}
+.back-link{text-align:center;margin-top:24px}
+.back-link a{color:#0984e3;text-decoration:none;font-weight:500}
+.back-link a:hover{text-decoration:underline}
+#reset-btn{background:#636e72;color:#fff;border:none;padding:10px 32px;font-size:.95rem;border-radius:8px;cursor:pointer;font-weight:500;margin-top:14px;transition:background .2s}
+#reset-btn:hover{background:#4a5568}
+@media(max-width:600px){
+  .container{padding:12px}
+  .question{padding:16px 18px}
+  h1{font-size:1.25rem}
+  .code-block{font-size:.75rem;padding:10px 12px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Quiz de fin de Jour 1 — R Niveau II</h1>
+    <p class="subtitle">R Niveau II — Bases de données, extraction Excel et requêtes avancées</p>
+    <div class="meta">
+      <span>20 questions</span>
+      <span>~15 min</span>
+      <span>Seuil : ≥ 14/20</span>
+    </div>
+  </header>
+
+  <div id="quiz-form"></div>
+
+  <div class="actions">
+    <button id="submit-btn" onclick="submitQuiz()">Valider mes réponses</button>
+  </div>
+
+  <div id="results" style="display:none"></div>
+
+  <div class="back-link">
+    <a href="index.html">← Retour à l'accueil</a>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    id: 1,
+    section: "Module 1 : BDD avec R",
+    text: "Quel package fournit l'interface standard de connexion aux bases dans R ?",
+    choices: [
+      { letter: "a", text: "<code>readr</code>" },
+      { letter: "b", text: "<code>DBI</code>" },
+      { letter: "c", text: "<code>tidyr</code>" },
+      { letter: "d", text: "<code>openxlsx</code>" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 2,
+    section: "Module 1 : BDD avec R",
+    text: "Avec <code>dbplyr</code>, quand la requête est-elle réellement exécutée ?",
+    choices: [
+      { letter: "a", text: "Immédiatement à chaque verbe dplyr" },
+      { letter: "b", text: "Seulement lors de <code>collect()</code> ou d'une action déclenchante" },
+      { letter: "c", text: "À la fermeture de la connexion" },
+      { letter: "d", text: "Jamais" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 3,
+    section: "Module 1 : BDD avec R",
+    text: "Quelle commande affiche le SQL généré par un pipeline <code>dbplyr</code> ?",
+    choices: [
+      { letter: "a", text: "<code>show_query()</code>" },
+      { letter: "b", text: "<code>sql_preview()</code>" },
+      { letter: "c", text: "<code>explain_sql()</code>" },
+      { letter: "d", text: "<code>dbListFields()</code>" }
+    ],
+    answer: "a"
+  },
+  {
+    id: 4,
+    section: "Module 1 : BDD avec R",
+    text: "Bonne pratique pour la performance sur table distante :",
+    choices: [
+      { letter: "a", text: "Toujours faire <code>collect()</code> en début de pipeline" },
+      { letter: "b", text: "Filtrer et sélectionner les colonnes tôt dans la requête" },
+      { letter: "c", text: "Transformer en CSV avant chaque jointure" },
+      { letter: "d", text: "Désactiver les index SQL" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 5,
+    section: "Module 1 : BDD avec R",
+    text: "Quel objet représente une table distante manipulée avec dplyr ?",
+    choices: [
+      { letter: "a", text: "Une matrice" },
+      { letter: "b", text: "Un <code>tbl_lazy</code>" },
+      { letter: "c", text: "Un vecteur factor" },
+      { letter: "d", text: "Un objet <code>lm</code>" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 6,
+    section: "Module 2 : Excel / tableur",
+    text: "Quelle fonction lit la liste des feuilles d'un classeur Excel ?",
+    choices: [
+      { letter: "a", text: "<code>readxl::excel_sheets()</code>" },
+      { letter: "b", text: "<code>readxl::sheet_names()</code>" },
+      { letter: "c", text: "<code>openxlsx::read_sheet()</code>" },
+      { letter: "d", text: "<code>utils::sheets()</code>" }
+    ],
+    answer: "a"
+  },
+  {
+    id: 7,
+    section: "Module 2 : Excel / tableur",
+    text: "Paramètre utile de <code>read_excel()</code> pour ignorer des lignes d'en-tête métier inutiles :",
+    choices: [
+      { letter: "a", text: "<code>drop =</code>" },
+      { letter: "b", text: "<code>trim_ws =</code>" },
+      { letter: "c", text: "<code>skip =</code>" },
+      { letter: "d", text: "<code>parse =</code>" }
+    ],
+    answer: "c"
+  },
+  {
+    id: 8,
+    section: "Module 2 : Excel / tableur",
+    text: "Que fait <code>janitor::clean_names()</code> ?",
+    choices: [
+      { letter: "a", text: "Supprime les doublons de lignes" },
+      { letter: "b", text: "Normalise les noms de colonnes (snake_case, caractères propres)" },
+      { letter: "c", text: "Convertit toutes les colonnes en numérique" },
+      { letter: "d", text: "Trie les colonnes par ordre alphabétique" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 9,
+    section: "Module 2 : Excel / tableur",
+    text: "Quand utiliser <code>pivot_longer()</code> après un export tableur ?",
+    choices: [
+      { letter: "a", text: "Quand les mois sont stockés en colonnes séparées" },
+      { letter: "b", text: "Quand il faut calculer un top clients" },
+      { letter: "c", text: "Quand la table est déjà tidy" },
+      { letter: "d", text: "Jamais, il faut rester en format large" }
+    ],
+    answer: "a"
+  },
+  {
+    id: 10,
+    section: "Module 2 : Excel / tableur",
+    text: "Quel pattern est le plus robuste pour importer 12 fichiers Excel mensuels ?",
+    choices: [
+      { letter: "a", text: "Copier-coller manuellement les 12 feuilles" },
+      { letter: "b", text: "<code>list.files()</code> + <code>purrr::map_dfr()</code> avec colonne source" },
+      { letter: "c", text: "Convertir d'abord tout en PDF" },
+      { letter: "d", text: "Utiliser uniquement Excel, sans R" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 11,
+    section: "Module 3 : Requêtes avancées",
+    text: "Quelle jointure conserve uniquement les lignes ayant une correspondance dans les 2 tables ?",
+    choices: [
+      { letter: "a", text: "<code>left_join()</code>" },
+      { letter: "b", text: "<code>inner_join()</code>" },
+      { letter: "c", text: "<code>full_join()</code>" },
+      { letter: "d", text: "<code>anti_join()</code>" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 12,
+    section: "Module 3 : Requêtes avancées",
+    text: "À quoi sert <code>anti_join(a, b, by = ...)</code> ?",
+    choices: [
+      { letter: "a", text: "Garder les lignes de <code>a</code> absentes de <code>b</code>" },
+      { letter: "b", text: "Fusionner toutes les colonnes de <code>a</code> et <code>b</code>" },
+      { letter: "c", text: "Créer un produit cartésien" },
+      { letter: "d", text: "Supprimer les NA" }
+    ],
+    answer: "a"
+  },
+  {
+    id: 13,
+    section: "Module 3 : Requêtes avancées",
+    text: "Quel verbe facilite un classement par groupe (top N) ?",
+    choices: [
+      { letter: "a", text: "<code>replace_na()</code>" },
+      { letter: "b", text: "<code>row_number()</code> via <code>mutate()</code>" },
+      { letter: "c", text: "<code>separate_rows()</code>" },
+      { letter: "d", text: "<code>bind_rows()</code>" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 14,
+    section: "Module 3 : Requêtes avancées",
+    text: "Que fait ce code ?",
+    code: "ventes |>\n  group_by(region) |>\n  mutate(rang = min_rank(desc(ca))) |>\n  filter(rang <= 3)",
+    choices: [
+      { letter: "a", text: "Garde les 3 meilleures lignes de CA par région" },
+      { letter: "b", text: "Calcule la moyenne du CA" },
+      { letter: "c", text: "Supprime les régions avec NA" },
+      { letter: "d", text: "Crée un histogramme" }
+    ],
+    answer: "a"
+  },
+  {
+    id: 15,
+    section: "Module 3 : Requêtes avancées",
+    text: "Pourquoi vérifier la cardinalité avant une jointure ?",
+    choices: [
+      { letter: "a", text: "Pour choisir la palette ggplot" },
+      { letter: "b", text: "Pour éviter des duplications non prévues des lignes" },
+      { letter: "c", text: "Pour accélérer l'export PDF" },
+      { letter: "d", text: "Parce que dplyr l'impose" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 16,
+    section: "Module 4 : Automatisation",
+    text: "Quel duo est adapté pour capturer les erreurs sans arrêter tout le traitement ?",
+    choices: [
+      { letter: "a", text: "<code>for</code> + <code>break</code>" },
+      { letter: "b", text: "<code>safely()</code> / <code>possibly()</code>" },
+      { letter: "c", text: "<code>arrange()</code> + <code>slice()</code>" },
+      { letter: "d", text: "<code>summary()</code> + <code>plot()</code>" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 17,
+    section: "Module 4 : Automatisation",
+    text: "Pourquoi paramétrer une fonction d'extraction (<code>date_debut</code>, <code>date_fin</code>, <code>region</code>) ?",
+    choices: [
+      { letter: "a", text: "Pour rendre le script réutilisable sans copier-coller" },
+      { letter: "b", text: "Pour augmenter la taille des fichiers" },
+      { letter: "c", text: "Pour éviter les jointures" },
+      { letter: "d", text: "Pour supprimer toute validation" }
+    ],
+    answer: "a"
+  },
+  {
+    id: 18,
+    section: "Module 4 : Automatisation",
+    text: "Dans une extraction planifiée, que doit contenir un log minimal ?",
+    choices: [
+      { letter: "a", text: "Seulement le nom de l'auteur" },
+      { letter: "b", text: "Date/heure, volume traité, statut succès/erreur" },
+      { letter: "c", text: "Uniquement les lignes en erreur" },
+      { letter: "d", text: "La version de Windows" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 19,
+    section: "Module 4 : Automatisation",
+    text: "Quelle commande exporte proprement un résultat final au format CSV ?",
+    choices: [
+      { letter: "a", text: "<code>write_csv(df, \"sortie.csv\")</code>" },
+      { letter: "b", text: "<code>save(df, file = \"sortie.csv\")</code>" },
+      { letter: "c", text: "<code>print(df, \"sortie.csv\")</code>" },
+      { letter: "d", text: "<code>plot(df, file = \"sortie.csv\")</code>" }
+    ],
+    answer: "a"
+  },
+  {
+    id: 20,
+    section: "Module 4 : Automatisation",
+    text: "Quelle séquence reflète le mieux le workflow du Jour 1 ?",
+    choices: [
+      { letter: "a", text: "Connexion BDD → Import Excel → Jointures/requêtes avancées → Extraction automatisée" },
+      { letter: "b", text: "PowerPoint → Word → export manuel sans contrôle" },
+      { letter: "c", text: "Import image → OCR → clustering" },
+      { letter: "d", text: "Créer un dashboard sans nettoyer les données" }
+    ],
+    answer: "a"
+  }
+];
+
+const SECTIONS = [
+  { title: "Module 1 : BDD avec R", ids: [1,2,3,4,5] },
+  { title: "Module 2 : Excel / tableur", ids: [6,7,8,9,10] },
+  { title: "Module 3 : Requêtes avancées", ids: [11,12,13,14,15] },
+  { title: "Module 4 : Automatisation", ids: [16,17,18,19,20] }
+];
+
+const GRADING = [
+  { range: "18-20", label: "Excellent — compétences opérationnelles solides" },
+  { range: "14-17", label: "Validé — acquis conformes" },
+  { range: "10-13", label: "À consolider — revoir les points faibles" },
+  { range: "< 10", label: "Insuffisant — entraînement recommandé" }
+];
+
+function renderQuiz() {
+  const container = document.getElementById('quiz-form');
+  container.innerHTML = QUESTIONS.map((q) => {
+    const choices = q.choices.map((c) =>
+      `<label class="choice" data-letter="${c.letter}">
+        <input type="radio" name="q${q.id}" value="${c.letter}">
+        <span class="letter">${c.letter})</span>
+        <span class="choice-text">${c.text}</span>
+      </label>`).join('');
+
+    const code = q.code ? `<pre class="code-block"><code>${escapeHtml(q.code)}</code></pre>` : '';
+
+    return `<div class="question" id="q${q.id}">
+      <div class="q-header">Question ${q.id}</div>
+      <p class="q-text">${q.text}</p>
+      ${code}
+      <div class="choices">${choices}</div>
+      <div class="feedback"></div>
+    </div>`;
+  }).join('');
+}
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function submitQuiz() {
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Corrigé';
+
+  let total = 0;
+  const answerMap = Object.fromEntries(QUESTIONS.map(q => [String(q.id), q.answer]));
+  const sectionScores = SECTIONS.map(s => ({ ...s, correct: 0, total: s.ids.length }));
+
+  for (const [qid, correct] of Object.entries(answerMap)) {
+    const el = document.getElementById('q' + qid);
+    const selected = document.querySelector(`input[name="q${qid}"]:checked`);
+    const fb = el.querySelector('.feedback');
+    fb.classList.add('show');
+
+    const secIdx = SECTIONS.findIndex(s => s.ids.includes(parseInt(qid, 10)));
+
+    if (!selected) {
+      el.classList.add('unanswered');
+      fb.classList.add('skip');
+      fb.textContent = 'Non répondu — Réponse : ' + correct + ')';
+      const correctChoice = el.querySelector(`.choice[data-letter="${correct}"]`);
+      if (correctChoice) correctChoice.classList.add('is-correct');
+    } else if (selected.value === correct) {
+      total++;
+      el.classList.add('correct');
+      fb.classList.add('ok');
+      fb.textContent = 'Correct !';
+      selected.closest('.choice').classList.add('selected-correct');
+      if (secIdx >= 0) sectionScores[secIdx].correct++;
+    } else {
+      el.classList.add('wrong');
+      fb.classList.add('ko');
+      fb.textContent = 'Incorrect — Réponse : ' + correct + ')';
+      selected.closest('.choice').classList.add('selected-wrong');
+      const correctChoice = el.querySelector(`.choice[data-letter="${correct}"]`);
+      if (correctChoice) correctChoice.classList.add('is-correct');
+    }
+
+    el.querySelectorAll('input[type=radio]').forEach(r => r.disabled = true);
+  }
+
+  const pass = total >= 14;
+  let gradingLabel = '';
+  for (const g of GRADING) {
+    const r = g.range;
+    if (r.includes('-')) {
+      const [lo, hi] = r.split('-').map(Number);
+      if (total >= lo && total <= hi) { gradingLabel = g.label; break; }
+    } else {
+      const v = parseInt(r.replace(/[^0-9]/g, ''), 10);
+      if (total < v) { gradingLabel = g.label; break; }
+    }
+  }
+
+  const sectionsHTML = sectionScores.map((s) => {
+    const pct = s.total > 0 ? Math.round((s.correct / s.total) * 100) : 0;
+    const cls = pct >= 70 ? 'good' : pct >= 50 ? 'mid' : 'bad';
+    return `<div class="section-row">
+      <span class="section-name">${s.title}</span>
+      <div class="section-bar-wrap"><div class="section-bar ${cls}" style="width:${pct}%"></div></div>
+      <span class="section-score">${s.correct}/${s.total}</span>
+    </div>`;
+  }).join('');
+
+  const gradingHTML = GRADING.map((g) =>
+    `<div class="grading-row"><span class="grading-range">${g.range}</span><span>${g.label}</span></div>`
+  ).join('');
+
+  const res = document.getElementById('results');
+  res.style.display = 'block';
+  res.innerHTML =
+    `<div class="score-big ${pass ? 'pass' : 'fail'}">${total} / 20</div>` +
+    `<div class="verdict ${pass ? 'pass' : 'fail'}">${pass ? 'Validé' : 'Non validé'}${gradingLabel ? ' — ' + gradingLabel : ''}</div>` +
+    `<div class="section-scores"><h3>Score par section</h3>${sectionsHTML}</div>` +
+    `<div class="grading"><h3>Barème</h3>${gradingHTML}</div>` +
+    `<div style="text-align:center"><button id="reset-btn" onclick="resetQuiz()">Recommencer</button></div>`;
+
+  res.scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+  document.querySelectorAll('.question').forEach(el => {
+    el.classList.remove('correct', 'wrong', 'unanswered');
+    el.querySelectorAll('input[type=radio]').forEach(r => { r.disabled = false; r.checked = false; });
+    el.querySelectorAll('.choice').forEach(c => c.classList.remove('selected-correct', 'selected-wrong', 'is-correct'));
+    const fb = el.querySelector('.feedback');
+    fb.classList.remove('show', 'ok', 'ko', 'skip');
+    fb.textContent = '';
+  });
+
+  document.getElementById('results').style.display = 'none';
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = false;
+  btn.textContent = 'Valider mes réponses';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+renderQuiz();
+</script>
+</body>
+</html>

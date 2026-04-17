@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jour2 Exercices</title>
+<style>
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#2d3436;line-height:1.7;max-width:800px;margin:0 auto;padding:30px 24px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
+h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+h4{font-size:.95rem;margin:16px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid #dfe6e9;padding:8px 12px;text-align:left;font-size:.9rem}
+th{background:#f1f2f6;font-weight:600}
+tr:nth-child(even){background:#f8f9fa}
+blockquote{border-left:4px solid #74b9ff;margin:12px 0;padding:8px 16px;background:#f8f9fa;color:#636e72}
+strong{color:#2d3436}
+hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
+.header-bar{background:#0984e3;color:#fff;padding:12px 20px;border-radius:8px;margin-bottom:24px;font-size:.85rem}
+.header-bar strong{color:#fff}
+</style>
+</head>
+<body>
+<div class="header-bar"><strong>R Niveau I</strong></div>
+<h1>R Niveau I — Exercices Jour 2</h1>
+<h2>Module 5 : Import et exploration de données</h2>
+<hr>
+<h3>Exercice 5.1 : Importer un fichier CSV [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Créez un petit fichier CSV en R avec <code>write.csv()</code> contenant des données de ventes :<ul>
+<li>produit : c(&quot;Pomme&quot;, &quot;Banane&quot;, &quot;Orange&quot;, &quot;Fraise&quot;, &quot;Kiwi&quot;)</li>
+<li>prix : c(2.50, 1.80, 3.20, 4.50, 2.90)</li>
+<li>quantite : c(100, 150, 80, 60, 120)</li>
+</ul>
+</li>
+<li>Réimportez ce fichier avec <code>read.csv()</code></li>
+<li>Vérifiez la structure avec <code>str()</code></li>
+<li>Essayez <code>read.csv2()</code> et expliquez la différence</li>
+</ol>
+<p><strong>Indice</strong> : <code>write.csv()</code> écrit un CSV avec <code>,</code> comme séparateur. <code>read.csv2()</code> utilise <code>;</code> comme séparateur (format européen). Pensez à <code>row.names = FALSE</code> pour éviter les numéros de ligne.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1. Création du CSV
+ventes &lt;- data.frame(
+  produit = c(&quot;Pomme&quot;, &quot;Banane&quot;, &quot;Orange&quot;, &quot;Fraise&quot;, &quot;Kiwi&quot;),
+  prix = c(2.50, 1.80, 3.20, 4.50, 2.90),
+  quantite = c(100, 150, 80, 60, 120)
+)
+write.csv(ventes, &quot;ventes.csv&quot;, row.names = FALSE)
+
+# 2. Réimportation
+ventes_import &lt;- read.csv(&quot;ventes.csv&quot;)
+ventes_import
+
+# 3. Structure
+str(ventes_import)
+
+# 4. read.csv2 utilise ; comme séparateur et , comme décimale
+# Pour un fichier créé avec write.csv, cela ne fonctionnera pas correctement
+# car le séparateur est , et non ;
+# On crée un fichier au format européen :
+write.csv2(ventes, &quot;ventes_eu.csv&quot;, row.names = FALSE)
+ventes_eu &lt;- read.csv2(&quot;ventes_eu.csv&quot;)
+str(ventes_eu)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>  produit prix quantite
+1   Pomme  2.5      100
+2  Banane  1.8      150
+3  Orange  3.2       80
+4  Fraise  4.5       60
+5    Kiwi  2.9      120
+&#39;data.frame&#39;:	5 obs. of  3 variables:
+ $ produit : chr  &quot;Pomme&quot; &quot;Banane&quot; &quot;Orange&quot; &quot;Fraise&quot; ...
+ $ prix    : num  2.5 1.8 3.2 4.5 2.9
+ $ quantite: int  100 150 80 60 120
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 5.2 : Importer avec des options avancées [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Créez manuellement un fichier texte (avec <code>writeLines()</code>) contenant des données séparées par des tabulations, avec un en-tête et quelques commentaires (lignes commençant par #)</li>
+<li>Importez-le avec <code>read.table()</code> en spécifiant les bons paramètres</li>
+<li>Importez seulement les 3 premières lignes de données avec <code>nrows</code></li>
+<li>Spécifiez manuellement les types de colonnes avec <code>colClasses</code></li>
+</ol>
+<p><strong>Indice</strong> : <code>read.table()</code> est la fonction la plus flexible. Paramètres utiles : <code>sep</code>, <code>header</code>, <code>comment.char</code>, <code>skip</code>, <code>nrows</code>, <code>colClasses</code>.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1. Création du fichier texte
+lignes &lt;- c(
+  &quot;# Données météo - Station Paris&quot;,
+  &quot;# Source : Météo France&quot;,
+  &quot;date\ttemperature\thumidite\tpluie&quot;,
+  &quot;2024-01-01\t5.2\t78\tOUI&quot;,
+  &quot;2024-01-02\t3.8\t82\tNON&quot;,
+  &quot;2024-01-03\t6.1\t75\tOUI&quot;,
+  &quot;2024-01-04\t2.9\t88\tOUI&quot;,
+  &quot;2024-01-05\t7.3\t70\tNON&quot;
+)
+writeLines(lignes, &quot;meteo.txt&quot;)
+
+# 2. Import avec read.table
+meteo &lt;- read.table(&quot;meteo.txt&quot;,
+                     sep = &quot;\t&quot;,
+                     header = TRUE,
+                     comment.char = &quot;#&quot;)
+meteo
+
+# 3. Seulement 3 premières lignes
+meteo_3 &lt;- read.table(&quot;meteo.txt&quot;,
+                       sep = &quot;\t&quot;,
+                       header = TRUE,
+                       comment.char = &quot;#&quot;,
+                       nrows = 3)
+meteo_3
+
+# 4. Types manuels
+meteo_types &lt;- read.table(&quot;meteo.txt&quot;,
+                           sep = &quot;\t&quot;,
+                           header = TRUE,
+                           comment.char = &quot;#&quot;,
+                           colClasses = c(&quot;character&quot;, &quot;numeric&quot;,
+                                          &quot;integer&quot;, &quot;character&quot;))
+str(meteo_types)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>        date temperature humidite pluie
+1 2024-01-01         5.2       78   OUI
+2 2024-01-02         3.8       82   NON
+3 2024-01-03         6.1       75   OUI
+4 2024-01-04         2.9       88   OUI
+5 2024-01-05         7.3       70   NON
+        date temperature humidite pluie
+1 2024-01-01         5.2       78   OUI
+2 2024-01-02         3.8       82   NON
+3 2024-01-03         6.1       75   OUI
+&#39;data.frame&#39;:	5 obs. of  4 variables:
+ $ date       : chr  &quot;2024-01-01&quot; &quot;2024-01-02&quot; ...
+ $ temperature: num  5.2 3.8 6.1 2.9 7.3
+ $ humidite   : int  78 82 75 88 70
+ $ pluie      : chr  &quot;OUI&quot; &quot;NON&quot; &quot;OUI&quot; &quot;OUI&quot; ...
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 5.3 : Explorer un jeu de données intégré [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> : Chargez le jeu de données <code>mtcars</code> (intégré dans R) et explorez-le :</p>
+<ol>
+<li>Affichez les 6 premières et 6 dernières lignes</li>
+<li>Affichez les dimensions (lignes x colonnes)</li>
+<li>Affichez la structure complète</li>
+<li>Affichez le résumé statistique</li>
+<li>Listez les noms des colonnes et des lignes</li>
+<li>Combien de voitures ont plus de 6 cylindres ?</li>
+</ol>
+<p><strong>Indice</strong> : <code>head()</code>, <code>tail()</code>, <code>dim()</code> (ou <code>nrow()</code>/<code>ncol()</code>), <code>str()</code>, <code>summary()</code>, <code>names()</code> (ou <code>colnames()</code>), <code>rownames()</code>.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1. Premières et dernières lignes
+head(mtcars)
+tail(mtcars)
+
+# 2. Dimensions
+dim(mtcars)
+cat(&quot;Lignes :&quot;, nrow(mtcars), &quot;\n&quot;)
+cat(&quot;Colonnes :&quot;, ncol(mtcars), &quot;\n&quot;)
+
+# 3. Structure
+str(mtcars)
+
+# 4. Résumé statistique
+summary(mtcars)
+
+# 5. Noms
+names(mtcars)
+head(rownames(mtcars), 10)
+
+# 6. Voitures avec &gt; 6 cylindres
+sum(mtcars$cyl &gt; 6)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>                   mpg cyl disp  hp drat    wt  qsec vs am gear carb
+Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+Valiant           18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
+[1] 32 11
+[1] &quot;mpg&quot;  &quot;cyl&quot;  &quot;disp&quot; &quot;hp&quot;   &quot;drat&quot; &quot;wt&quot;   &quot;qsec&quot; &quot;vs&quot;   &quot;am&quot;   &quot;gear&quot;
+[11] &quot;carb&quot;
+[1] 14
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 5.4 : Explorer le jeu iris [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Avec le jeu de données <code>iris</code> :</p>
+<ol>
+<li>Affichez les dimensions et la structure</li>
+<li>Combien y a-t-il d&#39;espèces différentes ? Lesquelles ?</li>
+<li>Combien d&#39;observations par espèce ?</li>
+<li>Calculez la moyenne de <code>Sepal.Length</code> par espèce (utilisez <code>tapply()</code>)</li>
+<li>Affichez les lignes où <code>Petal.Length &gt; 6</code></li>
+<li>Quel est le pourcentage de valeurs uniques dans chaque colonne numérique ?</li>
+</ol>
+<p><strong>Indice</strong> : <code>unique()</code> ou <code>levels()</code> pour les espèces. <code>table()</code> pour le comptage. <code>tapply(valeurs, groupes, fonction)</code> applique une fonction par groupe.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1. Dimensions et structure
+dim(iris)
+str(iris)
+
+# 2. Espèces
+unique(iris$Species)
+nlevels(iris$Species)
+
+# 3. Observations par espèce
+table(iris$Species)
+
+# 4. Moyenne Sepal.Length par espèce
+tapply(iris$Sepal.Length, iris$Species, mean)
+
+# 5. Petal.Length &gt; 6
+iris[iris$Petal.Length &gt; 6, ]
+
+# 6. Pourcentage de valeurs uniques
+colonnes_num &lt;- names(iris)[1:4]
+sapply(iris[, colonnes_num], function(x) {
+  round(length(unique(x)) / length(x) * 100, 1)
+})
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>[1] 150   5
+[1] setosa     versicolor virginica
+Levels: setosa versicolor virginica
+[1] 3
+
+    setosa versicolor  virginica
+        50         50         50
+
+    setosa versicolor  virginica
+     5.006      5.936      6.588
+
+    Sepal.Length Sepal.Width Petal.Length Petal.Width
+119         7.7         2.6         6.9         2.3
+123         7.7         2.8         6.7         2.0
+132         7.9         3.8         6.4         2.0
+136         7.7         3.0         6.1         2.3
+Sepal.Length  Sepal.Width Petal.Length  Petal.Width
+        23.3         15.3         28.7         14.7
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 5.5 : Gérer les valeurs manquantes [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Chargez le jeu de données <code>airquality</code> (intégré dans R) :</p>
+<ol>
+<li>Combien de valeurs manquantes y a-t-il au total ?</li>
+<li>Combien de NA par colonne ?</li>
+<li>Quel pourcentage de lignes sont complètes (sans aucun NA) ?</li>
+<li>Créez une version du data frame sans aucune ligne contenant des NA</li>
+<li>Créez une version où les NA de <code>Ozone</code> sont remplacés par la médiane de <code>Ozone</code></li>
+<li>Comparez les moyennes d&#39;Ozone avant et après imputation</li>
+</ol>
+<p><strong>Indice</strong> : <code>complete.cases()</code> retourne un vecteur logique. <code>colSums(is.na())</code> compte les NA par colonne. <code>median(x, na.rm = TRUE)</code> calcule la médiane en ignorant les NA.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1. Total de NA
+sum(is.na(airquality))
+
+# 2. NA par colonne
+colSums(is.na(airquality))
+
+# 3. Pourcentage de lignes complètes
+pct_complet &lt;- sum(complete.cases(airquality)) / nrow(airquality) * 100
+cat(&quot;Lignes complètes :&quot;, round(pct_complet, 1), &quot;%\n&quot;)
+
+# 4. Data frame sans NA
+aq_complet &lt;- na.omit(airquality)
+cat(&quot;Dimensions originales :&quot;, dim(airquality), &quot;\n&quot;)
+cat(&quot;Dimensions sans NA :&quot;, dim(aq_complet), &quot;\n&quot;)
+
+# 5. Imputation par la médiane
+aq_impute &lt;- airquality
+mediane_ozone &lt;- median(aq_impute$Ozone, na.rm = TRUE)
+cat(&quot;Médiane Ozone :&quot;, mediane_ozone, &quot;\n&quot;)
+aq_impute$Ozone[is.na(aq_impute$Ozone)] &lt;- mediane_ozone
+
+# 6. Comparaison
+cat(&quot;Moyenne Ozone (originale, sans NA) :&quot;, mean(airquality$Ozone, na.rm = TRUE), &quot;\n&quot;)
+cat(&quot;Moyenne Ozone (après imputation) :&quot;, mean(aq_impute$Ozone), &quot;\n&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>[1] 44
+  Ozone Solar.R    Wind    Temp   Month     Day
+     37       7       0       0       0       0
+Lignes complètes : 72.5 %
+Dimensions originales : 153 6
+Dimensions sans NA : 111 6
+Médiane Ozone : 31.5
+Moyenne Ozone (originale, sans NA) : 42.12931
+Moyenne Ozone (après imputation) : 39.54248
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 5.6 : Exporter des données [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Créez un résumé statistique d&#39;<code>iris</code> par espèce (moyenne de chaque variable numérique)</li>
+<li>Exportez ce résumé en CSV avec <code>write.csv()</code></li>
+<li>Exportez-le aussi en format tabulé avec <code>write.table()</code></li>
+<li>Sauvegardez l&#39;objet R avec <code>saveRDS()</code> et rechargez-le avec <code>readRDS()</code></li>
+<li>Vérifiez que l&#39;objet rechargé est identique</li>
+</ol>
+<p><strong>Indice</strong> : <code>aggregate()</code> avec la formule <code>. ~ Species</code> calcule une statistique pour chaque variable par groupe. <code>saveRDS()</code> sauvegarde un seul objet R.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1. Résumé par espèce
+resume &lt;- aggregate(. ~ Species, data = iris, FUN = mean)
+resume
+
+# 2. Export CSV
+write.csv(resume, &quot;iris_resume.csv&quot;, row.names = FALSE)
+
+# 3. Export tabulé
+write.table(resume, &quot;iris_resume.txt&quot;, sep = &quot;\t&quot;, row.names = FALSE)
+
+# 4. Sauvegarde RDS
+saveRDS(resume, &quot;iris_resume.rds&quot;)
+resume_recharge &lt;- readRDS(&quot;iris_resume.rds&quot;)
+
+# 5. Vérification
+identical(resume, resume_recharge)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>     Species Sepal.Length Sepal.Width Petal.Length Petal.Width
+1     setosa        5.006       3.428       1.462       0.246
+2 versicolor        5.936       2.770       4.260       1.326
+3  virginica        6.588       2.974       5.552       2.026
+[1] TRUE
+</code></pre>
+</details>
+
+<hr>
+<h2>Module 6 : Manipulation de données</h2>
+<hr>
+<h3>Exercice 6.1 : Sélection de colonnes [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> : Avec le jeu de données <code>mtcars</code> :</p>
+<ol>
+<li>Sélectionnez uniquement les colonnes <code>mpg</code>, <code>cyl</code> et <code>hp</code></li>
+<li>Sélectionnez toutes les colonnes sauf <code>vs</code> et <code>am</code></li>
+<li>Sélectionnez les colonnes par position (colonnes 1, 3 et 5)</li>
+<li>Sélectionnez les colonnes dont le nom contient la lettre &quot;a&quot; (utilisez <code>grep()</code>)</li>
+</ol>
+<p><strong>Indice</strong> : Sélection par nom : <code>df[, c(&quot;col1&quot;, &quot;col2&quot;)]</code>. Exclusion : <code>df[, !names(df) %in% c(&quot;col1&quot;)]</code>. <code>grep()</code> cherche un motif dans les noms.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1. Sélection par nom
+mtcars[, c(&quot;mpg&quot;, &quot;cyl&quot;, &quot;hp&quot;)]
+
+# 2. Exclusion de colonnes
+colonnes_exclues &lt;- c(&quot;vs&quot;, &quot;am&quot;)
+mtcars[, !names(mtcars) %in% colonnes_exclues]
+
+# 3. Sélection par position
+mtcars[, c(1, 3, 5)]
+
+# 4. Colonnes contenant &quot;a&quot;
+cols_avec_a &lt;- grep(&quot;a&quot;, names(mtcars), value = TRUE)
+cols_avec_a
+mtcars[, cols_avec_a]
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>                    mpg cyl  hp
+Mazda RX4          21.0   6 110
+Mazda RX4 Wag      21.0   6 110
+...
+[1] &quot;drat&quot; &quot;am&quot;   &quot;gear&quot; &quot;carb&quot;
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 6.2 : Filtrage de lignes [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Avec <code>mtcars</code> :</p>
+<ol>
+<li>Filtrez les voitures avec plus de 200 chevaux (<code>hp &gt; 200</code>)</li>
+<li>Filtrez les voitures à 4 cylindres ET transmission automatique (<code>am == 0</code>)</li>
+<li>Filtrez les voitures dont la consommation est entre 20 et 30 mpg</li>
+<li>Filtrez les voitures dont le nom contient &quot;Merc&quot; (utilisez <code>grep()</code> sur <code>rownames()</code>)</li>
+<li>Utilisez <code>subset()</code> pour les voitures à 6 cylindres pesant moins de 3 tonnes</li>
+</ol>
+<p><strong>Indice</strong> : <code>grep(&quot;motif&quot;, rownames(df))</code> retourne les positions des lignes correspondantes. <code>subset()</code> est plus lisible que l&#39;indexation classique.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1. Plus de 200 chevaux
+mtcars[mtcars$hp &gt; 200, ]
+
+# 2. 4 cylindres ET automatique
+mtcars[mtcars$cyl == 4 &amp; mtcars$am == 0, ]
+
+# 3. Consommation entre 20 et 30
+mtcars[mtcars$mpg &gt;= 20 &amp; mtcars$mpg &lt;= 30, ]
+
+# 4. Nom contient &quot;Merc&quot;
+idx_merc &lt;- grep(&quot;Merc&quot;, rownames(mtcars))
+mtcars[idx_merc, ]
+
+# 5. Avec subset
+subset(mtcars, cyl == 6 &amp; wt &lt; 3)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>                     mpg cyl disp  hp drat    wt  qsec vs am gear carb
+Duster 360          14.3   8  360 245 3.21 3.570 15.84  0  0    3    4
+Cadillac Fleetwood  10.4   8  472 205 2.93 5.250 17.98  0  0    3    4
+Lincoln Continental 10.4   8  460 215 3.00 5.424 17.82  0  0    3    4
+Chrysler Imperial   14.7   8  440 230 3.23 5.345 17.42  0  0    3    4
+Camaro Z28          13.3   8  350 245 3.73 3.840 15.41  0  0    3    4
+Ford Pantera L      15.8   8  351 264 4.22 3.170 14.50  0  1    5    4
+Maserati Bora       15.0   8  301 335 3.54 3.570 14.60  0  1    5    8
+
+                mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+Merc 240D      24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2
+Merc 230       22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2
+Merc 280       19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4
+Merc 280C      17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4
+Merc 450SE     16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3
+Merc 450SL     17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3
+Merc 450SLC    15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3
+
+              mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+Mazda RX4      21   6 160.0 110  3.9 2.620 16.46  0  1    4    4
+Mazda RX4 Wag  21   6 160.0 110  3.9 2.875 17.02  0  1    4    4
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 6.3 : Tri de données [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> : Avec <code>mtcars</code> :</p>
+<ol>
+<li>Triez par consommation (<code>mpg</code>) croissante</li>
+<li>Triez par nombre de chevaux (<code>hp</code>) décroissant</li>
+<li>Triez par nombre de cylindres croissant, puis par consommation décroissante</li>
+<li>Affichez le top 5 des voitures les plus économes</li>
+<li>Affichez le top 5 des voitures les plus puissantes</li>
+</ol>
+<p><strong>Indice</strong> : <code>order()</code> retourne les indices de tri. Pour un tri décroissant : <code>order(x, decreasing = TRUE)</code> ou <code>order(-x)</code> pour les numériques.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1. Tri par mpg croissant
+mtcars[order(mtcars$mpg), ]
+
+# 2. Tri par hp décroissant
+mtcars[order(mtcars$hp, decreasing = TRUE), ]
+
+# 3. Tri double
+mtcars[order(mtcars$cyl, -mtcars$mpg), ]
+
+# 4. Top 5 les plus économes
+head(mtcars[order(mtcars$mpg, decreasing = TRUE), ], 5)
+
+# 5. Top 5 les plus puissantes
+head(mtcars[order(mtcars$hp, decreasing = TRUE), ], 5)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>                     mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+Toyota Corolla      33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1
+Fiat 128            32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1
+Honda Civic         30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2
+Lotus Europa        30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2
+Fiat X1-9           27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1
+
+                     mpg cyl disp  hp drat    wt  qsec vs am gear carb
+Maserati Bora       15.0   8  301 335 3.54 3.570 14.60  0  1    5    8
+Ford Pantera L      15.8   8  351 264 4.22 3.170 14.50  0  1    5    4
+Duster 360          14.3   8  360 245 3.21 3.570 15.84  0  0    3    4
+Camaro Z28          13.3   8  350 245 3.73 3.840 15.41  0  0    3    4
+Chrysler Imperial   14.7   8  440 230 3.23 5.345 17.42  0  0    3    4
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 6.4 : Ajouter et transformer des colonnes [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Avec <code>mtcars</code> :</p>
+<ol>
+<li>Ajoutez une colonne <code>kpl</code> (kilomètres par litre) : mpg x 0.4251</li>
+<li>Ajoutez une colonne <code>poids_kg</code> : wt x 453.6 (wt est en milliers de livres)</li>
+<li>Créez une colonne <code>categorie_conso</code> : &quot;économe&quot; si mpg &gt; 25, &quot;moyen&quot; si 15-25, &quot;gourmand&quot; si &lt; 15</li>
+<li>Ajoutez une colonne <code>puissance_poids</code> : hp / wt (rapport puissance/poids)</li>
+<li>Créez une colonne <code>transmission</code> : &quot;automatique&quot; si am == 0, &quot;manuelle&quot; si am == 1</li>
+</ol>
+<p><strong>Indice</strong> : Utilisez <code>ifelse()</code> imbriqués pour les catégories à 3 niveaux : <code>ifelse(cond1, val1, ifelse(cond2, val2, val3))</code>.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r">df &lt;- mtcars
+
+# 1. Kilomètres par litre
+df$kpl &lt;- round(df$mpg * 0.4251, 2)
+
+# 2. Poids en kg
+df$poids_kg &lt;- round(df$wt * 453.6, 0)
+
+# 3. Catégorie de consommation
+df$categorie_conso &lt;- ifelse(df$mpg &gt; 25, &quot;économe&quot;,
+                       ifelse(df$mpg &gt;= 15, &quot;moyen&quot;, &quot;gourmand&quot;))
+
+# 4. Rapport puissance/poids
+df$puissance_poids &lt;- round(df$hp / df$wt, 2)
+
+# 5. Transmission
+df$transmission &lt;- ifelse(df$am == 0, &quot;automatique&quot;, &quot;manuelle&quot;)
+
+# Vérification
+head(df[, c(&quot;mpg&quot;, &quot;kpl&quot;, &quot;poids_kg&quot;, &quot;categorie_conso&quot;,
+            &quot;puissance_poids&quot;, &quot;transmission&quot;)])
+
+table(df$categorie_conso)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>                   mpg    kpl poids_kg categorie_conso puissance_poids transmission
+Mazda RX4         21.0  8.93     1189           moyen           41.98     manuelle
+Mazda RX4 Wag     21.0  8.93     1304           moyen           38.26     manuelle
+Datsun 710        22.8  9.69     1052           moyen           40.09     manuelle
+Hornet 4 Drive    21.4  9.10     1459           moyen           34.21  automatique
+Hornet Sportabout 18.7  7.95     1561           moyen           50.87  automatique
+Valiant           18.1  7.69     1569           moyen           30.35  automatique
+
+ économe gourmand    moyen
+       6        3       23
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 6.5 : Fusion de data frames (merge) [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Créez un data frame <code>employes</code> : id (1:5), nom, departement</li>
+<li>Créez un data frame <code>salaires</code> : id (1:6, incluant un id 6 inexistant dans employes), salaire, bonus</li>
+<li>Effectuez un inner join (merge par défaut)</li>
+<li>Effectuez un left join (garder tous les employés)</li>
+<li>Effectuez un full join (garder toutes les lignes)</li>
+<li>Fusionnez sur le nom du département avec un 3e data frame</li>
+</ol>
+<p><strong>Indice</strong> : <code>merge(x, y, by = &quot;colonne&quot;)</code> fait un inner join. Ajoutez <code>all.x = TRUE</code> pour un left join, <code>all = TRUE</code> pour un full join.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1. Employés
+employes &lt;- data.frame(
+  id = 1:5,
+  nom = c(&quot;Dupont&quot;, &quot;Martin&quot;, &quot;Bernard&quot;, &quot;Petit&quot;, &quot;Robert&quot;),
+  departement = c(&quot;RH&quot;, &quot;IT&quot;, &quot;Finance&quot;, &quot;IT&quot;, &quot;RH&quot;)
+)
+
+# 2. Salaires
+salaires &lt;- data.frame(
+  id = c(1, 2, 3, 4, 5, 6),
+  salaire = c(3500, 4200, 3800, 4000, 3600, 4500),
+  bonus = c(500, 800, 600, 750, 500, 900)
+)
+
+# 3. Inner join
+inner &lt;- merge(employes, salaires, by = &quot;id&quot;)
+inner
+
+# 4. Left join
+left &lt;- merge(employes, salaires, by = &quot;id&quot;, all.x = TRUE)
+left
+
+# 5. Full join
+full &lt;- merge(employes, salaires, by = &quot;id&quot;, all = TRUE)
+full
+
+# 6. Fusion sur département
+dept_info &lt;- data.frame(
+  departement = c(&quot;RH&quot;, &quot;IT&quot;, &quot;Finance&quot;, &quot;Marketing&quot;),
+  etage = c(1, 3, 2, 4),
+  budget = c(50000, 120000, 80000, 60000)
+)
+merge(employes, dept_info, by = &quot;departement&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>  id     nom departement salaire bonus
+1  1  Dupont          RH    3500   500
+2  2  Martin          IT    4200   800
+3  3 Bernard     Finance    3800   600
+4  4   Petit          IT    4000   750
+5  5  Robert          RH    3600   500
+
+  id     nom departement salaire bonus
+1  1  Dupont          RH    3500   500
+2  2  Martin          IT    4200   800
+3  3 Bernard     Finance    3800   600
+4  4   Petit          IT    4000   750
+5  5  Robert          RH    3600   500
+
+  id     nom departement salaire bonus
+1  1  Dupont          RH    3500   500
+2  2  Martin          IT    4200   800
+3  3 Bernard     Finance    3800   600
+4  4   Petit          IT    4000   750
+5  5  Robert          RH    3600   500
+6  6    &lt;NA&gt;        &lt;NA&gt;    4500   900
+
+  departement id     nom etage budget
+1     Finance  3 Bernard     2  80000
+2          IT  2  Martin     3 120000
+3          IT  4   Petit     3 120000
+4          RH  1  Dupont     1  50000
+5          RH  5  Robert     1  50000
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 6.6 : Agrégation de données [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Avec <code>mtcars</code> :</p>
+<ol>
+<li>Calculez la consommation moyenne par nombre de cylindres avec <code>aggregate()</code></li>
+<li>Calculez la puissance moyenne ET l&#39;écart-type par nombre de cylindres</li>
+<li>Calculez le poids moyen par combinaison cylindres/transmission</li>
+<li>Comptez le nombre de voitures par catégorie de cylindres</li>
+<li>Trouvez la voiture la plus puissante dans chaque groupe de cylindres</li>
+</ol>
+<p><strong>Indice</strong> : <code>aggregate(formule, data, FUN)</code>. La formule est <code>variable ~ groupe</code>. Pour plusieurs variables : <code>cbind(v1, v2) ~ groupe</code>. Pour plusieurs groupes : <code>variable ~ g1 + g2</code>.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1. Consommation moyenne par cylindres
+aggregate(mpg ~ cyl, data = mtcars, FUN = mean)
+
+# 2. Puissance : moyenne et écart-type
+aggregate(hp ~ cyl, data = mtcars, FUN = function(x) {
+  c(moyenne = round(mean(x), 1), ecart_type = round(sd(x), 1))
+})
+
+# 3. Poids moyen par cylindres et transmission
+aggregate(wt ~ cyl + am, data = mtcars, FUN = mean)
+
+# 4. Comptage par cylindres
+table(mtcars$cyl)
+
+# 5. Voiture la plus puissante par groupe
+for (n_cyl in c(4, 6, 8)) {
+  sous_df &lt;- mtcars[mtcars$cyl == n_cyl, ]
+  idx_max &lt;- which.max(sous_df$hp)
+  cat(n_cyl, &quot;cylindres :&quot;, rownames(sous_df)[idx_max],
+      &quot;(&quot;, sous_df$hp[idx_max], &quot;hp )\n&quot;)
+}
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>  cyl      mpg
+1   4 26.66364
+2   6 19.74286
+3   8 15.10000
+  cyl hp.moyenne hp.ecart_type
+1   4       82.6          20.9
+2   6      122.3          24.3
+3   8      209.2          51.0
+  cyl am       wt
+1   4  0 2.935000
+2   6  0 3.388750
+3   8  0 4.104083
+4   4  1 2.042250
+5   6  1 2.755000
+6   8  1 3.370000
+ 4  6  8
+11  7 14
+4 cylindres : Lotus Europa ( 113 hp )
+6 cylindres : Merc 280 ( 123 hp )
+8 cylindres : Maserati Bora ( 335 hp )
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 6.7 : Restructurer avec stack/unstack [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Créez un data frame avec les notes de 3 matières pour 4 élèves</li>
+<li>Utilisez <code>stack()</code> pour passer en format long (une seule colonne de notes)</li>
+<li>Utilisez <code>unstack()</code> pour revenir au format large</li>
+<li>Utilisez <code>reshape()</code> pour transformer le data frame de large en long, puis de long en large</li>
+</ol>
+<p><strong>Indice</strong> : <code>stack()</code> empile les colonnes numériques. <code>reshape()</code> est plus flexible avec les paramètres <code>direction</code>, <code>varying</code>, <code>v.names</code>, <code>timevar</code>, <code>idvar</code>.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1. Data frame de notes
+notes &lt;- data.frame(
+  maths = c(14, 12, 16, 10),
+  physique = c(15, 11, 13, 14),
+  chimie = c(12, 14, 17, 11),
+  row.names = c(&quot;Alice&quot;, &quot;Bob&quot;, &quot;Clara&quot;, &quot;David&quot;)
+)
+notes
+
+# 2. Format long avec stack
+notes_long &lt;- stack(notes)
+names(notes_long) &lt;- c(&quot;note&quot;, &quot;matiere&quot;)
+notes_long$eleve &lt;- rep(rownames(notes), 3)
+notes_long
+
+# 3. Retour au format large
+notes_large &lt;- unstack(notes_long, note ~ matiere)
+notes_large
+
+# 4. Avec reshape : large -&gt; long
+notes$eleve &lt;- rownames(notes)
+notes_long2 &lt;- reshape(notes,
+                       direction = &quot;long&quot;,
+                       varying = c(&quot;maths&quot;, &quot;physique&quot;, &quot;chimie&quot;),
+                       v.names = &quot;note&quot;,
+                       timevar = &quot;matiere&quot;,
+                       times = c(&quot;maths&quot;, &quot;physique&quot;, &quot;chimie&quot;),
+                       idvar = &quot;eleve&quot;)
+notes_long2
+
+# long -&gt; large
+notes_large2 &lt;- reshape(notes_long2,
+                        direction = &quot;wide&quot;,
+                        idvar = &quot;eleve&quot;,
+                        timevar = &quot;matiere&quot;)
+notes_large2
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>      maths physique chimie
+Alice    14       15     12
+Bob      12       11     14
+Clara    16       13     17
+David    10       14     11
+
+   note  matiere eleve
+1    14    maths Alice
+2    12    maths   Bob
+3    16    maths Clara
+4    10    maths David
+5    15 physique Alice
+6    11 physique   Bob
+...
+
+  maths physique chimie
+1    14       15     12
+2    12       11     14
+3    16       13     17
+4    10       14     11
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 6.8 : Manipulation avancée avec base R [Difficulté : Avancé]</h3>
+<p><strong>Énoncé</strong> : Avec le jeu de données <code>airquality</code> :</p>
+<ol>
+<li>Créez une colonne <code>mois_nom</code> avec les noms des mois en français (Mai, Juin, Juillet, Août, Septembre)</li>
+<li>Créez une colonne <code>saison</code> : &quot;printemps&quot; (Mai), &quot;été&quot; (Juin-Août), &quot;automne&quot; (Septembre)</li>
+<li>Calculez les statistiques descriptives (moyenne, médiane, sd) d&#39;Ozone par mois (en ignorant les NA)</li>
+<li>Identifiez le jour le plus chaud de chaque mois</li>
+<li>Créez un sous-ensemble contenant uniquement les jours où Ozone &gt; 100 et Temp &gt; 90</li>
+<li>Calculez la corrélation entre toutes les variables numériques (en supprimant les NA)</li>
+</ol>
+<p><strong>Indice</strong> : <code>month.name</code> contient les noms de mois en anglais. Créez un vecteur de correspondance pour le français. <code>cor()</code> avec <code>use = &quot;complete.obs&quot;</code> gère les NA.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r">aq &lt;- airquality
+
+# 1. Noms des mois en français
+mois_fr &lt;- c(&quot;5&quot; = &quot;Mai&quot;, &quot;6&quot; = &quot;Juin&quot;, &quot;7&quot; = &quot;Juillet&quot;,
+             &quot;8&quot; = &quot;Août&quot;, &quot;9&quot; = &quot;Septembre&quot;)
+aq$mois_nom &lt;- mois_fr[as.character(aq$Month)]
+
+# 2. Saison
+aq$saison &lt;- ifelse(aq$Month == 5, &quot;printemps&quot;,
+              ifelse(aq$Month &lt;= 8, &quot;été&quot;, &quot;automne&quot;))
+
+# 3. Stats Ozone par mois
+stats_ozone &lt;- aggregate(Ozone ~ mois_nom, data = aq, FUN = function(x) {
+  c(moyenne = round(mean(x, na.rm = TRUE), 1),
+    mediane = median(x, na.rm = TRUE),
+    ecart_type = round(sd(x, na.rm = TRUE), 1))
+}, na.action = na.pass)
+stats_ozone
+
+# 4. Jour le plus chaud par mois
+for (m in 5:9) {
+  sous &lt;- aq[aq$Month == m, ]
+  idx &lt;- which.max(sous$Temp)
+  cat(mois_fr[as.character(m)], &quot;: Jour&quot;, sous$Day[idx],
+      &quot;- Temp =&quot;, sous$Temp[idx], &quot;\n&quot;)
+}
+
+# 5. Jours extrêmes
+extremes &lt;- aq[!is.na(aq$Ozone) &amp; aq$Ozone &gt; 100 &amp; aq$Temp &gt; 90, ]
+extremes[, c(&quot;Ozone&quot;, &quot;Temp&quot;, &quot;Month&quot;, &quot;Day&quot;, &quot;mois_nom&quot;)]
+
+# 6. Corrélations
+cor_matrix &lt;- cor(airquality[, 1:4], use = &quot;complete.obs&quot;)
+round(cor_matrix, 3)
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code>    mois_nom Ozone.moyenne Ozone.mediane Ozone.ecart_type
+1      Août          59.9          52.0             39.7
+2      Juin          29.4          23.0             17.0
+3   Juillet          59.1          60.0             31.6
+4       Mai          23.6          18.0             22.2
+5 Septembre          31.4          23.0             24.1
+
+Mai : Jour 29 - Temp = 81
+Juin : Jour 30 - Temp = 93
+Juillet : Jour 24 - Temp = 92
+Août : Jour 28 - Temp = 97
+Septembre : Jour 2 - Temp = 93
+
+  Ozone Temp Month Day mois_nom
+117   168   96     8  25     Août
+121   118   92     8  29     Août
+
+          Ozone   Solar.R      Wind      Temp
+Ozone    1.000     0.348    -0.612     0.698
+Solar.R  0.348     1.000    -0.127     0.276
+Wind    -0.612    -0.127     1.000    -0.497
+Temp     0.698     0.276    -0.497     1.000
+</code></pre>
+</details>
+
+<hr>
+<h2>Module 7 : Visualisation graphique</h2>
+<hr>
+<h3>Exercice 7.1 : Nuage de points (scatter plot) [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> : Avec <code>mtcars</code> :</p>
+<ol>
+<li>Créez un nuage de points : poids (wt) en x, consommation (mpg) en y</li>
+<li>Ajoutez un titre, des étiquettes d&#39;axes en français</li>
+<li>Colorez les points selon le nombre de cylindres</li>
+<li>Ajoutez une droite de régression avec <code>abline()</code> et <code>lm()</code></li>
+<li>Ajoutez une légende</li>
+</ol>
+<p><strong>Indice</strong> : <code>plot(x, y)</code> crée le graphique. <code>col</code> pour la couleur, <code>pch</code> pour la forme. <code>abline(lm(y ~ x))</code> ajoute la droite de régression.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># Couleurs par cylindres
+couleurs &lt;- c(&quot;4&quot; = &quot;blue&quot;, &quot;6&quot; = &quot;orange&quot;, &quot;8&quot; = &quot;red&quot;)
+
+# 1-2. Nuage de points avec titre
+plot(mtcars$wt, mtcars$mpg,
+     main = &quot;Consommation vs Poids des véhicules&quot;,
+     xlab = &quot;Poids (milliers de livres)&quot;,
+     ylab = &quot;Consommation (miles par gallon)&quot;,
+     pch = 19,
+     col = couleurs[as.character(mtcars$cyl)],
+     cex = 1.2)
+
+# 4. Droite de régression
+abline(lm(mpg ~ wt, data = mtcars), col = &quot;darkgray&quot;, lwd = 2, lty = 2)
+
+# 5. Légende
+legend(&quot;topright&quot;,
+       legend = c(&quot;4 cyl&quot;, &quot;6 cyl&quot;, &quot;8 cyl&quot;),
+       col = c(&quot;blue&quot;, &quot;orange&quot;, &quot;red&quot;),
+       pch = 19,
+       title = &quot;Cylindres&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> : Un graphique avec les points colorés par nombre de cylindres, montrant une relation négative entre le poids et la consommation, avec une droite de tendance décroissante.</p>
+</details>
+
+<hr>
+<h3>Exercice 7.2 : Histogramme [Difficulté : Facile]</h3>
+<p><strong>Énoncé</strong> : Avec <code>airquality</code> :</p>
+<ol>
+<li>Créez un histogramme de la température (<code>Temp</code>)</li>
+<li>Personnalisez : titre, couleur de remplissage, couleur de bordure</li>
+<li>Ajustez le nombre de barres avec <code>breaks = 15</code></li>
+<li>Ajoutez une ligne verticale pour la moyenne et la médiane</li>
+<li>Superposez une courbe de densité (normalisée)</li>
+</ol>
+<p><strong>Indice</strong> : <code>hist()</code> crée l&#39;histogramme. Utilisez <code>freq = FALSE</code> pour des densités au lieu de fréquences, permettant de superposer <code>lines(density(x))</code>.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1-3. Histogramme avec personnalisation
+hist(airquality$Temp,
+     main = &quot;Distribution des températures (mai-sept)&quot;,
+     xlab = &quot;Température (°F)&quot;,
+     ylab = &quot;Densité&quot;,
+     col = &quot;lightblue&quot;,
+     border = &quot;white&quot;,
+     breaks = 15,
+     freq = FALSE)
+
+# 4. Lignes moyenne et médiane
+abline(v = mean(airquality$Temp), col = &quot;red&quot;, lwd = 2, lty = 2)
+abline(v = median(airquality$Temp), col = &quot;blue&quot;, lwd = 2, lty = 2)
+
+# 5. Courbe de densité
+lines(density(airquality$Temp), col = &quot;darkgreen&quot;, lwd = 2)
+
+# Légende
+legend(&quot;topleft&quot;,
+       legend = c(paste(&quot;Moyenne =&quot;, round(mean(airquality$Temp), 1)),
+                  paste(&quot;Médiane =&quot;, median(airquality$Temp)),
+                  &quot;Densité&quot;),
+       col = c(&quot;red&quot;, &quot;blue&quot;, &quot;darkgreen&quot;),
+       lwd = 2, lty = c(2, 2, 1))
+</code></pre>
+<p><strong>Résultat attendu</strong> : Un histogramme bleu clair montrant la distribution des températures avec une courbe de densité verte et les lignes de moyenne (rouge) et médiane (bleu).</p>
+</details>
+
+<hr>
+<h3>Exercice 7.3 : Boîte à moustaches (boxplot) [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> : Avec <code>iris</code> :</p>
+<ol>
+<li>Créez un boxplot de <code>Sepal.Length</code> pour chaque espèce</li>
+<li>Personnalisez les couleurs (une par espèce)</li>
+<li>Ajoutez un titre et des étiquettes en français</li>
+<li>Orientez horizontalement</li>
+<li>Identifiez les outliers (points aberrants) et affichez leurs valeurs</li>
+</ol>
+<p><strong>Indice</strong> : <code>boxplot(formule, data)</code> avec la formule <code>variable ~ groupe</code>. Le résultat d&#39;un boxplot contient <code>$out</code> pour les outliers.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1-3. Boxplot vertical
+couleurs_especes &lt;- c(&quot;lightblue&quot;, &quot;lightgreen&quot;, &quot;lightyellow&quot;)
+bp &lt;- boxplot(Sepal.Length ~ Species, data = iris,
+              main = &quot;Longueur des sépales par espèce&quot;,
+              xlab = &quot;Espèce&quot;,
+              ylab = &quot;Longueur du sépale (cm)&quot;,
+              col = couleurs_especes,
+              border = &quot;darkblue&quot;,
+              notch = TRUE)
+
+# 4. Version horizontale
+boxplot(Sepal.Length ~ Species, data = iris,
+        main = &quot;Longueur des sépales par espèce&quot;,
+        ylab = &quot;Espèce&quot;,
+        xlab = &quot;Longueur du sépale (cm)&quot;,
+        col = couleurs_especes,
+        horizontal = TRUE,
+        las = 1)
+
+# 5. Outliers
+cat(&quot;Valeurs aberrantes :&quot;, bp$out, &quot;\n&quot;)
+cat(&quot;Groupes correspondants :&quot;, bp$group, &quot;\n&quot;)
+</code></pre>
+<p><strong>Résultat attendu</strong> : Deux boxplots (vertical et horizontal) montrant clairement que virginica a les sépales les plus longs, suivi de versicolor et setosa.</p>
+<pre><code>Valeurs aberrantes : 4.4
+Groupes correspondants : 3
+</code></pre>
+</details>
+
+<hr>
+<h3>Exercice 7.4 : Diagramme en barres (barplot) [Difficulté : Intermédiaire]</h3>
+<p><strong>Énoncé</strong> :</p>
+<ol>
+<li>Créez un tableau de fréquences du nombre de cylindres dans <code>mtcars</code></li>
+<li>Faites un barplot simple de ces fréquences</li>
+<li>Créez un barplot empilé (stacked) : cylindres par type de transmission</li>
+<li>Créez un barplot groupé (beside) pour la même combinaison</li>
+<li>Ajoutez les valeurs numériques au-dessus des barres</li>
+</ol>
+<p><strong>Indice</strong> : <code>table()</code> pour les fréquences. <code>barplot()</code> avec une matrice crée des barres empilées. <code>beside = TRUE</code> pour des barres côte à côte. <code>text()</code> ajoute du texte.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># 1. Tableau de fréquences
+freq_cyl &lt;- table(mtcars$cyl)
+freq_cyl
+
+# 2. Barplot simple
+bp &lt;- barplot(freq_cyl,
+              main = &quot;Nombre de voitures par cylindres&quot;,
+              xlab = &quot;Nombre de cylindres&quot;,
+              ylab = &quot;Fréquence&quot;,
+              col = c(&quot;lightblue&quot;, &quot;lightgreen&quot;, &quot;salmon&quot;),
+              border = &quot;white&quot;)
+text(bp, freq_cyl + 0.3, labels = freq_cyl, cex = 1.1)
+
+# 3. Barplot empilé
+freq_tab &lt;- table(mtcars$cyl, mtcars$am)
+colnames(freq_tab) &lt;- c(&quot;Automatique&quot;, &quot;Manuelle&quot;)
+barplot(freq_tab,
+        main = &quot;Cylindres par type de transmission&quot;,
+        col = c(&quot;lightblue&quot;, &quot;lightgreen&quot;, &quot;salmon&quot;),
+        legend.text = c(&quot;4 cyl&quot;, &quot;6 cyl&quot;, &quot;8 cyl&quot;),
+        args.legend = list(x = &quot;topright&quot;))
+
+# 4. Barplot groupé
+barplot(freq_tab,
+        main = &quot;Cylindres par type de transmission (groupé)&quot;,
+        col = c(&quot;lightblue&quot;, &quot;lightgreen&quot;, &quot;salmon&quot;),
+        beside = TRUE,
+        legend.text = c(&quot;4 cyl&quot;, &quot;6 cyl&quot;, &quot;8 cyl&quot;),
+        args.legend = list(x = &quot;topright&quot;))
+</code></pre>
+<p><strong>Résultat attendu</strong> :</p>
+<pre><code> 4  6  8
+11  7 14
+</code></pre>
+<p>Trois graphiques : un simple, un empilé et un groupé, tous montrant que les 8 cylindres sont les plus représentés.</p>
+</details>
+
+<hr>
+<h3>Exercice 7.5 : Multi-graphiques [Difficulté : Avancé]</h3>
+<p><strong>Énoncé</strong> : Avec <code>airquality</code> :</p>
+<ol>
+<li>Configurez la fenêtre pour afficher 4 graphiques (2x2) avec <code>par(mfrow)</code></li>
+<li>Graphique 1 : histogramme de <code>Ozone</code> (sans NA)</li>
+<li>Graphique 2 : boxplot de <code>Temp</code> par mois</li>
+<li>Graphique 3 : nuage de points <code>Wind</code> vs <code>Temp</code></li>
+<li>Graphique 4 : barplot des jours de données disponibles (non-NA) pour Ozone par mois</li>
+<li>Remettez les paramètres graphiques par défaut</li>
+</ol>
+<p><strong>Indice</strong> : <code>par(mfrow = c(2, 2))</code> divise la fenêtre en 2 lignes et 2 colonnes. <code>par(mfrow = c(1, 1))</code> remet à la normale. <code>tapply()</code> peut compter les non-NA par mois.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># Configuration 2x2
+par(mfrow = c(2, 2), mar = c(4, 4, 3, 1))
+
+# Graphique 1 : Histogramme Ozone
+hist(airquality$Ozone,
+     main = &quot;Distribution de l&#39;ozone&quot;,
+     xlab = &quot;Ozone (ppb)&quot;, ylab = &quot;Fréquence&quot;,
+     col = &quot;lightblue&quot;, border = &quot;white&quot;, breaks = 12)
+
+# Graphique 2 : Boxplot Temp par mois
+mois_labels &lt;- c(&quot;Mai&quot;, &quot;Juin&quot;, &quot;Juil&quot;, &quot;Août&quot;, &quot;Sept&quot;)
+boxplot(Temp ~ Month, data = airquality,
+        main = &quot;Température par mois&quot;,
+        names = mois_labels,
+        col = heat.colors(5),
+        ylab = &quot;Température (°F)&quot;)
+
+# Graphique 3 : Scatter Wind vs Temp
+plot(airquality$Wind, airquality$Temp,
+     main = &quot;Vent vs Température&quot;,
+     xlab = &quot;Vent (mph)&quot;, ylab = &quot;Température (°F)&quot;,
+     pch = 19, col = rgb(0, 0, 1, 0.5))
+abline(lm(Temp ~ Wind, data = airquality), col = &quot;red&quot;, lwd = 2)
+
+# Graphique 4 : Barplot données disponibles
+jours_dispo &lt;- tapply(!is.na(airquality$Ozone), airquality$Month, sum)
+jours_total &lt;- tapply(airquality$Ozone, airquality$Month, length)
+bp &lt;- barplot(rbind(jours_dispo, jours_total - jours_dispo),
+              names.arg = mois_labels,
+              main = &quot;Données Ozone disponibles&quot;,
+              col = c(&quot;steelblue&quot;, &quot;gray80&quot;),
+              ylab = &quot;Nombre de jours&quot;)
+legend(&quot;topright&quot;, legend = c(&quot;Disponible&quot;, &quot;Manquant&quot;),
+       fill = c(&quot;steelblue&quot;, &quot;gray80&quot;), cex = 0.8)
+
+# Remise à zéro
+par(mfrow = c(1, 1))
+</code></pre>
+<p><strong>Résultat attendu</strong> : Une figure composée de 4 graphiques montrant différentes perspectives sur les données airquality. L&#39;histogramme montre que l&#39;ozone est asymétrique (skewed right), le boxplot montre que juillet-août sont les mois les plus chauds, le scatter montre une corrélation négative vent-température, et le barplot montre que certains mois ont plus de NA que d&#39;autres.</p>
+</details>
+
+<hr>
+<h3>Exercice 7.6 : Personnalisation avancée [Difficulté : Avancé]</h3>
+<p><strong>Énoncé</strong> : Créez un graphique professionnel avec <code>mtcars</code> :</p>
+<ol>
+<li>Tracez mpg vs hp avec des points dont la taille varie selon le poids (wt)</li>
+<li>Colorez selon le nombre de cylindres</li>
+<li>Ajoutez un titre principal et un sous-titre</li>
+<li>Personnalisez les marges avec <code>par()</code></li>
+<li>Ajoutez une grille de fond avec <code>grid()</code></li>
+<li>Annotez le point le plus puissant avec <code>text()</code></li>
+<li>Ajoutez un encadré informatif avec <code>rect()</code> et <code>text()</code></li>
+</ol>
+<p><strong>Indice</strong> : Le paramètre <code>cex</code> contrôle la taille des points. <code>grid()</code> ajoute une grille. <code>text(x, y, label)</code> ajoute du texte. <code>rect(x1, y1, x2, y2)</code> dessine un rectangle.</p>
+<details><summary>Solution</summary>
+
+<pre><code class="language-r"># Préparation
+par(mar = c(5, 5, 4, 2))
+couleurs &lt;- c(&quot;4&quot; = &quot;#3498db&quot;, &quot;6&quot; = &quot;#e67e22&quot;, &quot;8&quot; = &quot;#e74c3c&quot;)
+tailles &lt;- mtcars$wt / max(mtcars$wt) * 3 + 0.5
+
+# 1-2. Graphique principal
+plot(mtcars$hp, mtcars$mpg,
+     main = &quot;Relation Puissance-Consommation&quot;,
+     sub = &quot;Données mtcars — taille proportionnelle au poids&quot;,
+     xlab = &quot;Puissance (chevaux)&quot;,
+     ylab = &quot;Consommation (miles/gallon)&quot;,
+     pch = 19,
+     col = couleurs[as.character(mtcars$cyl)],
+     cex = tailles,
+     cex.main = 1.4,
+     cex.lab = 1.1)
+
+# 5. Grille
+grid(col = &quot;gray90&quot;, lty = 1)
+
+# Re-tracer les points par-dessus la grille
+points(mtcars$hp, mtcars$mpg,
+       pch = 19,
+       col = couleurs[as.character(mtcars$cyl)],
+       cex = tailles)
+
+# 6. Annoter le point le plus puissant
+idx_max_hp &lt;- which.max(mtcars$hp)
+text(mtcars$hp[idx_max_hp], mtcars$mpg[idx_max_hp],
+     labels = rownames(mtcars)[idx_max_hp],
+     pos = 2, cex = 0.8, font = 2)
+
+# 7. Encadré informatif
+rect(250, 28, 340, 34, col = rgb(1, 1, 1, 0.8), border = &quot;gray50&quot;)
+text(295, 32, &quot;Corrélation hp-mpg :&quot;, cex = 0.8, font = 2)
+text(295, 30, paste(&quot;r =&quot;, round(cor(mtcars$hp, mtcars$mpg), 3)),
+     cex = 0.8)
+
+# Légende
+legend(&quot;topright&quot;,
+       legend = c(&quot;4 cyl&quot;, &quot;6 cyl&quot;, &quot;8 cyl&quot;),
+       col = c(&quot;#3498db&quot;, &quot;#e67e22&quot;, &quot;#e74c3c&quot;),
+       pch = 19, pt.cex = 1.5,
+       bg = &quot;white&quot;,
+       title = &quot;Cylindres&quot;)
+
+par(mar = c(5, 4, 4, 2) + 0.1)  # Marges par défaut
+</code></pre>
+<p><strong>Résultat attendu</strong> : Un graphique professionnel montrant la relation inverse entre puissance et économie de carburant. Les points bleus (4 cyl) sont en haut à gauche (économes, peu puissants), les rouges (8 cyl) en bas à droite (puissants, gourmands). La Maserati Bora (335 hp) est annotée. L&#39;encadré montre r = -0.776.</p>
+</details>
+
+</body>
+</html>

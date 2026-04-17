@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz de fin de Jour 1 — R Niveau I</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f5f6fa;color:#2d3436;line-height:1.6;padding:0 0 60px}
+.container{max-width:780px;margin:0 auto;padding:20px}
+header{text-align:center;padding:32px 0 24px;border-bottom:2px solid #dfe6e9;margin-bottom:28px}
+h1{font-size:1.5rem;color:#2d3436;margin-bottom:6px}
+.subtitle{font-size:.95rem;color:#636e72}
+.meta{display:flex;gap:16px;justify-content:center;margin-top:10px;font-size:.85rem;color:#636e72}
+.meta span{background:#dfe6e9;padding:3px 10px;border-radius:12px}
+.question{background:#fff;border-radius:10px;padding:22px 26px;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,.06);border-left:4px solid #74b9ff;transition:border-color .3s}
+.question.correct{border-left-color:#00b894}
+.question.wrong{border-left-color:#d63031}
+.question.unanswered{border-left-color:#fdcb6e}
+.q-header{font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;color:#74b9ff;margin-bottom:8px}
+.q-text{font-size:1rem;margin-bottom:14px}
+.q-text code,.choice-text code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+.code-block{background:#2d3436;color:#dfe6e9;padding:14px 18px;border-radius:6px;overflow-x:auto;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.82rem;line-height:1.5;margin:10px 0}
+.code-block code{background:none;padding:0;color:inherit;font-size:inherit}
+.choice-code{margin:6px 0 2px 28px}
+.choices{display:flex;flex-direction:column;gap:6px}
+.choice{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;border-radius:6px;cursor:pointer;transition:background .15s}
+.choice:hover{background:#f1f2f6}
+.choice input[type=radio]{margin-top:4px;accent-color:#0984e3;flex-shrink:0}
+.choice .letter{font-weight:600;color:#636e72;min-width:20px;flex-shrink:0}
+.choice-text{flex:1}
+.choice.selected-correct{background:#d4edda}
+.choice.selected-wrong{background:#f8d7da}
+.choice.is-correct{background:#d4edda}
+.feedback{margin-top:8px;font-size:.85rem;font-weight:600;display:none}
+.feedback.show{display:block}
+.feedback.ok{color:#00b894}
+.feedback.ko{color:#d63031}
+.feedback.skip{color:#fdcb6e}
+.actions{text-align:center;margin:30px 0 20px}
+#submit-btn{background:#0984e3;color:#fff;border:none;padding:14px 48px;font-size:1.05rem;border-radius:8px;cursor:pointer;font-weight:600;transition:background .2s}
+#submit-btn:hover{background:#0770c2}
+#submit-btn:disabled{background:#b2bec3;cursor:default}
+#results{background:#fff;border-radius:10px;padding:28px 30px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.score-big{text-align:center;font-size:2.8rem;font-weight:800;margin:10px 0}
+.score-big.pass{color:#00b894}
+.score-big.fail{color:#d63031}
+.verdict{text-align:center;font-size:1.1rem;margin-bottom:20px;padding:10px 20px;border-radius:8px;font-weight:600}
+.verdict.pass{background:#d4edda;color:#155724}
+.verdict.fail{background:#f8d7da;color:#721c24}
+.section-scores{margin:20px 0}
+.section-scores h3{font-size:.95rem;margin-bottom:10px;color:#636e72}
+.section-row{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid #f1f2f6}
+.section-name{flex:1;font-size:.9rem}
+.section-bar-wrap{width:120px;height:8px;background:#dfe6e9;border-radius:4px;overflow:hidden}
+.section-bar{height:100%;border-radius:4px;transition:width .5s}
+.section-bar.good{background:#00b894}
+.section-bar.mid{background:#fdcb6e}
+.section-bar.bad{background:#d63031}
+.section-score{font-size:.85rem;font-weight:600;min-width:40px;text-align:right}
+.grading{margin-top:20px}
+.grading h3{font-size:.95rem;margin-bottom:8px;color:#636e72}
+.grading-row{display:flex;gap:12px;padding:4px 0;font-size:.85rem}
+.grading-range{font-weight:700;min-width:60px}
+.back-link{text-align:center;margin-top:24px}
+.back-link a{color:#0984e3;text-decoration:none;font-weight:500}
+.back-link a:hover{text-decoration:underline}
+#reset-btn{background:#636e72;color:#fff;border:none;padding:10px 32px;font-size:.95rem;border-radius:8px;cursor:pointer;font-weight:500;margin-top:14px;transition:background .2s}
+#reset-btn:hover{background:#4a5568}
+@media(max-width:600px){
+  .container{padding:12px}
+  .question{padding:16px 18px}
+  h1{font-size:1.25rem}
+  .code-block{font-size:.75rem;padding:10px 12px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Quiz de fin de Jour 1 — R Niveau I</h1>
+    <p class="subtitle">R Niveau I &mdash; Jour 1</p>
+    <div class="meta">
+      <span>20 questions</span>
+      <span>~15 min</span>
+      <span>Seuil : &ge; 14/20</span>
+    </div>
+  </header>
+
+  <div id="quiz-form">
+    
+        <div class="question" id="q1">
+          <div class="q-header">Question 1</div>
+          <p class="q-text">Quel panneau de RStudio affiche les objets actuellement en mémoire ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q1" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text">Console</span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q1" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text">Source (éditeur)</span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q1" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text">Environment</span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q1" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text">Files</span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q2">
+          <div class="q-header">Question 2</div>
+          <p class="q-text">Quel opérateur sert à **affecter** une valeur à une variable en R ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q2" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text"><code>&lt;-</code></span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q2" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text"><code>==</code></span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q2" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text"><code>-&gt;</code></span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q2" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text"><code>:=</code></span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q3">
+          <div class="q-header">Question 3</div>
+          <p class="q-text">Comment obtenir l'aide sur la fonction <code>mean</code> ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q3" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text"><code>help mean</code></span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q3" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text"><code>?mean</code></span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q3" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text"><code>aide(mean)</code></span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q3" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text"><code>man mean</code></span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q4">
+          <div class="q-header">Question 4</div>
+          <p class="q-text">Quelle extension ont les scripts R ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q4" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text"><code>.py</code></span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q4" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text"><code>.R</code></span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q4" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text"><code>.csv</code></span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q4" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text"><code>.rmd</code></span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q5">
+          <div class="q-header">Question 5</div>
+          <p class="q-text">Que fait la commande <code># ceci est un test</code> dans un script R ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q5" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text">Affiche &quot;ceci est un test&quot;</span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q5" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text">Génère une erreur</span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q5" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text">C'est un commentaire, R l'ignore</span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q5" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text">Crée une variable nommée &quot;test&quot;</span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q6">
+          <div class="q-header">Question 6</div>
+          <p class="q-text">Quel est le résultat de <code>class(TRUE)</code> ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q6" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text"><code>&quot;numeric&quot;</code></span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q6" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text"><code>&quot;character&quot;</code></span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q6" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text"><code>&quot;logical&quot;</code></span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q6" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text"><code>&quot;boolean&quot;</code></span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q7">
+          <div class="q-header">Question 7</div>
+          <p class="q-text">Quel est le résultat de <code>c(1, &quot;deux&quot;, 3)</code> ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q7" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text"><code>1 &quot;deux&quot; 3</code> (types mixtes)</span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q7" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text"><code>&quot;1&quot; &quot;deux&quot; &quot;3&quot;</code> (tout converti en character)</span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q7" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text">Une erreur</span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q7" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text"><code>1 2 3</code></span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q8">
+          <div class="q-header">Question 8</div>
+          <p class="q-text">Comment créer le vecteur <code>10 20 30 40 50</code> ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q8" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text"><code>seq(10, 50, by = 10)</code></span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q8" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text"><code>rep(10, 5)</code></span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q8" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text"><code>10:50</code></span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q8" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text"><code>c(10:50)</code></span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q9">
+          <div class="q-header">Question 9</div>
+          <p class="q-text">Si <code>v &lt;- c(5, 10, 15, 20)</code>, que retourne <code>v[c(2, 4)]</code> ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q9" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text"><code>5 15</code></span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q9" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text"><code>10 20</code></span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q9" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text"><code>5 10 15 20</code></span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q9" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text">Une erreur</span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q10">
+          <div class="q-header">Question 10</div>
+          <p class="q-text">Quelle est la différence entre <code>[ ]</code> et <code>[[ ]]</code> sur une liste ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q10" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text">Aucune différence</span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q10" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text"><code>[ ]</code> retourne une sous-liste, <code>[[ ]]</code> retourne l'élément lui-même</span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q10" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text"><code>[[ ]]</code> ne fonctionne qu'avec des vecteurs</span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q10" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text"><code>[ ]</code> est plus rapide</span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q11">
+          <div class="q-header">Question 11</div>
+          <p class="q-text">Comment accéder à la colonne <code>age</code> d'un data.frame <code>df</code> ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q11" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text"><code>df(age)</code></span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q11" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text"><code>df$age</code></span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q11" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text"><code>df.age</code></span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q11" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text"><code>df-&gt;age</code></span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q12">
+          <div class="q-header">Question 12</div>
+          <p class="q-text">Quel objet R est le plus adapté pour stocker un tableau de données avec des colonnes de types différents ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q12" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text">Matrice</span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q12" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text">Vecteur</span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q12" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text">Data.frame</span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q12" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text">Liste simple</span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q13">
+          <div class="q-header">Question 13</div>
+          <p class="q-text">Que retourne <code>round(3.567, 1)</code> ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q13" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text"><code>3</code></span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q13" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text"><code>3.6</code></span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q13" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text"><code>3.57</code></span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q13" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text"><code>4</code></span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q14">
+          <div class="q-header">Question 14</div>
+          <p class="q-text">Si <code>x &lt;- c(2, 8, NA, 5)</code>, que retourne <code>mean(x)</code> ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q14" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text"><code>5</code></span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q14" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text"><code>NA</code></span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q14" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text"><code>3.75</code></span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q14" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text">Une erreur</span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q15">
+          <div class="q-header">Question 15</div>
+          <p class="q-text">Comment corriger le problème de la question précédente ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q15" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text"><code>mean(x, ignore = TRUE)</code></span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q15" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text"><code>mean(x, na.rm = TRUE)</code></span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q15" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text"><code>mean(x, na = FALSE)</code></span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q15" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text"><code>mean(na.omit(x))</code> *(accepté aussi)*</span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q16">
+          <div class="q-header">Question 16</div>
+          <p class="q-text">Que retourne <code>paste(&quot;Bonjour&quot;, &quot;R&quot;)</code> ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q16" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text"><code>&quot;Bonjour R&quot;</code></span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q16" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text"><code>&quot;BonjourR&quot;</code></span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q16" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text"><code>c(&quot;Bonjour&quot;, &quot;R&quot;)</code></span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q16" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text">Une erreur</span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q17">
+          <div class="q-header">Question 17</div>
+          <p class="q-text">Que retourne <code>which(c(3, 7, 2, 9) &gt; 5)</code> ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q17" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text"><code>TRUE FALSE FALSE TRUE</code></span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q17" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text"><code>2 4</code></span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q17" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text"><code>7 9</code></span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q17" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text"><code>3 7 2 9</code></span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q18">
+          <div class="q-header">Question 18</div>
+          <p class="q-text">Quelle syntaxe crée une fonction qui double un nombre ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q18" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text"><code>double = (x) { x * 2 }</code></span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q18" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text"><code>double &lt;- function(x) { x * 2 }</code></span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q18" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text"><code>def double(x): x * 2</code></span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q18" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text"><code>function double(x) = x * 2</code></span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q19">
+          <div class="q-header">Question 19</div>
+          <p class="q-text">Quel code crée un data.frame, ajoute une colonne calculée, et filtre les lignes ?</p>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q19" value="a">
+              <span class="letter">a)</span>
+              
+              <pre class="code-block choice-code"><code>df &lt;- data.frame(x = 1:5)
+df$y &lt;- x * 2
+df[y &gt; 6, ]</code></pre>
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q19" value="b">
+              <span class="letter">b)</span>
+              
+              <pre class="code-block choice-code"><code>df &lt;- data.frame(x = 1:5)
+df$y &lt;- df$x * 2
+df[df$y &gt; 6, ]</code></pre>
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q19" value="c">
+              <span class="letter">c)</span>
+              
+              <pre class="code-block choice-code"><code>df &lt;- data.frame(x = 1:5)
+df.y &lt;- df.x * 2
+df[df.y &gt; 6]</code></pre>
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+        <div class="question" id="q20">
+          <div class="q-header">Question 20</div>
+          <p class="q-text">Que retourne ce code ?</p><pre class="code-block"><code>f &lt;- function(v) {
+  v[v &gt; mean(v)]
+}
+f(c(1, 5, 3, 8, 2))</code></pre>
+          <div class="choices">
+            <label class="choice" data-letter="a">
+              <input type="radio" name="q20" value="a">
+              <span class="letter">a)</span>
+              <span class="choice-text"><code>3.8</code></span>
+              
+            </label>
+            <label class="choice" data-letter="b">
+              <input type="radio" name="q20" value="b">
+              <span class="letter">b)</span>
+              <span class="choice-text"><code>5 8</code></span>
+              
+            </label>
+            <label class="choice" data-letter="c">
+              <input type="radio" name="q20" value="c">
+              <span class="letter">c)</span>
+              <span class="choice-text"><code>1 2 3</code></span>
+              
+            </label>
+            <label class="choice" data-letter="d">
+              <input type="radio" name="q20" value="d">
+              <span class="letter">d)</span>
+              <span class="choice-text">Une erreur</span>
+              
+            </label>
+          </div>
+          <div class="feedback"></div>
+        </div>
+    <div class="actions">
+      <button id="submit-btn" onclick="submitQuiz()">Valider mes r&eacute;ponses</button>
+    </div>
+  </div>
+
+  <div id="results" style="display:none"></div>
+
+  <div class="back-link">
+    <a href="index.html">&larr; Retour &agrave; l'accueil</a>
+  </div>
+</div>
+
+<script>
+const ANSWERS = {"1":"c","2":"a","3":"b","4":"b","5":"c","6":"c","7":"b","8":"a","9":"b","10":"b","11":"b","12":"c","13":"b","14":"b","15":"b","16":"a","17":"b","18":"b","19":"b","20":"b"};
+const SECTIONS = [{"title":"Module 1 : Introduction à R et RStudio","ids":[1,2,3,4,5]},{"title":"Module 2 : Les objets R","ids":[6,7,8,9,10,11,12]},{"title":"Module 3 : Les fonctions de base","ids":[13,14,15,16,17,18]},{"title":"Module 4 : Synthèse","ids":[19,20]}];
+const GRADING = [{"range":"18-20","label":"Excellent — tous les concepts maîtrisés"},{"range":"14-17","label":"Validé — bonne compréhension, quelques points à revoir"},{"range":"10-13","label":"À consolider — revoir les modules concernés avant le Jour 2"},{"range":"< 10","label":"Insuffisant — accompagnement individuel recommandé"}];
+
+function submitQuiz() {
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Corrig\u00e9';
+
+  let total = 0;
+  const sectionScores = SECTIONS.map(s => ({ ...s, correct: 0, total: s.ids.length }));
+
+  for (const [qid, correct] of Object.entries(ANSWERS)) {
+    const el = document.getElementById('q' + qid);
+    const selected = document.querySelector('input[name="q' + qid + '"]:checked');
+    const fb = el.querySelector('.feedback');
+    fb.classList.add('show');
+
+    // Find section
+    const secIdx = SECTIONS.findIndex(s => s.ids.includes(parseInt(qid)));
+
+    if (!selected) {
+      el.classList.add('unanswered');
+      fb.classList.add('skip');
+      fb.textContent = 'Non r\u00e9pondu — R\u00e9ponse : ' + correct + ')';
+      // Highlight correct
+      const correctChoice = el.querySelector('.choice[data-letter="' + correct + '"]');
+      if (correctChoice) correctChoice.classList.add('is-correct');
+    } else if (selected.value === correct) {
+      total++;
+      el.classList.add('correct');
+      fb.classList.add('ok');
+      fb.textContent = 'Correct !';
+      selected.closest('.choice').classList.add('selected-correct');
+      if (secIdx >= 0) sectionScores[secIdx].correct++;
+    } else {
+      el.classList.add('wrong');
+      fb.classList.add('ko');
+      fb.textContent = 'Incorrect — R\u00e9ponse : ' + correct + ')';
+      selected.closest('.choice').classList.add('selected-wrong');
+      const correctChoice = el.querySelector('.choice[data-letter="' + correct + '"]');
+      if (correctChoice) correctChoice.classList.add('is-correct');
+    }
+
+    // Disable all radios
+    el.querySelectorAll('input[type=radio]').forEach(r => r.disabled = true);
+  }
+
+  // Show results
+  const pass = total >= 14;
+  let gradingLabel = '';
+  for (const g of GRADING) {
+    const r = g.range;
+    if (r.includes('-')) {
+      const [lo, hi] = r.split('-').map(Number);
+      if (total >= lo && total <= hi) { gradingLabel = g.label; break; }
+    } else if (r.startsWith('<')) {
+      const v = parseInt(r.replace(/[^0-9]/g, ''));
+      if (total < v) { gradingLabel = g.label; break; }
+    } else if (r.startsWith('0')) {
+      const [lo, hi] = r.split('-').map(s => parseInt(s));
+      if (total >= lo && total <= hi) { gradingLabel = g.label; break; }
+    }
+  }
+
+  let sectionsHTML = '';
+  for (const s of sectionScores) {
+    const pct = s.total > 0 ? Math.round(s.correct / s.total * 100) : 0;
+    const cls = pct >= 70 ? 'good' : pct >= 50 ? 'mid' : 'bad';
+    sectionsHTML += '<div class="section-row">' +
+      '<span class="section-name">' + s.title + '</span>' +
+      '<div class="section-bar-wrap"><div class="section-bar ' + cls + '" style="width:' + pct + '%"></div></div>' +
+      '<span class="section-score">' + s.correct + '/' + s.total + '</span></div>';
+  }
+
+  let gradingHTML = '';
+  for (const g of GRADING) {
+    gradingHTML += '<div class="grading-row"><span class="grading-range">' + g.range + '</span><span>' + g.label + '</span></div>';
+  }
+
+  const res = document.getElementById('results');
+  res.style.display = 'block';
+  res.innerHTML =
+    '<div class="score-big ' + (pass ? 'pass' : 'fail') + '">' + total + ' / 20</div>' +
+    '<div class="verdict ' + (pass ? 'pass' : 'fail') + '">' +
+      (pass ? 'Valid\u00e9' : 'Non valid\u00e9') + (gradingLabel ? ' — ' + gradingLabel : '') +
+    '</div>' +
+    '<div class="section-scores"><h3>Score par section</h3>' + sectionsHTML + '</div>' +
+    '<div class="grading"><h3>Bar\u00e8me</h3>' + gradingHTML + '</div>' +
+    '<div style="text-align:center"><button id="reset-btn" onclick="resetQuiz()">Recommencer</button></div>';
+
+  res.scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+  document.querySelectorAll('.question').forEach(el => {
+    el.classList.remove('correct', 'wrong', 'unanswered');
+    el.querySelectorAll('input[type=radio]').forEach(r => { r.disabled = false; r.checked = false; });
+    el.querySelectorAll('.choice').forEach(c => c.classList.remove('selected-correct', 'selected-wrong', 'is-correct'));
+    const fb = el.querySelector('.feedback');
+    fb.classList.remove('show', 'ok', 'ko', 'skip');
+    fb.textContent = '';
+  });
+  document.getElementById('results').style.display = 'none';
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = false;
+  btn.textContent = 'Valider mes r\u00e9ponses';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
