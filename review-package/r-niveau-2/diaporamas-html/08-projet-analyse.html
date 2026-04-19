@@ -13,7 +13,8 @@
     * { box-sizing:border-box; }
     .reveal { font-family:'Inter',sans-serif; font-size:24px; background:var(--bg); }
     .reveal .slides { text-align:left; }
-    .reveal .slides > section { display:flex !important; flex-direction:column; justify-content:center; align-items:center; height:100%; padding:40px 60px; }
+    .reveal .slides > section { height:100%; padding:40px 60px; }
+    .reveal .slides > section.present { display:flex !important; flex-direction:column; justify-content:center; align-items:center; }
     .reveal .slides > section > * { width:100%; max-width:1200px; }
     .reveal h1 { font-weight:800; font-size:2.4em; letter-spacing:-0.03em; line-height:1.1; margin-bottom:0.3em; }
     .reveal h2 { font-weight:700; font-size:1.6em; color:#fff; margin-bottom:0.2em; letter-spacing:-0.02em; }
@@ -26,10 +27,13 @@
     .bullet-list li, .summary-list li { padding:8px 0; border-bottom:1px solid var(--border); color:var(--body); font-size:0.9em; line-height:1.5; }
     .bullet-list li:last-child, .summary-list li:last-child { border-bottom:none; }
     .check { font-weight:700; margin-right:8px; }
-    .progress-bar { position:absolute; top:0; left:0; width:100%; height:3px; background:var(--border); z-index:10; }
+    .progress-bar { position:absolute; top:0; left:0; width:100%; height:3px; background:var(--border); z-index:10; pointer-events:none; }
     .progress-fill { height:100%; transition:width .5s ease; border-radius:0 2px 2px 0; }
     .slide-footer { position:absolute; bottom:16px; right:24px; }
     .slide-num { font-size:0.65em; color:var(--dim); font-family:'JetBrains Mono',monospace; }
+    .home-link { position:fixed; left:18px; bottom:14px; z-index:30; color:#74b9ff; text-decoration:none; font-size:0.6em; font-weight:600; opacity:0.92; background:rgba(8,8,8,0.55); border:1px solid var(--border); padding:6px 10px; border-radius:999px; }
+    .home-link:hover { opacity:1; color:#ffffff; border-color:#74b9ff; }
+    @media print { .home-link { display:none !important; } }
   </style>
 </head>
 <body>
@@ -153,9 +157,9 @@ objectifs &lt;- readxl::read_excel("objectifs.xlsx", sheet = "Objectifs", skip =
       </ul>
       <div class="slide-footer"><span class="slide-num">10 / 10</span></div>
     </section>
-
     </div>
   </div>
+  <a class="home-link" href="../../index.html">Accueil chapitres</a>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
