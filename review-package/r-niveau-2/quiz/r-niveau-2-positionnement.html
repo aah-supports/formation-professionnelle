@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz de fin de Jour 1 — R Niveau II</title>
+<title>QCM de positionnement — R Niveau II</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f5f6fa;color:#2d3436;line-height:1.6;padding:0 0 60px}
@@ -77,12 +77,12 @@ h1{font-size:1.5rem;color:#2d3436;margin-bottom:6px}
 <body>
 <div class="container">
   <header>
-    <h1>Quiz de fin de Jour 1 — R Niveau II</h1>
-    <p class="subtitle">R Niveau II — Bases de données, extraction Excel et requêtes avancées</p>
+    <h1>QCM de positionnement — R Niveau II</h1>
+    <p class="subtitle">Test d'entrée avant les modules BDD, Excel, requêtes avancées et stats descriptives</p>
     <div class="meta">
-      <span>20 questions</span>
-      <span>~15 min</span>
-      <span>Seuil : ≥ 14/20</span>
+      <span>15 questions</span>
+      <span>~10 min</span>
+      <span>Repère : ≥ 10/15</span>
     </div>
   </header>
 
@@ -103,128 +103,104 @@ h1{font-size:1.5rem;color:#2d3436;margin-bottom:6px}
 const QUESTIONS = [
   {
     id: 1,
-    section: "Module 1 : BDD avec R",
-    text: "Quel package fournit l'interface standard de connexion aux bases dans R ?",
+    section: "BDD et SQL avec R",
+    text: "Quel package sert d'interface standard pour se connecter à une base SQL depuis R ?",
     choices: [
-      { letter: "a", text: "<code>readr</code>" },
+      { letter: "a", text: "<code>ggplot2</code>" },
       { letter: "b", text: "<code>DBI</code>" },
-      { letter: "c", text: "<code>tidyr</code>" },
+      { letter: "c", text: "<code>stringr</code>" },
       { letter: "d", text: "<code>openxlsx</code>" }
     ],
     answer: "b"
   },
   {
     id: 2,
-    section: "Module 1 : BDD avec R",
-    text: "Avec <code>dbplyr</code>, quand la requête est-elle réellement exécutée ?",
+    section: "BDD et SQL avec R",
+    text: "Que fait principalement <code>dbGetQuery(con, sql)</code> ?",
     choices: [
-      { letter: "a", text: "Immédiatement à chaque verbe dplyr" },
-      { letter: "b", text: "Seulement lors de <code>collect()</code> ou d'une action déclenchante" },
-      { letter: "c", text: "À la fermeture de la connexion" },
-      { letter: "d", text: "Jamais" }
+      { letter: "a", text: "Exécute une requête SQL et retourne le résultat en table R" },
+      { letter: "b", text: "Sauvegarde un graphique" },
+      { letter: "c", text: "Installe une base locale" },
+      { letter: "d", text: "Crée un package" }
     ],
-    answer: "b"
+    answer: "a"
   },
   {
     id: 3,
-    section: "Module 1 : BDD avec R",
-    text: "Quelle commande affiche le SQL généré par un pipeline <code>dbplyr</code> ?",
+    section: "BDD et SQL avec R",
+    text: "Avec <code>dbplyr</code>, pourquoi attendre avant de faire <code>collect()</code> ?",
     choices: [
-      { letter: "a", text: "<code>show_query()</code>" },
-      { letter: "b", text: "<code>sql_preview()</code>" },
-      { letter: "c", text: "<code>explain_sql()</code>" },
-      { letter: "d", text: "<code>dbListFields()</code>" }
+      { letter: "a", text: "Pour filtrer/agréger en base et limiter le volume rapatrié" },
+      { letter: "b", text: "Pour désactiver les index SQL" },
+      { letter: "c", text: "Pour convertir automatiquement en Excel" },
+      { letter: "d", text: "Pour supprimer les NA" }
     ],
     answer: "a"
   },
   {
     id: 4,
-    section: "Module 1 : BDD avec R",
-    text: "Bonne pratique pour la performance sur table distante :",
+    section: "BDD et SQL avec R",
+    text: "Quel appel affiche le SQL généré par un pipeline dplyr sur table distante ?",
     choices: [
-      { letter: "a", text: "Toujours faire <code>collect()</code> en début de pipeline" },
-      { letter: "b", text: "Filtrer et sélectionner les colonnes tôt dans la requête" },
-      { letter: "c", text: "Transformer en CSV avant chaque jointure" },
-      { letter: "d", text: "Désactiver les index SQL" }
+      { letter: "a", text: "<code>show_query()</code>" },
+      { letter: "b", text: "<code>print_sql()</code>" },
+      { letter: "c", text: "<code>get_sql()</code>" },
+      { letter: "d", text: "<code>sql_view()</code>" }
     ],
-    answer: "b"
+    answer: "a"
   },
   {
     id: 5,
-    section: "Module 1 : BDD avec R",
-    text: "Quel objet représente une table distante manipulée avec dplyr ?",
+    section: "Extraction Excel / tableur",
+    text: "Quelle fonction lit un fichier .xlsx dans R ?",
     choices: [
-      { letter: "a", text: "Une matrice" },
-      { letter: "b", text: "Un <code>tbl_lazy</code>" },
-      { letter: "c", text: "Un vecteur factor" },
-      { letter: "d", text: "Un objet <code>lm</code>" }
+      { letter: "a", text: "<code>readxl::read_excel()</code>" },
+      { letter: "b", text: "<code>DBI::dbReadTable()</code>" },
+      { letter: "c", text: "<code>utils::read.tableur()</code>" },
+      { letter: "d", text: "<code>jsonlite::fromJSON()</code>" }
     ],
-    answer: "b"
+    answer: "a"
   },
   {
     id: 6,
-    section: "Module 2 : Excel / tableur",
-    text: "Quelle fonction lit la liste des feuilles d'un classeur Excel ?",
+    section: "Extraction Excel / tableur",
+    text: "Quelle fonction permet de lister les onglets d'un classeur Excel ?",
     choices: [
       { letter: "a", text: "<code>readxl::excel_sheets()</code>" },
-      { letter: "b", text: "<code>readxl::sheet_names()</code>" },
-      { letter: "c", text: "<code>openxlsx::read_sheet()</code>" },
-      { letter: "d", text: "<code>utils::sheets()</code>" }
+      { letter: "b", text: "<code>readxl::sheet_list()</code>" },
+      { letter: "c", text: "<code>openxlsx::sheet_get()</code>" },
+      { letter: "d", text: "<code>base::sheets()</code>" }
     ],
     answer: "a"
   },
   {
     id: 7,
-    section: "Module 2 : Excel / tableur",
-    text: "Paramètre utile de <code>read_excel()</code> pour ignorer des lignes d'en-tête métier inutiles :",
+    section: "Extraction Excel / tableur",
+    text: "Dans <code>read_excel()</code>, quel argument saute des lignes parasites en tête de feuille ?",
     choices: [
-      { letter: "a", text: "<code>drop =</code>" },
-      { letter: "b", text: "<code>trim_ws =</code>" },
-      { letter: "c", text: "<code>skip =</code>" },
-      { letter: "d", text: "<code>parse =</code>" }
-    ],
-    answer: "c"
-  },
-  {
-    id: 8,
-    section: "Module 2 : Excel / tableur",
-    text: "Que fait <code>janitor::clean_names()</code> ?",
-    choices: [
-      { letter: "a", text: "Supprime les doublons de lignes" },
-      { letter: "b", text: "Normalise les noms de colonnes (snake_case, caractères propres)" },
-      { letter: "c", text: "Convertit toutes les colonnes en numérique" },
-      { letter: "d", text: "Trie les colonnes par ordre alphabétique" }
+      { letter: "a", text: "<code>trim_ws</code>" },
+      { letter: "b", text: "<code>skip</code>" },
+      { letter: "c", text: "<code>parse</code>" },
+      { letter: "d", text: "<code>append</code>" }
     ],
     answer: "b"
   },
   {
-    id: 9,
-    section: "Module 2 : Excel / tableur",
-    text: "Quand utiliser <code>pivot_longer()</code> après un export tableur ?",
+    id: 8,
+    section: "Extraction Excel / tableur",
+    text: "À quoi sert <code>janitor::clean_names()</code> après un import tableur ?",
     choices: [
-      { letter: "a", text: "Quand les mois sont stockés en colonnes séparées" },
-      { letter: "b", text: "Quand il faut calculer un top clients" },
-      { letter: "c", text: "Quand la table est déjà tidy" },
-      { letter: "d", text: "Jamais, il faut rester en format large" }
+      { letter: "a", text: "À normaliser les noms de colonnes" },
+      { letter: "b", text: "À faire un graphique automatiquement" },
+      { letter: "c", text: "À convertir toutes les valeurs en texte" },
+      { letter: "d", text: "À supprimer les doublons de lignes" }
     ],
     answer: "a"
   },
   {
-    id: 10,
-    section: "Module 2 : Excel / tableur",
-    text: "Quel pattern est le plus robuste pour importer 12 fichiers Excel mensuels ?",
-    choices: [
-      { letter: "a", text: "Copier-coller manuellement les 12 feuilles" },
-      { letter: "b", text: "<code>list.files()</code> + <code>purrr::map_dfr()</code> avec colonne source" },
-      { letter: "c", text: "Convertir d'abord tout en PDF" },
-      { letter: "d", text: "Utiliser uniquement Excel, sans R" }
-    ],
-    answer: "b"
-  },
-  {
-    id: 11,
-    section: "Module 3 : Requêtes avancées",
-    text: "Quelle jointure conserve uniquement les lignes ayant une correspondance dans les 2 tables ?",
+    id: 9,
+    section: "Requêtes avancées",
+    text: "Quelle jointure garde seulement les lignes présentes dans les 2 tables ?",
     choices: [
       { letter: "a", text: "<code>left_join()</code>" },
       { letter: "b", text: "<code>inner_join()</code>" },
@@ -234,128 +210,92 @@ const QUESTIONS = [
     answer: "b"
   },
   {
-    id: 12,
-    section: "Module 3 : Requêtes avancées",
-    text: "À quoi sert <code>anti_join(a, b, by = ...)</code> ?",
+    id: 10,
+    section: "Requêtes avancées",
+    text: "Que retourne <code>anti_join(a, b, by = ...)</code> ?",
     choices: [
-      { letter: "a", text: "Garder les lignes de <code>a</code> absentes de <code>b</code>" },
-      { letter: "b", text: "Fusionner toutes les colonnes de <code>a</code> et <code>b</code>" },
-      { letter: "c", text: "Créer un produit cartésien" },
-      { letter: "d", text: "Supprimer les NA" }
+      { letter: "a", text: "Les lignes de <code>a</code> sans correspondance dans <code>b</code>" },
+      { letter: "b", text: "Un produit cartésien" },
+      { letter: "c", text: "Toutes les lignes de <code>b</code>" },
+      { letter: "d", text: "Une moyenne par groupe" }
+    ],
+    answer: "a"
+  },
+  {
+    id: 11,
+    section: "Requêtes avancées",
+    text: "Que calcule ce code ?",
+    code: "ventes |>\n  group_by(region) |>\n  summarise(ca_total = sum(ca, na.rm = TRUE))",
+    choices: [
+      { letter: "a", text: "Le CA total par région" },
+      { letter: "b", text: "Le nombre de colonnes" },
+      { letter: "c", text: "Le top 3 clients" },
+      { letter: "d", text: "Une jointure externe" }
+    ],
+    answer: "a"
+  },
+  {
+    id: 12,
+    section: "Requêtes avancées",
+    text: "Dans un contexte métier, pourquoi vérifier la cardinalité avant jointure ?",
+    choices: [
+      { letter: "a", text: "Pour éviter des duplications de lignes non prévues" },
+      { letter: "b", text: "Pour changer la police du rapport" },
+      { letter: "c", text: "Pour accélérer le rendu PowerPoint" },
+      { letter: "d", text: "Ce n'est pas utile" }
     ],
     answer: "a"
   },
   {
     id: 13,
-    section: "Module 3 : Requêtes avancées",
-    text: "Quel verbe facilite un classement par groupe (top N) ?",
+    section: "Stats descriptives pratiques",
+    text: "Si une variable contient des valeurs extrêmes, quel indicateur est souvent plus robuste que la moyenne ?",
     choices: [
-      { letter: "a", text: "<code>replace_na()</code>" },
-      { letter: "b", text: "<code>row_number()</code> via <code>mutate()</code>" },
-      { letter: "c", text: "<code>separate_rows()</code>" },
-      { letter: "d", text: "<code>bind_rows()</code>" }
+      { letter: "a", text: "La médiane" },
+      { letter: "b", text: "Le maximum" },
+      { letter: "c", text: "La variance" },
+      { letter: "d", text: "Le nombre de lignes" }
     ],
-    answer: "b"
+    answer: "a"
   },
   {
     id: 14,
-    section: "Module 3 : Requêtes avancées",
-    text: "Que fait ce code ?",
-    code: "ventes |>\n  group_by(region) |>\n  mutate(rang = min_rank(desc(ca))) |>\n  filter(rang <= 3)",
+    section: "Stats descriptives pratiques",
+    text: "Quel indicateur mesure la dispersion autour de la moyenne ?",
     choices: [
-      { letter: "a", text: "Garde les 3 meilleures lignes de CA par région" },
-      { letter: "b", text: "Calcule la moyenne du CA" },
-      { letter: "c", text: "Supprime les régions avec NA" },
-      { letter: "d", text: "Crée un histogramme" }
+      { letter: "a", text: "L'écart-type" },
+      { letter: "b", text: "La somme" },
+      { letter: "c", text: "La mode uniquement" },
+      { letter: "d", text: "Le nombre de colonnes" }
     ],
     answer: "a"
   },
   {
     id: 15,
-    section: "Module 3 : Requêtes avancées",
-    text: "Pourquoi vérifier la cardinalité avant une jointure ?",
+    section: "Stats descriptives pratiques",
+    text: "Pour décrire rapidement la distribution d'une variable quantitative, quel graphique choisir en priorité ?",
     choices: [
-      { letter: "a", text: "Pour choisir la palette ggplot" },
-      { letter: "b", text: "Pour éviter des duplications non prévues des lignes" },
-      { letter: "c", text: "Pour accélérer l'export PDF" },
-      { letter: "d", text: "Parce que dplyr l'impose" }
-    ],
-    answer: "b"
-  },
-  {
-    id: 16,
-    section: "Module 4 : Automatisation",
-    text: "Quel duo est adapté pour capturer les erreurs sans arrêter tout le traitement ?",
-    choices: [
-      { letter: "a", text: "<code>for</code> + <code>break</code>" },
-      { letter: "b", text: "<code>safely()</code> / <code>possibly()</code>" },
-      { letter: "c", text: "<code>arrange()</code> + <code>slice()</code>" },
-      { letter: "d", text: "<code>summary()</code> + <code>plot()</code>" }
-    ],
-    answer: "b"
-  },
-  {
-    id: 17,
-    section: "Module 4 : Automatisation",
-    text: "Pourquoi paramétrer une fonction d'extraction (<code>date_debut</code>, <code>date_fin</code>, <code>region</code>) ?",
-    choices: [
-      { letter: "a", text: "Pour rendre le script réutilisable sans copier-coller" },
-      { letter: "b", text: "Pour augmenter la taille des fichiers" },
-      { letter: "c", text: "Pour éviter les jointures" },
-      { letter: "d", text: "Pour supprimer toute validation" }
-    ],
-    answer: "a"
-  },
-  {
-    id: 18,
-    section: "Module 4 : Automatisation",
-    text: "Dans une extraction planifiée, que doit contenir un log minimal ?",
-    choices: [
-      { letter: "a", text: "Seulement le nom de l'auteur" },
-      { letter: "b", text: "Date/heure, volume traité, statut succès/erreur" },
-      { letter: "c", text: "Uniquement les lignes en erreur" },
-      { letter: "d", text: "La version de Windows" }
-    ],
-    answer: "b"
-  },
-  {
-    id: 19,
-    section: "Module 4 : Automatisation",
-    text: "Quelle commande exporte proprement un résultat final au format CSV ?",
-    choices: [
-      { letter: "a", text: "<code>write_csv(df, \"sortie.csv\")</code>" },
-      { letter: "b", text: "<code>save(df, file = \"sortie.csv\")</code>" },
-      { letter: "c", text: "<code>print(df, \"sortie.csv\")</code>" },
-      { letter: "d", text: "<code>plot(df, file = \"sortie.csv\")</code>" }
-    ],
-    answer: "a"
-  },
-  {
-    id: 20,
-    section: "Module 4 : Automatisation",
-    text: "Quelle séquence reflète le mieux le workflow du Jour 1 ?",
-    choices: [
-      { letter: "a", text: "Connexion BDD → Import Excel → Jointures/requêtes avancées → Extraction automatisée" },
-      { letter: "b", text: "PowerPoint → Word → export manuel sans contrôle" },
-      { letter: "c", text: "Import image → OCR → clustering" },
-      { letter: "d", text: "Créer un dashboard sans nettoyer les données" }
+      { letter: "a", text: "Un histogramme" },
+      { letter: "b", text: "Un diagramme en secteurs" },
+      { letter: "c", text: "Un organigramme" },
+      { letter: "d", text: "Une carte geographique" }
     ],
     answer: "a"
   }
 ];
 
 const SECTIONS = [
-  { title: "Module 1 : BDD avec R", ids: [1,2,3,4,5] },
-  { title: "Module 2 : Excel / tableur", ids: [6,7,8,9,10] },
-  { title: "Module 3 : Requêtes avancées", ids: [11,12,13,14,15] },
-  { title: "Module 4 : Automatisation", ids: [16,17,18,19,20] }
+  { title: "BDD et SQL avec R", ids: [1,2,3,4] },
+  { title: "Extraction Excel / tableur", ids: [5,6,7,8] },
+  { title: "Requêtes avancées", ids: [9,10,11,12] },
+  { title: "Stats descriptives pratiques", ids: [13,14,15] }
 ];
 
 const GRADING = [
-  { range: "18-20", label: "Excellent — compétences opérationnelles solides" },
-  { range: "14-17", label: "Validé — acquis conformes" },
-  { range: "10-13", label: "À consolider — revoir les points faibles" },
-  { range: "< 10", label: "Insuffisant — entraînement recommandé" }
+  { range: "13-15", label: "Très bon niveau d'entrée pour R Niveau II" },
+  { range: "10-12", label: "Niveau correct, quelques points à consolider" },
+  { range: "6-9", label: "Bases partielles, révision recommandée" },
+  { range: "< 6", label: "Prérequis insuffisants, remise à niveau conseillée" }
 ];
 
 function renderQuiz() {
@@ -456,7 +396,7 @@ function submitQuiz() {
     el.querySelectorAll('input[type=radio]').forEach(r => r.disabled = true);
   }
 
-  const pass = total >= 14;
+  const pass = total >= 10;
   let gradingLabel = '';
   for (const g of GRADING) {
     const r = g.range;
@@ -486,10 +426,10 @@ function submitQuiz() {
   const res = document.getElementById('results');
   res.style.display = 'block';
   res.innerHTML =
-    `<div class="score-big ${pass ? 'pass' : 'fail'}">${total} / 20</div>` +
-    `<div class="verdict ${pass ? 'pass' : 'fail'}">${pass ? 'Validé' : 'Non validé'}${gradingLabel ? ' — ' + gradingLabel : ''}</div>` +
+    `<div class="score-big ${pass ? 'pass' : 'fail'}">${total} / 15</div>` +
+    `<div class="verdict ${pass ? 'pass' : 'fail'}">${pass ? 'Positionnement favorable' : 'Positionnement à renforcer'}${gradingLabel ? ' — ' + gradingLabel : ''}</div>` +
     `<div class="section-scores"><h3>Score par section</h3>${sectionsHTML}</div>` +
-    `<div class="grading"><h3>Barème</h3>${gradingHTML}</div>` +
+    `<div class="grading"><h3>Barème d'orientation</h3>${gradingHTML}</div>` +
     `<div style="text-align:center"><button id="reset-btn" onclick="resetQuiz()">Recommencer</button></div>`;
 
   res.scrollIntoView({ behavior: 'smooth' });

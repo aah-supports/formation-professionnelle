@@ -321,7 +321,7 @@ const QUESTIONS = [
   {
     id: 19,
     section: "Module 8 : Projet fil rouge",
-    text: "Que signifie "reproductible" dans ce contexte ?",
+    text: "Que signifie « reproductible » dans ce contexte ?",
     choices: [
       { letter: "a", text: "Le résultat dépend du poste utilisateur" },
       { letter: "b", text: "Le script redonne le même résultat avec les mêmes données" },
@@ -385,6 +385,33 @@ function escapeHtml(text) {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
+}
+
+function shuffleQuestionsInDom() {
+  const form = document.getElementById('quiz-form');
+  if (!form) return;
+
+  const questions = Array.from(form.querySelectorAll('.question'));
+  for (let i = questions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [questions[i], questions[j]] = [questions[j], questions[i]];
+  }
+
+  const firstNonQuestion = Array.from(form.children).find(
+    (child) => !child.classList.contains('question')
+  );
+
+  questions.forEach((question) => {
+    if (firstNonQuestion) {
+      form.insertBefore(question, firstNonQuestion);
+    } else {
+      form.appendChild(question);
+    }
+  });
+
+  form.querySelectorAll('.question .q-header').forEach((header, idx) => {
+    header.textContent = `Question ${idx + 1}`;
+  });
 }
 
 function submitQuiz() {
@@ -486,6 +513,7 @@ function resetQuiz() {
 }
 
 renderQuiz();
+shuffleQuestionsInDom();
 </script>
 </body>
 </html>

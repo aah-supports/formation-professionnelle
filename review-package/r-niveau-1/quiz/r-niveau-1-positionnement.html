@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz de fin de Jour 1 — R Niveau II</title>
+<title>QCM de positionnement — R Niveau I</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f5f6fa;color:#2d3436;line-height:1.6;padding:0 0 60px}
@@ -77,12 +77,12 @@ h1{font-size:1.5rem;color:#2d3436;margin-bottom:6px}
 <body>
 <div class="container">
   <header>
-    <h1>Quiz de fin de Jour 1 — R Niveau II</h1>
-    <p class="subtitle">R Niveau II — Bases de données, extraction Excel et requêtes avancées</p>
+    <h1>QCM de positionnement — R Niveau I</h1>
+    <p class="subtitle">Test d'entrée avant démarrage des modules</p>
     <div class="meta">
-      <span>20 questions</span>
-      <span>~15 min</span>
-      <span>Seuil : ≥ 14/20</span>
+      <span>15 questions</span>
+      <span>~10 min</span>
+      <span>Repère : ≥ 10/15</span>
     </div>
   </header>
 
@@ -103,259 +103,198 @@ h1{font-size:1.5rem;color:#2d3436;margin-bottom:6px}
 const QUESTIONS = [
   {
     id: 1,
-    section: "Module 1 : BDD avec R",
-    text: "Quel package fournit l'interface standard de connexion aux bases dans R ?",
+    section: "Socle informatique",
+    text: "Dans RStudio, où exécute-t-on directement une ligne de code ?",
     choices: [
-      { letter: "a", text: "<code>readr</code>" },
-      { letter: "b", text: "<code>DBI</code>" },
-      { letter: "c", text: "<code>tidyr</code>" },
-      { letter: "d", text: "<code>openxlsx</code>" }
+      { letter: "a", text: "Dans la console" },
+      { letter: "b", text: "Dans l'onglet Files" },
+      { letter: "c", text: "Dans l'onglet Plots" },
+      { letter: "d", text: "Dans l'onglet Help" }
     ],
-    answer: "b"
+    answer: "a"
   },
   {
     id: 2,
-    section: "Module 1 : BDD avec R",
-    text: "Avec <code>dbplyr</code>, quand la requête est-elle réellement exécutée ?",
+    section: "Socle informatique",
+    text: "Quelle fonction installe un package R ?",
     choices: [
-      { letter: "a", text: "Immédiatement à chaque verbe dplyr" },
-      { letter: "b", text: "Seulement lors de <code>collect()</code> ou d'une action déclenchante" },
-      { letter: "c", text: "À la fermeture de la connexion" },
-      { letter: "d", text: "Jamais" }
+      { letter: "a", text: "<code>library()</code>" },
+      { letter: "b", text: "<code>install.packages()</code>" },
+      { letter: "c", text: "<code>requireNamespace()</code>" },
+      { letter: "d", text: "<code>package.load()</code>" }
     ],
     answer: "b"
   },
   {
     id: 3,
-    section: "Module 1 : BDD avec R",
-    text: "Quelle commande affiche le SQL généré par un pipeline <code>dbplyr</code> ?",
+    section: "Socle informatique",
+    text: "Quel symbole sert à commenter une ligne en R ?",
     choices: [
-      { letter: "a", text: "<code>show_query()</code>" },
-      { letter: "b", text: "<code>sql_preview()</code>" },
-      { letter: "c", text: "<code>explain_sql()</code>" },
-      { letter: "d", text: "<code>dbListFields()</code>" }
+      { letter: "a", text: "//" },
+      { letter: "b", text: "--" },
+      { letter: "c", text: "#" },
+      { letter: "d", text: "/* */" }
     ],
-    answer: "a"
+    answer: "c"
   },
   {
     id: 4,
-    section: "Module 1 : BDD avec R",
-    text: "Bonne pratique pour la performance sur table distante :",
+    section: "Socle informatique",
+    text: "Que fait <code>library(dplyr)</code> ?",
     choices: [
-      { letter: "a", text: "Toujours faire <code>collect()</code> en début de pipeline" },
-      { letter: "b", text: "Filtrer et sélectionner les colonnes tôt dans la requête" },
-      { letter: "c", text: "Transformer en CSV avant chaque jointure" },
-      { letter: "d", text: "Désactiver les index SQL" }
+      { letter: "a", text: "Installe dplyr" },
+      { letter: "b", text: "Charge dplyr dans la session" },
+      { letter: "c", text: "Supprime dplyr" },
+      { letter: "d", text: "Met à jour dplyr" }
     ],
     answer: "b"
   },
   {
     id: 5,
-    section: "Module 1 : BDD avec R",
-    text: "Quel objet représente une table distante manipulée avec dplyr ?",
+    section: "Socle informatique",
+    text: "Quel opérateur assigne une valeur à une variable en R (usage courant) ?",
     choices: [
-      { letter: "a", text: "Une matrice" },
-      { letter: "b", text: "Un <code>tbl_lazy</code>" },
-      { letter: "c", text: "Un vecteur factor" },
-      { letter: "d", text: "Un objet <code>lm</code>" }
-    ],
-    answer: "b"
-  },
-  {
-    id: 6,
-    section: "Module 2 : Excel / tableur",
-    text: "Quelle fonction lit la liste des feuilles d'un classeur Excel ?",
-    choices: [
-      { letter: "a", text: "<code>readxl::excel_sheets()</code>" },
-      { letter: "b", text: "<code>readxl::sheet_names()</code>" },
-      { letter: "c", text: "<code>openxlsx::read_sheet()</code>" },
-      { letter: "d", text: "<code>utils::sheets()</code>" }
-    ],
-    answer: "a"
-  },
-  {
-    id: 7,
-    section: "Module 2 : Excel / tableur",
-    text: "Paramètre utile de <code>read_excel()</code> pour ignorer des lignes d'en-tête métier inutiles :",
-    choices: [
-      { letter: "a", text: "<code>drop =</code>" },
-      { letter: "b", text: "<code>trim_ws =</code>" },
-      { letter: "c", text: "<code>skip =</code>" },
-      { letter: "d", text: "<code>parse =</code>" }
+      { letter: "a", text: "=>" },
+      { letter: "b", text: "=" },
+      { letter: "c", text: "<-" },
+      { letter: "d", text: ":=" }
     ],
     answer: "c"
   },
   {
-    id: 8,
-    section: "Module 2 : Excel / tableur",
-    text: "Que fait <code>janitor::clean_names()</code> ?",
+    id: 6,
+    section: "Fondamentaux R",
+    text: "Que crée <code>c(10, 20, 30)</code> ?",
     choices: [
-      { letter: "a", text: "Supprime les doublons de lignes" },
-      { letter: "b", text: "Normalise les noms de colonnes (snake_case, caractères propres)" },
-      { letter: "c", text: "Convertit toutes les colonnes en numérique" },
-      { letter: "d", text: "Trie les colonnes par ordre alphabétique" }
+      { letter: "a", text: "Un data.frame" },
+      { letter: "b", text: "Un vecteur" },
+      { letter: "c", text: "Une liste imbriquée" },
+      { letter: "d", text: "Une matrice" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 7,
+    section: "Fondamentaux R",
+    text: "Comment récupérer le premier élément d'un vecteur <code>x</code> ?",
+    choices: [
+      { letter: "a", text: "<code>x(1)</code>" },
+      { letter: "b", text: "<code>x[1]</code>" },
+      { letter: "c", text: "<code>x{1}</code>" },
+      { letter: "d", text: "<code>x.first()</code>" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 8,
+    section: "Fondamentaux R",
+    text: "Que renvoie <code>is.na(x)</code> ?",
+    choices: [
+      { letter: "a", text: "Les valeurs numériques de x" },
+      { letter: "b", text: "Un vecteur logique indiquant les valeurs manquantes" },
+      { letter: "c", text: "Le type de x" },
+      { letter: "d", text: "Le nombre de colonnes" }
     ],
     answer: "b"
   },
   {
     id: 9,
-    section: "Module 2 : Excel / tableur",
-    text: "Quand utiliser <code>pivot_longer()</code> après un export tableur ?",
+    section: "Fondamentaux R",
+    text: "Pourquoi écrit-on souvent <code>mean(x, na.rm = TRUE)</code> ?",
     choices: [
-      { letter: "a", text: "Quand les mois sont stockés en colonnes séparées" },
-      { letter: "b", text: "Quand il faut calculer un top clients" },
-      { letter: "c", text: "Quand la table est déjà tidy" },
-      { letter: "d", text: "Jamais, il faut rester en format large" }
+      { letter: "a", text: "Pour trier x" },
+      { letter: "b", text: "Pour ignorer les valeurs manquantes dans le calcul" },
+      { letter: "c", text: "Pour convertir x en texte" },
+      { letter: "d", text: "Pour réduire la taille mémoire" }
     ],
-    answer: "a"
+    answer: "b"
   },
   {
     id: 10,
-    section: "Module 2 : Excel / tableur",
-    text: "Quel pattern est le plus robuste pour importer 12 fichiers Excel mensuels ?",
+    section: "Fondamentaux R",
+    text: "Quelle structure est la plus adaptée pour stocker un tableau lignes/colonnes ?",
     choices: [
-      { letter: "a", text: "Copier-coller manuellement les 12 feuilles" },
-      { letter: "b", text: "<code>list.files()</code> + <code>purrr::map_dfr()</code> avec colonne source" },
-      { letter: "c", text: "Convertir d'abord tout en PDF" },
-      { letter: "d", text: "Utiliser uniquement Excel, sans R" }
+      { letter: "a", text: "Un vecteur" },
+      { letter: "b", text: "Un data.frame" },
+      { letter: "c", text: "Un facteur" },
+      { letter: "d", text: "Un booléen" }
     ],
     answer: "b"
   },
   {
     id: 11,
-    section: "Module 3 : Requêtes avancées",
-    text: "Quelle jointure conserve uniquement les lignes ayant une correspondance dans les 2 tables ?",
+    section: "Import, analyse, viz",
+    text: "Quelle fonction permet de lire un fichier CSV en base R ?",
     choices: [
-      { letter: "a", text: "<code>left_join()</code>" },
-      { letter: "b", text: "<code>inner_join()</code>" },
-      { letter: "c", text: "<code>full_join()</code>" },
-      { letter: "d", text: "<code>anti_join()</code>" }
+      { letter: "a", text: "<code>read.csv()</code>" },
+      { letter: "b", text: "<code>load.csv()</code>" },
+      { letter: "c", text: "<code>import.csv()</code>" },
+      { letter: "d", text: "<code>open.csv()</code>" }
     ],
-    answer: "b"
+    answer: "a"
   },
   {
     id: 12,
-    section: "Module 3 : Requêtes avancées",
-    text: "À quoi sert <code>anti_join(a, b, by = ...)</code> ?",
+    section: "Import, analyse, viz",
+    text: "Que fait <code>summary(df)</code> ?",
     choices: [
-      { letter: "a", text: "Garder les lignes de <code>a</code> absentes de <code>b</code>" },
-      { letter: "b", text: "Fusionner toutes les colonnes de <code>a</code> et <code>b</code>" },
-      { letter: "c", text: "Créer un produit cartésien" },
-      { letter: "d", text: "Supprimer les NA" }
+      { letter: "a", text: "Supprime les doublons" },
+      { letter: "b", text: "Affiche un résumé statistique des variables" },
+      { letter: "c", text: "Crée un graphique" },
+      { letter: "d", text: "Installe un package" }
     ],
-    answer: "a"
+    answer: "b"
   },
   {
     id: 13,
-    section: "Module 3 : Requêtes avancées",
-    text: "Quel verbe facilite un classement par groupe (top N) ?",
+    section: "Import, analyse, viz",
+    text: "Quel code trace rapidement un nuage de points ?",
     choices: [
-      { letter: "a", text: "<code>replace_na()</code>" },
-      { letter: "b", text: "<code>row_number()</code> via <code>mutate()</code>" },
-      { letter: "c", text: "<code>separate_rows()</code>" },
-      { letter: "d", text: "<code>bind_rows()</code>" }
+      { letter: "a", text: "<code>plot(x, y)</code>" },
+      { letter: "b", text: "<code>graph(x, y)</code>" },
+      { letter: "c", text: "<code>scatter(x, y)</code>" },
+      { letter: "d", text: "<code>draw(x, y)</code>" }
     ],
-    answer: "b"
+    answer: "a"
   },
   {
     id: 14,
-    section: "Module 3 : Requêtes avancées",
+    section: "Import, analyse, viz",
     text: "Que fait ce code ?",
-    code: "ventes |>\n  group_by(region) |>\n  mutate(rang = min_rank(desc(ca))) |>\n  filter(rang <= 3)",
+    code: "if (note >= 10) {\n  resultat <- \"Admis\"\n} else {\n  resultat <- \"Ajourné\"\n}",
     choices: [
-      { letter: "a", text: "Garde les 3 meilleures lignes de CA par région" },
-      { letter: "b", text: "Calcule la moyenne du CA" },
-      { letter: "c", text: "Supprime les régions avec NA" },
-      { letter: "d", text: "Crée un histogramme" }
+      { letter: "a", text: "Il crée une boucle" },
+      { letter: "b", text: "Il effectue un test conditionnel" },
+      { letter: "c", text: "Il installe un package" },
+      { letter: "d", text: "Il lit un fichier" }
     ],
-    answer: "a"
+    answer: "b"
   },
   {
     id: 15,
-    section: "Module 3 : Requêtes avancées",
-    text: "Pourquoi vérifier la cardinalité avant une jointure ?",
+    section: "Import, analyse, viz",
+    text: "Quel enchaînement est le plus logique pour un mini-projet R ?",
     choices: [
-      { letter: "a", text: "Pour choisir la palette ggplot" },
-      { letter: "b", text: "Pour éviter des duplications non prévues des lignes" },
-      { letter: "c", text: "Pour accélérer l'export PDF" },
-      { letter: "d", text: "Parce que dplyr l'impose" }
+      { letter: "a", text: "Graphique → Import → Nettoyage" },
+      { letter: "b", text: "Import → Contrôle des données → Analyse → Visualisation" },
+      { letter: "c", text: "Installation → Export → Suppression" },
+      { letter: "d", text: "Visualisation uniquement" }
     ],
     answer: "b"
-  },
-  {
-    id: 16,
-    section: "Module 4 : Automatisation",
-    text: "Quel duo est adapté pour capturer les erreurs sans arrêter tout le traitement ?",
-    choices: [
-      { letter: "a", text: "<code>for</code> + <code>break</code>" },
-      { letter: "b", text: "<code>safely()</code> / <code>possibly()</code>" },
-      { letter: "c", text: "<code>arrange()</code> + <code>slice()</code>" },
-      { letter: "d", text: "<code>summary()</code> + <code>plot()</code>" }
-    ],
-    answer: "b"
-  },
-  {
-    id: 17,
-    section: "Module 4 : Automatisation",
-    text: "Pourquoi paramétrer une fonction d'extraction (<code>date_debut</code>, <code>date_fin</code>, <code>region</code>) ?",
-    choices: [
-      { letter: "a", text: "Pour rendre le script réutilisable sans copier-coller" },
-      { letter: "b", text: "Pour augmenter la taille des fichiers" },
-      { letter: "c", text: "Pour éviter les jointures" },
-      { letter: "d", text: "Pour supprimer toute validation" }
-    ],
-    answer: "a"
-  },
-  {
-    id: 18,
-    section: "Module 4 : Automatisation",
-    text: "Dans une extraction planifiée, que doit contenir un log minimal ?",
-    choices: [
-      { letter: "a", text: "Seulement le nom de l'auteur" },
-      { letter: "b", text: "Date/heure, volume traité, statut succès/erreur" },
-      { letter: "c", text: "Uniquement les lignes en erreur" },
-      { letter: "d", text: "La version de Windows" }
-    ],
-    answer: "b"
-  },
-  {
-    id: 19,
-    section: "Module 4 : Automatisation",
-    text: "Quelle commande exporte proprement un résultat final au format CSV ?",
-    choices: [
-      { letter: "a", text: "<code>write_csv(df, \"sortie.csv\")</code>" },
-      { letter: "b", text: "<code>save(df, file = \"sortie.csv\")</code>" },
-      { letter: "c", text: "<code>print(df, \"sortie.csv\")</code>" },
-      { letter: "d", text: "<code>plot(df, file = \"sortie.csv\")</code>" }
-    ],
-    answer: "a"
-  },
-  {
-    id: 20,
-    section: "Module 4 : Automatisation",
-    text: "Quelle séquence reflète le mieux le workflow du Jour 1 ?",
-    choices: [
-      { letter: "a", text: "Connexion BDD → Import Excel → Jointures/requêtes avancées → Extraction automatisée" },
-      { letter: "b", text: "PowerPoint → Word → export manuel sans contrôle" },
-      { letter: "c", text: "Import image → OCR → clustering" },
-      { letter: "d", text: "Créer un dashboard sans nettoyer les données" }
-    ],
-    answer: "a"
   }
 ];
 
 const SECTIONS = [
-  { title: "Module 1 : BDD avec R", ids: [1,2,3,4,5] },
-  { title: "Module 2 : Excel / tableur", ids: [6,7,8,9,10] },
-  { title: "Module 3 : Requêtes avancées", ids: [11,12,13,14,15] },
-  { title: "Module 4 : Automatisation", ids: [16,17,18,19,20] }
+  { title: "Socle informatique", ids: [1,2,3,4,5] },
+  { title: "Fondamentaux R", ids: [6,7,8,9,10] },
+  { title: "Import, analyse, viz", ids: [11,12,13,14,15] }
 ];
 
 const GRADING = [
-  { range: "18-20", label: "Excellent — compétences opérationnelles solides" },
-  { range: "14-17", label: "Validé — acquis conformes" },
-  { range: "10-13", label: "À consolider — revoir les points faibles" },
-  { range: "< 10", label: "Insuffisant — entraînement recommandé" }
+  { range: "13-15", label: "Très bon niveau d'entrée pour R Niveau I" },
+  { range: "10-12", label: "Niveau correct, quelques points à consolider" },
+  { range: "6-9", label: "Bases partielles, révision recommandée" },
+  { range: "< 6", label: "Débutant complet, accompagnement conseillé" }
 ];
 
 function renderQuiz() {
@@ -456,7 +395,7 @@ function submitQuiz() {
     el.querySelectorAll('input[type=radio]').forEach(r => r.disabled = true);
   }
 
-  const pass = total >= 14;
+  const pass = total >= 10;
   let gradingLabel = '';
   for (const g of GRADING) {
     const r = g.range;
@@ -486,10 +425,10 @@ function submitQuiz() {
   const res = document.getElementById('results');
   res.style.display = 'block';
   res.innerHTML =
-    `<div class="score-big ${pass ? 'pass' : 'fail'}">${total} / 20</div>` +
-    `<div class="verdict ${pass ? 'pass' : 'fail'}">${pass ? 'Validé' : 'Non validé'}${gradingLabel ? ' — ' + gradingLabel : ''}</div>` +
+    `<div class="score-big ${pass ? 'pass' : 'fail'}">${total} / 15</div>` +
+    `<div class="verdict ${pass ? 'pass' : 'fail'}">${pass ? 'Positionnement favorable' : 'Positionnement à renforcer'}${gradingLabel ? ' — ' + gradingLabel : ''}</div>` +
     `<div class="section-scores"><h3>Score par section</h3>${sectionsHTML}</div>` +
-    `<div class="grading"><h3>Barème</h3>${gradingHTML}</div>` +
+    `<div class="grading"><h3>Barème d'orientation</h3>${gradingHTML}</div>` +
     `<div style="text-align:center"><button id="reset-btn" onclick="resetQuiz()">Recommencer</button></div>`;
 
   res.scrollIntoView({ behavior: 'smooth' });

@@ -833,6 +833,35 @@ function resetQuiz() {
   btn.textContent = 'Valider mes r\u00e9ponses';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+function shuffleQuestionsInDom() {
+  const form = document.getElementById('quiz-form');
+  if (!form) return;
+
+  const questions = Array.from(form.querySelectorAll('.question'));
+  for (let i = questions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [questions[i], questions[j]] = [questions[j], questions[i]];
+  }
+
+  const firstNonQuestion = Array.from(form.children).find(
+    (child) => !child.classList.contains('question')
+  );
+
+  questions.forEach((question) => {
+    if (firstNonQuestion) {
+      form.insertBefore(question, firstNonQuestion);
+    } else {
+      form.appendChild(question);
+    }
+  });
+
+  form.querySelectorAll('.question .q-header').forEach((header, idx) => {
+    header.textContent = `Question ${idx + 1}`;
+  });
+}
+
+shuffleQuestionsInDom();
 </script>
 </body>
 </html>
