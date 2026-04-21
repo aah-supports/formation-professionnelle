@@ -183,11 +183,35 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 </ul>
 <h2>Notions théoriques supplémentaires</h2>
 <ul>
-<li><strong>Mutabilité</strong> : différence entre objets modifiables (list, dict) et immuables (str, tuple).</li>
-<li><strong>Référence vs copie</strong> : impact des affectations et des copies superficielles/profondes.</li>
-<li><strong>Portée des variables</strong> : local, global, fermeture lexicale.</li>
-<li><strong>Complexité de base</strong> : coût moyen des opérations courantes sur listes et dictionnaires.</li>
-<li><strong>Exceptions</strong> : modèle <code>try/except/finally</code> et importance des messages explicites.</li>
+  <li><strong>Mutabilité</strong> : différence entre objets modifiables (list, dict) et immuables (str, tuple).</li>
+  <li><strong>Référence vs copie</strong> : impact des affectations et des copies superficielles/profondes.</li>
+  <li><strong>Portée des variables</strong> : local, global, fermeture lexicale.</li>
+  <li><strong>Complexité de base</strong> : coût moyen des opérations courantes sur listes et dictionnaires.</li>
+  <li><strong>Exceptions</strong> : modèle <code>try/except/finally</code> et importance des messages explicites.</li>
+</ul>
+
+<h2>Glossaire technique détaillé (niveau I)</h2>
+<ul>
+  <li><strong>Interpréteur</strong> : programme qui lit et exécute le code Python instruction par instruction.</li>
+  <li><strong>Script</strong> : fichier <code>.py</code> exécutable contenant une suite d'instructions.</li>
+  <li><strong>Module</strong> : fichier Python importable depuis un autre script.</li>
+  <li><strong>Package</strong> : dossier de modules organisés par domaine fonctionnel.</li>
+  <li><strong>Signature de fonction</strong> : nom + paramètres + valeur de retour attendue.</li>
+  <li><strong>Type hint</strong> : annotation facilitant la lecture du contrat de fonction.</li>
+  <li><strong>Valeur sentinelle</strong> : valeur spéciale (ex: <code>None</code>) indiquant un état particulier.</li>
+  <li><strong>Idempotence</strong> : exécuter plusieurs fois une même opération sans changer indéfiniment le résultat.</li>
+  <li><strong>Validation</strong> : contrôle systématique des entrées avant traitement métier.</li>
+  <li><strong>Traceback</strong> : pile d'appel affichée lors d'une exception.</li>
+</ul>
+
+<h2>Détails techniques complémentaires</h2>
+<ul>
+  <li>Préférer des fonctions courtes (5–20 lignes) avec un objectif unique.</li>
+  <li>Nommer explicitement les variables métier (<code>montant_ttc</code>, <code>date_commande</code>).</li>
+  <li>Éviter les effets de bord: copier une liste avant modification si l'original doit rester intact.</li>
+  <li>Distinguer erreurs de format (entrée invalide) et erreurs d'exécution (fichier absent, permission).</li>
+  <li>Centraliser les constantes et chemins en haut de script pour faciliter maintenance et tests.</li>
+  <li>Documenter les hypothèses (unité, format de date, valeurs obligatoires) au plus près du code.</li>
 </ul>
 <h2>Exemples de code (niveau 1)</h2>
 <h3>Condition + boucle</h3>

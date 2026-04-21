@@ -504,5 +504,58 @@ print(totaux)</code></pre>
     new_items = items.copy()
     new_items.append(value)
     return new_items</code></pre>
+<h2>Définitions techniques complémentaires (niveau I)</h2>
+<ul>
+<li><strong>Runtime Python</strong> : environnement d'exécution qui gère objets, exceptions et appels de fonctions.</li>
+<li><strong>Binding</strong> : association d'un nom Python à une référence d'objet en mémoire.</li>
+<li><strong>Objet mutable</strong> : objet modifiable en place (ex: liste, dictionnaire).</li>
+<li><strong>Objet immuable</strong> : objet non modifiable après création (ex: tuple, chaîne, entier).</li>
+<li><strong>Slicing</strong> : extraction d'une sous-séquence par indices <code>[start:stop:step]</code>.</li>
+<li><strong>Idempotence</strong> : propriété d'une opération qui peut être rejouée sans dérive de résultat.</li>
+<li><strong>Exception</strong> : signal d'erreur interrompant le flux normal d'exécution.</li>
+<li><strong>Traceback</strong> : pile d'appels détaillant où et pourquoi une erreur s'est produite.</li>
+<li><strong>Contrat de fonction</strong> : attentes sur les entrées, sorties et erreurs possibles.</li>
+<li><strong>Encodage</strong> : règle de transformation texte↔octets (UTF-8 recommandé).</li>
+</ul>
+
+<h2>Détail technique par domaine (niveau I)</h2>
+<h3>Mémoire et références</h3>
+<ul>
+<li>Expliquer la différence entre égalité de valeur (<code>==</code>) et identité d'objet (<code>is</code>).</li>
+<li>Montrer les effets de bord d'un passage d'objet mutable à une fonction.</li>
+<li>Utiliser une copie défensive (<code>copy()</code>) quand l'appelant doit conserver son état.</li>
+</ul>
+
+<h3>Complexité des opérations courantes</h3>
+<ul>
+<li>Rappeler que l'accès indexé d'une liste est en moyenne O(1), alors que la recherche est O(n).</li>
+<li>Insister sur l'intérêt des dictionnaires pour les accès par clé en moyenne O(1).</li>
+<li>Préciser que le tri (<code>sorted</code>) est en O(n log n) et doit être évité dans des boucles inutiles.</li>
+</ul>
+
+<h3>Validation et gestion d'erreurs</h3>
+<ul>
+<li>Valider les entrées en début de fonction pour échouer tôt avec un message explicite.</li>
+<li>Capturer uniquement les exceptions attendues, éviter les <code>except Exception</code> génériques.</li>
+<li>Chaîner les exceptions avec <code>raise ... from err</code> pour préserver le diagnostic.</li>
+</ul>
+
+<h3>Fichiers, formats et encodage</h3>
+<ul>
+<li>Ouvrir les fichiers texte avec <code>encoding="utf-8"</code> pour garantir la portabilité.</li>
+<li>Séparer la lecture brute, la validation du schéma et la transformation métier.</li>
+<li>Tracer les lignes rejetées (motif, valeur) pour faciliter la correction des sources.</li>
+</ul>
+
+<pre><code>def parse_amount(raw: str) -> float:
+    if raw is None or raw.strip() == "":
+        raise ValueError("montant manquant")
+    try:
+        value = float(raw)
+    except ValueError as err:
+        raise ValueError(f"montant invalide: {raw!r}") from err
+    if value < 0:
+        raise ValueError("montant négatif interdit")
+    return value</code></pre>
 </body>
 </html>

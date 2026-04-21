@@ -118,5 +118,56 @@ async def main() -> None:
   <li>Boîte à outils de décorateurs réutilisables.</li>
   <li>Checklist de revue pour code Python intermédiaire.</li>
 </ul>
+
+<h2>Glossaire technique approfondi</h2>
+<ul>
+  <li><strong>Encapsulation</strong> : limitation de l'accès direct à l'état interne pour préserver les invariants métier.</li>
+  <li><strong>Composition</strong> : construction d'un comportement global en assemblant des objets spécialisés.</li>
+  <li><strong>Héritage multiple</strong> : combinaison de plusieurs classes parentes; son usage exige une lecture claire de la MRO.</li>
+  <li><strong>MRO (Method Resolution Order)</strong> : ordre exact de recherche d'une méthode quand plusieurs classes la définissent.</li>
+  <li><strong>Descriptor</strong> : objet implémentant <code>__get__</code>/<code>__set__</code> pour contrôler l'accès à un attribut.</li>
+  <li><strong>Closure</strong> : fonction qui capture des variables de son scope externe.</li>
+  <li><strong>Idempotence</strong> : propriété d'une opération pouvant être rejouée sans effet cumulé inattendu.</li>
+  <li><strong>Backpressure</strong> : mécanisme limitant le débit entrant pour éviter la saturation.</li>
+  <li><strong>Cancellation</strong> : arrêt contrôlé d'une tâche asynchrone pour préserver la cohérence applicative.</li>
+  <li><strong>Structured concurrency</strong> : modèle où les tâches vivent dans un périmètre explicite (ex: <code>TaskGroup</code>).</li>
+</ul>
+
+<h2>Détails techniques par bloc</h2>
+<h3>POO avancée</h3>
+<ul>
+  <li>Utiliser <code>dataclass</code> pour les objets à forte composante données; préférer classes classiques quand la logique métier domine.</li>
+  <li>Choisir <code>@property</code> pour exposer une API stable tout en gardant la validation interne.</li>
+  <li>Implémenter <code>__repr__</code> pour le diagnostic, <code>__eq__</code> pour la comparaison métier, <code>__hash__</code> si usage en dictionnaire/set.</li>
+  <li>Éviter les hiérarchies profondes: la composition réduit les régressions lors d'un refactor.</li>
+  <li>Isoler les accès externes (DB/API) derrière des ports (<code>Protocol</code>) afin de tester le domaine sans I/O.</li>
+</ul>
+
+<h3>Décorateurs</h3>
+<ul>
+  <li>Conserver la signature de la fonction via <code>functools.wraps</code> pour la lisibilité et la compatibilité tooling.</li>
+  <li>Utiliser des décorateurs paramétrés pour externaliser les politiques (timeout, retry, niveau de log).</li>
+  <li>Distinguer clairement les responsabilités: un décorateur de validation ne doit pas gérer la persistance.</li>
+  <li>Maîtriser l'ordre d'empilement des décorateurs: <code>@a @b f</code> équivaut à <code>a(b(f))</code>.</li>
+  <li>Pour les coroutines, wrapper asynchrone obligatoire (<code>async def wrapper</code> + <code>await fn(...)</code>).</li>
+</ul>
+
+<h3>Async/await</h3>
+<ul>
+  <li>Utiliser <code>TaskGroup</code> pour borner le cycle de vie des tâches et simplifier la gestion des échecs.</li>
+  <li>Définir un timeout explicite pour chaque dépendance réseau critique (<code>asyncio.wait_for</code>).</li>
+  <li>Limiter la concurrence avec <code>Semaphore</code> pour éviter throttling et pics d'erreurs.</li>
+  <li>Déléguer le code bloquant via <code>asyncio.to_thread</code> afin de ne pas bloquer l'event loop.</li>
+  <li>Tracer latence, tentative, cause d'erreur pour rendre les incidents async investigables.</li>
+</ul>
+
+<h2>Pièges techniques fréquents et contremesures</h2>
+<ul>
+  <li><strong>Piège</strong> : classes « dieu » cumulant logique, I/O et règles métier. <strong>Contremesure</strong> : séparer domaine, service et adaptateur.</li>
+  <li><strong>Piège</strong> : décorateurs opaques qui masquent l'erreur d'origine. <strong>Contremesure</strong> : remonter contexte + exception chainée.</li>
+  <li><strong>Piège</strong> : explosion de tâches async non bornées. <strong>Contremesure</strong> : stratégies de quota et batching.</li>
+  <li><strong>Piège</strong> : retry non idempotent créant des doublons métier. <strong>Contremesure</strong> : clé de déduplication + opérations idempotentes.</li>
+  <li><strong>Piège</strong> : dépendance implicite au global state. <strong>Contremesure</strong> : injection explicite de dépendances.</li>
+</ul>
 </body>
 </html>

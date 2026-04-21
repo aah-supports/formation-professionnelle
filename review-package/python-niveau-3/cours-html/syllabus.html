@@ -96,5 +96,53 @@ for col, dtype in expected.items():
   <li>Fiche pratique des patterns pandas les plus utiles.</li>
   <li>Checklist de validation de données avant publication.</li>
 </ul>
+
+<h2>Glossaire technique approfondi</h2>
+<ul>
+  <li><strong>Broadcasting</strong> : mécanisme d'alignement automatique des dimensions NumPy lors d'opérations vectorisées.</li>
+  <li><strong>View</strong> : objet partageant la même mémoire qu'un array source.</li>
+  <li><strong>Copy</strong> : duplication mémoire indépendante de la source.</li>
+  <li><strong>Cardinalité de jointure</strong> : relation attendue entre clés (<code>1:1</code>, <code>1:n</code>, <code>n:1</code>, <code>n:n</code>).</li>
+  <li><strong>Resampling</strong> : changement de granularité temporelle (jour, semaine, mois).</li>
+  <li><strong>Outlier</strong> : valeur atypique susceptible de biaiser un agrégat métier.</li>
+  <li><strong>Data drift</strong> : dérive progressive de distribution d'un jeu de données dans le temps.</li>
+  <li><strong>Data lineage</strong> : traçabilité des transformations appliquées de la source au livrable.</li>
+  <li><strong>KPI contract</strong> : définition stable d'un indicateur (formule, périmètre, cadence, exclusions).</li>
+  <li><strong>Idempotence pipeline</strong> : relancer un traitement sans modifier le résultat final attendu.</li>
+</ul>
+
+<h2>Détails techniques par domaine</h2>
+<h3>NumPy</h3>
+<ul>
+  <li>Choisir explicitement les <code>dtype</code> pour contrôler précision et empreinte mémoire.</li>
+  <li>Privilégier les opérations vectorisées et les ufunc plutôt que les boucles Python.</li>
+  <li>Contrôler les copies involontaires lors des slices, reshape et concaténations.</li>
+  <li>Valider la forme des tenseurs avant calcul pour éviter les erreurs silencieuses de broadcasting.</li>
+</ul>
+
+<h3>pandas</h3>
+<ul>
+  <li>Imposer un schéma de colonnes et des règles de typage en entrée.</li>
+  <li>Tracer les taux de NA, doublons et valeurs hors bornes à chaque étape critique.</li>
+  <li>Utiliser <code>merge(validate=...)</code> pour détecter les cardinalités non conformes.</li>
+  <li>Séparer clairement nettoyage, enrichissement et agrégation dans des fonctions distinctes.</li>
+</ul>
+
+<h3>KPI et restitution</h3>
+<ul>
+  <li>Documenter les exclusions métier (annulations, retours, tests internes).</li>
+  <li>Versionner les définitions d'indicateurs pour garantir comparabilité historique.</li>
+  <li>Ajouter des contrôles de cohérence inter-indicateurs avant publication.</li>
+  <li>Exporter avec métadonnées minimales: date de calcul, période couverte, version de logique.</li>
+</ul>
+
+<h2>Pièges techniques fréquents et contremesures</h2>
+<ul>
+  <li><strong>Piège</strong> : jointure many-to-many non voulue. <strong>Contremesure</strong> : contraintes de cardinalité explicites + audit des clés.</li>
+  <li><strong>Piège</strong> : conversions de types implicites. <strong>Contremesure</strong> : coercition explicite et rejet des lignes ambiguës.</li>
+  <li><strong>Piège</strong> : KPI « juste » mais non traçable. <strong>Contremesure</strong> : fiche KPI + version de calcul + logs d'exécution.</li>
+  <li><strong>Piège</strong> : notebook non reproductible. <strong>Contremesure</strong> : pipeline scripté avec fonctions déterministes.</li>
+  <li><strong>Piège</strong> : optimisation prématurée sans mesure. <strong>Contremesure</strong> : benchmark avant/après sur cas réel.</li>
+</ul>
 </body>
 </html>

@@ -143,5 +143,78 @@ monthly["delta_m"] = monthly["ca"].pct_change()</code></pre>
     }</code></pre>
 
 <p><small>Stack : Python 3.11+, NumPy, pandas, VS Code/Jupyter.</small></p>
+
+<h2>Détails techniques approfondis (niveau III)</h2>
+<h3>Qualité de données</h3>
+<ul>
+  <li>Définir des seuils d'acceptation: taux de NA max, taux de doublons max, bornes métier.</li>
+  <li>Standardiser les conventions de nommage de colonnes avant tout enrichissement.</li>
+  <li>Contrôler la stabilité des agrégats d'un run à l'autre (variance anormale).</li>
+  <li>Séparer anomalies bloquantes et anomalies non bloquantes avec journal de décision.</li>
+</ul>
+
+<h3>Performance des pipelines</h3>
+<ul>
+  <li>Mesurer le coût des étapes critiques (read, merge, groupby, export) sur volume réaliste.</li>
+  <li>Réduire les copies mémoire: éviter chaînes de transformations inutiles et colonnes temporaires superflues.</li>
+  <li>Adapter les <code>dtype</code> pour limiter l'empreinte sans dégrader la précision métier.</li>
+  <li>Découper les traitements volumineux en lots idempotents si nécessaire.</li>
+</ul>
+
+<h3>Gouvernance des KPI</h3>
+<ul>
+  <li>Documenter source primaire, règles de calcul, exclusions et responsabilité métier.</li>
+  <li>Versionner le calcul d'indicateur pour expliciter les ruptures de série historique.</li>
+  <li>Mettre en place une validation croisée (comptabilité, finance, opérations).</li>
+  <li>Publier avec une fenêtre de recalcul contrôlée pour les données tardives.</li>
+</ul>
+
+<h2>Glossaire opérationnel</h2>
+<ul>
+  <li><strong>Schema-on-read</strong> : interprétation du schéma à la lecture des données.</li>
+  <li><strong>Cardinalité contrôlée</strong> : relation de jointure explicitement validée.</li>
+  <li><strong>Rolling window</strong> : calcul glissant sur une fenêtre temporelle mobile.</li>
+  <li><strong>Baseline KPI</strong> : valeur de référence utilisée pour détecter les écarts.</li>
+  <li><strong>Audit trail</strong> : historique horodaté des traitements et décisions.</li>
+</ul>
+
+<h2>Définitions techniques complémentaires (niveau III)</h2>
+<ul>
+  <li><strong>Data profiling</strong> : analyse initiale des distributions, manquants, cardinalités et anomalies.</li>
+  <li><strong>Schema drift</strong> : évolution inattendue du schéma source (colonnes, types, formats).</li>
+  <li><strong>Skew</strong> : déséquilibre de distribution pouvant dégrader les agrégations ou performances.</li>
+  <li><strong>Partitionnement logique</strong> : découpage des traitements par période, région ou domaine métier.</li>
+  <li><strong>Window function</strong> : calcul contextuel sur fenêtre ordonnée sans perdre le niveau ligne.</li>
+  <li><strong>Reconciliation</strong> : rapprochement entre résultat calculé et source de référence métier.</li>
+  <li><strong>Data quality gate</strong> : seuil bloquant empêchant la publication d'un livrable non conforme.</li>
+</ul>
+
+<h2>Approfondissement technique (niveau III)</h2>
+<h3>Modélisation et fiabilité des transformations</h3>
+<ul>
+  <li>Stabiliser les clés métier en amont pour sécuriser jointures et agrégations.</li>
+  <li>Versionner les règles de transformation pour expliquer chaque rupture de série.</li>
+  <li>Séparer clairement logique de calcul, contrôles qualité et publication des outputs.</li>
+</ul>
+
+<h3>Performance et passage à l'échelle</h3>
+<ul>
+  <li>Mesurer CPU, mémoire et temps sur des échantillons représentatifs avant optimisation.</li>
+  <li>Réduire les conversions de type répétées en consolidant le typage dès l'ingestion.</li>
+  <li>Découper les pipelines en étapes idempotentes pour reprise partielle après incident.</li>
+</ul>
+
+<h3>Qualité de restitution métier</h3>
+<ul>
+  <li>Associer chaque KPI à une fiche de définition, propriétaire et règle de recalcul.</li>
+  <li>Afficher systématiquement période couverte, date de calcul et taux de données rejetées.</li>
+  <li>Réaliser une validation croisée avec au moins une source externe de contrôle.</li>
+</ul>
+
+<pre><code>def enforce_quality_gate(report: dict) -> None:
+    if report["na_rate_global"] > 0.03:
+        raise ValueError("quality gate KO: trop de valeurs manquantes")
+    if report["duplicate_rate"] > 0.01:
+        raise ValueError("quality gate KO: trop de doublons")</code></pre>
 </body>
 </html>

@@ -123,5 +123,83 @@ async def safe_call(call):
         return Money(self.amount + other.amount, self.currency)</code></pre>
 
 <p><small>Stack : Python 3.11+, pytest, asyncio, VS Code.</small></p>
+
+<h2>Détails techniques approfondis (niveau II)</h2>
+<h3>Conception objet</h3>
+<ul>
+  <li><strong>Critère 1</strong> : une classe doit pouvoir être résumée en une phrase métier.</li>
+  <li><strong>Critère 2</strong> : les invariants sont validés au plus tôt (constructeur / factory).</li>
+  <li><strong>Critère 3</strong> : les dépendances techniques sont injectées, jamais cachées dans la classe métier.</li>
+  <li><strong>Critère 4</strong> : les méthodes publiques exposent un contrat stable (types + exceptions attendues).</li>
+</ul>
+
+<h3>Décorateurs en production</h3>
+<ul>
+  <li>Préférer plusieurs décorateurs simples à un décorateur « tout-en-un » difficile à tester.</li>
+  <li>Versionner les politiques transverses (timeout, retry, logging) pour suivre leur évolution.</li>
+  <li>Mesurer le surcoût de chaque couche décorative sur les chemins chauds.</li>
+  <li>Exiger un test nominal + un test d'erreur pour chaque décorateur critique.</li>
+</ul>
+
+<h3>Asynchrone robuste</h3>
+<ul>
+  <li>Définir des limites explicites: concurrence max, timeout, taille de lot, tentatives max.</li>
+  <li>Utiliser des files (<code>Queue</code>) pour lisser la charge entre producteurs et consommateurs.</li>
+  <li>Tracer les événements de cancellation pour éviter les tâches fantômes.</li>
+  <li>Documenter les opérations idempotentes avant d'ajouter du retry automatique.</li>
+</ul>
+
+<h2>Glossaire opérationnel</h2>
+<ul>
+  <li><strong>Invariants métier</strong> : règles non négociables qui définissent la validité d'un objet.</li>
+  <li><strong>Concern transverse</strong> : besoin récurrent hors logique métier (log, auth, tracing, retry).</li>
+  <li><strong>Throughput</strong> : volume d'opérations traitées par unité de temps.</li>
+  <li><strong>Latency</strong> : temps de réponse d'une opération individuelle.</li>
+  <li><strong>Backoff exponentiel</strong> : stratégie de retry augmentant progressivement le délai.</li>
+</ul>
+
+<h2>Définitions techniques complémentaires (niveau II)</h2>
+<ul>
+  <li><strong>Polymorphisme</strong> : capacité à utiliser des objets différents via une même interface.</li>
+  <li><strong>Duck typing</strong> : compatibilité basée sur les comportements disponibles, pas sur l'héritage explicite.</li>
+  <li><strong>Wrapper</strong> : fonction intermédiaire ajoutant un comportement autour d'une fonction cible.</li>
+  <li><strong>Event loop starvation</strong> : blocage de l'ordonnanceur async par une opération synchrone longue.</li>
+  <li><strong>Task cancellation</strong> : arrêt explicite d'une coroutine via une exception <code>CancelledError</code>.</li>
+  <li><strong>Structured logging</strong> : logs à structure stable (champs clés/valeurs) facilitant la recherche.</li>
+  <li><strong>Contrat d'API interne</strong> : convention partagée sur paramètres, retour, erreurs et effets de bord.</li>
+</ul>
+
+<h2>Approfondissement technique (niveau II)</h2>
+<h3>Conception orientée objet maintenable</h3>
+<ul>
+  <li>Définir des ports (interfaces/Protocol) pour isoler le domaine des dépendances techniques.</li>
+  <li>Réserver l'héritage à une relation métier claire; privilégier la composition dans les autres cas.</li>
+  <li>Encapsuler les transitions d'état dans des méthodes explicites pour préserver les invariants.</li>
+</ul>
+
+<h3>Décorateurs et observabilité</h3>
+<ul>
+  <li>Injecter un identifiant de corrélation dans les logs pour suivre une opération de bout en bout.</li>
+  <li>Mesurer latence et taux d'échec par décorateur afin de détecter les régressions de comportement.</li>
+  <li>Tester séparément le code métier et la couche décorative pour accélérer le diagnostic.</li>
+</ul>
+
+<h3>Asynchrone en conditions réelles</h3>
+<ul>
+  <li>Rendre explicites les limites opérationnelles: timeout, concurrence max, tentatives, taille de lot.</li>
+  <li>Gérer la fermeture propre des tâches pour éviter les fuites lors d'un arrêt applicatif.</li>
+  <li>Utiliser <code>TaskGroup</code> pour centraliser la gestion d'échec d'un ensemble de coroutines liées.</li>
+</ul>
+
+<pre><code>import asyncio
+
+async def worker(name: str, queue: asyncio.Queue) -> None:
+    while True:
+        payload = await queue.get()
+        try:
+            await asyncio.sleep(0.05)  # I/O simulée
+            print(f"{name}: {payload}")
+        finally:
+            queue.task_done()</code></pre>
 </body>
 </html>
