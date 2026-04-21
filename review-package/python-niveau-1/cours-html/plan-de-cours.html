@@ -315,81 +315,52 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 </ol>
 <p><strong>Activité</strong> : Lire un CSV contenant des données de ventes, le traiter en Python pur, et écrire un rapport JSON.</p>
 <hr>
-<h3>Module 6 : NumPy et pandas (10h45 – 12h15)</h3>
-<p><strong>Objectifs</strong> : Calculer efficacement avec numpy et manipuler des données tabulaires avec pandas.</p>
+<h3>Module 6 : Structuration du code et validation (10h45 – 12h15)</h3>
+<p><strong>Objectifs</strong> : Organiser un script Python en mini-projet maintenable et fiable.</p>
 <p><strong>Contenu détaillé</strong> :</p>
 <ol>
-<li><p><strong>Introduction à NumPy</strong> (15 min)</p>
+<li><p><strong>Découper un problème</strong> (15 min)</p>
 <ul>
-<li><code>import numpy as np</code></li>
-<li><code>np.array()</code> : créer des tableaux 1D et 2D</li>
-<li>Opérations vectorisées : <code>+</code>, <code>*</code>, comparaisons</li>
-<li>Fonctions statistiques : <code>np.mean()</code>, <code>np.std()</code>, <code>np.median()</code>, <code>np.sum()</code></li>
-<li>Génération : <code>np.arange()</code>, <code>np.linspace()</code>, <code>np.zeros()</code>, <code>np.ones()</code>, <code>np.random</code></li>
-<li>Indexation et slicing sur les arrays</li>
-<li>Différence avec les listes Python : performance et typage homogène</li>
+<li>Identifier entrées, traitement, sorties</li>
+<li>Pseudo-code avant implémentation</li>
+<li>Responsabilité unique par fonction</li>
 </ul>
 </li>
-<li><p><strong>Series et DataFrame</strong> (10 min)</p>
+<li><p><strong>Structurer en fonctions</strong> (20 min)</p>
 <ul>
-<li><code>pd.Series</code> : vecteur étiqueté</li>
-<li><code>pd.DataFrame</code> : tableau bidimensionnel</li>
-<li>Création depuis un dictionnaire, une liste de dictionnaires</li>
+<li>Fonctions courtes et lisibles</li>
+<li>Paramètres explicites et valeurs de retour stables</li>
+<li>Éviter la duplication de logique</li>
 </ul>
 </li>
-<li><p><strong>Charger des données</strong> (15 min)</p>
+<li><p><strong>Validation des données</strong> (15 min)</p>
 <ul>
-<li><code>pd.read_csv()</code> : paramètres <code>sep</code>, <code>encoding</code>, <code>na_values</code>, <code>parse_dates</code></li>
-<li>Exploration : <code>.head()</code>, <code>.tail()</code>, <code>.shape</code>, <code>.dtypes</code></li>
-<li><code>.info()</code>, <code>.describe()</code>, <code>.value_counts()</code></li>
+<li>Contrôler types, plages de valeurs, champs obligatoires</li>
+<li>Lever des exceptions explicites (<code>ValueError</code>)</li>
 </ul>
 </li>
-<li><p><strong>Sélection avec loc et iloc</strong> (15 min)</p>
+<li><p><strong>Gestion d'erreurs</strong> (15 min)</p>
 <ul>
-<li><code>.loc[]</code> : sélection par étiquettes (lignes et colonnes)</li>
-<li><code>.iloc[]</code> : sélection par positions entières</li>
-<li>Sélection de colonnes : <code>df[&quot;col&quot;]</code>, <code>df[[&quot;col1&quot;, &quot;col2&quot;]]</code></li>
+<li><code>try/except</code> ciblés</li>
+<li>Messages d'erreur compréhensibles</li>
+<li>Différence erreur métier vs erreur technique</li>
 </ul>
 </li>
-<li><p><strong>Filtrage</strong> (10 min)</p>
+<li><p><strong>Organisation des modules</strong> (15 min)</p>
 <ul>
-<li>Indexation booléenne : <code>df[df[&quot;age&quot;] &gt; 30]</code></li>
-<li>Conditions multiples : <code>&amp;</code>, <code>|</code>, <code>~</code></li>
-<li><code>.query(&quot;age &gt; 30 and ville == &#39;Paris&#39;&quot;)</code></li>
-<li><code>.isin()</code> pour les appartenances</li>
+<li>Un fichier = un module cohérent</li>
+<li>Constantes de configuration séparées</li>
+<li>Point d'entrée avec <code>if __name__ == "__main__":</code></li>
 </ul>
 </li>
-<li><p><strong>Tri</strong> (5 min)</p>
+<li><p><strong>Contrôles qualité de base</strong> (10 min)</p>
 <ul>
-<li><code>.sort_values(&quot;col&quot;, ascending=False)</code></li>
-<li>Tri multi-critères</li>
-<li><code>.sort_index()</code></li>
-</ul>
-</li>
-<li><p><strong>Colonnes calculées</strong> (10 min)</p>
-<ul>
-<li><code>df[&quot;new&quot;] = df[&quot;a&quot;] + df[&quot;b&quot;]</code></li>
-<li><code>.assign()</code> pour le chaînage</li>
-<li><code>.apply()</code> pour les fonctions personnalisées</li>
-<li><code>.map()</code> pour les transformations</li>
-</ul>
-</li>
-<li><p><strong>Merge et concat</strong> (10 min)</p>
-<ul>
-<li><code>pd.merge(left, right, on=&quot;clé&quot;, how=&quot;inner&quot;)</code> : inner, left, right, outer</li>
-<li><code>pd.concat([df1, df2])</code> : empiler verticalement ou horizontalement</li>
-</ul>
-</li>
-<li><p><strong>Groupby et agrégation</strong> (15 min)</p>
-<ul>
-<li><code>df.groupby(&quot;col&quot;).mean()</code></li>
-<li><code>.agg({&quot;col1&quot;: &quot;mean&quot;, &quot;col2&quot;: &quot;sum&quot;})</code></li>
-<li>Agrégation multiple : <code>.agg([&quot;mean&quot;, &quot;std&quot;, &quot;count&quot;])</code></li>
-<li><code>.transform()</code> pour garder la même forme</li>
+<li>Cas nominal, cas limite, cas erreur</li>
+<li>Checklist avant livraison d'un script</li>
 </ul>
 </li>
 </ol>
-<p><strong>Activité</strong> : Pipeline complet — charger un CSV, filtrer, joindre deux tables, agréger par groupe, exporter le résultat.</p>
+<p><strong>Activité</strong> : Refactor d'un script monolithique en fonctions/modules avec validation et gestion d'erreurs.</p>
 <hr>
 <h3>Module 7 : Visualisation avec matplotlib (13h30 – 15h00)</h3>
 <p><strong>Objectifs</strong> : Créer des graphiques informatifs avec matplotlib.</p>
@@ -406,7 +377,7 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 <ul>
 <li><code>plt.scatter(x, y)</code> ou <code>ax.scatter(x, y)</code></li>
 <li>Paramètres : <code>c</code> (couleur), <code>s</code> (taille), <code>alpha</code> (transparence), <code>marker</code></li>
-<li>Droite de régression avec <code>numpy.polyfit</code></li>
+<li>Lecture de tendance simple avec une courbe de référence</li>
 </ul>
 </li>
 <li><p><strong>Courbes (line plot)</strong> (10 min)</p>
@@ -426,7 +397,7 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 </li>
 <li><p><strong>Boîte à moustaches (boxplot)</strong> (10 min)</p>
 <ul>
-<li><code>plt.boxplot(data)</code> ou <code>df.boxplot()</code></li>
+<li><code>plt.boxplot(data)</code></li>
 <li>Boxplot par groupe</li>
 <li>Interprétation : médiane, quartiles, outliers</li>
 <li><code>vert=False</code> pour l&#39;orientation horizontale</li>
@@ -450,21 +421,14 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 <ul>
 <li>Titres : <code>plt.title()</code>, <code>plt.xlabel()</code>, <code>plt.ylabel()</code></li>
 <li>Légende : <code>plt.legend()</code></li>
-<li>Style : <code>plt.style.use(&quot;seaborn-v0_8-whitegrid&quot;)</code></li>
+<li>Style : <code>plt.style.use(&quot;ggplot&quot;)</code></li>
 <li>Export : <code>plt.savefig(&quot;figure.png&quot;, dpi=150, bbox_inches=&quot;tight&quot;)</code></li>
 </ul>
 </li>
-<li><p><strong>Aperçu de seaborn</strong> (10 min)</p>
-<ul>
-<li><code>import seaborn as sns</code></li>
-<li><code>sns.scatterplot()</code>, <code>sns.histplot()</code>, <code>sns.boxplot()</code></li>
-<li>Thèmes intégrés pour des graphiques élégants</li>
-</ul>
-</li>
 </ol>
-<p><strong>Activité</strong> : Créer un dashboard de 4 graphiques sur le jeu de données <code>iris</code> (via seaborn).</p>
+<p><strong>Activité</strong> : Créer un dashboard de 4 graphiques à partir de listes Python issues d'un CSV.</p>
 <hr>
-<h3>Module 8 : Projet intégrateur (15h15 – 17h00)</h3>
+<h3>Module 8 : Projet de synthèse Python pur (15h15 – 17h00)</h3>
 <p><strong>Objectifs</strong> : Mobiliser l&#39;ensemble des compétences acquises sur un cas concret.</p>
 <p><strong>Contenu</strong> :</p>
 <ol>
@@ -476,7 +440,7 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 </li>
 <li><p><strong>Étape 1 : Import et exploration</strong> (20 min)</p>
 <ul>
-<li>Charger les données avec pandas</li>
+<li>Charger les données avec <code>csv.DictReader</code></li>
 <li>Examiner la structure, les types, les valeurs manquantes</li>
 <li>Statistiques descriptives globales</li>
 </ul>
@@ -489,8 +453,8 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 </li>
 <li><p><strong>Étape 3 : Statistiques descriptives</strong> (15 min)</p>
 <ul>
-<li>Moyennes par groupe, corrélations</li>
-<li>Tableaux croisés avec groupby</li>
+<li>Moyennes par groupe et médianes</li>
+<li>Agrégations avec dictionnaires Python</li>
 </ul>
 </li>
 <li><p><strong>Étape 4 : Visualisations</strong> (20 min)</p>
@@ -511,43 +475,34 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 </li>
 </ol>
 <hr>
-<h2>Récapitulatif des livrables</h2>
-<table>
-<thead>
-<tr>
-<th>Livrable</th>
-<th>Format</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Slides animées (vidéos)</td>
-<td>8 lesson.json (Remotion)</td>
-</tr>
-<tr>
-<td>Scripts vidéo</td>
-<td>8 fichiers Markdown</td>
-</tr>
-<tr>
-<td>Exercices Jour 1</td>
-<td>Markdown + solutions Python</td>
-</tr>
-<tr>
-<td>Exercices Jour 2</td>
-<td>Markdown + solutions Python</td>
-</tr>
-<tr>
-<td>Projet intégrateur</td>
-<td>Markdown + solution complète</td>
-</tr>
-<tr>
-<td>Syllabus</td>
-<td>Markdown</td>
-</tr>
-<tr>
-<td>Plan de cours</td>
-<td>Ce document</td>
-</tr>
-</tbody></table>
+<h2>Repères de code du niveau I</h2>
+<pre><code>def moyenne(notes):
+    return sum(notes) / len(notes)
 
+notes = [12, 15, 9, 14]
+print(moyenne(notes))</code></pre>
+<pre><code>import csv
+
+with open("donnees.csv", "r", encoding="utf-8") as f:
+    rows = list(csv.DictReader(f))
+
+totaux = {}
+for r in rows:
+    cat = r["categorie"]
+    totaux[cat] = totaux.get(cat, 0.0) + float(r["montant"])
+print(totaux)</code></pre>
+<h2>Notions théoriques transverses (niveau I)</h2>
+<ul>
+<li><strong>Mutabilité et pièges</strong> : effets de bord lors du passage d'une liste à une fonction.</li>
+<li><strong>Références objet</strong> : comprendre pourquoi <code>b = a</code> ne crée pas de copie.</li>
+<li><strong>Design de fonctions</strong> : une responsabilité claire, arguments explicites, valeur de retour stable.</li>
+<li><strong>Lecture d'erreurs</strong> : décoder traceback, type d'exception et ligne fautive.</li>
+<li><strong>Qualité de base</strong> : nommage, indentation, commentaires utiles, tests manuels systématiques.</li>
+</ul>
+<pre><code>def add_item(items: list[str], value: str) -> list[str]:
+    # évite de modifier la liste d'origine
+    new_items = items.copy()
+    new_items.append(value)
+    return new_items</code></pre>
 </body>
 </html>

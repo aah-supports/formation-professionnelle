@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python III — Chapitre 2 Qualité</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+  .reveal { font-family: Inter, Arial, sans-serif; font-size: 20px; }
+  .reveal h2 { font-size: 1.5em; }
+  .reveal h3 { font-size: 1.15em; }
+  .reveal pre { font-size: .54em; border-radius: 10px; }
+
+  .course-home {
+    position: fixed; top: 14px; left: 14px; z-index: 50;
+    color: #74b9ff; text-decoration: none; font-size: .55em; font-weight: 600;
+    background: rgba(8,8,8,.55); border: 1px solid #333; padding: 6px 10px; border-radius: 999px;
+  }
+</style>
+</head>
+<body>
+<a class="course-home" href="../index.html">Accueil du niveau</a>
+<div class="reveal"><div class="slides">
+<section>
+  <h2>Chapitre 5 — Qualité, typing et tests</h2>
+  <p>Sécuriser le comportement logiciel avant la production.</p>
+</section>
+<section>
+  <h3>Dimensions de qualité</h3>
+  <ul>
+    <li>Correctness: résultat conforme au besoin métier.</li>
+    <li>Robustesse: comportement stable en cas d'erreur.</li>
+    <li>Maintenabilité: code compréhensible et modifiable.</li>
+    <li>Observabilité: incidents détectables rapidement.</li>
+  </ul>
+</section>
+<section>
+  <h3>Typing explicite</h3>
+  <pre><code class="language-python">from typing import TypedDict
+
+class OrderRow(TypedDict):
+    order_id: str
+    amount: float
+    country: str
+
+
+def normalize(row: OrderRow) -> OrderRow:
+    row["country"] = row["country"].upper()
+    return row</code></pre>
+</section>
+<section>
+  <h3>Protocol pour contrats internes</h3>
+  <pre><code class="language-python">from typing import Protocol
+
+class Notifier(Protocol):
+    def send(self, target: str, message: str) -> None: ...
+
+
+def notify_invoice(notifier: Notifier, email: str) -> None:
+    notifier.send(email, "Facture prête")</code></pre>
+</section>
+<section>
+  <h3>Unit tests ciblés (AAA)</h3>
+  <pre><code class="language-python">def test_total_panier():
+    # Arrange
+    lignes = [10.0, 15.0, 5.0]
+    # Act
+    total = sum(lignes)
+    # Assert
+    assert total == 30.0</code></pre>
+</section>
+<section>
+  <h3>Tests d'intégration utiles</h3>
+  <ul>
+    <li>Vérifier contrats entre modules (repo, API, queue).</li>
+    <li>Utiliser jeux de données réalistes mais limités.</li>
+    <li>Mesurer le temps d'exécution pour garder un feedback rapide.</li>
+  </ul>
+</section>
+<section>
+  <h3>Fixtures pytest</h3>
+  <pre><code class="language-python">import pytest
+
+@pytest.fixture
+def sample_orders():
+    return [
+        {"id": "o1", "amount": 10.0},
+        {"id": "o2", "amount": 20.0},
+    ]</code></pre>
+</section>
+<section>
+  <h3>Property-based testing (notion)</h3>
+  <pre><code class="language-python"># exemple conceptuel
+# pour toute liste de nombres positifs,
+# la somme doit être >= au max des éléments</code></pre>
+  <ul>
+    <li>Complète les tests scénarisés en explorant plus de cas.</li>
+  </ul>
+</section>
+<section>
+  <h3>Contract tests pour adaptateurs</h3>
+  <ul>
+    <li>Définir le comportement attendu d'un port.</li>
+    <li>Valider chaque implémentation contre ce contrat.</li>
+    <li>Réduit les surprises lors du changement d'infrastructure.</li>
+  </ul>
+</section>
+<section>
+  <h3>Mutation testing (principe)</h3>
+  <ul>
+    <li>Modifier automatiquement le code pour simuler des bugs.</li>
+    <li>Mesurer si les tests détectent ces mutations.</li>
+    <li>Indique la force réelle de la suite de tests.</li>
+  </ul>
+</section>
+<section>
+  <h3>Analyse statique continue</h3>
+  <pre><code class="language-text">ruff check src tests
+mypy src
+pytest -q
+bandit -r src</code></pre>
+</section>
+<section>
+  <h3>Qualité en CI</h3>
+  <ul>
+    <li>Pipeline court: lint + typing + tests rapides sur chaque PR.</li>
+    <li>Pipeline étendu: intégration/perf sur branche principale.</li>
+    <li>Bloquer le merge en cas d'échec d'un garde-fou critique.</li>
+  </ul>
+</section>
+<section>
+  <h3>Signaux de dette qualité</h3>
+  <ul>
+    <li>Tests instables (flaky) ignorés régulièrement.</li>
+    <li>Correction manuelle récurrente en production.</li>
+    <li>Taux de rollback élevé après release.</li>
+    <li>Temps d'analyse incident trop long.</li>
+  </ul>
+</section>
+<section>
+  <h3>Checklist avant merge</h3>
+  <ul>
+    <li>Le diff est-il couvert par au moins un test pertinent ?</li>
+    <li>Les erreurs et cas limites sont-ils traités ?</li>
+    <li>Le typage améliore-t-il la lisibilité API ?</li>
+    <li>Les logs facilitent-ils le diagnostic futur ?</li>
+  </ul>
+</section>
+<section>
+  <h3>Récapitulatif</h3>
+  <ul>
+    <li>Qualité = typing + tests + instrumentation, pas un seul outil.</li>
+    <li>La suite de tests doit protéger les flux critiques métier.</li>
+    <li>La CI transforme ces exigences en discipline collective.</li>
+  </ul>
+</section>
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script>
+  Reveal.initialize({ hash: true, transition: 'slide', controls: false, progress: true });
+  hljs.highlightAll();
+</script>
+</body>
+</html>

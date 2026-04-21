@@ -1,476 +1,138 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Projet intégrateur</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #080808; --bg2: #111111; --text: #ffffff; --body: #d1d5db;
-      --muted: #888888; --dim: #444444; --border: #222222;
-      --cyan: #00f3ff; --purple: #a78bfa; --orange: #ff6b00; --green: #10b981;
-    }
-    * { box-sizing: border-box; }
-    .reveal { font-family: 'Inter', sans-serif; font-size: 24px; background: var(--bg); }
-    .reveal .slides { text-align: left; }
-    .reveal .slides > section {
-      display: flex !important; flex-direction: column; justify-content: center;
-      align-items: center; height: 100%; padding: 40px 60px;
-    }
-    .reveal .slides > section > * { width: 100%; max-width: 1200px; }
-    .reveal h1 { font-weight: 800; font-size: 2.4em; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 0.3em; }
-    .reveal h2 { font-weight: 700; font-size: 1.6em; color: #fff; margin-bottom: 0.2em; letter-spacing: -0.02em; }
-    .reveal p { color: var(--body); line-height: 1.6; }
-    .subtitle { font-size: 1.1em; color: var(--muted); margin-top: 0.3em; }
-    .slide-subtitle { font-size: 0.85em; font-weight: 600; margin-bottom: 0.8em; }
-    .slide-header { margin-bottom: 1em; }
-    .slide-body { display: flex; gap: 40px; align-items: flex-start; }
-    .two-col .col-text, .two-col .col-code { flex: 1.2; }
-    .two-col .col-visual { flex: 0.8; display: flex; justify-content: center; align-items: center; }
-
-    /* Code */
-    pre { background: var(--bg2) !important; border: 1px solid var(--border); border-radius: 12px;
-          padding: 20px !important; margin: 0 !important; font-size: 0.7em !important; overflow-x: auto; }
-    code { font-family: 'JetBrains Mono', monospace !important; line-height: 1.7 !important; }
-
-    /* Bullets */
-    .bullet-list, .summary-list { list-style: none; padding: 0; margin: 0; }
-    .bullet-list li, .summary-list li {
-      padding: 8px 0; border-bottom: 1px solid var(--border); color: var(--body);
-      font-size: 0.9em; line-height: 1.5;
-    }
-    .bullet-list li:last-child, .summary-list li:last-child { border-bottom: none; }
-    .check { font-weight: 700; margin-right: 8px; }
-
-    /* Schemas */
-    .schema { display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; padding: 20px; }
-    .schema-label { font-size: 0.75em; font-weight: 600; color: var(--accent, var(--cyan)); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
-    .schema-row { display: flex; gap: 12px; align-items: center; justify-content: center; }
-    .schema-stack-grid { display: flex; gap: 10px; align-items: center; }
-    .schema-box {
-      background: var(--bg2); border: 2px solid var(--accent, var(--cyan)); border-radius: 8px;
-      padding: 12px 20px; color: var(--text); font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8em; text-align: center; min-width: 60px;
-      animation: fadeSlideUp 0.5s ease-out both;
-    }
-    .schema-box.active { background: var(--accent, var(--cyan)); color: var(--bg); font-weight: 700; }
-    .schema-box.highlight { background: rgba(0, 243, 255, 0.15); border-color: var(--accent, var(--cyan)); }
-    .schema-box.dim { opacity: 0.3; }
-    .schema-box.strike { text-decoration: line-through; opacity: 0.5; }
-    .schema-box.glow { box-shadow: 0 0 20px var(--accent, var(--cyan)); }
-    .schema-box.messy { border-style: dashed; opacity: 0.6; }
-    .schema-box.clean-box { border-color: var(--green); box-shadow: 0 0 12px rgba(16, 185, 129, 0.3); }
-    .schema-arrow { color: var(--accent, var(--cyan)); font-size: 1.5em; font-weight: 700; }
-    .schema-ptr { color: var(--accent, var(--cyan)); font-size: 1.2em; animation: bounce 1s ease infinite; }
-    .schema-loop { color: var(--accent, var(--cyan)); font-size: 2em; font-weight: 700; animation: spin 3s linear infinite; }
-    .schema-method {
-      background: var(--bg2); border: 2px solid var(--accent, var(--cyan)); border-radius: 24px;
-      padding: 10px 24px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--text);
-    }
-    .schema-check { color: var(--accent, var(--cyan)); font-size: 1.1em; font-weight: 600; }
-    .schema-pipe { display: flex; gap: 8px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.8em; }
-    .pipe-in { color: var(--muted); } .pipe-out { color: var(--green); font-weight: 700; }
-    .pipe-filter { color: var(--accent, var(--cyan)); background: var(--bg2); padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border); }
-
-    /* Progress bar */
-    .progress-bar { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 10; }
-    .progress-fill { height: 100%; transition: width 0.5s ease; border-radius: 0 2px 2px 0; }
-
-    /* Footer */
-    .slide-footer { position: absolute; bottom: 16px; right: 24px; }
-    .slide-num { font-size: 0.65em; color: var(--dim); font-family: 'JetBrains Mono', monospace; }
-
-    /* Python-specific schemas */
-    .schema-kv { display: flex; flex-direction: column; gap: 6px; }
-    .kv-row { display: flex; gap: 8px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75em; }
-    .kv-key { color: var(--cyan); background: var(--bg2); padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border); }
-    .kv-val { color: var(--body); }
-    .kv-sep { color: var(--accent, var(--cyan)); font-weight: 700; }
-    .schema-table { border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 0.7em; }
-    .schema-table th { background: var(--accent, var(--cyan)); color: var(--bg); padding: 6px 14px; font-weight: 600; }
-    .schema-table td { background: var(--bg2); border: 1px solid var(--border); padding: 6px 14px; color: var(--body); text-align: center; }
-    .schema-table .row-idx { color: var(--muted); font-weight: 600; background: var(--bg); }
-    .schema-type-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    .type-box { font-family: 'JetBrains Mono', monospace; font-size: 0.8em; padding: 8px 16px !important; min-width: auto !important; }
-    .schema-flow { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: center; }
-    .schema-chart { display: flex; gap: 6px; align-items: flex-end; height: 80px; padding-top: 10px; }
-    .chart-bar { width: 20px; background: var(--accent, var(--cyan)); border-radius: 3px 3px 0 0; animation: fadeSlideUp 0.5s ease-out both; opacity: 0.8; }
-    .schema-venn { position: relative; width: 120px; height: 80px; }
-    .venn-circle { position: absolute; width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--accent, var(--cyan)); display: flex; align-items: center; justify-content: center;
-      font-family: 'JetBrains Mono', monospace; font-size: 0.8em; color: var(--text); background: rgba(0,243,255,0.05); }
-    .venn-left { left: 0; } .venn-right { left: 45px; }
-
-    /* Animations */
-    @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    .anim-build { animation: fadeSlideUp 0.5s ease-out both; }
-
-    /* Print / PDF */
-    @media print {
-      .reveal .slides > section { page-break-after: always; }
-      .progress-bar { display: none; }
-      .fragment { opacity: 1 !important; visibility: visible !important; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python I — Module 8 Projet de synthèse</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+  .reveal { font-family: Inter, Arial, sans-serif; font-size: 20px; }
+  .reveal h2 { font-size: 1.5em; }
+  .reveal h3 { font-size: 1.15em; }
+  .reveal pre { font-size: .56em; border-radius: 10px; }
+  .course-home {
+    position: fixed; top: 14px; left: 14px; z-index: 50;
+    color: #74b9ff; text-decoration: none; font-size: .55em; font-weight: 600;
+    background: rgba(8,8,8,.55); border: 1px solid #333; padding: 6px 10px; border-radius: 999px;
+  }
+</style>
 </head>
 <body>
-  <div class="reveal">
-    <div class="slides">
+<a class="course-home" href="../index.html">Accueil du niveau</a>
+<div class="reveal"><div class="slides">
+<section>
+  <h2>Module 8 — Projet de synthèse Python</h2>
+  <p>Assembler toutes les briques du niveau 1 sur un cas concret.</p>
+</section>
+<section>
+  <h3>Objectif final</h3>
+  <ul>
+    <li>Lire un fichier CSV en Python pur.</li>
+    <li>Nettoyer et valider les données.</li>
+    <li>Calculer des indicateurs simples.</li>
+    <li>Produire un résumé JSON et un graphique.</li>
+  </ul>
+</section>
+<section>
+  <h3>Étape 1 — Lecture CSV</h3>
+  <pre><code class="language-python">import csv
 
-    <section data-background-color="#080808" data-transition="slide">
-      <div class="progress-bar"><div class="progress-fill" style="width:11%; background:#10b981"></div></div>
-      
-      <h1 style="color: #10b981; font-size: 2.2em">Projet intégrateur</h1>
-      <p class="subtitle">Votre première analyse de données complète</p>
-      
-    <div class="schema" style="--accent: #10b981">
-      <div class="schema-label">Analyse complète</div>
-      <div class="schema-flow">
-        <div class="schema-box" style="animation-delay:0.1s">entrée</div>
-        <div class="schema-arrow">▸</div>
-        <div class="schema-box" style="animation-delay:0.3s">traitement</div>
-        <div class="schema-arrow">▸</div>
-        <div class="schema-box glow" style="animation-delay:0.5s">sortie</div>
-      </div>
-    </div>
-      <div class="slide-footer">
-        <span class="slide-num">1 / 9</span>
-      </div>
-    </section>
 
-    <section data-background-color="#080808" data-transition="slide">
-      <div class="progress-bar"><div class="progress-fill" style="width:22%; background:#a78bfa"></div></div>
-      
-      <div class="slide-header">
-        <h2>Présentation du projet</h2>
-        <p class="slide-subtitle" style="color: #a78bfa">Analyser les pourboires d'un restaurant</p>
-      </div>
-      <div class="slide-body two-col">
-        <div class="col-text">
-          <ul class="bullet-list"><li class="fragment" data-fragment-index="0" style="animation-delay: 0s">Dataset : tips (244 repas dans un restaurant)</li>
-<li class="fragment" data-fragment-index="1" style="animation-delay: 0.15s">Colonnes : total_bill, tip, sex, smoker, day, time, size</li>
-<li class="fragment" data-fragment-index="2" style="animation-delay: 0.3s">Question : quels facteurs influencent le pourboire ?</li>
-<li class="fragment" data-fragment-index="3" style="animation-delay: 0.44999999999999996s">Pipeline : import → explorer → nettoyer → stats → visualiser</li></ul>
-        </div>
-        <div class="col-visual">
-    <div class="schema" style="--accent: #a78bfa">
-      <div class="schema-label">Dataset tips</div>
-      <table class="schema-table">
-        <tr><th></th><th>col_A</th><th>col_B</th><th>col_C</th></tr>
-        <tr><td class="row-idx">0</td><td>…</td><td>…</td><td>…</td></tr>
-        <tr><td class="row-idx">1</td><td>…</td><td>…</td><td>…</td></tr>
-        <tr><td class="row-idx">2</td><td>…</td><td>…</td><td>…</td></tr>
-      </table>
-    </div></div>
-      </div>
-      <div class="slide-footer">
-        <span class="slide-num">2 / 9</span>
-      </div>
-    </section>
+def load_rows(path: str) -> list[dict]:
+    with open(path, "r", encoding="utf-8") as f:
+        return list(csv.DictReader(f))</code></pre>
+</section>
+<section>
+  <h3>Étape 2 — Nettoyage</h3>
+  <pre><code class="language-python">def clean_rows(rows: list[dict]) -> list[dict]:
+    cleaned = []
+    for r in rows:
+        if not r.get("canal") or not r.get("montant"):
+            continue
+        montant = float(r["montant"])
+        if montant < 0:
+            continue
+        cleaned.append({"canal": r["canal"], "montant": montant})
+    return cleaned</code></pre>
+</section>
+<section>
+  <h3>Étape 3 — Agrégation</h3>
+  <pre><code class="language-python">def total_by_channel(rows: list[dict]) -> dict[str, float]:
+    acc: dict[str, float] = {}
+    for r in rows:
+        canal = r["canal"]
+        acc[canal] = acc.get(canal, 0.0) + r["montant"]
+    return acc</code></pre>
+</section>
+<section>
+  <h3>Étape 4 — Export JSON</h3>
+  <pre><code class="language-python">import json
 
-    <section data-background-color="#080808" data-transition="slide">
-      <div class="progress-bar"><div class="progress-fill" style="width:33%; background:#00f3ff"></div></div>
-      
-      <div class="slide-header">
-        <h2>Étape 1 : Import des données</h2>
-        <p class="slide-subtitle" style="color: #00f3ff">Charger les bibliothèques et le dataset</p>
-      </div>
-      <div class="slide-body two-col">
-        <div class="col-code">
-          <pre><code class="language-python">import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 
-# Charger le dataset tips (intégré à seaborn)
-df = sns.load_dataset('tips')
+def save_report(path: str, report: dict) -> None:
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(report, f, ensure_ascii=False, indent=2)</code></pre>
+</section>
+<section>
+  <h3>Étape 5 — Graphique</h3>
+  <pre><code class="language-python">import matplotlib.pyplot as plt
 
-# Vérifier le chargement
-print(f'Dimensions : {df.shape}')  # (244, 7)
-print(f'Colonnes : {list(df.columns)}')
-print(df.head())</code></pre>
-        </div>
-        <div class="col-visual">
-    <div class="schema" style="--accent: #00f3ff">
-      <div class="schema-label">Charger les données</div>
-      <div class="schema-row">
-        <div class="schema-box">📄 fichier</div>
-        <div class="schema-arrow">↔</div>
-        <div class="schema-box glow">🐍 Python</div>
-      </div>
-    </div></div>
-      </div>
-      <div class="slide-footer">
-        <span class="slide-num">3 / 9</span>
-      </div>
-    </section>
 
-    <section data-background-color="#080808" data-transition="slide">
-      <div class="progress-bar"><div class="progress-fill" style="width:44%; background:#a78bfa"></div></div>
-      
-      <div class="slide-header">
-        <h2>Étape 2 : Exploration</h2>
-        <p class="slide-subtitle" style="color: #a78bfa">Comprendre la structure des données</p>
-      </div>
-      <div class="slide-body two-col">
-        <div class="col-code">
-          <pre><code class="language-python"># Types et valeurs manquantes
-print(df.info())
-print(f'\nValeurs manquantes :\n{df.isnull().sum()}')
+def plot_channels(totals: dict[str, float]) -> None:
+    names = list(totals.keys())
+    values = list(totals.values())
+    plt.bar(names, values)
+    plt.title("CA par canal")
+    plt.tight_layout()
+    plt.show()</code></pre>
+</section>
+<section>
+  <h3>Orchestration</h3>
+  <pre><code class="language-python">def main():
+    rows = load_rows("ventes.csv")
+    rows = clean_rows(rows)
+    totals = total_by_channel(rows)
+    save_report("rapport.json", {"totaux": totals})
+    plot_channels(totals)
 
-# Statistiques descriptives
-print(df.describe())
-
-# Colonnes catégorielles
-print(f'\nJours : {df[&quot;day&quot;].unique()}')
-print(f'Moments : {df[&quot;time&quot;].unique()}')
-print(f'Tailles : {sorted(df[&quot;size&quot;].unique())}')
-
-# Pourboire moyen
-print(f'\nPourboire moyen : {df[&quot;tip&quot;].mean():.2f} $')
-print(f'Addition moyenne : {df[&quot;total_bill&quot;].mean():.2f} $')</code></pre>
-        </div>
-        <div class="col-visual">
-    <div class="schema" style="--accent: #a78bfa">
-      <div class="schema-label">Explorer la structure</div>
-      <table class="schema-table">
-        <tr><th></th><th>col_A</th><th>col_B</th><th>col_C</th></tr>
-        <tr><td class="row-idx">0</td><td>…</td><td>…</td><td>…</td></tr>
-        <tr><td class="row-idx">1</td><td>…</td><td>…</td><td>…</td></tr>
-        <tr><td class="row-idx">2</td><td>…</td><td>…</td><td>…</td></tr>
-      </table>
-    </div></div>
-      </div>
-      <div class="slide-footer">
-        <span class="slide-num">4 / 9</span>
-      </div>
-    </section>
-
-    <section data-background-color="#080808" data-transition="slide">
-      <div class="progress-bar"><div class="progress-fill" style="width:56%; background:#10b981"></div></div>
-      
-      <div class="slide-header">
-        <h2>Étape 3 : Nettoyage</h2>
-        <p class="slide-subtitle" style="color: #10b981">Préparer les données pour l'analyse</p>
-      </div>
-      <div class="slide-body two-col">
-        <div class="col-code">
-          <pre><code class="language-python"># Créer la colonne pourcentage de pourboire
-df['tip_pct'] = (df['tip'] / df['total_bill'] * 100).round(1)
-
-# Détecter les valeurs aberrantes
-print('Pourboires extrêmes :')
-print(df[df['tip_pct'] &gt; 40][['total_bill', 'tip', 'tip_pct']])
-
-# Recoder en français pour les graphiques
-jours_fr = {'Sun': 'Dim', 'Sat': 'Sam',
-            'Thur': 'Jeu', 'Fri': 'Ven'}
-df['jour'] = df['day'].map(jours_fr)
-
-moment_fr = {'Lunch': 'Déjeuner', 'Dinner': 'Dîner'}
-df['moment'] = df['time'].map(moment_fr)
-
-print(df[['jour', 'moment', 'tip_pct']].head())</code></pre>
-        </div>
-        <div class="col-visual">
-    <div class="schema" style="--accent: #10b981">
-      <div class="schema-label">Nettoyer les données</div>
-      <div class="schema-row">
-        <div class="schema-box messy">Nettoyer les données</div>
-        <div class="schema-arrow">✨→</div>
-        <div class="schema-box clean-box">propre</div>
-      </div>
-    </div></div>
-      </div>
-      <div class="slide-footer">
-        <span class="slide-num">5 / 9</span>
-      </div>
-    </section>
-
-    <section data-background-color="#080808" data-transition="slide">
-      <div class="progress-bar"><div class="progress-fill" style="width:67%; background:#ff6b00"></div></div>
-      
-      <div class="slide-header">
-        <h2>Étape 4 : Statistiques</h2>
-        <p class="slide-subtitle" style="color: #ff6b00">Répondre aux questions avec les chiffres</p>
-      </div>
-      <div class="slide-body two-col">
-        <div class="col-code">
-          <pre><code class="language-python"># Pourboire moyen par jour
-par_jour = df.groupby('jour')['tip_pct'].agg(
-    ['mean', 'median', 'count']
-).round(1)
-print('Par jour :\n', par_jour)
-
-# Déjeuner vs Dîner
-par_moment = df.groupby('moment')['tip_pct'].mean().round(1)
-print(f'\nDéjeuner : {par_moment[&quot;Déjeuner&quot;]}%')
-print(f'Dîner : {par_moment[&quot;Dîner&quot;]}%')
-
-# Fumeurs vs non-fumeurs
-par_fumeur = df.groupby('smoker')['tip_pct'].mean().round(1)
-print(f'\nFumeurs : {par_fumeur[&quot;Yes&quot;]}%')
-print(f'Non-fumeurs : {par_fumeur[&quot;No&quot;]}%')
-
-# Corrélation addition / pourboire
-corr = df['total_bill'].corr(df['tip'])
-print(f'\nCorrélation addition-pourboire : {corr:.2f}')</code></pre>
-        </div>
-        <div class="col-visual">
-    <div class="schema" style="--accent: #ff6b00">
-      <div class="schema-label">Statistiques par groupe</div>
-      <div class="schema-row">
-        <div class="schema-method">Statistiques par groupe</div>
-        
-      </div>
-    </div></div>
-      </div>
-      <div class="slide-footer">
-        <span class="slide-num">6 / 9</span>
-      </div>
-    </section>
-
-    <section data-background-color="#080808" data-transition="slide">
-      <div class="progress-bar"><div class="progress-fill" style="width:78%; background:#a78bfa"></div></div>
-      
-      <div class="slide-header">
-        <h2>Étape 5 : Visualisation</h2>
-        <p class="slide-subtitle" style="color: #a78bfa">Transformer les chiffres en histoire visuelle</p>
-      </div>
-      <div class="slide-body two-col">
-        <div class="col-code">
-          <pre><code class="language-python">fig, axes = plt.subplots(2, 2, figsize=(14, 10))
-
-# 1. Scatter : addition vs pourboire
-axes[0, 0].scatter(df['total_bill'], df['tip'],
-                   alpha=0.6, c='#00f3ff', s=40)
-axes[0, 0].set_title('Addition vs Pourboire')
-axes[0, 0].set_xlabel('Addition ($)')
-axes[0, 0].set_ylabel('Pourboire ($)')
-
-# 2. Boxplot par jour
-jours_ordre = ['Jeu', 'Ven', 'Sam', 'Dim']
-data_box = [df[df['jour'] == j]['tip_pct'] for j in jours_ordre]
-axes[0, 1].boxplot(data_box, labels=jours_ordre, patch_artist=True)
-axes[0, 1].set_title('Pourboire (%) par jour')
-
-# 3. Histogramme du pourcentage
-axes[1, 0].hist(df['tip_pct'], bins=25, color='#10b981',
-                edgecolor='white')
-axes[1, 0].set_title('Distribution du pourboire (%)')
-
-# 4. Barplot par moment
-moyennes = df.groupby('moment')['tip_pct'].mean()
-axes[1, 1].bar(moyennes.index, moyennes.values,
-               color=['#a78bfa', '#ff6b00'])
-axes[1, 1].set_title('Pourboire moyen par moment')
-
-plt.tight_layout()
-plt.savefig('dashboard_tips.png', dpi=150)
-plt.show()</code></pre>
-        </div>
-        <div class="col-visual">
-    <div class="schema" style="--accent: #a78bfa">
-      <div class="schema-label">Dashboard 4 graphiques</div>
-      <div class="schema-chart">
-        <div class="chart-bar" style="height:40%; animation-delay:0.1s"></div>
-        <div class="chart-bar" style="height:70%; animation-delay:0.2s"></div>
-        <div class="chart-bar" style="height:55%; animation-delay:0.3s"></div>
-        <div class="chart-bar" style="height:85%; animation-delay:0.4s"></div>
-        <div class="chart-bar" style="height:45%; animation-delay:0.5s"></div>
-      </div>
-    </div></div>
-      </div>
-      <div class="slide-footer">
-        <span class="slide-num">7 / 9</span>
-      </div>
-    </section>
-
-    <section data-background-color="#080808" data-transition="slide">
-      <div class="progress-bar"><div class="progress-fill" style="width:89%; background:#10b981"></div></div>
-      
-      <div class="slide-header">
-        <h2>Étape 6 : Synthèse</h2>
-        <p class="slide-subtitle" style="color: #10b981">Conclusions de l'analyse</p>
-      </div>
-      <div class="slide-body two-col">
-        <div class="col-text">
-          <ul class="bullet-list"><li class="fragment" data-fragment-index="0" style="animation-delay: 0s">Corrélation positive entre addition et pourboire (r ≈ 0.67)</li>
-<li class="fragment" data-fragment-index="1" style="animation-delay: 0.15s">Pourboire moyen : environ 16 % de l'addition</li>
-<li class="fragment" data-fragment-index="2" style="animation-delay: 0.3s">Déjeuner légèrement plus généreux en pourcentage</li>
-<li class="fragment" data-fragment-index="3" style="animation-delay: 0.44999999999999996s">Week-end : groupes plus grands, additions plus élevées</li>
-<li class="fragment" data-fragment-index="4" style="animation-delay: 0.6s">Pas de différence significative fumeurs vs non-fumeurs</li></ul>
-        </div>
-        <div class="col-visual">
-    <div class="schema" style="--accent: #10b981">
-      <div class="schema-label">5 conclusions</div>
-      <div class="schema-kv">
-        <div class="kv-row"><span class="kv-key">"5 conclusions_1"</span><span class="kv-sep">→</span><span class="kv-val">valeur</span></div>
-        <div class="kv-row"><span class="kv-key">"5 conclusions_2"</span><span class="kv-sep">→</span><span class="kv-val">valeur</span></div>
-        <div class="kv-row"><span class="kv-key">"5 conclusions_3"</span><span class="kv-sep">→</span><span class="kv-val">valeur</span></div>
-      </div>
-    </div></div>
-      </div>
-      <div class="slide-footer">
-        <span class="slide-num">8 / 9</span>
-      </div>
-    </section>
-
-    <section data-background-color="#080808" data-transition="slide">
-      <div class="progress-bar"><div class="progress-fill" style="width:100%; background:#00f3ff"></div></div>
-      
-      <div class="slide-header">
-        <h2 style="color: #00f3ff">Récapitulatif</h2>
-        <p class="slide-subtitle">Votre pipeline d'analyse complet</p>
-      </div>
-      <ul class="summary-list"><li class="fragment" data-fragment-index="0">
-        <span class="check" style="color: #00f3ff">✓</span> Import : pandas, numpy, matplotlib, seaborn
-      </li>
-<li class="fragment" data-fragment-index="1">
-        <span class="check" style="color: #00f3ff">✓</span> Explorer : head, info, describe, unique
-      </li>
-<li class="fragment" data-fragment-index="2">
-        <span class="check" style="color: #00f3ff">✓</span> Nettoyer : colonnes calculées, recodage, valeurs aberrantes
-      </li>
-<li class="fragment" data-fragment-index="3">
-        <span class="check" style="color: #00f3ff">✓</span> Statistiques : groupby, agg, corrélation
-      </li>
-<li class="fragment" data-fragment-index="4">
-        <span class="check" style="color: #00f3ff">✓</span> Visualiser : scatter, boxplot, hist, bar
-      </li>
-<li class="fragment" data-fragment-index="5">
-        <span class="check" style="color: #00f3ff">✓</span> Synthétiser : transformer les chiffres en décisions
-      </li></ul>
-      <div class="slide-footer">
-        <span class="slide-num">9 / 9</span>
-      </div>
-    </section>
-    </div>
-  </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-  <script>
-    Reveal.initialize({
-      hash: true,
-      transition: 'slide',
-      transitionSpeed: 'default',
-      backgroundTransition: 'fade',
-      width: 1920, height: 1080,
-      margin: 0,
-      center: false,
-      controls: true,
-      progress: false,
-      slideNumber: false,
-      plugins: []
-    });
-    hljs.highlightAll();
-  </script>
+if __name__ == "__main__":
+    main()</code></pre>
+</section>
+<section>
+  <h3>Contrôles minimaux</h3>
+  <ul>
+    <li>Fichier absent → message clair.</li>
+    <li>Données invalides → ligne ignorée proprement.</li>
+    <li>Sorties stables: même entrée, même résultat.</li>
+    <li>Rapport JSON lisible par un non-développeur.</li>
+  </ul>
+</section>
+<section>
+  <h3>Critères de réussite</h3>
+  <ul>
+    <li>Code exécutable de bout en bout.</li>
+    <li>Fonctions courtes et nommées clairement.</li>
+    <li>Aucune dépendance data avancée au niveau 1.</li>
+    <li>Synthèse compréhensible pour le métier.</li>
+  </ul>
+</section>
+<section>
+  <h3>Récapitulatif</h3>
+  <ul>
+    <li>Le niveau 1 se concentre sur Python pur et la méthode.</li>
+    <li>Les fondations sont prêtes pour le niveau avancé data.</li>
+    <li>Les bibliothèques data avancées sont traitées au niveau 3.</li>
+  </ul>
+</section>
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script>
+Reveal.initialize({ hash: true, transition: 'slide', controls: false, progress: true });
+hljs.highlightAll();
+</script>
 </body>
 </html>

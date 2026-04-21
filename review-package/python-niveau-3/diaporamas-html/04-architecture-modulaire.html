@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python III — Chapitre 1 Architecture</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+  .reveal { font-family: Inter, Arial, sans-serif; font-size: 20px; }
+  .reveal h2 { font-size: 1.5em; }
+  .reveal h3 { font-size: 1.15em; }
+  .reveal pre { font-size: .54em; border-radius: 10px; }
+
+  .course-home {
+    position: fixed; top: 14px; left: 14px; z-index: 50;
+    color: #74b9ff; text-decoration: none; font-size: .55em; font-weight: 600;
+    background: rgba(8,8,8,.55); border: 1px solid #333; padding: 6px 10px; border-radius: 999px;
+  }
+</style>
+</head>
+<body>
+<a class="course-home" href="../index.html">Accueil du niveau</a>
+<div class="reveal"><div class="slides">
+<section>
+  <h2>Chapitre 4 — Architecture modulaire</h2>
+  <p>Concevoir un système Python évolutif et maintenable à long terme.</p>
+</section>
+<section>
+  <h3>Objectifs architecture</h3>
+  <ul>
+    <li>Réduire le coût de changement fonctionnel.</li>
+    <li>Isoler les dépendances techniques.</li>
+    <li>Faciliter tests, observabilité et déploiements.</li>
+    <li>Clarifier les responsabilités par couche.</li>
+  </ul>
+</section>
+<section>
+  <h3>Découpage en couches</h3>
+  <ul>
+    <li><strong>Domaine</strong> : règles métier et invariants.</li>
+    <li><strong>Application</strong> : orchestration des cas d'usage.</li>
+    <li><strong>Infrastructure</strong> : SQL, API, cache, bus.</li>
+    <li><strong>Interface</strong> : HTTP, CLI, worker.</li>
+  </ul>
+</section>
+<section>
+  <h3>Ports et adaptateurs</h3>
+  <pre><code class="language-python">from typing import Protocol
+
+class OrderRepo(Protocol):
+    def save(self, order) -> None: ...
+
+class CreateOrder:
+    def __init__(self, repo: OrderRepo) -> None:
+        self.repo = repo
+
+    def execute(self, order) -> None:
+        self.repo.save(order)</code></pre>
+</section>
+<section>
+  <h3>Inversion de dépendances</h3>
+  <ul>
+    <li>Le domaine dépend d'abstractions, pas de SQLAlchemy ou FastAPI.</li>
+    <li>Le wiring des implémentations se fait au « composition root ».</li>
+    <li>Les tests remplacent facilement l'infrastructure par des doubles.</li>
+  </ul>
+</section>
+<section>
+  <h3>Organisation de code recommandée</h3>
+  <pre><code class="language-text">src/
+  domain/
+  application/
+  infrastructure/
+  interfaces/
+  bootstrap/
+tests/</code></pre>
+</section>
+<section>
+  <h3>Frontières transactionnelles</h3>
+  <pre><code class="language-python">class UnitOfWork(Protocol):
+    def commit(self) -> None: ...
+    def rollback(self) -> None: ...
+
+class TransferService:
+    def __init__(self, uow: UnitOfWork):
+        self.uow = uow
+
+    def execute(self):
+        ...
+        self.uow.commit()</code></pre>
+</section>
+<section>
+  <h3>Domain events</h3>
+  <pre><code class="language-python">from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class OrderPaid:
+    order_id: str
+    amount: float</code></pre>
+  <p>Publier des événements découple les réactions secondaires (email, analytics...).</p>
+</section>
+<section>
+  <h3>Gestion des erreurs par niveau</h3>
+  <ul>
+    <li>Domaine: exceptions métier explicites.</li>
+    <li>Application: mapping vers codes fonctionnels.</li>
+    <li>Infrastructure: wrapping des erreurs techniques.</li>
+    <li>Interface: réponse client claire et stable.</li>
+  </ul>
+</section>
+<section>
+  <h3>Configuration et secrets</h3>
+  <ul>
+    <li>Configuration centralisée et typée.</li>
+    <li>Aucun secret dans le code source.</li>
+    <li>Différencier config runtime et config build.</li>
+    <li>Tracer la version de configuration active.</li>
+  </ul>
+</section>
+<section>
+  <h3>Résilience: circuit breaker (notion)</h3>
+  <pre><code class="language-python">class CircuitBreaker:
+    def __init__(self, threshold: int = 3) -> None:
+        self.threshold = threshold
+        self.failures = 0
+
+    def record(self, ok: bool) -> None:
+        self.failures = 0 if ok else self.failures + 1
+
+    @property
+    def is_open(self) -> bool:
+        return self.failures >= self.threshold</code></pre>
+</section>
+<section>
+  <h3>Monolithe modulaire vs microservices</h3>
+  <ul>
+    <li>Monolithe modulaire: meilleur point de départ pour de nombreuses équipes.</li>
+    <li>Microservices: utile si frontières métier et besoins d'échelle sont prouvés.</li>
+    <li>Le coût opérationnel doit guider le choix, pas la mode.</li>
+  </ul>
+</section>
+<section>
+  <h3>ADR: documenter les décisions</h3>
+  <ul>
+    <li>Contexte</li>
+    <li>Décision retenue</li>
+    <li>Alternatives rejetées</li>
+    <li>Conséquences et risques</li>
+  </ul>
+</section>
+<section>
+  <h3>Checklist de revue architecture</h3>
+  <ul>
+    <li>Les dépendances pointent-elles vers le domaine ?</li>
+    <li>Le code métier est-il testable sans I/O externe ?</li>
+    <li>Les responsabilités sont-elles lisibles en 5 minutes ?</li>
+    <li>Les risques techniques sont-ils explicités ?</li>
+  </ul>
+</section>
+<section>
+  <h3>Récapitulatif</h3>
+  <ul>
+    <li>Une bonne architecture ralentit la dette et accélère l'évolution.</li>
+    <li>Ports/adaptateurs et frontières claires sont les bases Python robustes.</li>
+    <li>La qualité d'architecture se valide en production, pas en diagramme seul.</li>
+  </ul>
+</section>
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script>
+  Reveal.initialize({ hash: true, transition: 'slide', controls: false, progress: true });
+  hljs.highlightAll();
+</script>
+</body>
+</html>

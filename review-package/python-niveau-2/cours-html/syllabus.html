@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Niveau II — Syllabus</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:1020px;margin:30px auto;padding:0 16px;line-height:1.65;color:#222}
+h1{margin-bottom:6px}h2{margin-top:24px}h3{margin-top:16px}ul{padding-left:22px}
+.badge{display:inline-block;background:#eef4ff;color:#1e40af;padding:4px 10px;border-radius:999px;font-size:.85rem}
+.progress{background:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;padding:12px;margin:8px 0}
+.progress strong{display:block;margin-bottom:4px}
+pre{background:#111827;color:#e5e7eb;padding:12px;border-radius:8px;overflow:auto;font-size:.9rem}
+code{background:#f3f4f6;padding:2px 5px;border-radius:4px}
+</style>
+</head>
+<body>
+<p><a href="../index.html">&larr; Retour index Python Niveau II</a></p>
+<h1>Python Niveau II — Syllabus</h1>
+<p class="badge">POO avancée • Décorateurs • Coroutines • async/await</p>
+<p><strong>Durée recommandée</strong> : <strong>2 jours (14h)</strong> — niveau intermédiaire.</p>
+
+<h2>Objectif général</h2>
+<p>Transformer une pratique Python « script » en une pratique « application » : code structuré, réutilisable, testable et capable de gérer des I/O concurrentes proprement.</p>
+
+<h2>Progression pédagogique (du simple au complexe)</h2>
+<div class="progress"><strong>Étape 1 — Structurer le code</strong>Passer d'un script procédural à un modèle orienté objet clair.</div>
+<div class="progress"><strong>Étape 2 — Factoriser les comportements transverses</strong>Appliquer des décorateurs pour logs, validation, retry.</div>
+<div class="progress"><strong>Étape 3 — Concurrence asynchrone</strong>Comprendre l'event loop et piloter des coroutines.</div>
+<div class="progress"><strong>Étape 4 — Fiabiliser en conditions réelles</strong>Gérer timeouts, annulations, limites de concurrence et erreurs.</div>
+<div class="progress"><strong>Étape 5 — Intégrer</strong>Assembler objet + décorateurs + async dans un mini-service cohérent.</div>
+
+<h2>Définitions essentielles</h2>
+<ul>
+  <li><strong>Classe</strong> : plan de construction d'objets portant état et comportements.</li>
+  <li><strong>Invariant</strong> : règle qui doit rester vraie pendant la vie d'un objet.</li>
+  <li><strong>Décorateur</strong> : fonction qui enrichit une autre fonction sans modifier son code interne.</li>
+  <li><strong>Coroutine</strong> : fonction asynchrone suspendable/reprenable avec <code>await</code>.</li>
+  <li><strong>Event loop</strong> : ordonnanceur des tâches asynchrones.</li>
+</ul>
+
+<h2>Notions théoriques supplémentaires</h2>
+<ul>
+  <li><strong>Data model Python</strong> : protocole d'objets piloté par des méthodes spéciales (dunder).</li>
+  <li><strong>Méthodes magiques</strong> : <code>__repr__</code>, <code>__str__</code>, <code>__len__</code>, <code>__iter__</code>, <code>__eq__</code>, <code>__lt__</code>, <code>__hash__</code>, <code>__call__</code>.</li>
+  <li><strong>Protocole de contexte</strong> : <code>__enter__</code> / <code>__exit__</code> pour gérer proprement les ressources.</li>
+  <li><strong>Descriptors et properties</strong> : encapsulation fine via <code>@property</code> et validation d'accès.</li>
+  <li><strong>MRO</strong> : ordre de résolution des méthodes en héritage multiple.</li>
+  <li><strong>Protocoles de typage</strong> : interfaces structurelles avec <code>typing.Protocol</code>.</li>
+</ul>
+
+<h2>Extraits de code de référence</h2>
+<h3>POO + invariants</h3>
+<pre><code>from dataclasses import dataclass
+
+@dataclass
+class Compte:
+    id: str
+    solde: float
+
+    def __post_init__(self) -> None:
+        if self.solde < 0:
+            raise ValueError("solde invalide")</code></pre>
+
+<h3>Méthodes magiques (dunder)</h3>
+<pre><code>class Panier:
+    def __init__(self, items: list[str]) -> None:
+        self.items = items
+
+    def __len__(self) -> int:
+        return len(self.items)
+
+    def __iter__(self):
+        return iter(self.items)
+
+    def __repr__(self) -> str:
+        return f"Panier(items={self.items!r})"</code></pre>
+
+<h3>Décorateur</h3>
+<pre><code>import functools
+
+def log_call(fn):
+    @functools.wraps(fn)
+    def wrapper(*args, **kwargs):
+        print(f"call {fn.__name__}")
+        return fn(*args, **kwargs)
+    return wrapper</code></pre>
+
+<h3>Async/await</h3>
+<pre><code>import asyncio
+
+async def fetch_one(i: int) -> str:
+    await asyncio.sleep(0.2)
+    return f"ok-{i}"
+
+async def main() -> None:
+    results = await asyncio.gather(*(fetch_one(i) for i in range(5)))
+    print(results)</code></pre>
+
+<h2>Compétences visées</h2>
+<ul>
+  <li>Concevoir des classes métier robustes (invariants, encapsulation, composition).</li>
+  <li>Écrire des décorateurs lisibles et sûrs sans effets de bord.</li>
+  <li>Orchestrer des appels I/O concurrents avec <code>asyncio</code>.</li>
+  <li>Diagnostiquer les anti-patterns (blocage event loop, couplage fort, exceptions silencieuses).</li>
+  <li>Produire un code maintenable avec tests ciblés.</li>
+</ul>
+
+<h2>Public cible et prérequis</h2>
+<ul>
+  <li>Public : développeurs Python juniors/intermédiaires, profils data techniques.</li>
+  <li>Prérequis : fonctions, modules, exceptions, manipulations de fichiers et notions de tests.</li>
+</ul>
+
+<h2>Livrables stagiaire</h2>
+<ul>
+  <li>Mini-service asynchrone complet (collecte, validation, journalisation).</li>
+  <li>Boîte à outils de décorateurs réutilisables.</li>
+  <li>Checklist de revue pour code Python intermédiaire.</li>
+</ul>
+</body>
+</html>

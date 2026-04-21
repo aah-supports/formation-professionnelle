@@ -1,439 +1,145 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Atelier pratique — Jour 1</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #080808; --bg2: #111111; --text: #ffffff; --body: #d1d5db;
-      --muted: #888888; --dim: #444444; --border: #222222;
-      --cyan: #00f3ff; --purple: #a78bfa; --orange: #ff6b00; --green: #10b981;
-    }
-    * { box-sizing: border-box; }
-    .reveal { font-family: 'Inter', sans-serif; font-size: 24px; background: var(--bg); }
-    .reveal .slides { text-align: left; }
-    .reveal .slides > section {
-      display: flex !important; flex-direction: column; justify-content: center;
-      align-items: center; height: 100%; padding: 40px 60px;
-    }
-    .reveal .slides > section > * { width: 100%; max-width: 1200px; }
-    .reveal h1 { font-weight: 800; font-size: 2.4em; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 0.3em; }
-    .reveal h2 { font-weight: 700; font-size: 1.6em; color: #fff; margin-bottom: 0.2em; letter-spacing: -0.02em; }
-    .reveal p { color: var(--body); line-height: 1.6; }
-    .subtitle { font-size: 1.1em; color: var(--muted); margin-top: 0.3em; }
-    .slide-subtitle { font-size: 0.85em; font-weight: 600; margin-bottom: 0.8em; }
-    .slide-header { margin-bottom: 1em; }
-    .slide-body { display: flex; gap: 40px; align-items: flex-start; }
-    .two-col .col-text, .two-col .col-code { flex: 1.2; }
-    .two-col .col-visual { flex: 0.8; display: flex; justify-content: center; align-items: center; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Niveau I — Module 4 Méthodologie</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+  .reveal { font-family: Inter, Arial, sans-serif; font-size: 20px; }
+  .reveal h2 { font-size: 1.5em; }
+  .reveal h3 { font-size: 1.15em; }
+  .reveal pre { font-size: .56em; border-radius: 10px; }
 
-    /* Code */
-    pre { background: var(--bg2) !important; border: 1px solid var(--border); border-radius: 12px;
-          padding: 20px !important; margin: 0 !important; font-size: 0.7em !important; overflow-x: auto; }
-    code { font-family: 'JetBrains Mono', monospace !important; line-height: 1.7 !important; }
-
-    /* Bullets */
-    .bullet-list, .summary-list { list-style: none; padding: 0; margin: 0; }
-    .bullet-list li, .summary-list li {
-      padding: 8px 0; border-bottom: 1px solid var(--border); color: var(--body);
-      font-size: 0.9em; line-height: 1.5;
-    }
-    .bullet-list li:last-child, .summary-list li:last-child { border-bottom: none; }
-    .check { font-weight: 700; margin-right: 8px; }
-
-    /* Schemas */
-    .schema { display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; padding: 20px; }
-    .schema-label { font-size: 0.75em; font-weight: 600; color: var(--accent, var(--cyan)); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
-    .schema-row { display: flex; gap: 12px; align-items: center; justify-content: center; }
-    .schema-stack-grid { display: flex; gap: 10px; align-items: center; }
-    .schema-box {
-      background: var(--bg2); border: 2px solid var(--accent, var(--cyan)); border-radius: 8px;
-      padding: 12px 20px; color: var(--text); font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8em; text-align: center; min-width: 60px;
-      animation: fadeSlideUp 0.5s ease-out both;
-    }
-    .schema-box.active { background: var(--accent, var(--cyan)); color: var(--bg); font-weight: 700; }
-    .schema-box.highlight { background: rgba(0, 243, 255, 0.15); border-color: var(--accent, var(--cyan)); }
-    .schema-box.dim { opacity: 0.3; }
-    .schema-box.strike { text-decoration: line-through; opacity: 0.5; }
-    .schema-box.glow { box-shadow: 0 0 20px var(--accent, var(--cyan)); }
-    .schema-box.messy { border-style: dashed; opacity: 0.6; }
-    .schema-box.clean-box { border-color: var(--green); box-shadow: 0 0 12px rgba(16, 185, 129, 0.3); }
-    .schema-arrow { color: var(--accent, var(--cyan)); font-size: 1.5em; font-weight: 700; }
-    .schema-ptr { color: var(--accent, var(--cyan)); font-size: 1.2em; animation: bounce 1s ease infinite; }
-    .schema-loop { color: var(--accent, var(--cyan)); font-size: 2em; font-weight: 700; animation: spin 3s linear infinite; }
-    .schema-method {
-      background: var(--bg2); border: 2px solid var(--accent, var(--cyan)); border-radius: 24px;
-      padding: 10px 24px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--text);
-    }
-    .schema-check { color: var(--accent, var(--cyan)); font-size: 1.1em; font-weight: 600; }
-    .schema-pipe { display: flex; gap: 8px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.8em; }
-    .pipe-in { color: var(--muted); } .pipe-out { color: var(--green); font-weight: 700; }
-    .pipe-filter { color: var(--accent, var(--cyan)); background: var(--bg2); padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border); }
-
-    /* Progress bar */
-    .progress-bar { position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 10; }
-    .progress-fill { height: 100%; transition: width 0.5s ease; border-radius: 0 2px 2px 0; }
-
-    /* Footer */
-    .slide-footer { position: absolute; bottom: 16px; right: 24px; }
-    .slide-num { font-size: 0.65em; color: var(--dim); font-family: 'JetBrains Mono', monospace; }
-
-    /* Python-specific schemas */
-    .schema-kv { display: flex; flex-direction: column; gap: 6px; }
-    .kv-row { display: flex; gap: 8px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75em; }
-    .kv-key { color: var(--cyan); background: var(--bg2); padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border); }
-    .kv-val { color: var(--body); }
-    .kv-sep { color: var(--accent, var(--cyan)); font-weight: 700; }
-    .schema-table { border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 0.7em; }
-    .schema-table th { background: var(--accent, var(--cyan)); color: var(--bg); padding: 6px 14px; font-weight: 600; }
-    .schema-table td { background: var(--bg2); border: 1px solid var(--border); padding: 6px 14px; color: var(--body); text-align: center; }
-    .schema-table .row-idx { color: var(--muted); font-weight: 600; background: var(--bg); }
-    .schema-type-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-    .type-box { font-family: 'JetBrains Mono', monospace; font-size: 0.8em; padding: 8px 16px !important; min-width: auto !important; }
-    .schema-flow { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: center; }
-    .schema-chart { display: flex; gap: 6px; align-items: flex-end; height: 80px; padding-top: 10px; }
-    .chart-bar { width: 20px; background: var(--accent, var(--cyan)); border-radius: 3px 3px 0 0; animation: fadeSlideUp 0.5s ease-out both; opacity: 0.8; }
-    .schema-venn { position: relative; width: 120px; height: 80px; }
-    .venn-circle { position: absolute; width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--accent, var(--cyan)); display: flex; align-items: center; justify-content: center;
-      font-family: 'JetBrains Mono', monospace; font-size: 0.8em; color: var(--text); background: rgba(0,243,255,0.05); }
-    .venn-left { left: 0; } .venn-right { left: 45px; }
-
-    /* Animations */
-    @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    .anim-build { animation: fadeSlideUp 0.5s ease-out both; }
-
-    /* Print / PDF */
-    @media print {
-      .reveal .slides > section { page-break-after: always; }
-      .progress-bar { display: none; }
-      .fragment { opacity: 1 !important; visibility: visible !important; }
-    }
-  </style>
+  .course-home {
+    position: fixed; top: 14px; left: 14px; z-index: 50;
+    color: #74b9ff; text-decoration: none; font-size: .55em; font-weight: 600;
+    background: rgba(8,8,8,.55); border: 1px solid #333; padding: 6px 10px; border-radius: 999px;
+  }
+</style>
 </head>
 <body>
-  <div class="reveal">
-    <div class="slides">
+<a class="course-home" href="../index.html">Accueil du niveau</a>
+<div class="reveal"><div class="slides">
+<section>
+  <h2>Module 4 — Méthodologie de résolution Python</h2>
+  <p>Transformer un besoin métier en script Python lisible et fiable.</p>
+</section>
+<section>
+  <h3>Objectif du module</h3>
+  <ul>
+    <li>Découper un problème en sous-tâches.</li>
+    <li>Concevoir un flux de traitement clair.</li>
+    <li>Coder avec des fonctions simples et testables.</li>
+    <li>Valider les résultats avant livraison.</li>
+  </ul>
+</section>
+<section>
+  <h3>Démarche en 5 étapes</h3>
+  <ol>
+    <li>Comprendre les entrées et sorties attendues.</li>
+    <li>Lister les règles métier explicites.</li>
+    <li>Écrire un pseudo-code court.</li>
+    <li>Implémenter par blocs indépendants.</li>
+    <li>Contrôler et documenter le résultat.</li>
+  </ol>
+</section>
+<section>
+  <h3>Exemple de pseudo-code</h3>
+  <pre><code class="language-python"># Entrée: liste de commandes
+# Sortie: CA total par canal
 
-    <section data-background-color="#080808" data-transition="slide">
-      <div class="progress-bar"><div class="progress-fill" style="width:13%; background:#ff6b00"></div></div>
-      
-      <h1 style="color: #ff6b00; font-size: 2.2em">Atelier pratique</h1>
-      <p class="subtitle">Mettre les mains dans le code</p>
-      
-    <div class="schema" style="--accent: #ff6b00">
-      <div class="schema-label">Consolider par la pratique</div>
-      <div class="schema-flow">
-        <div class="schema-box" style="animation-delay:0.1s">entrée</div>
-        <div class="schema-arrow">▸</div>
-        <div class="schema-box" style="animation-delay:0.3s">traitement</div>
-        <div class="schema-arrow">▸</div>
-        <div class="schema-box glow" style="animation-delay:0.5s">sortie</div>
-      </div>
-    </div>
-      <div class="slide-footer">
-        <span class="slide-num">1 / 8</span>
-      </div>
-    </section>
+charger_les_donnees()
+nettoyer_valeurs_invalides()
+calculer_ca_par_canal()
+afficher_resume()</code></pre>
+</section>
+<section>
+  <h3>Découper en fonctions courtes</h3>
+  <pre><code class="language-python">def nettoyer_prix(prix: float) -> float:
+    if prix < 0:
+        raise ValueError("prix négatif")
+    return round(prix, 2)
 
-    <section data-background-color="#080808" data-transition="slide">
-      <div class="progress-bar"><div class="progress-fill" style="width:25%; background:#00f3ff"></div></div>
-      
-      <div class="slide-header">
-        <h2>Exercice 1 : Types de base</h2>
-        <p class="slide-subtitle" style="color: #00f3ff">Créer et manipuler des variables</p>
-      </div>
-      <div class="slide-body two-col">
-        <div class="col-code">
-          <pre><code class="language-python"># Créer les variables
-nom = &quot;Alice&quot;
-age = 22
-taille = 1.68
-etudiant = True
 
-# Phrase de présentation avec f-string
-presentation = f&quot;{nom}, {age} ans, {taille}m&quot;
-print(presentation)
-# &quot;Alice, 22 ans, 1.68m&quot;
+def total_ca(lignes: list[dict]) -> float:
+    return sum(nettoyer_prix(l["prix"]) for l in lignes)</code></pre>
+</section>
+<section>
+  <h3>Choisir les bonnes structures</h3>
+  <ul>
+    <li><code>list</code> pour des séquences ordonnées.</li>
+    <li><code>dict</code> pour associer clé/valeur métier.</li>
+    <li><code>set</code> pour dédupliquer rapidement.</li>
+    <li><code>tuple</code> pour des couples immuables simples.</li>
+  </ul>
+</section>
+<section>
+  <h3>Contrôler les cas limites</h3>
+  <pre><code class="language-python">def ratio(success: int, total: int) -> float:
+    if total == 0:
+        return 0.0
+    return success / total
 
-# Conversions
-age_texte = str(age)       # &quot;22&quot;
-taille_int = int(taille)   # 1
-type(age_texte)            # &lt;class 'str'&gt;</code></pre>
-        </div>
-        <div class="col-visual">
-    <div class="schema" style="--accent: #00f3ff">
-      <div class="schema-label">Manipuler les types</div>
-      <div class="schema-type-grid">
-        <div class="schema-box type-box" style="animation-delay:0.1s">int</div>
-        <div class="schema-box type-box" style="animation-delay:0.2s">float</div>
-        <div class="schema-box type-box" style="animation-delay:0.30000000000000004s">str</div>
-        <div class="schema-box type-box" style="animation-delay:0.4s">bool</div>
-      </div>
-    </div></div>
-      </div>
-      <div class="slide-footer">
-        <span class="slide-num">2 / 8</span>
-      </div>
-    </section>
+print(ratio(10, 0))  # 0.0 au lieu d'une erreur</code></pre>
+</section>
+<section>
+  <h3>Gestion d'erreurs lisible</h3>
+  <pre><code class="language-python">try:
+    data = charger_csv("ventes.csv")
+except FileNotFoundError:
+    print("Fichier introuvable")
+except ValueError as err:
+    print(f"Donnée invalide: {err}")</code></pre>
+</section>
+<section>
+  <h3>Lisibilité et nommage</h3>
+  <ul>
+    <li>Noms explicites: <code>prix_net</code>, <code>date_commande</code>.</li>
+    <li>Fonctions petites: une intention claire.</li>
+    <li>Commentaires ciblés uniquement si nécessaire.</li>
+    <li>Docstring sur fonctions publiques.</li>
+  </ul>
+</section>
+<section>
+  <h3>Validation rapide des résultats</h3>
+  <pre><code class="language-python">def test_total_ca():
+    lignes = [{"prix": 10.0}, {"prix": 20.0}]
+    assert total_ca(lignes) == 30.0
 
-    <section data-background-color="#080808" data-transition="slide">
-      <div class="progress-bar"><div class="progress-fill" style="width:38%; background:#a78bfa"></div></div>
-      
-      <div class="slide-header">
-        <h2>Exercice 2 : Listes</h2>
-        <p class="slide-subtitle" style="color: #a78bfa">Températures d'une semaine</p>
-      </div>
-      <div class="slide-body two-col">
-        <div class="col-code">
-          <pre><code class="language-python">temps = [18, 22, 25, 19, 30, 17, 21]
 
-# Statistiques de base
-print(f&quot;Max : {max(temps)}°C&quot;)       # 30
-print(f&quot;Min : {min(temps)}°C&quot;)       # 17
-moyenne = sum(temps) / len(temps)
-print(f&quot;Moyenne : {moyenne:.1f}°C&quot;)  # 21.7
-
-# Jours chauds (compréhension)
-chauds = [t for t in temps if t &gt; 20]
-print(f&quot;{len(chauds)} jours &gt; 20°C&quot;)  # 4
-
-# Top 3
-temps_tri = sorted(temps, reverse=True)
-top3 = temps_tri[:3]  # [30, 25, 22]</code></pre>
-        </div>
-        <div class="col-visual">
-    <div class="schema" style="--accent: #a78bfa">
-      <div class="schema-label">Opérations sur listes</div>
-      <div class="schema-row">
-        <div class="schema-box anim-build" style="animation-delay:0.2s">[ ]</div>
-        <div class="schema-arrow">→</div>
-        <div class="schema-box anim-build" style="animation-delay:0.5s">[a, b]</div>
-        <div class="schema-arrow">→</div>
-        <div class="schema-box anim-build glow" style="animation-delay:0.8s">[a, b, c]</div>
-      </div>
-    </div></div>
-      </div>
-      <div class="slide-footer">
-        <span class="slide-num">3 / 8</span>
-      </div>
-    </section>
-
-    <section data-background-color="#080808" data-transition="slide">
-      <div class="progress-bar"><div class="progress-fill" style="width:50%; background:#10b981"></div></div>
-      
-      <div class="slide-header">
-        <h2>Exercice 3 : Dictionnaires</h2>
-        <p class="slide-subtitle" style="color: #10b981">Carnet de contacts</p>
-      </div>
-      <div class="slide-body two-col">
-        <div class="col-code">
-          <pre><code class="language-python">contacts = {
-    &quot;Alice&quot;: {&quot;tel&quot;: &quot;0601&quot;, &quot;ville&quot;: &quot;Paris&quot;},
-    &quot;Bob&quot;:   {&quot;tel&quot;: &quot;0602&quot;, &quot;ville&quot;: &quot;Lyon&quot;},
-    &quot;Léa&quot;:   {&quot;tel&quot;: &quot;0603&quot;, &quot;ville&quot;: &quot;Paris&quot;}
-}
-
-# Ajouter et modifier
-contacts[&quot;Hugo&quot;] = {&quot;tel&quot;: &quot;0604&quot;, &quot;ville&quot;: &quot;Lille&quot;}
-contacts[&quot;Bob&quot;][&quot;ville&quot;] = &quot;Marseille&quot;
-
-# Parcourir
-for nom, info in contacts.items():
-    print(f&quot;{nom} → {info['ville']}&quot;)
-
-# Filtrer les Parisiens
-parisiens = {n: i for n, i in contacts.items()
-             if i[&quot;ville&quot;] == &quot;Paris&quot;}
-# {&quot;Alice&quot;: {...}, &quot;Léa&quot;: {...}}</code></pre>
-        </div>
-        <div class="col-visual">
-    <div class="schema" style="--accent: #10b981">
-      <div class="schema-label">Répertoire téléphonique</div>
-      <div class="schema-kv">
-        <div class="kv-row"><span class="kv-key">"Répertoire téléphonique_1"</span><span class="kv-sep">→</span><span class="kv-val">valeur</span></div>
-        <div class="kv-row"><span class="kv-key">"Répertoire téléphonique_2"</span><span class="kv-sep">→</span><span class="kv-val">valeur</span></div>
-        <div class="kv-row"><span class="kv-key">"Répertoire téléphonique_3"</span><span class="kv-sep">→</span><span class="kv-val">valeur</span></div>
-      </div>
-    </div></div>
-      </div>
-      <div class="slide-footer">
-        <span class="slide-num">4 / 8</span>
-      </div>
-    </section>
-
-    <section data-background-color="#080808" data-transition="slide">
-      <div class="progress-bar"><div class="progress-fill" style="width:63%; background:#ff6b00"></div></div>
-      
-      <div class="slide-header">
-        <h2>Exercice 4 : Fonctions</h2>
-        <p class="slide-subtitle" style="color: #ff6b00">Trois fonctions utilitaires</p>
-      </div>
-      <div class="slide-body two-col">
-        <div class="col-code">
-          <pre><code class="language-python">def celsius_to_f(c):
-    return c * 9/5 + 32
-
-def stats(nombres):
-    return {
-        &quot;min&quot;: min(nombres),
-        &quot;max&quot;: max(nombres),
-        &quot;moy&quot;: sum(nombres) / len(nombres)
-    }
-
-def est_palindrome(mot):
-    mot = mot.lower().replace(&quot; &quot;, &quot;&quot;)
-    return mot == mot[::-1]
-
-print(celsius_to_f(100))       # 212.0
-print(stats([14, 8, 17, 12]))  # {min:8, max:17, moy:12.75}
-print(est_palindrome(&quot;Kayak&quot;)) # True</code></pre>
-        </div>
-        <div class="col-visual">
-    <div class="schema" style="--accent: #ff6b00">
-      <div class="schema-label">Écrire des fonctions</div>
-      <div class="schema-row">
-        <div class="schema-method">Écrire des fonctions</div>
-        
-      </div>
-    </div></div>
-      </div>
-      <div class="slide-footer">
-        <span class="slide-num">5 / 8</span>
-      </div>
-    </section>
-
-    <section data-background-color="#080808" data-transition="slide">
-      <div class="progress-bar"><div class="progress-fill" style="width:75%; background:#a78bfa"></div></div>
-      
-      <div class="slide-header">
-        <h2>Exercice 5 : Mini-analyse</h2>
-        <p class="slide-subtitle" style="color: #a78bfa">Combiner toutes les compétences</p>
-      </div>
-      <div class="slide-body two-col">
-        <div class="col-code">
-          <pre><code class="language-python">etudiants = [
-    {&quot;nom&quot;: &quot;Léa&quot;,  &quot;classe&quot;: &quot;A&quot;, &quot;note&quot;: 14},
-    {&quot;nom&quot;: &quot;Tom&quot;,  &quot;classe&quot;: &quot;B&quot;, &quot;note&quot;: 12},
-    {&quot;nom&quot;: &quot;Aya&quot;,  &quot;classe&quot;: &quot;A&quot;, &quot;note&quot;: 17},
-    {&quot;nom&quot;: &quot;Hugo&quot;, &quot;classe&quot;: &quot;B&quot;, &quot;note&quot;: 15},
-    {&quot;nom&quot;: &quot;Noa&quot;,  &quot;classe&quot;: &quot;A&quot;, &quot;note&quot;: 11},
-    {&quot;nom&quot;: &quot;Mia&quot;,  &quot;classe&quot;: &quot;B&quot;, &quot;note&quot;: 18}
-]
-
-def moyenne_par_classe(data):
-    classes = {}
-    for e in data:
-        classes.setdefault(e[&quot;classe&quot;], []).append(e[&quot;note&quot;])
-    return {c: sum(n)/len(n) for c, n in classes.items()}
-
-print(moyenne_par_classe(etudiants))
-# {&quot;A&quot;: 14.0, &quot;B&quot;: 15.0}</code></pre>
-        </div>
-        <div class="col-visual">
-    <div class="schema" style="--accent: #a78bfa">
-      <div class="schema-label">Mini-analyse complète</div>
-      <div class="schema-flow">
-        <div class="schema-box" style="animation-delay:0.1s">entrée</div>
-        <div class="schema-arrow">▸</div>
-        <div class="schema-box" style="animation-delay:0.3s">traitement</div>
-        <div class="schema-arrow">▸</div>
-        <div class="schema-box glow" style="animation-delay:0.5s">sortie</div>
-      </div>
-    </div></div>
-      </div>
-      <div class="slide-footer">
-        <span class="slide-num">6 / 8</span>
-      </div>
-    </section>
-
-    <section data-background-color="#080808" data-transition="slide">
-      <div class="progress-bar"><div class="progress-fill" style="width:88%; background:#ff003c"></div></div>
-      
-      <div class="slide-header">
-        <h2>Points clés des corrections</h2>
-        <p class="slide-subtitle" style="color: #ff003c">Les pièges à éviter</p>
-      </div>
-      <div class="slide-body two-col">
-        <div class="col-text">
-          <ul class="bullet-list"><li class="fragment" data-fragment-index="0" style="animation-delay: 0s">Indentation : toujours 4 espaces, jamais de mélange</li>
-<li class="fragment" data-fragment-index="1" style="animation-delay: 0.15s">str.upper() renvoie une copie, ne modifie pas l'original</li>
-<li class="fragment" data-fragment-index="2" style="animation-delay: 0.3s">Comparer à None avec 'is', pas '=='</li>
-<li class="fragment" data-fragment-index="3" style="animation-delay: 0.44999999999999996s">dict.get(clé, défaut) évite les KeyError</li>
-<li class="fragment" data-fragment-index="4" style="animation-delay: 0.6s">sorted() renvoie une copie, .sort() modifie sur place</li></ul>
-        </div>
-        <div class="col-visual">
-    <div class="schema" style="--accent: #ff003c">
-      <div class="schema-label">Correction collective</div>
-      <div class="schema-row">
-        <div class="schema-box messy">Correction collective</div>
-        <div class="schema-arrow">✨→</div>
-        <div class="schema-box clean-box">propre</div>
-      </div>
-    </div></div>
-      </div>
-      <div class="slide-footer">
-        <span class="slide-num">7 / 8</span>
-      </div>
-    </section>
-
-    <section data-background-color="#080808" data-transition="slide">
-      <div class="progress-bar"><div class="progress-fill" style="width:100%; background:#00f3ff"></div></div>
-      
-      <div class="slide-header">
-        <h2 style="color: #00f3ff">Bilan Jour 1</h2>
-        <p class="slide-subtitle">Prêts pour demain</p>
-      </div>
-      <ul class="summary-list"><li class="fragment" data-fragment-index="0">
-        <span class="check" style="color: #00f3ff">✓</span> Python installé, VS Code et Jupyter maîtrisés
-      </li>
-<li class="fragment" data-fragment-index="1">
-        <span class="check" style="color: #00f3ff">✓</span> 8 types de données : int, float, str, bool, list, tuple, dict, set
-      </li>
-<li class="fragment" data-fragment-index="2">
-        <span class="check" style="color: #00f3ff">✓</span> Structures de contrôle : if, for, while
-      </li>
-<li class="fragment" data-fragment-index="3">
-        <span class="check" style="color: #00f3ff">✓</span> Fonctions avec def, arguments par défaut, return
-      </li>
-<li class="fragment" data-fragment-index="4">
-        <span class="check" style="color: #00f3ff">✓</span> Compréhensions de liste et de dictionnaire
-      </li>
-<li class="fragment" data-fragment-index="5">
-        <span class="check" style="color: #00f3ff">✓</span> Demain : fichiers, modules, erreurs, POO
-      </li></ul>
-      <div class="slide-footer">
-        <span class="slide-num">8 / 8</span>
-      </div>
-    </section>
-    </div>
-  </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-  <script>
-    Reveal.initialize({
-      hash: true,
-      transition: 'slide',
-      transitionSpeed: 'default',
-      backgroundTransition: 'fade',
-      width: 1920, height: 1080,
-      margin: 0,
-      center: false,
-      controls: true,
-      progress: false,
-      slideNumber: false,
-      plugins: []
-    });
-    hljs.highlightAll();
-  </script>
+def test_total_ca_refuse_negatif():
+    try:
+        total_ca([{"prix": -1.0}])
+    except ValueError:
+        assert True</code></pre>
+</section>
+<section>
+  <h3>Checklist de livraison d'un script</h3>
+  <ul>
+    <li>Entrées/sorties clairement définies.</li>
+    <li>Aucun chemin codé en dur dans le script.</li>
+    <li>Erreurs principales capturées.</li>
+    <li>Exemple d'exécution fourni.</li>
+  </ul>
+</section>
+<section>
+  <h3>Récapitulatif</h3>
+  <ul>
+    <li>La méthode précède l'écriture du code.</li>
+    <li>Le découpage en fonctions limite les régressions.</li>
+    <li>Validation + lisibilité = base d'un code professionnel.</li>
+  </ul>
+</section>
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script>
+  Reveal.initialize({ hash: true, transition: 'slide', controls: false, progress: true });
+  hljs.highlightAll();
+</script>
 </body>
 </html>

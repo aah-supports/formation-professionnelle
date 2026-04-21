@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Niveau III — Chapitre 2 pandas</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+  .reveal { font-family: Inter, Arial, sans-serif; font-size: 20px; }
+  .reveal h2 { font-size: 1.5em; }
+  .reveal h3 { font-size: 1.15em; }
+  .reveal pre { font-size: .54em; border-radius: 10px; }
+
+  .course-home {
+    position: fixed; top: 14px; left: 14px; z-index: 50;
+    color: #74b9ff; text-decoration: none; font-size: .55em; font-weight: 600;
+    background: rgba(8,8,8,.55); border: 1px solid #333; padding: 6px 10px; border-radius: 999px;
+  }
+</style>
+</head>
+<body>
+<a class="course-home" href="../index.html">Accueil du niveau</a>
+<div class="reveal"><div class="slides">
+<section>
+  <h2>Chapitre 2 — Nettoyage et transformation avec pandas</h2>
+  <p>Passer de données brutes à une table analytique fiable.</p>
+</section>
+<section>
+  <h3>Objectifs du chapitre</h3>
+  <ul>
+    <li>Définir un contrat de schéma explicite.</li>
+    <li>Nettoyer valeurs manquantes, doublons et incohérences.</li>
+    <li>Sécuriser jointures et agrégations.</li>
+    <li>Produire un pipeline lisible et relançable.</li>
+  </ul>
+</section>
+<section>
+  <h3>Import robuste</h3>
+  <pre><code class="language-python">import pandas as pd
+
+df = pd.read_csv(
+    "ventes.csv",
+    sep=",",
+    encoding="utf-8",
+    parse_dates=["date_commande"],
+    dtype={"id_commande": "string", "canal": "string"}
+)</code></pre>
+</section>
+<section>
+  <h3>Contrat de schéma minimal</h3>
+  <pre><code class="language-python">required = {
+    "id_commande", "date_commande", "prix_net", "canal"
+}
+missing = required - set(df.columns)
+if missing:
+    raise ValueError(f"colonnes manquantes: {sorted(missing)}")</code></pre>
+</section>
+<section>
+  <h3>Gestion des valeurs manquantes</h3>
+  <pre><code class="language-python">na_ratio = (df.isna().sum() / len(df)).sort_values(ascending=False)
+
+# stratégie explicite
+df["canal"] = df["canal"].fillna("inconnu")
+df = df.dropna(subset=["id_commande", "date_commande"])</code></pre>
+</section>
+<section>
+  <h3>Doublons et unicité</h3>
+  <pre><code class="language-python">before = len(df)
+df = df.drop_duplicates(subset=["id_commande"], keep="last")
+after = len(df)
+print(f"doublons supprimés: {before - after}")</code></pre>
+</section>
+<section>
+  <h3>Typage explicite</h3>
+  <pre><code class="language-python">df = df.convert_dtypes()
+
+df["prix_net"] = pd.to_numeric(df["prix_net"], errors="coerce")
+df["qte"] = pd.to_numeric(df["qte"], errors="coerce").astype("Int64")
+
+df = df.dropna(subset=["prix_net", "qte"])</code></pre>
+</section>
+<section>
+  <h3>Nettoyage texte standard</h3>
+  <pre><code class="language-python">df["ville"] = (
+    df["ville"]
+      .str.normalize("NFKC")
+      .str.strip()
+      .str.lower()
+      .str.replace(r"\s+", " ", regex=True)
+)</code></pre>
+</section>
+<section>
+  <h3>Dates et fuseaux</h3>
+  <pre><code class="language-python">df["date_commande"] = pd.to_datetime(df["date_commande"], utc=True)
+df["date_paris"] = df["date_commande"].dt.tz_convert("Europe/Paris")
+
+df["mois"] = df["date_paris"].dt.to_period("M")</code></pre>
+</section>
+<section>
+  <h3>Jointures sécurisées</h3>
+  <pre><code class="language-python">orders = df
+clients = pd.read_csv("clients.csv", dtype={"client_id": "string"})
+
+merged = orders.merge(
+    clients,
+    on="client_id",
+    how="left",
+    validate="many_to_one"
+)</code></pre>
+</section>
+<section>
+  <h3><code>groupby</code> : <code>agg</code> vs <code>transform</code></h3>
+  <pre><code class="language-python">kpi = df.groupby("canal", as_index=False).agg(
+    ca=("prix_net", "sum"),
+    commandes=("id_commande", "nunique")
+)
+
+df["zscore_prix"] = (
+    df["prix_net"] - df["prix_net"].mean()
+) / df["prix_net"].std()</code></pre>
+</section>
+<section>
+  <h3>Reshape : pivot et melt</h3>
+  <pre><code class="language-python">wide = df.pivot_table(
+    index="mois", columns="canal", values="prix_net", aggfunc="sum", fill_value=0
+)
+long = wide.reset_index().melt(id_vars="mois", var_name="canal", value_name="ca")</code></pre>
+</section>
+<section>
+  <h3>Pipeline lisible avec <code>pipe</code></h3>
+  <pre><code class="language-python">def drop_negative_prices(frame: pd.DataFrame) -> pd.DataFrame:
+    return frame[frame["prix_net"] >= 0]
+
+clean = (
+    df
+    .pipe(drop_negative_prices)
+    .assign(ca=lambda d: d["prix_net"] * d["qte"])
+)</code></pre>
+</section>
+<section>
+  <h3>Contrôles qualité avant publication</h3>
+  <ul>
+    <li>Volume de lignes attendu (tolérance documentée).</li>
+    <li>Taux de NA par colonne critique.</li>
+    <li>Unicité des clés fonctionnelles.</li>
+    <li>Cohérence des agrégats vs source transactionnelle.</li>
+  </ul>
+</section>
+<section>
+  <h3>Récapitulatif</h3>
+  <ul>
+    <li>pandas sert d'abord à garantir la qualité de la donnée.</li>
+    <li>Un pipeline explicite vaut mieux qu'un notebook opaque.</li>
+    <li>Jointures validées et schéma contractuel évitent les erreurs métiers.</li>
+  </ul>
+</section>
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script>
+  Reveal.initialize({ hash: true, transition: 'slide', controls: false, progress: true });
+  hljs.highlightAll();
+</script>
+</body>
+</html>

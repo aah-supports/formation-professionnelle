@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python III — Chapitre 3 Performance & Delivery</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+  .reveal { font-family: Inter, Arial, sans-serif; font-size: 20px; }
+  .reveal h2 { font-size: 1.5em; }
+  .reveal h3 { font-size: 1.15em; }
+  .reveal pre { font-size: .54em; border-radius: 10px; }
+
+  .course-home {
+    position: fixed; top: 14px; left: 14px; z-index: 50;
+    color: #74b9ff; text-decoration: none; font-size: .55em; font-weight: 600;
+    background: rgba(8,8,8,.55); border: 1px solid #333; padding: 6px 10px; border-radius: 999px;
+  }
+</style>
+</head>
+<body>
+<a class="course-home" href="../index.html">Accueil du niveau</a>
+<div class="reveal"><div class="slides">
+<section>
+  <h2>Chapitre 6 — Performance et delivery</h2>
+  <p>Optimiser sans régression et livrer de façon contrôlée.</p>
+</section>
+<section>
+  <h3>Principe directeur</h3>
+  <ul>
+    <li>Mesurer avant d'optimiser.</li>
+    <li>Prioriser les points chauds métier.</li>
+    <li>Documenter chaque arbitrage technique.</li>
+    <li>Relier performance à la qualité de service utilisateur.</li>
+  </ul>
+</section>
+<section>
+  <h3>Budgets de performance</h3>
+  <ul>
+    <li>Latence p95 API: cible explicite.</li>
+    <li>Débit minimal supporté.</li>
+    <li>Consommation mémoire maximale.</li>
+    <li>Temps batch maximal.</li>
+  </ul>
+</section>
+<section>
+  <h3>Profilage CPU</h3>
+  <pre><code class="language-python">import cProfile
+import pstats
+
+with cProfile.Profile() as prof:
+    run_pipeline()
+
+pstats.Stats(prof).sort_stats("cumtime").print_stats(20)</code></pre>
+</section>
+<section>
+  <h3>Profilage mémoire</h3>
+  <pre><code class="language-python">import tracemalloc
+
+tracemalloc.start()
+run_pipeline()
+current, peak = tracemalloc.get_traced_memory()
+print(f"current={current/1e6:.1f}MB peak={peak/1e6:.1f}MB")
+tracemalloc.stop()</code></pre>
+</section>
+<section>
+  <h3>Complexité algorithmique</h3>
+  <ul>
+    <li>Éviter les boucles imbriquées O(n²) non nécessaires.</li>
+    <li>Préférer dictionnaires/sets pour recherches fréquentes.</li>
+    <li>Réduire les conversions répétées de structures.</li>
+  </ul>
+</section>
+<section>
+  <h3>Choix de parallélisme</h3>
+  <ul>
+    <li>I/O dominant: <code>asyncio</code>.</li>
+    <li>CPU dominant: multiprocessing / worker pool.</li>
+    <li>Code bloquant isolé: <code>asyncio.to_thread</code>.</li>
+    <li>Toujours mesurer le coût de coordination.</li>
+  </ul>
+</section>
+<section>
+  <h3>Cache applicatif</h3>
+  <pre><code class="language-python">from functools import lru_cache
+
+@lru_cache(maxsize=512)
+def fx_rate(base: str, quote: str) -> float:
+    # appel externe simulé
+    return 1.08</code></pre>
+  <p>Le cache doit avoir une politique d'invalidation claire.</p>
+</section>
+<section>
+  <h3>Batching et réduction des I/O</h3>
+  <ul>
+    <li>Regrouper lectures/écritures pour réduire overhead réseau.</li>
+    <li>Limiter les allers-retours DB par requête.</li>
+    <li>Utiliser upsert/bulk insert quand possible.</li>
+  </ul>
+</section>
+<section>
+  <h3>Optimisation data Python</h3>
+  <pre><code class="language-python"># anti-pattern: boucle Python
+# for row in rows: total += row["amount"]
+
+# meilleur: agrégation vectorisée (pandas/NumPy)
+# total = df["amount"].sum()</code></pre>
+</section>
+<section>
+  <h3>Load tests et scénarios</h3>
+  <ul>
+    <li>Tester charge nominale + pic + dégradation.</li>
+    <li>Mesurer p50/p95/p99, erreurs et saturation.</li>
+    <li>Conserver l'historique des campagnes de charge.</li>
+  </ul>
+</section>
+<section>
+  <h3>Pipeline CI/CD pragmatique</h3>
+  <pre><code class="language-text">1) Lint + type + unit tests
+2) Build artefact versionné
+3) Deploy staging
+4) Smoke tests
+5) Déploiement progressif production</code></pre>
+</section>
+<section>
+  <h3>Release progressive et feature flags</h3>
+  <ul>
+    <li>Canary: exposer progressivement à un sous-ensemble d'utilisateurs.</li>
+    <li>Feature flags: activer/désactiver sans redéploiement complet.</li>
+    <li>Surveiller métriques business et techniques après release.</li>
+  </ul>
+</section>
+<section>
+  <h3>Plan de rollback</h3>
+  <ul>
+    <li>Version précédente disponible et testée.</li>
+    <li>Critères de déclenchement rollback connus.</li>
+    <li>Responsable décisionnel identifié.</li>
+    <li>Runbook incident prêt et partagé.</li>
+  </ul>
+</section>
+<section>
+  <h3>Récapitulatif</h3>
+  <ul>
+    <li>Performance durable = mesure, ciblage, validation.</li>
+    <li>Delivery fiable = pipeline, canary, rollback maîtrisé.</li>
+    <li>L'objectif final reste la stabilité de service métier.</li>
+  </ul>
+</section>
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script>
+  Reveal.initialize({ hash: true, transition: 'slide', controls: false, progress: true });
+  hljs.highlightAll();
+</script>
+</body>
+</html>

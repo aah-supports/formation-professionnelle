@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Niveau III — Chapitre 3 KPI</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+  .reveal { font-family: Inter, Arial, sans-serif; font-size: 20px; }
+  .reveal h2 { font-size: 1.5em; }
+  .reveal h3 { font-size: 1.15em; }
+  .reveal pre { font-size: .54em; border-radius: 10px; }
+
+  .course-home {
+    position: fixed; top: 14px; left: 14px; z-index: 50;
+    color: #74b9ff; text-decoration: none; font-size: .55em; font-weight: 600;
+    background: rgba(8,8,8,.55); border: 1px solid #333; padding: 6px 10px; border-radius: 999px;
+  }
+</style>
+</head>
+<body>
+<a class="course-home" href="../index.html">Accueil du niveau</a>
+<div class="reveal"><div class="slides">
+<section>
+  <h2>Chapitre 3 — KPI, consolidation et temporalité</h2>
+  <p>Transformer des données nettoyées en indicateurs pilotables.</p>
+</section>
+<section>
+  <h3>Qu'est-ce qu'un KPI robuste ?</h3>
+  <ul>
+    <li>Définition métier stable et documentée.</li>
+    <li>Formule de calcul explicite et versionnée.</li>
+    <li>Source des données identifiable.</li>
+    <li>Rythme de mise à jour et règles de correction définis.</li>
+  </ul>
+</section>
+<section>
+  <h3>Modèle de fiche KPI</h3>
+  <pre><code class="language-python">kpi_definition = {
+    "nom": "CA net",
+    "grain": "jour",
+    "formule": "sum(prix_net)",
+    "source": ["orders"],
+    "owner": "finance",
+    "version": "v1.3"
+}</code></pre>
+</section>
+<section>
+  <h3>Granularité: jour, semaine, mois</h3>
+  <pre><code class="language-python">daily = df.set_index("date").resample("D").agg(ca=("prix_net", "sum"))
+weekly = daily.resample("W-MON").sum()
+monthly = daily.resample("M").sum()</code></pre>
+  <p>Ne jamais comparer des KPI de granularité différente sans normalisation.</p>
+</section>
+<section>
+  <h3>Flux vs stock</h3>
+  <ul>
+    <li><strong>Flux</strong> : ventes, tickets, volume de commandes.</li>
+    <li><strong>Stock</strong> : encours, base clients active, inventaire.</li>
+    <li>Les méthodes d'agrégation sont différentes selon la nature du KPI.</li>
+  </ul>
+</section>
+<section>
+  <h3>Consolidation multi-sources</h3>
+  <pre><code class="language-python">sales = pd.read_parquet("sales.parquet")
+refunds = pd.read_parquet("refunds.parquet")
+
+kpi = (
+    sales.groupby("date", as_index=False)["amount"].sum()
+    .merge(refunds.groupby("date", as_index=False)["amount"].sum(),
+           on="date", how="left", suffixes=("_sales", "_refunds"))
+    .fillna({"amount_refunds": 0})
+)
+kpi["ca_net"] = kpi["amount_sales"] - kpi["amount_refunds"]</code></pre>
+</section>
+<section>
+  <h3>Comparaisons temporelles utiles</h3>
+  <pre><code class="language-python">monthly["mom"] = monthly["ca"].pct_change()
+monthly["yoy"] = monthly["ca"].pct_change(periods=12)
+monthly["ma3"] = monthly["ca"].rolling(3).mean()</code></pre>
+</section>
+<section>
+  <h3>Données tardives et backfill</h3>
+  <ul>
+    <li>Définir une fenêtre de réouverture (ex: J-14).</li>
+    <li>Versionner les recalculs pour audit.</li>
+    <li>Publier un statut: préliminaire ou figé.</li>
+    <li>Éviter les corrections silencieuses non tracées.</li>
+  </ul>
+</section>
+<section>
+  <h3>Réconciliation de contrôle</h3>
+  <pre><code class="language-python">total_detail = df["prix_net"].sum()
+total_kpi = kpi["ca_net"].sum()
+
+if abs(total_detail - total_kpi) > 1e-6:
+    raise ValueError("écart de consolidation")</code></pre>
+</section>
+<section>
+  <h3>Détection d'anomalies simple</h3>
+  <pre><code class="language-python">mu = daily["ca"].mean()
+sigma = daily["ca"].std(ddof=1)
+
+anomalies = daily[(daily["ca"] - mu).abs() > 3 * sigma]</code></pre>
+</section>
+<section>
+  <h3>Communication métier du KPI</h3>
+  <ul>
+    <li>Donner le chiffre + variation + explication probable.</li>
+    <li>Séparer faits observés et hypothèses d'interprétation.</li>
+    <li>Afficher périmètre et exclusions pour éviter les contresens.</li>
+  </ul>
+</section>
+<section>
+  <h3>Sortie livrable versionnée</h3>
+  <pre><code class="language-python">kpi.assign(extraction_ts=pd.Timestamp.utcnow()) \
+   .to_parquet("kpi_ca_net_v1_3.parquet", index=False)</code></pre>
+</section>
+<section>
+  <h3>Checklist avant publication KPI</h3>
+  <ul>
+    <li>Définition validée par le métier ?</li>
+    <li>Règles de jointure et de filtre documentées ?</li>
+    <li>Contrôles de cohérence passés ?</li>
+    <li>Version et date d'extraction archivées ?</li>
+  </ul>
+</section>
+<section>
+  <h3>Récapitulatif</h3>
+  <ul>
+    <li>Un KPI fiable est un produit de données, pas un simple calcul.</li>
+    <li>Consolidation, temporalité et qualité doivent être traitées ensemble.</li>
+    <li>La valeur business dépend de la clarté des définitions.</li>
+  </ul>
+</section>
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script>
+  Reveal.initialize({ hash: true, transition: 'slide', controls: false, progress: true });
+  hljs.highlightAll();
+</script>
+</body>
+</html>

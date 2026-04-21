@@ -38,7 +38,7 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 <strong>Format</strong> : Présentiel ou distanciel synchrone</p>
 <hr>
 <h2>Description</h2>
-<p>Formation de deux jours pour découvrir Python et son écosystème. Les stagiaires acquièrent les bases pour écrire des scripts, manipuler les structures de données fondamentales, lire et écrire des fichiers, et mener une analyse exploratoire de données avec pandas et matplotlib.</p>
+<p>Formation de deux jours pour découvrir Python et son écosystème. Les stagiaires acquièrent les bases pour écrire des scripts, manipuler les structures de données fondamentales, lire et écrire des fichiers, structurer du code maintenable, et produire des visualisations simples avec matplotlib.</p>
 <hr>
 <h2>Public cible</h2>
 <ul>
@@ -63,10 +63,10 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 <li><strong>Écrire des fonctions</strong> et utiliser les structures de contrôle (if, for, while)</li>
 <li><strong>Lire et écrire des fichiers</strong> (texte, CSV, JSON)</li>
 <li><strong>Importer et utiliser des modules</strong> standards et externes (pip)</li>
-<li><strong>Calculer avec numpy</strong> : tableaux, opérations vectorisées, statistiques</li>
-<li><strong>Manipuler des données tabulaires</strong> avec pandas : sélection, filtrage, agrégation</li>
-<li><strong>Créer des visualisations</strong> avec matplotlib : scatter, histogramme, boxplot, barplot</li>
-<li><strong>Mener une analyse exploratoire complète</strong> de l&#39;import à la visualisation</li>
+<li><strong>Structurer un mini-projet Python</strong> : fonctions, modules, validations et gestion d'erreurs</li>
+<li><strong>Lire et transformer des données</strong> en Python pur (csv, dict, list, agrégations)</li>
+<li><strong>Créer des visualisations</strong> avec matplotlib : line, histogramme, barres, scatter</li>
+<li><strong>Livrer un mini-projet de synthèse</strong> : lecture CSV, indicateurs, export JSON, visualisation</li>
 </ol>
 <hr>
 <h2>Programme</h2>
@@ -108,16 +108,16 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 <td>open/read/write, with, csv, json, os.path, import, modules standards</td>
 </tr>
 <tr>
-<td>6. NumPy et pandas</td>
-<td>Tableaux numpy, opérations vectorisées, DataFrame, read_csv, loc/iloc, filtrage, tri, merge, groupby</td>
+<td>6. Structuration du code</td>
+<td>Organisation en fonctions/modules, validation des entrées, gestion d'erreurs, configuration simple</td>
 </tr>
 <tr>
 <td>7. Visualisation avec matplotlib</td>
 <td>scatter, hist, boxplot, bar, subplots, personnalisation, export</td>
 </tr>
 <tr>
-<td>8. Projet intégrateur</td>
-<td>Analyse complète : import, nettoyage, statistiques, visualisation</td>
+<td>8. Projet de synthèse Python pur</td>
+<td>Flux complet csv -> nettoyage -> indicateurs -> export JSON -> visualisation</td>
 </tr>
 </tbody></table>
 <hr>
@@ -146,11 +146,11 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 <td>Autonomie</td>
 </tr>
 <tr>
-<td>Calcul numérique (numpy)</td>
+<td>Structuration et modularité du code</td>
 <td>Autonomie</td>
 </tr>
 <tr>
-<td>Manipulation de données (pandas)</td>
+<td>Traitement de données en Python pur</td>
 <td>Autonomie</td>
 </tr>
 <tr>
@@ -173,6 +173,47 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 <li>Projet intégrateur sur données réelles</li>
 <li>Slides, scripts Python commentés, fiches mémo</li>
 </ul>
+<h2>Définitions essentielles</h2>
+<ul>
+<li><strong>Variable</strong> : nom qui référence une valeur en mémoire.</li>
+<li><strong>Type</strong> : nature d'une valeur (<code>int</code>, <code>float</code>, <code>str</code>, etc.).</li>
+<li><strong>Fonction</strong> : bloc de code réutilisable défini avec <code>def</code>.</li>
+<li><strong>Liste</strong> : collection ordonnée et mutable d'éléments.</li>
+<li><strong>Dictionnaire</strong> : collection clé/valeur pour un accès direct.</li>
+</ul>
+<h2>Notions théoriques supplémentaires</h2>
+<ul>
+<li><strong>Mutabilité</strong> : différence entre objets modifiables (list, dict) et immuables (str, tuple).</li>
+<li><strong>Référence vs copie</strong> : impact des affectations et des copies superficielles/profondes.</li>
+<li><strong>Portée des variables</strong> : local, global, fermeture lexicale.</li>
+<li><strong>Complexité de base</strong> : coût moyen des opérations courantes sur listes et dictionnaires.</li>
+<li><strong>Exceptions</strong> : modèle <code>try/except/finally</code> et importance des messages explicites.</li>
+</ul>
+<h2>Exemples de code (niveau 1)</h2>
+<h3>Condition + boucle</h3>
+<pre><code>notes = [8, 12, 15, 9]
+for n in notes:
+    if n >= 10:
+        print(f"{n} valide")
+    else:
+        print(f"{n} à renforcer")</code></pre>
+<h3>Fonction simple</h3>
+<pre><code>def moyenne(valeurs):
+    return sum(valeurs) / len(valeurs)
+
+print(moyenne([10, 12, 14]))</code></pre>
+<h3>Lecture CSV en Python pur</h3>
+<pre><code>import csv
+
+with open("ventes.csv", "r", encoding="utf-8") as f:
+    rows = list(csv.DictReader(f))
+print(rows[:2])</code></pre>
+<h3>Gestion d'exception simple</h3>
+<pre><code>def to_int(value: str) -> int:
+    try:
+        return int(value)
+    except ValueError as err:
+        raise ValueError(f"valeur invalide: {value}") from err</code></pre>
 <h2>Outils</h2>
 <table>
 <thead>
@@ -194,16 +235,16 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 <td>Inclus avec Python</td>
 </tr>
 <tr>
-<td>numpy</td>
-<td>≥ 1.24</td>
-</tr>
-<tr>
-<td>pandas</td>
-<td>≥ 2.0</td>
-</tr>
-<tr>
 <td>matplotlib</td>
 <td>≥ 3.7</td>
+</tr>
+<tr>
+<td>random/statistics (bibliothèque standard)</td>
+<td>Inclus avec Python</td>
+</tr>
+<tr>
+<td>csv/json (bibliothèque standard)</td>
+<td>Inclus avec Python</td>
 </tr>
 </tbody></table>
 

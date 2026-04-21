@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Niveau IV — Syllabus</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:1020px;margin:30px auto;padding:0 16px;line-height:1.65;color:#222}
+h1{margin-bottom:6px}h2{margin-top:24px}h3{margin-top:16px}ul{padding-left:22px}
+.badge{display:inline-block;background:#fee2e2;color:#991b1b;padding:4px 10px;border-radius:999px;font-size:.85rem}
+.progress{background:#fff1f2;border:1px solid #fecdd3;border-radius:10px;padding:12px;margin:8px 0}
+.progress strong{display:block;margin-bottom:4px}
+pre{background:#111827;color:#e5e7eb;padding:12px;border-radius:8px;overflow:auto;font-size:.9rem}
+code{background:#f3f4f6;padding:2px 5px;border-radius:4px}
+</style>
+</head>
+<body>
+<p><a href="../index.html">&larr; Retour index Python Niveau IV</a></p>
+<h1>Python Niveau IV — Syllabus</h1>
+<p class="badge">Architecture • Qualité • Performance • Industrialisation</p>
+<p><strong>Durée recommandée</strong> : <strong>3 jours (21h)</strong> — niveau avancé orienté production.</p>
+
+<h2>Objectif général</h2>
+<p>Concevoir et opérer des applications Python de niveau production avec des standards élevés de maintenabilité, observabilité et performance.</p>
+
+<h2>Progression pédagogique (du design à la prod)</h2>
+<div class="progress"><strong>Étape 1 — Architecture</strong>Structurer le code en couches et contrats explicites.</div>
+<div class="progress"><strong>Étape 2 — Qualité systématique</strong>Typing, tests, linting et revues de code outillées.</div>
+<div class="progress"><strong>Étape 3 — Observabilité</strong>Logs structurés, métriques, traces et diagnostics.</div>
+<div class="progress"><strong>Étape 4 — Performance</strong>Profiler, arbitrer CPU/I/O, optimiser avec preuves.</div>
+<div class="progress"><strong>Étape 5 — Delivery</strong>CI/CD fiable, packaging propre, stratégie de release.</div>
+
+<h2>Définitions essentielles</h2>
+<ul>
+  <li><strong>Architecture modulaire</strong> : découpage en composants cohérents avec responsabilités claires.</li>
+  <li><strong>Port/Adaptateur</strong> : séparation entre logique métier et implémentations techniques.</li>
+  <li><strong>SLO</strong> : objectif mesurable de service (latence, disponibilité, erreur).</li>
+  <li><strong>CI/CD</strong> : automatisation des contrôles qualité et du déploiement.</li>
+  <li><strong>Rollback</strong> : stratégie de retour arrière rapide en cas d'incident.</li>
+</ul>
+
+<h2>Notions théoriques supplémentaires</h2>
+<ul>
+  <li><strong>GIL</strong> : verrou global d'interpréteur et conséquences sur les charges CPU multi-thread.</li>
+  <li><strong>Descriptors</strong> : mécanisme bas niveau derrière <code>@property</code> et l'accès aux attributs.</li>
+  <li><strong>Context managers</strong> : gestion déterministe des ressources avec <code>with</code>.</li>
+  <li><strong>Hexagonal architecture</strong> : isolation forte du domaine via ports et adaptateurs.</li>
+  <li><strong>Resilience patterns</strong> : retry borné, circuit breaker, timeout, fallback.</li>
+  <li><strong>DORA metrics</strong> : métriques de delivery pour piloter la performance d'équipe.</li>
+</ul>
+
+<h2>Extraits de code de référence</h2>
+<h3>Contrat d'interface</h3>
+<pre><code>from typing import Protocol
+
+class UserRepo(Protocol):
+    def get(self, user_id: str): ...</code></pre>
+
+<h3>Typage et test</h3>
+<pre><code>def compute_discount(amount: float, ratio: float) -> float:
+    if not 0 <= ratio <= 1:
+        raise ValueError("ratio invalide")
+    return amount * ratio</code></pre>
+
+<h3>Profilage</h3>
+<pre><code>import cProfile
+
+cProfile.run("run_pipeline()")</code></pre>
+
+<h3>Context manager personnalisé</h3>
+<pre><code>import time
+from contextlib import contextmanager
+
+@contextmanager
+def timed(name: str):
+    start = time.perf_counter()
+    try:
+        yield
+    finally:
+        print(f"{name}: {time.perf_counter() - start:.3f}s")</code></pre>
+
+<h2>Compétences visées</h2>
+<ul>
+  <li>Définir une architecture modulaire et testable.</li>
+  <li>Fiabiliser le code avec un pipeline qualité reproductible.</li>
+  <li>Diagnostiquer les incidents via observabilité.</li>
+  <li>Optimiser les performances avec mesures avant/après.</li>
+  <li>Industrialiser la mise en production en équipe.</li>
+</ul>
+
+<h2>Public cible et prérequis</h2>
+<ul>
+  <li>Public : développeurs Python confirmés, leads techniques, ingénieurs plateforme.</li>
+  <li>Prérequis : POO solide, tests, packaging de base, Git collaboratif.</li>
+</ul>
+
+<h2>Livrables stagiaire</h2>
+<ul>
+  <li>Blueprint d'architecture « production-ready ».</li>
+  <li>Guide de revue technique (qualité + performance).</li>
+  <li>Pipeline CI type (tests, lint, typing, build, release).</li>
+</ul>
+</body>
+</html>

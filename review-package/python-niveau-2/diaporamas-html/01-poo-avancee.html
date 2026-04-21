@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python Niveau II — Chapitre 1 POO avancée</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <style>
+    .reveal { font-family: Inter, Arial, sans-serif; font-size: 20px; }
+    .reveal h2 { font-size: 1.5em; }
+    .reveal h3 { font-size: 1.15em; }
+    .reveal pre { font-size: .54em; border-radius: 10px; }
+  
+  .course-home {
+    position: fixed; top: 14px; left: 14px; z-index: 50;
+    color: #74b9ff; text-decoration: none; font-size: .55em; font-weight: 600;
+    background: rgba(8,8,8,.55); border: 1px solid #333; padding: 6px 10px; border-radius: 999px;
+  }
+</style>
+</head>
+<body>
+<a class="course-home" href="../index.html">Accueil du niveau</a>
+<div class="reveal"><div class="slides">
+<section>
+  <h2>Chapitre 1 — POO avancée</h2>
+  <p>Structurer une application Python orientée domaine, testable et évolutive.</p>
+</section>
+<section>
+  <h3>Compétences visées</h3>
+  <ul>
+    <li>Modéliser le métier avec des classes cohérentes.</li>
+    <li>Utiliser les méthodes magiques pertinentes.</li>
+    <li>Appliquer composition, Protocol et encapsulation.</li>
+    <li>Préparer le code aux tests et à l'industrialisation.</li>
+  </ul>
+</section>
+<section>
+  <h3>Objet métier et invariant</h3>
+  <pre><code class="language-python">from dataclasses import dataclass
+
+@dataclass(slots=True)
+class LigneCommande:
+    sku: str
+    quantite: int
+    prix_unitaire: float
+
+    def __post_init__(self) -> None:
+        if self.quantite <= 0:
+            raise ValueError("quantite doit être > 0")
+        if self.prix_unitaire < 0:
+            raise ValueError("prix invalide")</code></pre>
+</section>
+<section>
+  <h3>Encapsulation avec propriété</h3>
+  <pre><code class="language-python">class Compte:
+    def __init__(self, solde: float = 0.0) -> None:
+        self._solde = solde
+
+    @property
+    def solde(self) -> float:
+        return self._solde
+
+    def debiter(self, montant: float) -> None:
+        if montant <= 0 or montant > self._solde:
+            raise ValueError("opération refusée")
+        self._solde -= montant</code></pre>
+</section>
+<section>
+  <h3>Factory avec classmethod</h3>
+  <pre><code class="language-python">from datetime import datetime
+
+class AuditEvent:
+    def __init__(self, actor: str, action: str, at: datetime) -> None:
+        self.actor = actor
+        self.action = action
+        self.at = at
+
+    @classmethod
+    def now(cls, actor: str, action: str) -> "AuditEvent":
+        return cls(actor=actor, action=action, at=datetime.utcnow())</code></pre>
+</section>
+<section>
+  <h3>Méthodes magiques essentielles</h3>
+  <ul>
+    <li><code>__repr__</code> : diagnostic lisible en logs/debug.</li>
+    <li><code>__eq__</code> et <code>__hash__</code> : identité métier explicite.</li>
+    <li><code>__len__</code>, <code>__iter__</code>, <code>__contains__</code> : comportement collection.</li>
+    <li><code>__enter__</code>/<code>__exit__</code> : gestion de ressources contrôlée.</li>
+  </ul>
+</section>
+<section>
+  <h3>Objet itérable métier</h3>
+  <pre><code class="language-python">class Panier:
+    def __init__(self, lignes: list[LigneCommande]) -> None:
+        self._lignes = lignes
+
+    def __iter__(self):
+        return iter(self._lignes)
+
+    def __len__(self) -> int:
+        return len(self._lignes)
+
+    def total_ht(self) -> float:
+        return sum(l.quantite * l.prix_unitaire for l in self)</code></pre>
+</section>
+<section>
+  <h3>Protocol pour réduire le couplage</h3>
+  <pre><code class="language-python">from typing import Protocol
+
+class PaymentGateway(Protocol):
+    def charge(self, amount: float, token: str) -> str: ...
+
+class CheckoutService:
+    def __init__(self, gateway: PaymentGateway) -> None:
+        self.gateway = gateway
+
+    def pay(self, amount: float, token: str) -> str:
+        return self.gateway.charge(amount, token)</code></pre>
+</section>
+<section>
+  <h3>Composition plutôt qu'héritage profond</h3>
+  <ul>
+    <li>La composition isole les responsabilités.</li>
+    <li>L'héritage profond augmente la surface de régression.</li>
+    <li>Préférer des objets collaboratifs courts et spécialisés.</li>
+    <li>Utiliser l'héritage pour un vrai contrat commun stable.</li>
+  </ul>
+</section>
+<section>
+  <h3>MRO et <code>super()</code></h3>
+  <pre><code class="language-python">class Base:
+    def log(self):
+        print("Base")
+
+class AuditMixin(Base):
+    def log(self):
+        print("Audit")
+        super().log()
+
+class Service(AuditMixin, Base):
+    pass
+
+# Service.mro() => Service, AuditMixin, Base, object</code></pre>
+</section>
+<section>
+  <h3>Descriptor minimal</h3>
+  <pre><code class="language-python">class PositiveFloat:
+    def __set_name__(self, owner, name):
+        self.private = f"_{name}"
+
+    def __set__(self, instance, value):
+        if value < 0:
+            raise ValueError("valeur négative")
+        setattr(instance, self.private, float(value))</code></pre>
+  <p>Les descriptors permettent de factoriser des règles d'attributs réutilisables.</p>
+</section>
+<section>
+  <h3>Context manager orienté domaine</h3>
+  <pre><code class="language-python">class Transaction:
+    def __enter__(self):
+        print("BEGIN")
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        print("ROLLBACK" if exc else "COMMIT")
+        return False
+
+with Transaction():
+    ...</code></pre>
+</section>
+<section>
+  <h3>Exceptions métier explicites</h3>
+  <pre><code class="language-python">class StockInsuffisantError(Exception):
+    pass
+
+class StockService:
+    def reserver(self, dispo: int, qte: int) -> None:
+        if qte > dispo:
+            raise StockInsuffisantError(
+                f"demandé={qte} disponible={dispo}"
+            )</code></pre>
+</section>
+<section>
+  <h3>Checklist de conception POO</h3>
+  <ul>
+    <li>Une classe = une responsabilité métier principale.</li>
+    <li>Les invariants sont-ils protégés dès la construction ?</li>
+    <li>Les dépendances externes passent-elles par abstractions ?</li>
+    <li>Les comportements critiques sont-ils testables sans I/O ?</li>
+  </ul>
+</section>
+<section>
+  <h3>Récapitulatif</h3>
+  <ul>
+    <li>La POO Python efficace repose sur des objets simples et explicites.</li>
+    <li>Méthodes magiques, Protocol et composition améliorent la robustesse.</li>
+    <li>Le design doit d'abord servir la lisibilité et les tests.</li>
+  </ul>
+</section>
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script>
+  Reveal.initialize({ hash: true, transition: 'slide', controls: false, progress: true });
+  hljs.highlightAll();
+</script>
+</body>
+</html>

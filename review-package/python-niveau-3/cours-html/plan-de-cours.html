@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Niveau III — Plan de cours détaillé</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:1150px;margin:30px auto;padding:0 16px;line-height:1.6;color:#222}
+h1{margin-bottom:6px}h2{margin-top:24px}h3{margin-top:14px}
+table{border-collapse:collapse;width:100%;margin-top:10px}th,td{border:1px solid #ddd;padding:10px;text-align:left;vertical-align:top}th{background:#f3f4f6}
+pre{background:#111827;color:#e5e7eb;padding:12px;border-radius:8px;overflow:auto;font-size:.88rem}
+small{color:#666}
+code{background:#f3f4f6;padding:2px 5px;border-radius:4px}
+</style>
+</head>
+<body>
+<p><a href="../index.html">&larr; Retour index Python Niveau III</a></p>
+<h1>Python Niveau III — Plan de cours détaillé</h1>
+<p><strong>Durée</strong> : <strong>3 jours (21h)</strong> — progression data complète, de la préparation à la restitution métier.</p>
+
+<h2>Jour 1 — Fondations NumPy et pandas</h2>
+<table>
+  <tr><th>Créneau</th><th>Progression</th><th>Contenu</th><th>Code / livrable</th><th>Critère de réussite</th></tr>
+  <tr>
+    <td>09:00–10:30</td>
+    <td>Base</td>
+    <td>NumPy : <code>dtype</code>, <code>shape</code>, indexation, masques booléens.</td>
+    <td>Notebook de manipulations d'arrays.</td>
+    <td>Maîtrise des axes et de la vectorisation simple.</td>
+  </tr>
+  <tr>
+    <td>10:45–12:30</td>
+    <td>Base+</td>
+    <td>Vectorisation, broadcasting, agrégations et contrôle mémoire.</td>
+    <td>Refactor d'algorithmes à boucles vers NumPy.</td>
+    <td>Code plus court, plus rapide, résultats identiques.</td>
+  </tr>
+  <tr>
+    <td>13:30–15:00</td>
+    <td>Intermédiaire</td>
+    <td>pandas : import robuste, parsing de dates, typage, normalisation de colonnes.</td>
+    <td>Script d'import normalisé.</td>
+    <td>Données exploitables sans ambiguïtés de types.</td>
+  </tr>
+  <tr>
+    <td>15:15–17:00</td>
+    <td>Consolidation</td>
+    <td>Nettoyage : NA, doublons, valeurs aberrantes, règles métier.</td>
+    <td>Pipeline de nettoyage reproductible.</td>
+    <td>Qualité mesurée avant/après traitement.</td>
+  </tr>
+</table>
+
+<h2>Jour 2 — Transformations et KPI</h2>
+<table>
+  <tr><th>Créneau</th><th>Progression</th><th>Contenu</th><th>Code / livrable</th><th>Critère de réussite</th></tr>
+  <tr>
+    <td>09:00–10:30</td>
+    <td>Intermédiaire</td>
+    <td><code>groupby</code>, <code>agg</code>, <code>pivot_table</code>, indicateurs métier.</td>
+    <td>Tableau KPI journalier et hebdomadaire.</td>
+    <td>KPI cohérents et vérifiables.</td>
+  </tr>
+  <tr>
+    <td>10:45–12:30</td>
+    <td>Intermédiaire+</td>
+    <td>Jointures, cardinalités, protection contre les doublons silencieux.</td>
+    <td>Consolidation fact/référentiel avec <code>merge(validate=...)</code>.</td>
+    <td>Aucune inflation artificielle des volumes.</td>
+  </tr>
+  <tr>
+    <td>13:30–15:00</td>
+    <td>Intermédiaire+</td>
+    <td>Séries temporelles : index datetime, <code>resample</code>, rolling windows.</td>
+    <td>KPI mensuels + variation MoM/YoY.</td>
+    <td>Lecture temporelle correcte et exploitable métier.</td>
+  </tr>
+  <tr>
+    <td>15:15–17:00</td>
+    <td>Consolidation</td>
+    <td>Atelier dirigé : pipeline complet import → nettoyage → KPI.</td>
+    <td>Notebook structuré et commenté.</td>
+    <td>Chaîne de calcul reproductible de bout en bout.</td>
+  </tr>
+</table>
+
+<h2>Jour 3 — Fiabilité, industrialisation et restitution</h2>
+<table>
+  <tr><th>Créneau</th><th>Progression</th><th>Contenu</th><th>Code / livrable</th><th>Critère de réussite</th></tr>
+  <tr>
+    <td>09:00–10:30</td>
+    <td>Avancé</td>
+    <td>Contrôles qualité : taux de NA, contrôles de clés, cohérence des volumes.</td>
+    <td>Suite de checks automatisables.</td>
+    <td>Détection d'anomalies avant publication.</td>
+  </tr>
+  <tr>
+    <td>10:45–12:30</td>
+    <td>Avancé</td>
+    <td>Structurer le code data : fonctions pures, modules, configuration.</td>
+    <td>Script packagé exécutable en CLI.</td>
+    <td>Pipeline relançable sur nouvelles données.</td>
+  </tr>
+  <tr>
+    <td>13:30–15:00</td>
+    <td>Projet</td>
+    <td>Cas fil rouge complet avec contraintes réalistes.</td>
+    <td>Livrable CSV/Excel + note d'hypothèses.</td>
+    <td>Résultats argumentés et traçables.</td>
+  </tr>
+  <tr>
+    <td>15:15–17:00</td>
+    <td>Clôture</td>
+    <td>Revue collective, quiz final, plan de progression individuelle.</td>
+    <td>Checklist de bonnes pratiques personnalisée.</td>
+    <td>Autonomie opérationnelle sur projets data intermédiaires.</td>
+  </tr>
+</table>
+
+<h2>Bloc théorique transverse (niveau III)</h2>
+<ul>
+  <li><strong>Design de pipeline data</strong> : ingestion, standardisation, enrichissement, publication.</li>
+  <li><strong>Qualité statistique</strong> : outliers, biais de sélection, stabilité des agrégats.</li>
+  <li><strong>Fiabilité opérationnelle</strong> : idempotence, reprise sur incident, journalisation des étapes.</li>
+  <li><strong>Performance data</strong> : vectorisation, limitation des copies, chunking sur gros volumes.</li>
+  <li><strong>Traçabilité métier</strong> : hypothèses explicites et définition versionnée des KPI.</li>
+</ul>
+
+<h2>Repères de code du niveau III</h2>
+<pre><code>daily = (
+    df.set_index("date")
+      .resample("D")
+      .agg(ca=("prix_net", "sum"))
+)
+
+monthly = daily.resample("M").sum()
+monthly["delta_m"] = monthly["ca"].pct_change()</code></pre>
+<pre><code>def quality_report(df):
+    return {
+        "rows": len(df),
+        "na_rate": (df.isna().sum() / len(df)).to_dict(),
+        "duplicates": int(df.duplicated().sum())
+    }</code></pre>
+
+<p><small>Stack : Python 3.11+, NumPy, pandas, VS Code/Jupyter.</small></p>
+</body>
+</html>

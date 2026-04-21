@@ -35,7 +35,7 @@
     /* Code */
     pre { background: var(--bg2) !important; border: 1px solid var(--border); border-radius: 12px;
           padding: 20px !important; margin: 0 !important; font-size: 0.7em !important; overflow-x: auto; }
-    code { font-family: 'JetBrains Mono', monospace !important; line-height: 1.7 !important; }
+    code { font-family: 'JetBrains Mono', monospace !important; line-height: 1.7 !important; font-variant-ligatures: none !important; font-feature-settings: 'liga' 0, 'calt' 0 !important; }
 
     /* Bullets */
     .bullet-list, .summary-list { list-style: none; padding: 0; margin: 0; }
@@ -116,9 +116,16 @@
       .progress-bar { display: none; }
       .fragment { opacity: 1 !important; visibility: visible !important; }
     }
-  </style>
+  
+  .course-home {
+    position: fixed; top: 14px; left: 14px; z-index: 50;
+    color: #74b9ff; text-decoration: none; font-size: .55em; font-weight: 600;
+    background: rgba(8,8,8,.55); border: 1px solid #333; padding: 6px 10px; border-radius: 999px;
+  }
+</style>
 </head>
 <body>
+<a class="course-home" href="../index.html">Accueil du niveau</a>
   <div class="reveal">
     <div class="slides">
 
@@ -310,15 +317,14 @@ print(f&quot;Moyenne : {moyenne}°C&quot;)
       <div class="slide-body two-col">
         <div class="col-code">
           <pre><code class="language-python"># Installer un package
-pip install pandas
+pip install matplotlib
 
 # Vérifier les packages installés
 pip list
 
 # Utiliser un package installé
-import pandas as pd
-df = pd.read_csv(&quot;donnees.csv&quot;)
-print(df.head())</code></pre>
+import random
+print(random.randint(1, 10))</code></pre>
         </div>
         <div class="col-visual">
     <div class="schema" style="--accent: #10b981">

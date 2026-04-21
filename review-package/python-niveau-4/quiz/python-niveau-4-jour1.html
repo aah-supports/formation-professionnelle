@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Python Niveau IV - Jour 1</title>
+<style>*{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f5f6fa;color:#2d3436;margin:0;padding:0 0 40px}.container{max-width:820px;margin:0 auto;padding:20px}.question{background:#fff;border-radius:10px;padding:16px 18px;margin-bottom:12px;border-left:4px solid #e17055}.question.correct{border-left-color:#00b894}.question.wrong{border-left-color:#d63031}.choice{display:block;margin:6px 0}button{background:#0984e3;color:#fff;border:none;padding:10px 18px;border-radius:8px;cursor:pointer}#res{display:none;background:#fff;padding:16px;border-radius:10px;margin-top:16px}</style>
+</head>
+<body>
+<div class="container">
+<p><a href="index.html">&larr; Retour quiz Python Niveau IV</a></p>
+<h1>Quiz Python Niveau IV - Jour 1</h1>
+<div id="quiz"></div>
+<button id="btn" onclick="grade()">Valider</button>
+<div id="res"></div>
+</div>
+<script>
+const Q=[
+{id:1,q:"La responsabilite unique (SRP) signifie :",c:{a:"Une classe = une raison de changer",b:"Une classe fait tout",c:"Aucune interface",d:"Pas de tests"},a:"a"},
+{id:2,q:"Le typing statique en Python sert surtout a :",c:{a:"Compiler en binaire",b:"Mieux documenter/valider les contrats",c:"Remplacer les tests",d:"Accelerer a coup sur"},a:"b"},
+{id:3,q:"pytest fixture permet de :",c:{a:"Factoriser setup/teardown de tests",b:"Faire du plotting",c:"Ecrire du SQL",d:"Creer des classes abstraites"},a:"a"},
+{id:4,q:"Pourquoi logger en JSON structure ?",c:{a:"Pour observabilite et recherche facilitee",b:"Pour reduire le CPU",c:"Pour eviter les erreurs",d:"Sans interet"},a:"a"},
+{id:5,q:"Une architecture en couches vise surtout a :",c:{a:"Melanger domaines et I/O",b:"Separer les responsabilites",c:"Supprimer les modules",d:"Ignorer les interfaces"},a:"b"}
+];
+function render(){document.getElementById('quiz').innerHTML=Q.map(x=>`<div class='question' id='q${x.id}'><p><strong>${x.id}. ${x.q}</strong></p>${Object.entries(x.c).map(([k,v])=>`<label class='choice'><input type='radio' name='q${x.id}' value='${k}'> ${k}) ${v}</label>`).join('')}</div>`).join('');}
+function grade(){let s=0;Q.forEach(x=>{const el=document.getElementById('q'+x.id);const ch=document.querySelector(`input[name="q${x.id}"]:checked`);if(ch&&ch.value===x.a){s++;el.classList.add('correct')}else{el.classList.add('wrong')}el.querySelectorAll('input').forEach(i=>i.disabled=true)});const r=document.getElementById('res');r.style.display='block';r.innerHTML=`<h2>Score: ${s}/5</h2>`;document.getElementById('btn').disabled=true;}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python Niveau II — Chapitre 2 Décorateurs</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <style>
+    .reveal { font-family: Inter, Arial, sans-serif; font-size: 20px; }
+    .reveal h2 { font-size: 1.5em; }
+    .reveal h3 { font-size: 1.15em; }
+    .reveal pre { font-size: .54em; border-radius: 10px; }
+  
+  .course-home {
+    position: fixed; top: 14px; left: 14px; z-index: 50;
+    color: #74b9ff; text-decoration: none; font-size: .55em; font-weight: 600;
+    background: rgba(8,8,8,.55); border: 1px solid #333; padding: 6px 10px; border-radius: 999px;
+  }
+</style>
+</head>
+<body>
+<a class="course-home" href="../index.html">Accueil du niveau</a>
+<div class="reveal"><div class="slides">
+<section>
+  <h2>Chapitre 2 — Décorateurs</h2>
+  <p>Factoriser les comportements transverses sans alourdir la logique métier.</p>
+</section>
+<section>
+  <h3>Objectifs du chapitre</h3>
+  <ul>
+    <li>Comprendre closures, wrappers et métadonnées de fonction.</li>
+    <li>Créer des décorateurs paramétrables et testables.</li>
+    <li>Décorer correctement des fonctions sync et async.</li>
+    <li>Éviter les pièges de performance et de lisibilité.</li>
+  </ul>
+</section>
+<section>
+  <h3>Pré-requis conceptuel : fonction objet</h3>
+  <pre><code class="language-python">def greet(name: str) -> str:
+    return f"Bonjour {name}"
+
+fn = greet
+print(fn("Ana"))
+
+# Une fonction peut être passée à une autre
+
+def call_twice(f, value):
+    return f(value), f(value)</code></pre>
+</section>
+<section>
+  <h3>Closure minimale</h3>
+  <pre><code class="language-python">def make_multiplier(factor: int):
+    def inner(x: int) -> int:
+        return x * factor
+    return inner
+
+x3 = make_multiplier(3)
+print(x3(7))  # 21</code></pre>
+</section>
+<section>
+  <h3>Structure canonique d'un décorateur</h3>
+  <pre><code class="language-python">import functools
+
+def log_call(fn):
+    @functools.wraps(fn)
+    def wrapper(*args, **kwargs):
+        print(f"CALL {fn.__name__}")
+        result = fn(*args, **kwargs)
+        print(f"DONE {fn.__name__}")
+        return result
+    return wrapper</code></pre>
+</section>
+<section>
+  <h3>Pourquoi <code>functools.wraps</code> est obligatoire</h3>
+  <ul>
+    <li>Conserve <code>__name__</code>, <code>__doc__</code>, annotations et signature.</li>
+    <li>Évite de casser introspection, debug et documentation auto.</li>
+    <li>Facilite les tests et la traçabilité des appels.</li>
+  </ul>
+</section>
+<section>
+  <h3>Décorateur paramétrable</h3>
+  <pre><code class="language-python">import functools
+import time
+
+def warn_if_slow(threshold_ms: float):
+    def deco(fn):
+        @functools.wraps(fn)
+        def wrapper(*args, **kwargs):
+            t0 = time.perf_counter()
+            out = fn(*args, **kwargs)
+            dt = (time.perf_counter() - t0) * 1000
+            if dt > threshold_ms:
+                print(f"SLOW {fn.__name__}: {dt:.1f}ms")
+            return out
+        return wrapper
+    return deco</code></pre>
+</section>
+<section>
+  <h3>Décorateur d'autorisation métier</h3>
+  <pre><code class="language-python">def require_role(expected: str):
+    def deco(fn):
+        def wrapper(user, *args, **kwargs):
+            if expected not in user.roles:
+                raise PermissionError("accès refusé")
+            return fn(user, *args, **kwargs)
+        return wrapper
+    return deco</code></pre>
+</section>
+<section>
+  <h3>Ordre de chaînage des décorateurs</h3>
+  <pre><code class="language-python">@a
+@b
+def handler():
+    ...
+
+# équivalent à:
+handler = a(b(handler))</code></pre>
+  <ul>
+    <li>Le décorateur le plus proche de la fonction s'exécute en premier à l'appel.</li>
+  </ul>
+</section>
+<section>
+  <h3>Décorateur avec état (classe)</h3>
+  <pre><code class="language-python">class count_calls:
+    def __init__(self, fn):
+        self.fn = fn
+        self.calls = 0
+
+    def __call__(self, *args, **kwargs):
+        self.calls += 1
+        return self.fn(*args, **kwargs)</code></pre>
+</section>
+<section>
+  <h3>Décorer une coroutine async</h3>
+  <pre><code class="language-python">import functools
+
+def log_async(fn):
+    @functools.wraps(fn)
+    async def wrapper(*args, **kwargs):
+        print(f"ASYNC CALL {fn.__name__}")
+        return await fn(*args, **kwargs)
+    return wrapper</code></pre>
+</section>
+<section>
+  <h3>Retry simple pour I/O instable</h3>
+  <pre><code class="language-python">import time
+
+def retry(max_attempts: int = 3, delay: float = 0.1):
+    def deco(fn):
+        def wrapper(*args, **kwargs):
+            for attempt in range(1, max_attempts + 1):
+                try:
+                    return fn(*args, **kwargs)
+                except Exception:
+                    if attempt == max_attempts:
+                        raise
+                    time.sleep(delay)
+        return wrapper
+    return deco</code></pre>
+</section>
+<section>
+  <h3>Pièges fréquents</h3>
+  <ul>
+    <li>Dégrader la lisibilité avec trop de couches décoratives.</li>
+    <li>Masquer des exceptions utiles au diagnostic.</li>
+    <li>Introduire un coût non mesuré dans des chemins chauds.</li>
+    <li>Mélanger validation métier et logique d'infrastructure.</li>
+  </ul>
+</section>
+<section>
+  <h3>Tester un décorateur</h3>
+  <ul>
+    <li>Test unitaire de la fonction décorée avec cas nominal + erreur.</li>
+    <li>Vérifier la conservation du nom/annotations/docstring.</li>
+    <li>Tester l'ordre d'exécution si plusieurs décorateurs.</li>
+    <li>Mesurer l'impact perf si utilisé à grande échelle.</li>
+  </ul>
+</section>
+<section>
+  <h3>Récapitulatif</h3>
+  <ul>
+    <li>Un décorateur doit rester lisible, ciblé et réutilisable.</li>
+    <li><code>wraps</code>, tests et contraintes de perf sont indispensables.</li>
+    <li>Les décorateurs structurent bien les préoccupations transverses.</li>
+  </ul>
+</section>
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script>
+  Reveal.initialize({ hash: true, transition: 'slide', controls: false, progress: true });
+  hljs.highlightAll();
+</script>
+</body>
+</html>

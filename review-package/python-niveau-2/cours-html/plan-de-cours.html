@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Niveau II — Plan de cours détaillé</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:1150px;margin:30px auto;padding:0 16px;line-height:1.6;color:#222}
+h1{margin-bottom:6px}h2{margin-top:24px}
+table{border-collapse:collapse;width:100%;margin-top:10px}th,td{border:1px solid #ddd;padding:10px;text-align:left;vertical-align:top}th{background:#f3f4f6}
+pre{background:#111827;color:#e5e7eb;padding:12px;border-radius:8px;overflow:auto;font-size:.88rem}
+small{color:#666}
+</style>
+</head>
+<body>
+<p><a href="../index.html">&larr; Retour index Python Niveau II</a></p>
+<h1>Python Niveau II — Plan de cours détaillé</h1>
+<p><strong>Durée</strong> : 2 jours (14h) — progression continue, exercices à difficulté croissante.</p>
+
+<h2>Jour 1 — Objet et décorateurs</h2>
+<table>
+  <tr><th>Créneau</th><th>Progression</th><th>Contenu</th><th>Exercice guidé</th><th>Critère de réussite</th></tr>
+  <tr>
+    <td>09:00–10:30</td>
+    <td>Base</td>
+    <td>Refonte d’un script en objets : responsabilités, attributs, méthodes, dataclasses.</td>
+    <td>Modéliser une entité métier (Commande, Client, Produit).</td>
+    <td>Chaque classe a une responsabilité claire.</td>
+  </tr>
+  <tr>
+    <td>10:45–12:30</td>
+    <td>Intermédiaire</td>
+    <td>Composition vs héritage, interfaces implicites, contrats de méthodes, introduction au data model Python.</td>
+    <td>Refactor d’un héritage excessif en composition.</td>
+    <td>Couplage réduit, meilleure lisibilité.</td>
+  </tr>
+  <tr>
+    <td>13:30–15:00</td>
+    <td>Intermédiaire+</td>
+    <td>Décorateurs : <code>wraps</code>, paramètres, logging, validation.</td>
+    <td>Créer <code>@validate_input</code> et <code>@log_duration</code>.</td>
+    <td>Décorateurs réutilisables et testables.</td>
+  </tr>
+  <tr>
+    <td>15:15–17:00</td>
+    <td>Consolidation</td>
+    <td>Atelier de synthèse J1 : architecture orientée objet + décorateurs.</td>
+    <td>Mini-moteur de traitement (entrée/sortie + règles métier).</td>
+    <td>Code cohérent, sans duplication majeure.</td>
+  </tr>
+</table>
+
+<h2>Jour 2 — Coroutines et async/await</h2>
+<table>
+  <tr><th>Créneau</th><th>Progression</th><th>Contenu</th><th>Exercice guidé</th><th>Critère de réussite</th></tr>
+  <tr>
+    <td>09:00–10:30</td>
+    <td>Base</td>
+    <td>Event loop, coroutine, <code>await</code>, <code>create_task</code>, <code>gather</code>.</td>
+    <td>Paralléliser 20 appels I/O simulés.</td>
+    <td>Temps d’exécution significativement réduit.</td>
+  </tr>
+  <tr>
+    <td>10:45–12:30</td>
+    <td>Intermédiaire</td>
+    <td>Gestion des erreurs async : timeout, annulation, retry, backoff.</td>
+    <td>Rendre tolérant un lot d’appels API instables.</td>
+    <td>Aucun crash global, erreurs tracées proprement.</td>
+  </tr>
+  <tr>
+    <td>13:30–15:00</td>
+    <td>Intermédiaire+</td>
+    <td>Limiter la concurrence (<code>Semaphore</code>), éviter surcharge et throttling.</td>
+    <td>Respecter une limite de 5 appels concurrents.</td>
+    <td>Débit stable, pas d’explosion d’erreurs.</td>
+  </tr>
+  <tr>
+    <td>15:15–17:00</td>
+    <td>Avancé</td>
+    <td>Projet final : service asynchrone complet orienté objet.</td>
+    <td>Assembler modèle, décorateurs, orchestration async.</td>
+    <td>Livrable exécutable + quiz + recommandations.</td>
+  </tr>
+</table>
+
+<h2>Bloc théorique transverse (niveau II)</h2>
+<ul>
+  <li><strong>Méthodes magiques</strong> : implémenter correctement <code>__repr__</code>, <code>__len__</code>, <code>__iter__</code>, <code>__eq__</code> selon les besoins métier.</li>
+  <li><strong>Cycle de vie d'objet</strong> : rôle de <code>__init__</code>, <code>__new__</code>, immutabilité et invariants.</li>
+  <li><strong>MRO et héritage multiple</strong> : lecture et impact sur la maintenabilité.</li>
+  <li><strong>Conception API Pythonique</strong> : exceptions explicites, méthodes courtes, noms cohérents, docstrings ciblées.</li>
+  <li><strong>Async en production</strong> : backpressure, cancellation, retry idempotent, observabilité minimale.</li>
+</ul>
+
+<h2>Repères de code du niveau II</h2>
+<pre><code>import functools
+
+def positive_amount(fn):
+    @functools.wraps(fn)
+    def wrapper(amount, *args, **kwargs):
+        if amount <= 0:
+            raise ValueError("amount doit être positif")
+        return fn(amount, *args, **kwargs)
+    return wrapper</code></pre>
+<pre><code>import asyncio
+
+sem = asyncio.Semaphore(5)
+
+async def safe_call(call):
+    async with sem:
+        return await asyncio.wait_for(call(), timeout=2)</code></pre>
+<pre><code>class Money:
+    def __init__(self, amount: float, currency: str = "EUR") -> None:
+        self.amount = amount
+        self.currency = currency
+
+    def __repr__(self) -> str:
+        return f"Money(amount={self.amount}, currency='{self.currency}')"
+
+    def __add__(self, other: "Money") -> "Money":
+        if self.currency != other.currency:
+            raise ValueError("devise incompatible")
+        return Money(self.amount + other.amount, self.currency)</code></pre>
+
+<p><small>Stack : Python 3.11+, pytest, asyncio, VS Code.</small></p>
+</body>
+</html>

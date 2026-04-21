@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python Niveau II — Chapitre 3 Async/Await</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <style>
+    .reveal { font-family: Inter, Arial, sans-serif; font-size: 20px; }
+    .reveal h2 { font-size: 1.5em; }
+    .reveal h3 { font-size: 1.15em; }
+    .reveal pre { font-size: .54em; border-radius: 10px; }
+  
+  .course-home {
+    position: fixed; top: 14px; left: 14px; z-index: 50;
+    color: #74b9ff; text-decoration: none; font-size: .55em; font-weight: 600;
+    background: rgba(8,8,8,.55); border: 1px solid #333; padding: 6px 10px; border-radius: 999px;
+  }
+</style>
+</head>
+<body>
+<a class="course-home" href="../index.html">Accueil du niveau</a>
+<div class="reveal"><div class="slides">
+<section>
+  <h2>Chapitre 3 — Coroutines et async/await</h2>
+  <p>Concevoir des flux I/O concurrents robustes et observables.</p>
+</section>
+<section>
+  <h3>Notions fondamentales</h3>
+  <ul>
+    <li><strong>Coroutine</strong> : fonction suspendable avec <code>await</code>.</li>
+    <li><strong>Task</strong> : coroutine planifiée dans l'event loop.</li>
+    <li><strong>Event loop</strong> : ordonnanceur coopératif.</li>
+    <li><strong>Concurrence</strong> : chevauchement d'I/O, pas parallélisme CPU.</li>
+  </ul>
+</section>
+<section>
+  <h3>Exécution de base</h3>
+  <pre><code class="language-python">import asyncio
+
+async def fetch_one(i: int) -> str:
+    await asyncio.sleep(0.2)
+    return f"ok-{i}"
+
+async def main() -> None:
+    results = await asyncio.gather(*(fetch_one(i) for i in range(5)))
+    print(results)
+
+asyncio.run(main())</code></pre>
+</section>
+<section>
+  <h3>Structured concurrency avec TaskGroup</h3>
+  <pre><code class="language-python">import asyncio
+
+async def worker(name: str):
+    await asyncio.sleep(0.1)
+    return name
+
+async def main():
+    async with asyncio.TaskGroup() as tg:
+        tg.create_task(worker("A"))
+        tg.create_task(worker("B"))</code></pre>
+  <p>Si une tâche échoue, le groupe gère les annulations des autres tâches.</p>
+</section>
+<section>
+  <h3>Timeout et annulation</h3>
+  <pre><code class="language-python">import asyncio
+
+async def call_remote():
+    await asyncio.sleep(2)
+    return "done"
+
+async def guarded_call():
+    try:
+        return await asyncio.wait_for(call_remote(), timeout=0.5)
+    except asyncio.TimeoutError:
+        return "timeout"</code></pre>
+</section>
+<section>
+  <h3>Backpressure avec Semaphore</h3>
+  <pre><code class="language-python">import asyncio
+
+sem = asyncio.Semaphore(10)
+
+async def fetch(url: str):
+    async with sem:
+        await asyncio.sleep(0.05)
+        return {"url": url, "status": 200}</code></pre>
+</section>
+<section>
+  <h3>Pipeline producteur/consommateur</h3>
+  <pre><code class="language-python">import asyncio
+
+async def producer(q: asyncio.Queue):
+    for i in range(50):
+        await q.put(i)
+    await q.put(None)
+
+async def consumer(q: asyncio.Queue):
+    while True:
+        item = await q.get()
+        if item is None:
+            break</code></pre>
+</section>
+<section>
+  <h3>Gestion des erreurs multi-tâches</h3>
+  <ul>
+    <li><code>gather()</code> propage la première exception par défaut.</li>
+    <li><code>return_exceptions=True</code> permet de collecter les échecs.</li>
+    <li>Avec <code>TaskGroup</code>, raisonner en « unité de travail ».</li>
+    <li>Toujours tracer contexte, tentative et durée.</li>
+  </ul>
+</section>
+<section>
+  <h3>Async generator</h3>
+  <pre><code class="language-python">import asyncio
+
+async def stream_rows():
+    for i in range(3):
+        await asyncio.sleep(0.1)
+        yield {"row": i}
+
+async def main():
+    async for row in stream_rows():
+        print(row)</code></pre>
+</section>
+<section>
+  <h3>Interop avec code bloquant</h3>
+  <pre><code class="language-python">import asyncio
+import time
+
+def blocking_call(x: int) -> int:
+    time.sleep(0.2)
+    return x * 2
+
+async def run_blocking(x: int) -> int:
+    return await asyncio.to_thread(blocking_call, x)</code></pre>
+</section>
+<section>
+  <h3>Quand ne pas utiliser async</h3>
+  <ul>
+    <li>Tâches CPU lourdes sans I/O dominant.</li>
+    <li>Scripts simples séquentiels avec faible latence.</li>
+    <li>Équipe non outillée pour debug async en production.</li>
+    <li>Pipeline où le goulot est essentiellement SQL ou réseau externe saturé.</li>
+  </ul>
+</section>
+<section>
+  <h3>Patterns de fiabilité</h3>
+  <ul>
+    <li>Retry idempotent avec backoff exponentiel.</li>
+    <li>Bulkhead: limiter la concurrence par type de ressource.</li>
+    <li>Timeout explicite sur chaque dépendance externe.</li>
+    <li>Cancellation propre pour éviter tâches zombies.</li>
+  </ul>
+</section>
+<section>
+  <h3>Observabilité minimale async</h3>
+  <pre><code class="language-python">import logging
+logger = logging.getLogger(__name__)
+
+logger.info(
+    "api_call",
+    extra={"endpoint": "/orders", "attempt": 2, "latency_ms": 183}
+)</code></pre>
+</section>
+<section>
+  <h3>Checklist de revue async</h3>
+  <ul>
+    <li>Un timeout est-il défini pour chaque I/O externe ?</li>
+    <li>Le niveau de concurrence est-il borné ?</li>
+    <li>Les erreurs partielles sont-elles gérées sans crash global ?</li>
+    <li>Les logs permettent-ils de diagnostiquer une saturation ?</li>
+  </ul>
+</section>
+<section>
+  <h3>Récapitulatif</h3>
+  <ul>
+    <li>Async améliore le débit I/O si la conception reste disciplinée.</li>
+    <li>TaskGroup, timeouts et backpressure sont les briques clés.</li>
+    <li>La robustesse dépend autant de l'observabilité que du code.</li>
+  </ul>
+</section>
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script>
+  Reveal.initialize({ hash: true, transition: 'slide', controls: false, progress: true });
+  hljs.highlightAll();
+</script>
+</body>
+</html>

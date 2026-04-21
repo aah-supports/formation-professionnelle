@@ -35,7 +35,7 @@
     /* Code */
     pre { background: var(--bg2) !important; border: 1px solid var(--border); border-radius: 12px;
           padding: 20px !important; margin: 0 !important; font-size: 0.7em !important; overflow-x: auto; }
-    code { font-family: 'JetBrains Mono', monospace !important; line-height: 1.7 !important; }
+    code { font-family: 'JetBrains Mono', monospace !important; line-height: 1.7 !important; font-variant-ligatures: none !important; font-feature-settings: 'liga' 0, 'calt' 0 !important; }
 
     /* Bullets */
     .bullet-list, .summary-list { list-style: none; padding: 0; margin: 0; }
@@ -116,9 +116,16 @@
       .progress-bar { display: none; }
       .fragment { opacity: 1 !important; visibility: visible !important; }
     }
-  </style>
+  
+  .course-home {
+    position: fixed; top: 14px; left: 14px; z-index: 50;
+    color: #74b9ff; text-decoration: none; font-size: .55em; font-weight: 600;
+    background: rgba(8,8,8,.55); border: 1px solid #333; padding: 6px 10px; border-radius: 999px;
+  }
+</style>
 </head>
 <body>
+<a class="course-home" href="../index.html">Accueil du niveau</a>
   <div class="reveal">
     <div class="slides">
 
@@ -447,7 +454,96 @@ a - b   # {1} différence</code></pre>
     </div></div>
       </div>
       <div class="slide-footer">
-        <span class="slide-num">9 / 10</span>
+        <span class="slide-num">9 / 13</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:94%; background:#00f3ff"></div></div>
+      
+      <div class="slide-header">
+        <h2>Encodage Unicode</h2>
+        <p class="slide-subtitle" style="color: #00f3ff">Gérer proprement accents et caractères spéciaux</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">texte = "café ☕"
+raw = texte.encode("utf-8")
+print(raw)
+
+decoded = raw.decode("utf-8")
+assert decoded == texte</code></pre>
+        </div>
+        <div class="col-visual">
+          <ul class="bullet-list">
+            <li>UTF-8 = format recommandé en pratique</li>
+            <li>Préciser l'encodage en lecture/écriture fichier</li>
+            <li>Éviter les erreurs de conversion silencieuses</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">10 / 13</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:97%; background:#a78bfa"></div></div>
+      
+      <div class="slide-header">
+        <h2>Regex de base</h2>
+        <p class="slide-subtitle" style="color: #a78bfa">Valider et extraire des motifs texte</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">import re
+
+email = "contact@formation-pro.fr"
+ok = re.match(r"^[\\w\\.-]+@[\\w\\.-]+\\.[a-z]{2,}$", email)
+print(bool(ok))
+
+texte = "Commande A-2026-015 validée"
+ids = re.findall(r"[A-Z]-\\d{4}-\\d{3}", texte)
+print(ids)</code></pre>
+        </div>
+        <div class="col-visual">
+          <ul class="bullet-list">
+            <li><code>match</code> pour validation</li>
+            <li><code>findall</code> pour extraction</li>
+            <li>Commencer simple, tester souvent</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">11 / 13</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:99%; background:#10b981"></div></div>
+      
+      <div class="slide-header">
+        <h2>Précision des flottants</h2>
+        <p class="slide-subtitle" style="color: #10b981">Comprendre les limites de représentation</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">import math
+
+print(0.1 + 0.2)                # 0.30000000000000004
+print((0.1 + 0.2) == 0.3)       # False
+print(math.isclose(0.1 + 0.2, 0.3))  # True</code></pre>
+        </div>
+        <div class="col-visual">
+          <ul class="bullet-list">
+            <li>Comparer des floats avec tolérance</li>
+            <li>Éviter l'égalité stricte sur décimaux</li>
+            <li>Calcul monétaire: préférer <code>decimal</code></li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">12 / 13</span>
       </div>
     </section>
 
@@ -480,7 +576,7 @@ a - b   # {1} différence</code></pre>
         <span class="check" style="color: #00f3ff">✓</span> set : ensemble sans doublons
       </li></ul>
       <div class="slide-footer">
-        <span class="slide-num">10 / 10</span>
+        <span class="slide-num">13 / 13</span>
       </div>
     </section>
     </div>

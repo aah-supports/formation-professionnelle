@@ -35,7 +35,7 @@
     /* Code */
     pre { background: var(--bg2) !important; border: 1px solid var(--border); border-radius: 12px;
           padding: 20px !important; margin: 0 !important; font-size: 0.7em !important; overflow-x: auto; }
-    code { font-family: 'JetBrains Mono', monospace !important; line-height: 1.7 !important; }
+    code { font-family: 'JetBrains Mono', monospace !important; line-height: 1.7 !important; font-variant-ligatures: none !important; font-feature-settings: 'liga' 0, 'calt' 0 !important; }
 
     /* Bullets */
     .bullet-list, .summary-list { list-style: none; padding: 0; margin: 0; }
@@ -116,9 +116,16 @@
       .progress-bar { display: none; }
       .fragment { opacity: 1 !important; visibility: visible !important; }
     }
-  </style>
+  
+  .course-home {
+    position: fixed; top: 14px; left: 14px; z-index: 50;
+    color: #74b9ff; text-decoration: none; font-size: .55em; font-weight: 600;
+    background: rgba(8,8,8,.55); border: 1px solid #333; padding: 6px 10px; border-radius: 999px;
+  }
+</style>
 </head>
 <body>
+<a class="course-home" href="../index.html">Accueil du niveau</a>
   <div class="reveal">
     <div class="slides">
 
@@ -222,12 +229,12 @@ with open('notes.txt', 'r') as f:
       </div>
       <div class="slide-body two-col">
         <div class="col-code">
-          <pre><code class="language-python"># Ecrire (ecrase le fichier existant)
+          <pre><code class="language-python"># Écrire (écrase le fichier existant)
 with open('resultat.txt', 'w') as f:
     f.write('Ligne 1\n')
     f.write('Ligne 2\n')
 
-# Ajouter a la fin du fichier
+# Ajouter à la fin du fichier
 with open('resultat.txt', 'a') as f:
     f.write('Ligne 3 ajoutee\n')
 
@@ -304,7 +311,7 @@ with open('eleves.csv', 'r') as f:
 # Lire un fichier JSON
 with open('config.json', 'r') as f:
     data = json.load(f)
-    print(data['nom'])  # acces comme un dict
+    print(data['nom'])  # accès comme un dict
 
 # Ecrire un fichier JSON
 resultat = {'score': 95, 'eleve': 'Alice'}
@@ -384,8 +391,8 @@ Path('resultats').mkdir(exist_ok=True)</code></pre>
         <div class="col-text">
           <ul class="bullet-list"><li class="fragment" data-fragment-index="0" style="animation-delay: 0s">import math → math.sqrt(16)</li>
 <li class="fragment" data-fragment-index="1" style="animation-delay: 0.15s">from math import sqrt → sqrt(16)</li>
-<li class="fragment" data-fragment-index="2" style="animation-delay: 0.3s">import numpy as np → alias pratique</li>
-<li class="fragment" data-fragment-index="3" style="animation-delay: 0.44999999999999996s">pip install pandas → installe depuis PyPI</li>
+<li class="fragment" data-fragment-index="2" style="animation-delay: 0.3s">import random as rnd → alias pratique</li>
+<li class="fragment" data-fragment-index="3" style="animation-delay: 0.44999999999999996s">pip install matplotlib → installe depuis PyPI</li>
 <li class="fragment" data-fragment-index="4" style="animation-delay: 0.6s">Vos propres fichiers .py sont des modules</li></ul>
         </div>
         <div class="col-visual">
@@ -401,7 +408,85 @@ Path('resultats').mkdir(exist_ok=True)</code></pre>
     </div></div>
       </div>
       <div class="slide-footer">
-        <span class="slide-num">8 / 9</span>
+        <span class="slide-num">8 / 12</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:90%; background:#00f3ff"></div></div>
+      
+      <div class="slide-header">
+        <h2>Gestion d'erreurs</h2>
+        <p class="slide-subtitle" style="color: #00f3ff">try / except / finally</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-python">try:
+    with open("inexistant.txt", "r", encoding="utf-8") as f:
+        contenu = f.read()
+except FileNotFoundError:
+    print("Fichier introuvable")
+finally:
+    print("Bloc terminé")</code></pre>
+        </div>
+        <div class="col-visual">
+          <ul class="bullet-list">
+            <li>Capturer l'erreur la plus précise possible</li>
+            <li>Éviter les <code>except:</code> trop larges</li>
+            <li>Journaliser les cas d'échec importants</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">9 / 12</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:94%; background:#a78bfa"></div></div>
+      
+      <div class="slide-header">
+        <h2>Architecture minimale d'un package</h2>
+        <p class="slide-subtitle" style="color: #a78bfa">Structurer le code pour grandir proprement</p>
+      </div>
+      <div class="slide-body two-col">
+        <div class="col-code">
+          <pre><code class="language-text">mon_projet/
+  main.py
+  src/
+    __init__.py
+    io_utils.py
+    business_rules.py
+  tests/
+    test_business_rules.py</code></pre>
+        </div>
+        <div class="col-visual">
+          <ul class="bullet-list">
+            <li>Séparer I/O, logique métier, exécution</li>
+            <li>Préparer les tests dès la base</li>
+            <li>Nommage clair des modules</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">
+        <span class="slide-num">10 / 12</span>
+      </div>
+    </section>
+
+    <section data-background-color="#080808" data-transition="slide">
+      <div class="progress-bar"><div class="progress-fill" style="width:97%; background:#10b981"></div></div>
+      
+      <div class="slide-header">
+        <h2>Checklist qualité fichiers/modules</h2>
+      </div>
+      <ul class="bullet-list">
+        <li>Encodage UTF-8 explicite sur les fichiers texte</li>
+        <li>Lecture paresseuse pour gros fichiers</li>
+        <li>Exceptions explicites et messages actionnables</li>
+        <li>Imports cohérents et sans dépendances circulaires</li>
+      </ul>
+      <div class="slide-footer">
+        <span class="slide-num">11 / 12</span>
       </div>
     </section>
 
@@ -428,7 +513,7 @@ Path('resultats').mkdir(exist_ok=True)</code></pre>
         <span class="check" style="color: #00f3ff">✓</span> import et pip pour étendre Python
       </li></ul>
       <div class="slide-footer">
-        <span class="slide-num">9 / 9</span>
+        <span class="slide-num">12 / 12</span>
       </div>
     </section>
     </div>

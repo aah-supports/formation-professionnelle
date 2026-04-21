@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Niveau III — Chapitre 1 NumPy</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+  .reveal { font-family: Inter, Arial, sans-serif; font-size: 20px; }
+  .reveal h2 { font-size: 1.5em; }
+  .reveal h3 { font-size: 1.15em; }
+  .reveal pre { font-size: .54em; border-radius: 10px; }
+
+  .course-home {
+    position: fixed; top: 14px; left: 14px; z-index: 50;
+    color: #74b9ff; text-decoration: none; font-size: .55em; font-weight: 600;
+    background: rgba(8,8,8,.55); border: 1px solid #333; padding: 6px 10px; border-radius: 999px;
+  }
+</style>
+</head>
+<body>
+<a class="course-home" href="../index.html">Accueil du niveau</a>
+<div class="reveal"><div class="slides">
+<section>
+  <h2>Chapitre 1 — Fondations NumPy</h2>
+  <p>Construire des traitements numériques fiables et performants.</p>
+</section>
+<section>
+  <h3>Objectifs d'apprentissage</h3>
+  <ul>
+    <li>Comprendre mémoire, <code>shape</code>, <code>dtype</code> et axes.</li>
+    <li>Vectoriser sans perdre la lisibilité métier.</li>
+    <li>Éviter les copies cachées et les erreurs de broadcasting.</li>
+    <li>Mesurer les gains avec des benchmarks simples.</li>
+  </ul>
+</section>
+<section>
+  <h3>Structure interne d'un <code>ndarray</code></h3>
+  <pre><code class="language-python">import numpy as np
+
+arr = np.array([[1, 2, 3], [4, 5, 6]], dtype=np.float64)
+print(arr.shape)    # (2, 3)
+print(arr.ndim)     # 2
+print(arr.dtype)    # float64
+print(arr.strides)  # déplacement mémoire par axe</code></pre>
+</section>
+<section>
+  <h3>Pourquoi le <code>dtype</code> compte</h3>
+  <ul>
+    <li><code>float64</code> : précision, coût mémoire plus élevé.</li>
+    <li><code>float32</code> : plus compact, attention aux erreurs d'arrondi.</li>
+    <li><code>int64</code> : identifiants et compteurs robustes.</li>
+    <li><code>object</code> : éviter pour les calculs vectorisés.</li>
+  </ul>
+</section>
+<section>
+  <h3>Vectorisation vs boucle</h3>
+  <pre><code class="language-python">import numpy as np
+
+x = np.random.rand(2_000_000)
+# boucle Python lente
+# for i in range(len(x)): ...
+
+# vectorisé
+z = (x - x.mean()) / x.std()</code></pre>
+</section>
+<section>
+  <h3>Broadcasting: règles minimales</h3>
+  <ul>
+    <li>Comparer dimensions de droite à gauche.</li>
+    <li>Deux dimensions sont compatibles si égales ou si l'une vaut 1.</li>
+    <li>En cas d'incompatibilité: erreur explicite de shape.</li>
+  </ul>
+  <pre><code class="language-python">sales = np.array([[100, 120, 140], [80, 95, 110]])
+coef = np.array([1.0, 0.9, 1.1])
+adjusted = sales * coef</code></pre>
+</section>
+<section>
+  <h3>Indexation avancée</h3>
+  <pre><code class="language-python">m = np.arange(12).reshape(3, 4)
+
+sub = m[:, [0, 2]]      # fancy indexing
+mask = m % 2 == 0
+pairs = m[mask]         # masque booléen
+
+print(sub)
+print(pairs[:4])</code></pre>
+</section>
+<section>
+  <h3>Copy vs view</h3>
+  <pre><code class="language-python">x = np.array([10, 20, 30, 40])
+view = x[1:3]          # vue
+clone = x[1:3].copy()  # copie réelle
+
+view[0] = 999
+print(x)      # modifié
+print(clone)  # indépendant</code></pre>
+</section>
+<section>
+  <h3>Reshape, transpose, flatten</h3>
+  <pre><code class="language-python">x = np.arange(12)
+m = x.reshape(3, 4)
+mt = m.T
+flat = m.ravel()  # vue si possible
+
+print(m.shape, mt.shape, flat.shape)</code></pre>
+</section>
+<section>
+  <h3>Agrégations robustes</h3>
+  <pre><code class="language-python">m = np.array([[2, 4, 8], [1, 3, 9]])
+row_sum = m.sum(axis=1)
+col_mean = m.mean(axis=0)
+col_std = m.std(axis=0, ddof=1)
+
+print(row_sum, col_mean, col_std)</code></pre>
+</section>
+<section>
+  <h3>NumPy random et reproductibilité</h3>
+  <pre><code class="language-python">rng = np.random.default_rng(seed=42)
+sample = rng.normal(loc=100, scale=15, size=5)
+print(sample)</code></pre>
+  <ul>
+    <li>Utiliser un seed permet des tests et comparaisons stables.</li>
+  </ul>
+</section>
+<section>
+  <h3>Algèbre linéaire de base</h3>
+  <pre><code class="language-python">A = np.array([[1., 2.], [3., 4.]])
+b = np.array([5., 6.])
+x = np.linalg.solve(A, b)
+print(x)</code></pre>
+</section>
+<section>
+  <h3>Benchmark minimal</h3>
+  <pre><code class="language-python">from time import perf_counter
+
+x = np.random.rand(500_000)
+t0 = perf_counter()
+_ = np.sqrt(x) + np.log1p(x)
+print(f"{(perf_counter()-t0)*1000:.1f} ms")</code></pre>
+</section>
+<section>
+  <h3>Pièges courants en production</h3>
+  <ul>
+    <li>Confondre axes 0/1 et publier des agrégats faux.</li>
+    <li>Forcer des conversions répétées de type en pipeline.</li>
+    <li>Créer des copies massives involontaires.</li>
+    <li>Ignorer les NaN avant des calculs statistiques.</li>
+  </ul>
+</section>
+<section>
+  <h3>Récapitulatif</h3>
+  <ul>
+    <li>NumPy est la base de la performance data en Python.</li>
+    <li><code>dtype</code>, axes et mémoire sont des notions non négociables.</li>
+    <li>Vectoriser oui, mais toujours avec contrôles de qualité.</li>
+  </ul>
+</section>
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script>
+  Reveal.initialize({ hash: true, transition: 'slide', controls: false, progress: true });
+  hljs.highlightAll();
+</script>
+</body>
+</html>

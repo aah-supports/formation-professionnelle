@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Niveau IV — Plan de cours détaillé</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:1150px;margin:30px auto;padding:0 16px;line-height:1.6;color:#222}
+h1{margin-bottom:6px}h2{margin-top:24px}h3{margin-top:14px}
+table{border-collapse:collapse;width:100%;margin-top:10px}th,td{border:1px solid #ddd;padding:10px;text-align:left;vertical-align:top}th{background:#f3f4f6}
+pre{background:#111827;color:#e5e7eb;padding:12px;border-radius:8px;overflow:auto;font-size:.88rem}
+small{color:#666}
+code{background:#f3f4f6;padding:2px 5px;border-radius:4px}
+</style>
+</head>
+<body>
+<p><a href="../index.html">&larr; Retour index Python Niveau IV</a></p>
+<h1>Python Niveau IV — Plan de cours détaillé</h1>
+<p><strong>Durée</strong> : <strong>3 jours (21h)</strong> — parcours avancé architecture, qualité, performance et delivery.</p>
+
+<h2>Jour 1 — Architecture et design orienté production</h2>
+<table>
+  <tr><th>Créneau</th><th>Progression</th><th>Contenu</th><th>Code / livrable</th><th>Critère de réussite</th></tr>
+  <tr>
+    <td>09:00–10:30</td>
+    <td>Base avancée</td>
+    <td>Architecture modulaire : couches, frontières, dépendances.</td>
+    <td>Cartographie d'une base existante.</td>
+    <td>Découpage clair et justifié.</td>
+  </tr>
+  <tr>
+    <td>10:45–12:30</td>
+    <td>Intermédiaire</td>
+    <td>Ports/adaptateurs, inversion de dépendances, composition root.</td>
+    <td>Interfaces <code>Protocol</code> pour domaine.</td>
+    <td>Domaine testable sans infrastructure réelle.</td>
+  </tr>
+  <tr>
+    <td>13:30–15:00</td>
+    <td>Intermédiaire+</td>
+    <td>Design des cas d'usage et gestion des erreurs métier.</td>
+    <td>Service applicatif refactoré.</td>
+    <td>Flux métier lisible, erreurs explicites.</td>
+  </tr>
+  <tr>
+    <td>15:15–17:00</td>
+    <td>Consolidation</td>
+    <td>Atelier de refonte architecture sur module critique.</td>
+    <td>Blueprint « avant / après ».</td>
+    <td>Architecture revue et validée collectivement.</td>
+  </tr>
+</table>
+
+<h2>Jour 2 — Qualité, typing, tests et observabilité</h2>
+<table>
+  <tr><th>Créneau</th><th>Progression</th><th>Contenu</th><th>Code / livrable</th><th>Critère de réussite</th></tr>
+  <tr>
+    <td>09:00–10:30</td>
+    <td>Intermédiaire</td>
+    <td>Typing strict, contrats d'API interne, cohérence des données.</td>
+    <td>Module typé de bout en bout.</td>
+    <td>Mypy vert, signatures cohérentes.</td>
+  </tr>
+  <tr>
+    <td>10:45–12:30</td>
+    <td>Intermédiaire+</td>
+    <td>Tests unitaires et d'intégration, cas limites et non-régression.</td>
+    <td>Suite de tests ciblée.</td>
+    <td>Comportements critiques sécurisés.</td>
+  </tr>
+  <tr>
+    <td>13:30–15:00</td>
+    <td>Intermédiaire+</td>
+    <td>Observabilité : logs structurés, métriques, traces de diagnostic.</td>
+    <td>Instrumentation d'un service.</td>
+    <td>Incident reproductible et analysable rapidement.</td>
+  </tr>
+  <tr>
+    <td>15:15–17:00</td>
+    <td>Consolidation</td>
+    <td>Chaîne qualité complète locale et CI.</td>
+    <td>Pipeline lint + typing + tests.</td>
+    <td>Merge bloqué en cas de régression.</td>
+  </tr>
+</table>
+
+<h2>Jour 3 — Performance et industrialisation</h2>
+<table>
+  <tr><th>Créneau</th><th>Progression</th><th>Contenu</th><th>Code / livrable</th><th>Critère de réussite</th></tr>
+  <tr>
+    <td>09:00–10:30</td>
+    <td>Avancé</td>
+    <td>Profilage CPU/mémoire, benchmark, identification de points chauds.</td>
+    <td>Rapport avant/après optimisation.</td>
+    <td>Gain mesuré et documenté.</td>
+  </tr>
+  <tr>
+    <td>10:45–12:30</td>
+    <td>Avancé</td>
+    <td>Arbitrages performance : async, multiprocessing, cache, batching.</td>
+    <td>Comparatif de stratégies.</td>
+    <td>Choix technique argumenté par métriques.</td>
+  </tr>
+  <tr>
+    <td>13:30–15:00</td>
+    <td>Projet</td>
+    <td>Delivery : versioning, release progressive, rollback, runbook.</td>
+    <td>Pipeline CI/CD prêt production.</td>
+    <td>Scénario de déploiement sécurisé validé.</td>
+  </tr>
+  <tr>
+    <td>15:15–17:00</td>
+    <td>Clôture</td>
+    <td>Revue finale, quiz, feuille de route technique.</td>
+    <td>Plan d'amélioration équipe.</td>
+    <td>Capacité à piloter un projet Python production.</td>
+  </tr>
+</table>
+
+<h2>Bloc théorique transverse (niveau IV)</h2>
+<ul>
+  <li><strong>Architecture pilotée domaine</strong> : entités, services de domaine, invariants.</li>
+  <li><strong>Contraintes runtime Python</strong> : GIL, coût des abstractions, arbitrage sync/async/process.</li>
+  <li><strong>Qualité au niveau système</strong> : critères d'acceptation non fonctionnels (latence, robustesse, sécurité).</li>
+  <li><strong>Observabilité avancée</strong> : corrélation logs/traces, budget d'erreurs, alertes actionnables.</li>
+  <li><strong>Delivery engineering</strong> : fréquence de déploiement, lead time, taux d'échec, MTTR.</li>
+</ul>
+
+<h2>Repères de code du niveau IV</h2>
+<pre><code>from typing import Protocol
+
+class Repo(Protocol):
+    def get(self, key: str): ...
+
+def process(repo: Repo, key: str):
+    item = repo.get(key)
+    if item is None:
+        raise ValueError("item introuvable")
+    return item</code></pre>
+<pre><code>class CircuitBreaker:
+    def __init__(self, threshold: int = 3):
+        self.threshold = threshold
+        self.failures = 0
+
+    def record(self, ok: bool) -> None:
+        self.failures = 0 if ok else self.failures + 1
+
+    @property
+    def open(self) -> bool:
+        return self.failures >= self.threshold</code></pre>
+
+<p><small>Stack : Python 3.11+, pytest, mypy/ruff, outils de profiling, CI GitHub/GitLab.</small></p>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python I — Module 6 Structuration</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+  .reveal { font-family: Inter, Arial, sans-serif; font-size: 20px; }
+  .reveal h2 { font-size: 1.5em; }
+  .reveal h3 { font-size: 1.15em; }
+  .reveal pre { font-size: .56em; border-radius: 10px; }
+  .course-home {
+    position: fixed; top: 14px; left: 14px; z-index: 50;
+    color: #74b9ff; text-decoration: none; font-size: .55em; font-weight: 600;
+    background: rgba(8,8,8,.55); border: 1px solid #333; padding: 6px 10px; border-radius: 999px;
+  }
+</style>
+</head>
+<body>
+<a class="course-home" href="../index.html">Accueil du niveau</a>
+<div class="reveal"><div class="slides">
+<section>
+  <h2>Module 6 — Structuration du code et validation</h2>
+  <p>Passer d'un script unique à un mini-projet Python propre.</p>
+</section>
+<section>
+  <h3>Objectifs</h3>
+  <ul>
+    <li>Découper un script en fonctions simples.</li>
+    <li>Organiser un projet avec des modules lisibles.</li>
+    <li>Valider les entrées et gérer les erreurs.</li>
+    <li>Préparer une exécution reproductible.</li>
+  </ul>
+</section>
+<section>
+  <h3>Découpage fonctionnel</h3>
+  <pre><code class="language-python">def load_rows(path: str):
+    ...
+
+
+def clean_rows(rows):
+    ...
+
+
+def build_report(rows):
+    ...
+
+
+def main():
+    rows = load_rows("data.csv")
+    rows = clean_rows(rows)
+    print(build_report(rows))</code></pre>
+</section>
+<section>
+  <h3>Convention de nommage</h3>
+  <ul>
+    <li>Fonctions en <code>snake_case</code>.</li>
+    <li>Variables métier explicites.</li>
+    <li>Constantes en MAJUSCULES.</li>
+    <li>Éviter les abréviations ambiguës.</li>
+  </ul>
+</section>
+<section>
+  <h3>Validation des entrées</h3>
+  <pre><code class="language-python">def parse_amount(value: str) -> float:
+    amount = float(value)
+    if amount < 0:
+        raise ValueError("montant négatif")
+    return amount
+
+
+def parse_date(value: str) -> str:
+    if len(value) != 10:
+        raise ValueError("date invalide")
+    return value</code></pre>
+</section>
+<section>
+  <h3>Gestion d'erreurs propre</h3>
+  <pre><code class="language-python">def run(path: str) -> None:
+    try:
+        rows = load_rows(path)
+        report = build_report(rows)
+        print(report)
+    except FileNotFoundError:
+        print("fichier introuvable")
+    except ValueError as err:
+        print(f"donnée invalide: {err}")</code></pre>
+</section>
+<section>
+  <h3>Séparer configuration et logique</h3>
+  <pre><code class="language-python">INPUT_PATH = "data/ventes.csv"
+OUTPUT_PATH = "out/report.json"
+
+
+def main() -> None:
+    rows = load_rows(INPUT_PATH)
+    result = build_report(rows)
+    save_json(OUTPUT_PATH, result)</code></pre>
+</section>
+<section>
+  <h3>Exemple de module utilitaire</h3>
+  <pre><code class="language-python"># utils_dates.py
+
+def to_month_key(date_iso: str) -> str:
+    # "2026-04-21" -> "2026-04"
+    return date_iso[:7]</code></pre>
+  <p>Un module = un fichier avec une responsabilité claire.</p>
+</section>
+<section>
+  <h3>Tests manuels systématiques</h3>
+  <ul>
+    <li>Cas nominal (données valides).</li>
+    <li>Cas limite (liste vide, zéro, texte vide).</li>
+    <li>Cas erreur (fichier absent, format invalide).</li>
+    <li>Comparer sortie obtenue vs sortie attendue.</li>
+  </ul>
+</section>
+<section>
+  <h3>Checklist qualité</h3>
+  <ul>
+    <li>Fonctions courtes et intention explicite.</li>
+    <li>Pas de duplication de logique.</li>
+    <li>Messages d'erreur compréhensibles.</li>
+    <li>Entrées/sorties documentées.</li>
+  </ul>
+</section>
+<section>
+  <h3>Récapitulatif</h3>
+  <ul>
+    <li>La structuration évite le script monolithique fragile.</li>
+    <li>Validation + erreurs explicites sécurisent l'exécution.</li>
+    <li>Un code clair est plus rapide à maintenir.</li>
+  </ul>
+</section>
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script>
+Reveal.initialize({ hash: true, transition: 'slide', controls: false, progress: true });
+hljs.highlightAll();
+</script>
+</body>
+</html>

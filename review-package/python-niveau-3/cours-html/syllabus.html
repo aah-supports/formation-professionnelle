@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Niveau III — Syllabus</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:1020px;margin:30px auto;padding:0 16px;line-height:1.65;color:#222}
+h1{margin-bottom:6px}h2{margin-top:24px}h3{margin-top:16px}ul{padding-left:22px}
+.badge{display:inline-block;background:#fff7e6;color:#92400e;padding:4px 10px;border-radius:999px;font-size:.85rem}
+.progress{background:#fffbeb;border:1px solid #f59e0b33;border-radius:10px;padding:12px;margin:8px 0}
+.progress strong{display:block;margin-bottom:4px}
+pre{background:#111827;color:#e5e7eb;padding:12px;border-radius:8px;overflow:auto;font-size:.9rem}
+code{background:#f3f4f6;padding:2px 5px;border-radius:4px}
+</style>
+</head>
+<body>
+<p><a href="../index.html">&larr; Retour index Python Niveau III</a></p>
+<h1>Python Niveau III — Syllabus</h1>
+<p class="badge">NumPy • pandas • Contrôle qualité des données</p>
+<p><strong>Durée recommandée</strong> : <strong>3 jours (21h)</strong> — niveau data intermédiaire avancé.</p>
+
+<h2>Objectif général</h2>
+<p>Passer d'analyses ponctuelles à des pipelines de données reproductibles, contrôlés et exploitables en environnement métier.</p>
+
+<h2>Progression pédagogique (du simple au complexe)</h2>
+<div class="progress"><strong>Étape 1 — Fondations NumPy</strong>Comprendre arrays, types, axes et vectorisation.</div>
+<div class="progress"><strong>Étape 2 — Fondations pandas</strong>Importer, typer et nettoyer les données tabulaires.</div>
+<div class="progress"><strong>Étape 3 — Transformations métier</strong>Regrouper, joindre, pivoter, calculer des KPI fiables.</div>
+<div class="progress"><strong>Étape 4 — Temporalité et robustesse</strong>Resampling, fenêtres, contrôles de qualité.</div>
+<div class="progress"><strong>Étape 5 — Restitution</strong>Exporter des livrables clairs et documenter les hypothèses.</div>
+
+<h2>Définitions essentielles</h2>
+<ul>
+  <li><strong>Vectorisation</strong> : calcul appliqué à un tableau complet sans boucle Python explicite.</li>
+  <li><strong>DataFrame</strong> : table de données pandas indexée en lignes/colonnes.</li>
+  <li><strong>Jointure</strong> : combinaison de tables via des clés communes.</li>
+  <li><strong>Cardinalité</strong> : relation entre clés (one-to-one, one-to-many, etc.).</li>
+  <li><strong>KPI</strong> : indicateur métier défini, calculé et suivi dans le temps.</li>
+</ul>
+
+<h2>Notions théoriques supplémentaires</h2>
+<ul>
+  <li><strong>Copy vs view</strong> : impact mémoire et risques d'écriture involontaire sur les données sources.</li>
+  <li><strong>Indexation avancée</strong> : différences entre <code>loc</code>, <code>iloc</code>, index hiérarchiques et slicing temporel.</li>
+  <li><strong>Dtypes et coercition</strong> : fiabilité numérique, colonnes catégorielles, précision et NA.</li>
+  <li><strong>Fenêtres glissantes</strong> : moyenne mobile, lissage, signaux de tendance.</li>
+  <li><strong>Idempotence data</strong> : exécuter plusieurs fois un pipeline sans dérive des résultats.</li>
+  <li><strong>Data contracts</strong> : schéma attendu, règles métier et contrôles automatiques.</li>
+</ul>
+
+<h2>Extraits de code de référence</h2>
+<h3>NumPy : normalisation</h3>
+<pre><code>import numpy as np
+x = np.array([10, 12, 15, 21], dtype=float)
+z = (x - x.mean()) / x.std()</code></pre>
+
+<h3>pandas : nettoyage</h3>
+<pre><code>import pandas as pd
+
+df = pd.read_csv("ventes.csv", parse_dates=["date"])
+df["prix_net"] = pd.to_numeric(df["prix_net"], errors="coerce")
+df = df.dropna(subset=["prix_net", "client_id"])
+df = df[df["prix_net"] >= 0]</code></pre>
+
+<h3>Consolidation KPI</h3>
+<pre><code>kpi = df.groupby("region", as_index=False).agg(ca=("prix_net", "sum"))
+report = kpi.merge(ref_regions, on="region", how="left", validate="one_to_one")</code></pre>
+
+<h3>Contrôle de schéma minimal</h3>
+<pre><code>expected = {"date": "datetime64[ns]", "region": "object", "prix_net": "float64"}
+for col, dtype in expected.items():
+    if col not in df.columns:
+        raise ValueError(f"colonne manquante: {col}")
+    if str(df[col].dtype) != dtype:
+        raise ValueError(f"dtype invalide pour {col}: {df[col].dtype}")</code></pre>
+
+<h2>Compétences visées</h2>
+<ul>
+  <li>Utiliser NumPy pour accélérer les opérations numériques.</li>
+  <li>Nettoyer des jeux de données hétérogènes avec pandas.</li>
+  <li>Produire des agrégats fiables avec <code>groupby</code>, <code>merge</code>, <code>pivot_table</code>.</li>
+  <li>Mettre en place des contrôles qualité minimaux avant diffusion d'indicateurs.</li>
+  <li>Construire un flux d'analyse réutilisable et traçable.</li>
+</ul>
+
+<h2>Public cible et prérequis</h2>
+<ul>
+  <li>Public : analystes, data engineers juniors, développeurs Python orientés data.</li>
+  <li>Prérequis : Python intermédiaire + notions de stats descriptives.</li>
+</ul>
+
+<h2>Livrables stagiaire</h2>
+<ul>
+  <li>Notebook/script pipeline complet import → nettoyage → KPI → export.</li>
+  <li>Fiche pratique des patterns pandas les plus utiles.</li>
+  <li>Checklist de validation de données avant publication.</li>
+</ul>
+</body>
+</html>
