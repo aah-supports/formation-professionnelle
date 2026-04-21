@@ -22,7 +22,7 @@
     .subtitle { font-size:1.1em; color:var(--muted); margin-top:0.3em; }
     .slide-header { margin-bottom:1em; }
     pre { background:var(--bg2) !important; border:1px solid var(--border); border-radius:12px; padding:20px !important; margin:0 !important; font-size:0.7em !important; overflow-x:auto; }
-    code { font-family:'JetBrains Mono',monospace !important; line-height:1.7 !important; }
+    code { font-family:'JetBrains Mono',monospace !important; line-height:1.7 !important; font-variant-ligatures:none !important; font-feature-settings:'liga' 0,'calt' 0 !important; }
     .bullet-list, .summary-list { list-style:none; padding:0; margin:0; }
     .bullet-list li, .summary-list li { padding:8px 0; border-bottom:1px solid var(--border); color:var(--body); font-size:0.9em; line-height:1.5; }
     .bullet-list li:last-child, .summary-list li:last-child { border-bottom:none; }
@@ -164,7 +164,10 @@ test_unicite</code></pre>
     </section>
     </div>
   </div>
-  <a class="home-link" href="../../index.html">Accueil chapitres</a>
+  <a class="home-link" href="../index.html">Retour au niveau</a>
+  <a class="modules-link" href="index.html" style="position:fixed;bottom:14px;z-index:30;color:#74b9ff;text-decoration:none;font-size:0.6em;font-weight:600;opacity:0.92;background:rgba(8,8,8,0.55);border:1px solid #222;padding:6px 10px;border-radius:999px;left:150px;">Tous les modules</a>
+  <a class="prev-module-link" href="04-programmation-avancee.html" style="position:fixed;bottom:14px;z-index:30;color:#74b9ff;text-decoration:none;font-size:0.6em;font-weight:600;opacity:0.92;background:rgba(8,8,8,0.55);border:1px solid #222;padding:6px 10px;border-radius:999px;right:170px;">&larr; Module précédent</a>
+  <a class="next-module-link" href="06-tests-statistiques.html" style="position:fixed;bottom:14px;z-index:30;color:#74b9ff;text-decoration:none;font-size:0.6em;font-weight:600;opacity:0.92;background:rgba(8,8,8,0.55);border:1px solid #222;padding:6px 10px;border-radius:999px;right:18px;">Module suivant &rarr;</a>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>

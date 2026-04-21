@@ -78,7 +78,7 @@ h1{font-size:1.5rem;color:#2d3436;margin-bottom:6px}
 <div class="container">
   <header>
     <h1>QCM de positionnement — R Niveau I</h1>
-    <p class="subtitle">Test d'entrée avant démarrage des modules</p>
+    <p class="subtitle">Évalue les prérequis pour suivre la formation (et non les acquis du programme)</p>
     <div class="meta">
       <span>15 questions</span>
       <span>~10 min</span>
@@ -103,198 +103,198 @@ h1{font-size:1.5rem;color:#2d3436;margin-bottom:6px}
 const QUESTIONS = [
   {
     id: 1,
-    section: "Socle informatique",
-    text: "Dans RStudio, où exécute-t-on directement une ligne de code ?",
+    section: "Socle numerique",
+    text: "Quel format est le plus standard pour echanger un tableau de donnees entre outils ?",
     choices: [
-      { letter: "a", text: "Dans la console" },
-      { letter: "b", text: "Dans l'onglet Files" },
-      { letter: "c", text: "Dans l'onglet Plots" },
-      { letter: "d", text: "Dans l'onglet Help" }
+      { letter: "a", text: "PDF" },
+      { letter: "b", text: "CSV" },
+      { letter: "c", text: "PNG" },
+      { letter: "d", text: "PPTX" }
     ],
-    answer: "a"
+    answer: "b"
   },
   {
     id: 2,
-    section: "Socle informatique",
-    text: "Quelle fonction installe un package R ?",
+    section: "Socle numerique",
+    text: "Dans un tableau, la cellule <code>B3</code> correspond a :",
     choices: [
-      { letter: "a", text: "<code>library()</code>" },
-      { letter: "b", text: "<code>install.packages()</code>" },
-      { letter: "c", text: "<code>requireNamespace()</code>" },
-      { letter: "d", text: "<code>package.load()</code>" }
+      { letter: "a", text: "Colonne 3, ligne B" },
+      { letter: "b", text: "Bloc B sur 3 colonnes" },
+      { letter: "c", text: "Colonne B, ligne 3" },
+      { letter: "d", text: "La 3e feuille du classeur" }
     ],
-    answer: "b"
+    answer: "c"
   },
   {
     id: 3,
-    section: "Socle informatique",
-    text: "Quel symbole sert à commenter une ligne en R ?",
+    section: "Socle numerique",
+    text: "Si un fichier de donnees ne s'ouvre pas, quel premier reflexe est le plus pertinent ?",
     choices: [
-      { letter: "a", text: "//" },
-      { letter: "b", text: "--" },
-      { letter: "c", text: "#" },
-      { letter: "d", text: "/* */" }
-    ],
-    answer: "c"
-  },
-  {
-    id: 4,
-    section: "Socle informatique",
-    text: "Que fait <code>library(dplyr)</code> ?",
-    choices: [
-      { letter: "a", text: "Installe dplyr" },
-      { letter: "b", text: "Charge dplyr dans la session" },
-      { letter: "c", text: "Supprime dplyr" },
-      { letter: "d", text: "Met à jour dplyr" }
+      { letter: "a", text: "Redemarrer l'ordinateur" },
+      { letter: "b", text: "Verifier le chemin et l'existence du fichier" },
+      { letter: "c", text: "Changer la langue du systeme" },
+      { letter: "d", text: "Supprimer le fichier puis reessayer" }
     ],
     answer: "b"
   },
   {
-    id: 5,
-    section: "Socle informatique",
-    text: "Quel opérateur assigne une valeur à une variable en R (usage courant) ?",
+    id: 4,
+    section: "Socle numerique",
+    text: "Un message <code>Permission denied</code> signifie en general :",
     choices: [
-      { letter: "a", text: "=>" },
-      { letter: "b", text: "=" },
-      { letter: "c", text: "<-" },
-      { letter: "d", text: ":=" }
+      { letter: "a", text: "Le fichier est vide" },
+      { letter: "b", text: "Le separateur decimal est incorrect" },
+      { letter: "c", text: "Les droits d'acces sont insuffisants" },
+      { letter: "d", text: "Le fichier est forcement corrompu" }
     ],
     answer: "c"
   },
   {
-    id: 6,
-    section: "Fondamentaux R",
-    text: "Que crée <code>c(10, 20, 30)</code> ?",
+    id: 5,
+    section: "Socle numerique",
+    text: "Pourquoi evite-t-on les noms de colonnes avec espaces et caracteres speciaux ?",
     choices: [
-      { letter: "a", text: "Un data.frame" },
-      { letter: "b", text: "Un vecteur" },
-      { letter: "c", text: "Une liste imbriquée" },
-      { letter: "d", text: "Une matrice" }
+      { letter: "a", text: "Parce qu'ils ralentissent le processeur" },
+      { letter: "b", text: "Parce qu'ils compliquent la manipulation et l'automatisation" },
+      { letter: "c", text: "Parce qu'ils sont interdits dans tous les tableurs" },
+      { letter: "d", text: "Parce qu'ils empechent d'ouvrir les fichiers CSV" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 6,
+    section: "Logique et lecture de donnees",
+    text: "Dans la serie <code>4, 7, 9, 12</code>, quelle est la mediane ?",
+    choices: [
+      { letter: "a", text: "7" },
+      { letter: "b", text: "8" },
+      { letter: "c", text: "9" },
+      { letter: "d", text: "10" }
     ],
     answer: "b"
   },
   {
     id: 7,
-    section: "Fondamentaux R",
-    text: "Comment récupérer le premier élément d'un vecteur <code>x</code> ?",
+    section: "Logique et lecture de donnees",
+    text: "Un tableau contient 20 lignes dont 2 valeurs manquantes sur une colonne cle. Quel est le taux de valeurs manquantes ?",
     choices: [
-      { letter: "a", text: "<code>x(1)</code>" },
-      { letter: "b", text: "<code>x[1]</code>" },
-      { letter: "c", text: "<code>x{1}</code>" },
-      { letter: "d", text: "<code>x.first()</code>" }
+      { letter: "a", text: "2 %" },
+      { letter: "b", text: "5 %" },
+      { letter: "c", text: "10 %" },
+      { letter: "d", text: "20 %" }
     ],
-    answer: "b"
+    answer: "c"
   },
   {
     id: 8,
-    section: "Fondamentaux R",
-    text: "Que renvoie <code>is.na(x)</code> ?",
+    section: "Logique et lecture de donnees",
+    text: "Si la condition est <code>valeur &gt; 100</code> et que <code>valeur = 100</code>, le resultat est :",
     choices: [
-      { letter: "a", text: "Les valeurs numériques de x" },
-      { letter: "b", text: "Un vecteur logique indiquant les valeurs manquantes" },
-      { letter: "c", text: "Le type de x" },
-      { letter: "d", text: "Le nombre de colonnes" }
+      { letter: "a", text: "Vrai" },
+      { letter: "b", text: "Faux" },
+      { letter: "c", text: "Inconnu" },
+      { letter: "d", text: "Une erreur systeme" }
     ],
     answer: "b"
   },
   {
     id: 9,
-    section: "Fondamentaux R",
-    text: "Pourquoi écrit-on souvent <code>mean(x, na.rm = TRUE)</code> ?",
+    section: "Logique et lecture de donnees",
+    text: "Que fait ce pseudo-code ?",
+    code: "if (stock < 0) {\n  statut <- \"Anomalie\"\n} else {\n  statut <- \"OK\"\n}",
     choices: [
-      { letter: "a", text: "Pour trier x" },
-      { letter: "b", text: "Pour ignorer les valeurs manquantes dans le calcul" },
-      { letter: "c", text: "Pour convertir x en texte" },
-      { letter: "d", text: "Pour réduire la taille mémoire" }
+      { letter: "a", text: "Il trie les lignes d'un tableau" },
+      { letter: "b", text: "Il applique un test conditionnel" },
+      { letter: "c", text: "Il calcule une moyenne" },
+      { letter: "d", text: "Il genere un graphique" }
     ],
     answer: "b"
   },
   {
     id: 10,
-    section: "Fondamentaux R",
-    text: "Quelle structure est la plus adaptée pour stocker un tableau lignes/colonnes ?",
+    section: "Logique et lecture de donnees",
+    text: "Pour rapprocher deux tableaux via un identifiant commun (ex. <code>client_id</code>), l'operation la plus adaptee est :",
     choices: [
-      { letter: "a", text: "Un vecteur" },
-      { letter: "b", text: "Un data.frame" },
-      { letter: "c", text: "Un facteur" },
-      { letter: "d", text: "Un booléen" }
-    ],
-    answer: "b"
-  },
-  {
-    id: 11,
-    section: "Import, analyse, viz",
-    text: "Quelle fonction permet de lire un fichier CSV en base R ?",
-    choices: [
-      { letter: "a", text: "<code>read.csv()</code>" },
-      { letter: "b", text: "<code>load.csv()</code>" },
-      { letter: "c", text: "<code>import.csv()</code>" },
-      { letter: "d", text: "<code>open.csv()</code>" }
+      { letter: "a", text: "Une jointure (merge/join)" },
+      { letter: "b", text: "Une transposition" },
+      { letter: "c", text: "Une conversion en image" },
+      { letter: "d", text: "Un tri alphabetique" }
     ],
     answer: "a"
   },
   {
-    id: 12,
-    section: "Import, analyse, viz",
-    text: "Que fait <code>summary(df)</code> ?",
+    id: 11,
+    section: "Raisonnement analytique",
+    text: "Avant de calculer un KPI, quelle etape est la plus importante en premier ?",
     choices: [
-      { letter: "a", text: "Supprime les doublons" },
-      { letter: "b", text: "Affiche un résumé statistique des variables" },
-      { letter: "c", text: "Crée un graphique" },
-      { letter: "d", text: "Installe un package" }
+      { letter: "a", text: "Choisir les couleurs du graphique" },
+      { letter: "b", text: "Definir la metrique et la periode" },
+      { letter: "c", text: "Exporter un PDF vide" },
+      { letter: "d", text: "Renommer l'ordinateur" }
     ],
     answer: "b"
   },
   {
-    id: 13,
-    section: "Import, analyse, viz",
-    text: "Quel code trace rapidement un nuage de points ?",
+    id: 12,
+    section: "Raisonnement analytique",
+    text: "Pour comparer des categories (A, B, C) sur une valeur numerique, le graphique le plus adapte est :",
     choices: [
-      { letter: "a", text: "<code>plot(x, y)</code>" },
-      { letter: "b", text: "<code>graph(x, y)</code>" },
-      { letter: "c", text: "<code>scatter(x, y)</code>" },
-      { letter: "d", text: "<code>draw(x, y)</code>" }
+      { letter: "a", text: "Diagramme en barres" },
+      { letter: "b", text: "Nuage de points temporel" },
+      { letter: "c", text: "Carte geographique" },
+      { letter: "d", text: "Organigramme" }
+    ],
+    answer: "a"
+  },
+  {
+    id: 13,
+    section: "Raisonnement analytique",
+    text: "Si quelques valeurs extremes tirent fortement la moyenne, quel indicateur complementaire regarder ?",
+    choices: [
+      { letter: "a", text: "La mediane" },
+      { letter: "b", text: "Le nom du fichier" },
+      { letter: "c", text: "Le nombre d'onglets" },
+      { letter: "d", text: "La couleur des cellules" }
     ],
     answer: "a"
   },
   {
     id: 14,
-    section: "Import, analyse, viz",
-    text: "Que fait ce code ?",
-    code: "if (note >= 10) {\n  resultat <- \"Admis\"\n} else {\n  resultat <- \"Ajourné\"\n}",
+    section: "Raisonnement analytique",
+    text: "Avant de partager une analyse, quel controle est prioritaire ?",
     choices: [
-      { letter: "a", text: "Il crée une boucle" },
-      { letter: "b", text: "Il effectue un test conditionnel" },
-      { letter: "c", text: "Il installe un package" },
-      { letter: "d", text: "Il lit un fichier" }
+      { letter: "a", text: "Verifier sources, unites et ordre de grandeur" },
+      { letter: "b", text: "Ajouter des animations" },
+      { letter: "c", text: "Changer la police" },
+      { letter: "d", text: "Masquer les valeurs manquantes sans le signaler" }
     ],
-    answer: "b"
+    answer: "a"
   },
   {
     id: 15,
-    section: "Import, analyse, viz",
-    text: "Quel enchaînement est le plus logique pour un mini-projet R ?",
+    section: "Raisonnement analytique",
+    text: "Quel enchainement est le plus logique pour traiter une demande metier de type reporting ?",
     choices: [
-      { letter: "a", text: "Graphique → Import → Nettoyage" },
-      { letter: "b", text: "Import → Contrôle des données → Analyse → Visualisation" },
-      { letter: "c", text: "Installation → Export → Suppression" },
-      { letter: "d", text: "Visualisation uniquement" }
+      { letter: "a", text: "Visualisation -> Import -> Nettoyage -> Definition du besoin" },
+      { letter: "b", text: "Besoin -> Import -> Controle qualite -> Analyse -> Communication" },
+      { letter: "c", text: "Export -> Nettoyage -> Suppression" },
+      { letter: "d", text: "Copier-coller des chiffres sans verification" }
     ],
     answer: "b"
   }
 ];
 
 const SECTIONS = [
-  { title: "Socle informatique", ids: [1,2,3,4,5] },
-  { title: "Fondamentaux R", ids: [6,7,8,9,10] },
-  { title: "Import, analyse, viz", ids: [11,12,13,14,15] }
+  { title: "Socle numerique", ids: [1,2,3,4,5] },
+  { title: "Logique et lecture de donnees", ids: [6,7,8,9,10] },
+  { title: "Raisonnement analytique", ids: [11,12,13,14,15] }
 ];
 
 const GRADING = [
-  { range: "13-15", label: "Très bon niveau d'entrée pour R Niveau I" },
-  { range: "10-12", label: "Niveau correct, quelques points à consolider" },
-  { range: "6-9", label: "Bases partielles, révision recommandée" },
-  { range: "< 6", label: "Débutant complet, accompagnement conseillé" }
+  { range: "13-15", label: "Prerequis solides pour suivre la formation dans de bonnes conditions" },
+  { range: "10-12", label: "Prerequis suffisants, quelques bases a consolider" },
+  { range: "6-9", label: "Risque de difficulte: remise a niveau conseillee avant l'entree" },
+  { range: "< 6", label: "Prerequis insuffisants pour suivre sereinement le rythme" }
 ];
 
 function renderQuiz() {

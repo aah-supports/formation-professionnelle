@@ -78,7 +78,7 @@ h1{font-size:1.5rem;color:#2d3436;margin-bottom:6px}
 <div class="container">
   <header>
     <h1>QCM de positionnement — R Niveau II</h1>
-    <p class="subtitle">Test d'entrée avant les modules BDD, Excel, requêtes avancées et stats descriptives</p>
+    <p class="subtitle">Évalue les pre requis pour suivre R Niveau II, pas les acquis des modules avances</p>
     <div class="meta">
       <span>15 questions</span>
       <span>~10 min</span>
@@ -103,199 +103,200 @@ h1{font-size:1.5rem;color:#2d3436;margin-bottom:6px}
 const QUESTIONS = [
   {
     id: 1,
-    section: "BDD et SQL avec R",
-    text: "Quel package sert d'interface standard pour se connecter à une base SQL depuis R ?",
+    section: "Fondamentaux R attendus",
+    text: "Quel operateur est le plus utilise pour affecter une valeur a un objet en R ?",
     choices: [
-      { letter: "a", text: "<code>ggplot2</code>" },
-      { letter: "b", text: "<code>DBI</code>" },
-      { letter: "c", text: "<code>stringr</code>" },
-      { letter: "d", text: "<code>openxlsx</code>" }
+      { letter: "a", text: "<code>&lt;-</code>" },
+      { letter: "b", text: "<code>==</code>" },
+      { letter: "c", text: "<code>&gt;=</code>" },
+      { letter: "d", text: "<code>::</code>" }
+    ],
+    answer: "a"
+  },
+  {
+    id: 2,
+    section: "Fondamentaux R attendus",
+    text: "Comment recuperer le premier element d'un vecteur <code>x</code> en R ?",
+    choices: [
+      { letter: "a", text: "<code>x(1)</code>" },
+      { letter: "b", text: "<code>x[1]</code>" },
+      { letter: "c", text: "<code>x{1}</code>" },
+      { letter: "d", text: "<code>first(x)</code> est la seule syntaxe valide" }
     ],
     answer: "b"
   },
   {
-    id: 2,
-    section: "BDD et SQL avec R",
-    text: "Que fait principalement <code>dbGetQuery(con, sql)</code> ?",
-    choices: [
-      { letter: "a", text: "Exécute une requête SQL et retourne le résultat en table R" },
-      { letter: "b", text: "Sauvegarde un graphique" },
-      { letter: "c", text: "Installe une base locale" },
-      { letter: "d", text: "Crée un package" }
-    ],
-    answer: "a"
-  },
-  {
     id: 3,
-    section: "BDD et SQL avec R",
-    text: "Avec <code>dbplyr</code>, pourquoi attendre avant de faire <code>collect()</code> ?",
+    section: "Fondamentaux R attendus",
+    text: "Que renvoie <code>is.na(x)</code> ?",
     choices: [
-      { letter: "a", text: "Pour filtrer/agréger en base et limiter le volume rapatrié" },
-      { letter: "b", text: "Pour désactiver les index SQL" },
-      { letter: "c", text: "Pour convertir automatiquement en Excel" },
-      { letter: "d", text: "Pour supprimer les NA" }
+      { letter: "a", text: "La moyenne de <code>x</code>" },
+      { letter: "b", text: "Le type de <code>x</code>" },
+      { letter: "c", text: "Un vecteur logique indiquant les valeurs manquantes" },
+      { letter: "d", text: "Le nombre de colonnes du tableau" }
     ],
-    answer: "a"
+    answer: "c"
   },
   {
     id: 4,
-    section: "BDD et SQL avec R",
-    text: "Quel appel affiche le SQL généré par un pipeline dplyr sur table distante ?",
+    section: "Fondamentaux R attendus",
+    text: "Quelle fonction de base lit un fichier CSV dans R ?",
     choices: [
-      { letter: "a", text: "<code>show_query()</code>" },
-      { letter: "b", text: "<code>print_sql()</code>" },
-      { letter: "c", text: "<code>get_sql()</code>" },
-      { letter: "d", text: "<code>sql_view()</code>" }
+      { letter: "a", text: "<code>read.csv()</code>" },
+      { letter: "b", text: "<code>open.csv()</code>" },
+      { letter: "c", text: "<code>load.table()</code>" },
+      { letter: "d", text: "<code>import_file()</code>" }
     ],
     answer: "a"
   },
   {
     id: 5,
-    section: "Extraction Excel / tableur",
-    text: "Quelle fonction lit un fichier .xlsx dans R ?",
+    section: "Manipulation de donnees (niveau I)",
+    text: "Dans un pipeline dplyr, <code>filter()</code> sert principalement a :",
     choices: [
-      { letter: "a", text: "<code>readxl::read_excel()</code>" },
-      { letter: "b", text: "<code>DBI::dbReadTable()</code>" },
-      { letter: "c", text: "<code>utils::read.tableur()</code>" },
-      { letter: "d", text: "<code>jsonlite::fromJSON()</code>" }
+      { letter: "a", text: "Conserver certaines lignes selon une condition" },
+      { letter: "b", text: "Renommer toutes les colonnes automatiquement" },
+      { letter: "c", text: "Faire un graphique" },
+      { letter: "d", text: "Ecrire un fichier Excel" }
     ],
     answer: "a"
   },
   {
     id: 6,
-    section: "Extraction Excel / tableur",
-    text: "Quelle fonction permet de lister les onglets d'un classeur Excel ?",
+    section: "Manipulation de donnees (niveau I)",
+    text: "<code>select(nom, age)</code> permet de :",
     choices: [
-      { letter: "a", text: "<code>readxl::excel_sheets()</code>" },
-      { letter: "b", text: "<code>readxl::sheet_list()</code>" },
-      { letter: "c", text: "<code>openxlsx::sheet_get()</code>" },
-      { letter: "d", text: "<code>base::sheets()</code>" }
-    ],
-    answer: "a"
-  },
-  {
-    id: 7,
-    section: "Extraction Excel / tableur",
-    text: "Dans <code>read_excel()</code>, quel argument saute des lignes parasites en tête de feuille ?",
-    choices: [
-      { letter: "a", text: "<code>trim_ws</code>" },
-      { letter: "b", text: "<code>skip</code>" },
-      { letter: "c", text: "<code>parse</code>" },
-      { letter: "d", text: "<code>append</code>" }
+      { letter: "a", text: "Filtrer les lignes age >= 18" },
+      { letter: "b", text: "Choisir les colonnes nom et age" },
+      { letter: "c", text: "Trier par age" },
+      { letter: "d", text: "Supprimer les doublons" }
     ],
     answer: "b"
   },
   {
-    id: 8,
-    section: "Extraction Excel / tableur",
-    text: "À quoi sert <code>janitor::clean_names()</code> après un import tableur ?",
+    id: 7,
+    section: "Manipulation de donnees (niveau I)",
+    text: "Que produit ce code ?",
+    code: "ventes |>\n  group_by(region) |>\n  summarise(total = sum(ca, na.rm = TRUE))",
     choices: [
-      { letter: "a", text: "À normaliser les noms de colonnes" },
-      { letter: "b", text: "À faire un graphique automatiquement" },
-      { letter: "c", text: "À convertir toutes les valeurs en texte" },
-      { letter: "d", text: "À supprimer les doublons de lignes" }
+      { letter: "a", text: "Un total de CA par region" },
+      { letter: "b", text: "Une jointure entre deux tables" },
+      { letter: "c", text: "Le tri alphabetique des colonnes" },
+      { letter: "d", text: "Une suppression des valeurs manquantes" }
     ],
     answer: "a"
   },
   {
-    id: 9,
-    section: "Requêtes avancées",
-    text: "Quelle jointure garde seulement les lignes présentes dans les 2 tables ?",
+    id: 8,
+    section: "Manipulation de donnees (niveau I)",
+    text: "Quelle jointure conserve toutes les lignes de la table de gauche et ajoute les correspondances de droite ?",
     choices: [
-      { letter: "a", text: "<code>left_join()</code>" },
-      { letter: "b", text: "<code>inner_join()</code>" },
-      { letter: "c", text: "<code>full_join()</code>" },
-      { letter: "d", text: "<code>anti_join()</code>" }
+      { letter: "a", text: "<code>inner_join()</code>" },
+      { letter: "b", text: "<code>left_join()</code>" },
+      { letter: "c", text: "<code>anti_join()</code>" },
+      { letter: "d", text: "<code>cross_join()</code>" }
+    ],
+    answer: "b"
+  },
+  {
+    id: 9,
+    section: "Lecture de code et diagnostic",
+    text: "Que vaut <code>resultat</code> apres execution ?",
+    code: "note <- 8\nif (note >= 10) {\n  resultat <- \"admis\"\n} else {\n  resultat <- \"rattrapage\"\n}",
+    choices: [
+      { letter: "a", text: "\"admis\"" },
+      { letter: "b", text: "\"rattrapage\"" },
+      { letter: "c", text: "<code>NA</code>" },
+      { letter: "d", text: "Une erreur de syntaxe obligatoire" }
     ],
     answer: "b"
   },
   {
     id: 10,
-    section: "Requêtes avancées",
-    text: "Que retourne <code>anti_join(a, b, by = ...)</code> ?",
+    section: "Lecture de code et diagnostic",
+    text: "Quel est le resultat de <code>sum(c(2, 3, 5))</code> ?",
     choices: [
-      { letter: "a", text: "Les lignes de <code>a</code> sans correspondance dans <code>b</code>" },
-      { letter: "b", text: "Un produit cartésien" },
-      { letter: "c", text: "Toutes les lignes de <code>b</code>" },
-      { letter: "d", text: "Une moyenne par groupe" }
+      { letter: "a", text: "8" },
+      { letter: "b", text: "9" },
+      { letter: "c", text: "10" },
+      { letter: "d", text: "15" }
     ],
-    answer: "a"
+    answer: "c"
   },
   {
     id: 11,
-    section: "Requêtes avancées",
-    text: "Que calcule ce code ?",
-    code: "ventes |>\n  group_by(region) |>\n  summarise(ca_total = sum(ca, na.rm = TRUE))",
+    section: "Lecture de code et diagnostic",
+    text: "Si <code>nrow(df)</code> vaut 0, cela signifie que :",
     choices: [
-      { letter: "a", text: "Le CA total par région" },
-      { letter: "b", text: "Le nombre de colonnes" },
-      { letter: "c", text: "Le top 3 clients" },
-      { letter: "d", text: "Une jointure externe" }
+      { letter: "a", text: "Le tableau n'a aucune ligne" },
+      { letter: "b", text: "Le tableau n'a aucune colonne" },
+      { letter: "c", text: "Toutes les valeurs sont manquantes" },
+      { letter: "d", text: "Le tableau est forcement invalide" }
     ],
     answer: "a"
   },
   {
     id: 12,
-    section: "Requêtes avancées",
-    text: "Dans un contexte métier, pourquoi vérifier la cardinalité avant jointure ?",
+    section: "Lecture de code et diagnostic",
+    text: "Face a une erreur <code>object 'x' not found</code>, la verification la plus utile en premier est :",
     choices: [
-      { letter: "a", text: "Pour éviter des duplications de lignes non prévues" },
-      { letter: "b", text: "Pour changer la police du rapport" },
-      { letter: "c", text: "Pour accélérer le rendu PowerPoint" },
-      { letter: "d", text: "Ce n'est pas utile" }
+      { letter: "a", text: "Verifier le nom exact de l'objet et l'ordre d'execution des lignes" },
+      { letter: "b", text: "Changer de version de navigateur" },
+      { letter: "c", text: "Supprimer tous les fichiers du dossier" },
+      { letter: "d", text: "Exporter en PDF puis recommencer" }
     ],
     answer: "a"
   },
   {
     id: 13,
-    section: "Stats descriptives pratiques",
-    text: "Si une variable contient des valeurs extrêmes, quel indicateur est souvent plus robuste que la moyenne ?",
+    section: "Stats et visualisation de base",
+    text: "Quand quelques valeurs extremes deformant la moyenne sont presentes, quel indicateur est souvent plus robuste ?",
     choices: [
-      { letter: "a", text: "La médiane" },
+      { letter: "a", text: "La mediane" },
       { letter: "b", text: "Le maximum" },
-      { letter: "c", text: "La variance" },
+      { letter: "c", text: "La somme" },
       { letter: "d", text: "Le nombre de lignes" }
     ],
     answer: "a"
   },
   {
     id: 14,
-    section: "Stats descriptives pratiques",
-    text: "Quel indicateur mesure la dispersion autour de la moyenne ?",
+    section: "Stats et visualisation de base",
+    text: "Quel graphique est le plus adapte pour etudier la relation entre deux variables quantitatives ?",
     choices: [
-      { letter: "a", text: "L'écart-type" },
-      { letter: "b", text: "La somme" },
-      { letter: "c", text: "La mode uniquement" },
-      { letter: "d", text: "Le nombre de colonnes" }
+      { letter: "a", text: "Un nuage de points" },
+      { letter: "b", text: "Un camembert" },
+      { letter: "c", text: "Un organigramme" },
+      { letter: "d", text: "Une jauge unique" }
     ],
     answer: "a"
   },
   {
     id: 15,
-    section: "Stats descriptives pratiques",
-    text: "Pour décrire rapidement la distribution d'une variable quantitative, quel graphique choisir en priorité ?",
+    section: "Stats et visualisation de base",
+    text: "Pour comparer la distribution d'une variable numerique entre plusieurs groupes, on utilise en priorite :",
     choices: [
-      { letter: "a", text: "Un histogramme" },
-      { letter: "b", text: "Un diagramme en secteurs" },
-      { letter: "c", text: "Un organigramme" },
-      { letter: "d", text: "Une carte geographique" }
+      { letter: "a", text: "Un boxplot" },
+      { letter: "b", text: "Un diagramme de Gantt" },
+      { letter: "c", text: "Une carte thermique geographique" },
+      { letter: "d", text: "Un arbre de decision" }
     ],
     answer: "a"
   }
 ];
 
 const SECTIONS = [
-  { title: "BDD et SQL avec R", ids: [1,2,3,4] },
-  { title: "Extraction Excel / tableur", ids: [5,6,7,8] },
-  { title: "Requêtes avancées", ids: [9,10,11,12] },
-  { title: "Stats descriptives pratiques", ids: [13,14,15] }
+  { title: "Fondamentaux R attendus", ids: [1,2,3,4] },
+  { title: "Manipulation de donnees (niveau I)", ids: [5,6,7,8] },
+  { title: "Lecture de code et diagnostic", ids: [9,10,11,12] },
+  { title: "Stats et visualisation de base", ids: [13,14,15] }
 ];
 
 const GRADING = [
-  { range: "13-15", label: "Très bon niveau d'entrée pour R Niveau II" },
-  { range: "10-12", label: "Niveau correct, quelques points à consolider" },
-  { range: "6-9", label: "Bases partielles, révision recommandée" },
-  { range: "< 6", label: "Prérequis insuffisants, remise à niveau conseillée" }
+  { range: "13-15", label: "Prerequis solides pour entrer directement en R Niveau II" },
+  { range: "10-12", label: "Prerequis globalement suffisants, quelques revisions conseillees" },
+  { range: "6-9", label: "Niveau intermediaire: renforcement recommande avant l'entree" },
+  { range: "< 6", label: "Prerequis insuffisants pour R Niveau II (mieux commencer par Niveau I)" }
 ];
 
 function renderQuiz() {
