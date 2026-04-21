@@ -1,6 +1,6 @@
 # Support de cours R
 
-- Catalogue (depot): [docs/index.html](https://github.com/aah-supports/formation-professionnelle/blob/main/docs/index.html)
+- Catalogue (depot): [docs/index.html](https://aah-supports.github.io/formation-professionnelle)
 
 ## PDF (depot)
 
