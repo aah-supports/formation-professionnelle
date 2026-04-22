@@ -3,18 +3,367 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>R Niveau II — Plan de cours</title>
+<title>Plan de Cours</title>
 <style>
-:root{color-scheme:light}
-html,body{background:#fff}
-body{font-family:Arial,sans-serif;max-width:760px;margin:26px auto;padding:0 16px;color:#222;line-height:1.6}
-a{color:#0984e3;text-decoration:none}a:hover{text-decoration:underline}
-.link{display:inline-block;margin-top:10px;padding:8px 12px;background:#f1f2f6;border-radius:8px;color:#222;text-decoration:none}
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#2d3436;line-height:1.7;max-width:800px;margin:0 auto;padding:30px 24px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
+h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+h4{font-size:.95rem;margin:16px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid #dfe6e9;padding:8px 12px;text-align:left;font-size:.9rem}
+th{background:#f1f2f6;font-weight:600}
+tr:nth-child(even){background:#f8f9fa}
+blockquote{border-left:4px solid #74b9ff;margin:12px 0;padding:8px 16px;background:#f8f9fa;color:#636e72}
+strong{color:#2d3436}
+hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
+.header-bar{background:#0984e3;color:#fff;padding:12px 20px;border-radius:8px;margin-bottom:24px;font-size:.85rem}
+.header-bar strong{color:#fff}
 </style>
 </head>
 <body>
-<p><a href="index.html">&larr; Retour cours R Niveau II</a></p>
-<h1>Plan de cours — R Niveau II</h1>
-<p>Les PDF sont accessibles uniquement depuis le catalogue principal.</p>
+<div class="header-bar"><strong>R Niveau II</strong></div>
+<h1>R Niveau II — Plan de cours détaillé</h1>
+<p><strong>Formation</strong> : Analyse de données avancée avec R (tidyverse, visualisation, statistiques, modélisation)
+<strong>Durée</strong> : 2 jours (14 heures)
+<strong>Horaires</strong> : 9h00 – 17h00</p>
+<hr>
+<h2>JOUR 1 — Manipulation avancée et visualisation</h2>
+<hr>
+<h3>Module 1 : Tidyverse et dplyr avancé (9h00 – 10h30)</h3>
+<p><strong>Objectifs</strong> : Structurer une chaîne de transformation fiable avec <code>dplyr</code> et <code>tidyverse</code>.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Rappels essentiels tidy data</strong> (10 min)</p>
+<ul>
+<li>Données en format long vs large selon le besoin d'analyse</li>
+<li>Convention de nommage des variables</li>
+<li>Qualité minimale attendue avant analyse</li>
+</ul>
+</li>
+<li><p><strong>Sélection et filtrage robustes</strong> (20 min)</p>
+<ul>
+<li><code>select()</code>, <code>rename()</code>, <code>relocate()</code></li>
+<li><code>filter()</code> avec conditions complexes et dates</li>
+<li>Bonnes pratiques pour éviter les filtres ambigus</li>
+</ul>
+</li>
+<li><p><strong>Transformation de colonnes</strong> (20 min)</p>
+<ul>
+<li><code>mutate()</code>, <code>case_when()</code>, <code>across()</code></li>
+<li>Création d'indicateurs métier dérivés</li>
+<li>Gestion des valeurs manquantes dans les transformations</li>
+</ul>
+</li>
+<li><p><strong>Agrégation métier</strong> (20 min)</p>
+<ul>
+<li><code>group_by()</code> + <code>summarise()</code></li>
+<li>Indicateurs par segment, période, catégorie</li>
+<li>Contrôles de cohérence après agrégation</li>
+</ul>
+</li>
+<li><p><strong>Pipeline lisible et reproductible</strong> (20 min)</p>
+<ul>
+<li>Chaîner avec <code>%&gt;%</code> et documenter les étapes</li>
+<li>Découper un pipeline long en blocs compréhensibles</li>
+<li>Exporter un résultat prêt à être partagé</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Nettoyer et consolider un extrait de ventes multi-magasins, puis produire un tableau d'indicateurs.</p>
+<hr>
+<h3>Module 2 : Reshape avec tidyr (10h45 – 12h15)</h3>
+<p><strong>Objectifs</strong> : Passer proprement d'un format de données à un autre pour faciliter l'analyse.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Identifier le bon format</strong> (15 min)</p>
+<ul>
+<li>Reconnaître une structure non tidy</li>
+<li>Choisir long vs wide selon l'usage</li>
+<li>Effets du format sur les graphiques et modèles</li>
+</ul>
+</li>
+<li><p><strong><code>pivot_longer()</code> en pratique</strong> (20 min)</p>
+<ul>
+<li>Colonnes de périodes vers une variable temporelle</li>
+<li>Nettoyer les noms de mesures</li>
+<li>Conserver les métadonnées utiles</li>
+</ul>
+</li>
+<li><p><strong><code>pivot_wider()</code> et tableaux de restitution</strong> (20 min)</p>
+<ul>
+<li>Construire une vue de synthèse orientée reporting</li>
+<li>Gérer les valeurs manquantes lors du pivot</li>
+<li>Éviter les collisions de clés</li>
+</ul>
+</li>
+<li><p><strong>Séparer et fusionner des colonnes</strong> (15 min)</p>
+<ul>
+<li><code>separate()</code>, <code>unite()</code>, <code>extract()</code></li>
+<li>Standardiser des codes ou dimensions métier</li>
+<li>Validation de structure après transformation</li>
+</ul>
+</li>
+<li><p><strong>Joindre et fiabiliser</strong> (20 min)</p>
+<ul>
+<li><code>left_join()</code>, <code>inner_join()</code>, <code>anti_join()</code></li>
+<li>Vérifier les cardinalités avant/après jointure</li>
+<li>Éviter la duplication silencieuse des lignes</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Recomposer un dataset marketing (campagnes, coûts, conversions) pour produire une vue exploitable.</p>
+<hr>
+<h3>Module 3 : Visualisation avec ggplot2 (13h30 – 15h00)</h3>
+<p><strong>Objectifs</strong> : Concevoir des visualisations lisibles, comparables et orientées décision.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Grammaire de ggplot2</strong> (15 min)</p>
+<ul>
+<li><code>ggplot()</code>, <code>aes()</code>, géométries, couches</li>
+<li>Données, mapping, rendu : séparation claire</li>
+<li>Erreurs courantes d'encodage visuel</li>
+</ul>
+</li>
+<li><p><strong>Graphiques essentiels</strong> (20 min)</p>
+<ul>
+<li><code>geom_point()</code>, <code>geom_line()</code>, <code>geom_col()</code>, <code>geom_boxplot()</code></li>
+<li>Choisir la bonne géométrie selon la question</li>
+<li>Limiter le bruit visuel</li>
+</ul>
+</li>
+<li><p><strong>Comparer et segmenter</strong> (20 min)</p>
+<ul>
+<li>Couleurs, groupes, facettes (<code>facet_wrap()</code>)</li>
+<li>Lecture multi-segments sans surcharge</li>
+<li>Échelles cohérentes entre graphiques</li>
+</ul>
+</li>
+<li><p><strong>Personnalisation et thème</strong> (20 min)</p>
+<ul>
+<li><code>labs()</code>, <code>theme_minimal()</code>, <code>theme()</code></li>
+<li>Titres explicites et annotation utile</li>
+<li>Palette et contraste adaptés au contexte pro</li>
+</ul>
+</li>
+<li><p><strong>Export et standardisation</strong> (15 min)</p>
+<ul>
+<li><code>ggsave()</code> (PDF, PNG, dimensions, dpi)</li>
+<li>Créer une charte visuelle simple de sortie</li>
+<li>Versionner les visuels pour restitution</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Produire un mini-dashboard de 4 graphiques commentés sur un cas d'analyse commerciale.</p>
+<hr>
+<h3>Module 4 : Programmation avancée en R (15h15 – 17h00)</h3>
+<p><strong>Objectifs</strong> : Industrialiser les traitements R via des fonctions réutilisables et une logique robuste.</p>
+<p><strong>Contenu</strong> :</p>
+<ol>
+<li><p><strong>Fonctions robustes</strong> (20 min)</p>
+<ul>
+<li>Écriture de fonctions paramétrables et testables</li>
+<li>Validation d'arguments (types, valeurs, bornes)</li>
+<li>Valeurs par défaut et retours explicites</li>
+</ul>
+</li>
+<li><p><strong>Programmation fonctionnelle</strong> (20 min)</p>
+<ul>
+<li><code>purrr::map()</code>, <code>map_dbl()</code>, <code>map_df()</code></li>
+<li>Appliquer un traitement sur plusieurs jeux de données</li>
+<li>Éviter la duplication de code par abstraction</li>
+</ul>
+</li>
+<li><p><strong>Gestion d'erreurs et diagnostics</strong> (20 min)</p>
+<ul>
+<li><code>tryCatch()</code>, messages et warnings utiles</li>
+<li>Tracer les étapes critiques d'un pipeline</li>
+<li>Produire des sorties compréhensibles en cas d'échec</li>
+</ul>
+</li>
+<li><p><strong>Scripts structurés</strong> (20 min)</p>
+<ul>
+<li>Organisation en sections et conventions de nommage</li>
+<li>Séparer fonctions, exécution et paramètres</li>
+<li>Préparer un script exécutable par un tiers</li>
+</ul>
+</li>
+<li><p><strong>Mini atelier de synthèse</strong> (25 min)</p>
+<ul>
+<li>Transformer un script monolithique en pipeline modulable</li>
+<li>Revue collective : lisibilité, robustesse, maintenabilité</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>JOUR 2 — Statistiques appliquées et modélisation</h2>
+<hr>
+<h3>Module 5 : Statistiques descriptives (9h00 – 10h30)</h3>
+<p><strong>Objectifs</strong> : Résumer proprement un jeu de données et identifier les signaux importants.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Mesures de tendance centrale</strong> (15 min)</p>
+<ul>
+<li>Moyenne, médiane, mode selon les cas d'usage</li>
+<li>Impact des valeurs extrêmes sur l'interprétation</li>
+</ul>
+</li>
+<li><p><strong>Mesures de dispersion</strong> (20 min)</p>
+<ul>
+<li>Écart-type, variance, IQR, quantiles</li>
+<li>Comparer la variabilité entre segments</li>
+</ul>
+</li>
+<li><p><strong>Distributions et asymétrie</strong> (20 min)</p>
+<ul>
+<li>Histogrammes, densités et boxplots</li>
+<li>Détection de distributions atypiques</li>
+</ul>
+</li>
+<li><p><strong>Tableaux de synthèse avancés</strong> (20 min)</p>
+<ul>
+<li>Résumé multi-variables par groupes</li>
+<li>Construire une fiche de lecture statistique</li>
+</ul>
+</li>
+<li><p><strong>Interprétation métier</strong> (15 min)</p>
+<ul>
+<li>Passer du résultat chiffré à une conclusion actionnable</li>
+<li>Documenter limites et hypothèses</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Analyser la performance de plusieurs agences et produire un commentaire statistique argumenté.</p>
+<hr>
+<h3>Module 6 : Tests statistiques (10h45 – 12h15)</h3>
+<p><strong>Objectifs</strong> : Choisir et exécuter un test statistique adapté à une question métier.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Hypothèses et logique de test</strong> (15 min)</p>
+<ul>
+<li>Hypothèse nulle / alternative</li>
+<li>p-value, risque alpha, erreur de type I/II</li>
+</ul>
+</li>
+<li><p><strong>Test de normalité et choix de méthode</strong> (15 min)</p>
+<ul>
+<li>Vérifier les prérequis avant test</li>
+<li>Approche paramétrique vs non paramétrique</li>
+</ul>
+</li>
+<li><p><strong>Comparaison de moyennes</strong> (25 min)</p>
+<ul>
+<li><code>t.test()</code> : échantillons indépendants/appariés</li>
+<li>Interprétation des résultats dans un contexte métier</li>
+</ul>
+</li>
+<li><p><strong>Comparaison de distributions</strong> (20 min)</p>
+<ul>
+<li><code>wilcox.test()</code>, <code>chisq.test()</code>, <code>fisher.test()</code></li>
+<li>Quand privilégier un test non paramétrique</li>
+</ul>
+</li>
+<li><p><strong>Communiquer un résultat de test</strong> (15 min)</p>
+<ul>
+<li>Formuler une conclusion claire et non ambiguë</li>
+<li>Rappeler les limites de validité</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Tester l'effet d'une nouvelle campagne sur le taux de conversion de deux populations.</p>
+<hr>
+<h3>Module 7 : Modélisation (13h30 – 15h00)</h3>
+<p><strong>Objectifs</strong> : Construire et interpréter un premier modèle explicatif/prédictif avec R.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Cadre de la modélisation</strong> (15 min)</p>
+<ul>
+<li>Variable cible, variables explicatives, fuite d'information</li>
+<li>Découpage apprentissage/test</li>
+</ul>
+</li>
+<li><p><strong>Régression linéaire</strong> (25 min)</p>
+<ul>
+<li><code>lm()</code>, interprétation des coefficients</li>
+<li>Qualité globale : <code>R²</code>, erreurs, résidus</li>
+</ul>
+</li>
+<li><p><strong>Évaluation du modèle</strong> (20 min)</p>
+<ul>
+<li>Indicateurs de performance simples</li>
+<li>Lecture critique d'un modèle insuffisant</li>
+</ul>
+</li>
+<li><p><strong>Premiers pas en classification</strong> (15 min)</p>
+<ul>
+<li><code>glm(..., family = binomial)</code> pour une cible binaire</li>
+<li>Probabilité prédite et seuil de décision</li>
+</ul>
+</li>
+<li><p><strong>Bonnes pratiques de restitution</strong> (15 min)</p>
+<ul>
+<li>Éviter les conclusions causales hâtives</li>
+<li>Présenter les résultats de façon responsable</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Construire un modèle de prévision simple et commenter ses limites opérationnelles.</p>
+<hr>
+<h3>Module 8 : Projet d'analyse complète (15h15 – 17h00)</h3>
+<p><strong>Objectifs</strong> : Mobiliser toutes les compétences R Niveau II sur un cas d'étude concret.</p>
+<p><strong>Contenu</strong> :</p>
+<ol>
+<li><p><strong>Cadrage du projet</strong> (10 min)</p>
+<ul>
+<li>Jeu de données multi-sources fourni</li>
+<li>Questions métier et livrables attendus</li>
+</ul>
+</li>
+<li><p><strong>Étape 1 : préparation des données</strong> (20 min)</p>
+<ul>
+<li>Nettoyage, reshape, jointures</li>
+<li>Contrôles de qualité des données</li>
+</ul>
+</li>
+<li><p><strong>Étape 2 : analyse descriptive</strong> (15 min)</p>
+<ul>
+<li>Statistiques clés par segment</li>
+<li>Premières hypothèses d'interprétation</li>
+</ul>
+</li>
+<li><p><strong>Étape 3 : visualisation</strong> (15 min)</p>
+<ul>
+<li>Construire 3 à 4 graphiques orientés décision</li>
+<li>Mettre en évidence les signaux majeurs</li>
+</ul>
+</li>
+<li><p><strong>Étape 4 : test ou modèle</strong> (15 min)</p>
+<ul>
+<li>Valider une hypothèse statistique ou entraîner un modèle simple</li>
+<li>Documenter la robustesse de la démarche</li>
+</ul>
+</li>
+<li><p><strong>Étape 5 : synthèse exécutive</strong> (10 min)</p>
+<ul>
+<li>Rédiger une conclusion orientée action</li>
+<li>Proposer 2 axes d'amélioration</li>
+</ul>
+</li>
+<li><p><strong>Restitution collective</strong> (15 min)</p>
+<ul>
+<li>Présentation rapide des travaux de groupe</li>
+<li>Bilan final et plan de progression post-formation</li>
+</ul>
+</li>
+</ol>
 </body>
 </html>

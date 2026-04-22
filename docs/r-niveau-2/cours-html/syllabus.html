@@ -3,18 +3,193 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>R Niveau II — Syllabus</title>
+<title>Syllabus</title>
 <style>
-:root{color-scheme:light}
-html,body{background:#fff}
-body{font-family:Arial,sans-serif;max-width:760px;margin:26px auto;padding:0 16px;color:#222;line-height:1.6}
-a{color:#0984e3;text-decoration:none}a:hover{text-decoration:underline}
-.link{display:inline-block;margin-top:10px;padding:8px 12px;background:#f1f2f6;border-radius:8px;color:#222;text-decoration:none}
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#2d3436;line-height:1.7;max-width:800px;margin:0 auto;padding:30px 24px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
+h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+h4{font-size:.95rem;margin:16px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid #dfe6e9;padding:8px 12px;text-align:left;font-size:.9rem}
+th{background:#f1f2f6;font-weight:600}
+tr:nth-child(even){background:#f8f9fa}
+blockquote{border-left:4px solid #74b9ff;margin:12px 0;padding:8px 16px;background:#f8f9fa;color:#636e72}
+strong{color:#2d3436}
+hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
+.header-bar{background:#0984e3;color:#fff;padding:12px 20px;border-radius:8px;margin-bottom:24px;font-size:.85rem}
+.header-bar strong{color:#fff}
 </style>
 </head>
 <body>
-<p><a href="index.html">&larr; Retour cours R Niveau II</a></p>
-<h1>Syllabus — R Niveau II</h1>
-<p>Les PDF sont accessibles uniquement depuis le catalogue principal.</p>
+<div class="header-bar"><strong>R Niveau II</strong></div>
+<h1>R Niveau II — Syllabus</h1>
+<h2>Analyse de données avancée avec R</h2>
+<p><strong>Durée</strong> : 2 jours (14 heures)
+<strong>Format</strong> : Présentiel ou distanciel synchrone</p>
+<hr>
+<h2>Description</h2>
+<p>Cette formation approfondit l'usage de R pour des analyses professionnelles complètes. Elle couvre la transformation avancée avec le tidyverse, la visualisation avec ggplot2, les statistiques descriptives et inférentielles, ainsi qu'une première modélisation orientée décision.</p>
+<hr>
+<h2>Public cible</h2>
+<ul>
+<li>Analystes de données ayant déjà pratiqué les bases de R</li>
+<li>Data analysts souhaitant industrialiser leurs traitements</li>
+<li>Chargés d'études/statisticiens passant à une approche tidyverse</li>
+<li>Professionnels data devant produire des restitutions fiables et actionnables</li>
+</ul>
+<h2>Prérequis</h2>
+<ul>
+<li>Compétences équivalentes au programme R Niveau I</li>
+<li>Maîtrise des objets de base R (<code>vector</code>, <code>data.frame</code>, fonctions simples)</li>
+<li>Connaissances de base en statistique descriptive</li>
+<li>Aisance dans l'environnement RStudio</li>
+</ul>
+<hr>
+<h2>Objectifs pédagogiques</h2>
+<ol>
+<li><strong>Construire des pipelines tidyverse robustes</strong> pour préparer les données</li>
+<li><strong>Restructurer les données</strong> (long/large) avec <code>tidyr</code> selon l'objectif d'analyse</li>
+<li><strong>Réaliser des jointures maîtrisées</strong> en contrôlant les cardinalités</li>
+<li><strong>Concevoir des visualisations professionnelles</strong> avec <code>ggplot2</code></li>
+<li><strong>Écrire des fonctions réutilisables</strong> et gérer les erreurs d'exécution</li>
+<li><strong>Produire des statistiques descriptives fiables</strong> et interprétables</li>
+<li><strong>Choisir et exécuter un test statistique</strong> adapté à une hypothèse métier</li>
+<li><strong>Construire un premier modèle</strong> de régression linéaire / logistique</li>
+<li><strong>Évaluer et interpréter les résultats</strong> avec recul méthodologique</li>
+<li><strong>Livrer une analyse complète</strong> du nettoyage à la recommandation</li>
+</ol>
+<hr>
+<h2>Programme</h2>
+<h3>Jour 1 — Manipulation avancée et visualisation</h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. Tidyverse et dplyr avancé</td>
+<td><code>select</code>, <code>filter</code>, <code>mutate</code>, <code>across</code>, <code>group_by</code>, <code>summarise</code>, pipeline lisible</td>
+</tr>
+<tr>
+<td>2. Reshape avec tidyr</td>
+<td><code>pivot_longer</code>, <code>pivot_wider</code>, <code>separate</code>, <code>unite</code>, jointures et fiabilisation</td>
+</tr>
+<tr>
+<td>3. Visualisation avec ggplot2</td>
+<td>Grammaire des graphiques, comparaisons multi-segments, thèmes, annotations, export</td>
+</tr>
+<tr>
+<td>4. Programmation avancée en R</td>
+<td>Fonctions robustes, <code>purrr::map</code>, gestion d'erreurs, structuration de scripts</td>
+</tr>
+</tbody></table>
+<h3>Jour 2 — Statistiques appliquées et modélisation</h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>5. Statistiques descriptives</td>
+<td>Tendance centrale, dispersion, distributions, synthèses par groupe, interprétation métier</td>
+</tr>
+<tr>
+<td>6. Tests statistiques</td>
+<td>Hypothèses, p-value, <code>t.test</code>, <code>wilcox.test</code>, <code>chisq.test</code>, conclusion statistique</td>
+</tr>
+<tr>
+<td>7. Modélisation</td>
+<td><code>lm</code>, <code>glm</code> binomial, qualité de modèle, limites et communication responsable</td>
+</tr>
+<tr>
+<td>8. Projet d'analyse complète</td>
+<td>Cas fil rouge : préparation, exploration, visualisation, test/modèle, synthèse exécutive</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Compétences acquises</h2>
+<table>
+<thead>
+<tr>
+<th>Compétence</th>
+<th>Niveau</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Transformation tidyverse</td>
+<td>Autonomie</td>
+</tr>
+<tr>
+<td>Reshape et jointures</td>
+<td>Autonomie</td>
+</tr>
+<tr>
+<td>Visualisation ggplot2</td>
+<td>Autonomie</td>
+</tr>
+<tr>
+<td>Programmation fonctionnelle R</td>
+<td>Initiation avancée</td>
+</tr>
+<tr>
+<td>Tests statistiques appliqués</td>
+<td>Autonomie</td>
+</tr>
+<tr>
+<td>Modélisation de base</td>
+<td>Initiation</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>Évaluation</h2>
+<ul>
+<li>Exercices pratiques à la fin de chaque module</li>
+<li>Études de cas avec restitution intermédiaire</li>
+<li>Projet d'analyse complète en fin de formation (Module 8)</li>
+<li>Attestation de participation</li>
+</ul>
+<h2>Méthodes pédagogiques</h2>
+<ul>
+<li>Apports ciblés et démonstrations live dans RStudio</li>
+<li>Pratique guidée sur jeux de données réalistes</li>
+<li>Progression par complexité croissante</li>
+<li>Relectures collectives de pipelines et visualisations</li>
+<li>Supports PDF, scripts commentés, exercices et corrections</li>
+</ul>
+<h2>Outils</h2>
+<table>
+<thead>
+<tr>
+<th>Outil</th>
+<th>Version</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>R</td>
+<td>≥ 4.3</td>
+</tr>
+<tr>
+<td>RStudio Desktop</td>
+<td>≥ 2024.04</td>
+</tr>
+<tr>
+<td>Packages</td>
+<td><code>tidyverse</code>, <code>ggplot2</code>, <code>dplyr</code>, <code>tidyr</code>, <code>readr</code>, <code>purrr</code></td>
+</tr>
+</tbody></table>
 </body>
 </html>
