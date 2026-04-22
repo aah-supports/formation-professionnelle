@@ -70,7 +70,7 @@
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:10%; background:#00f3ff"></div></div>
       <h1 style="color:#00f3ff; font-size:2.2em">Module Bonus — Visualisation avancée</h1>
-      <p class="subtitle">Hors timing officiel: design, lisibilité et narration avec ggplot2</p>
+      <p class="subtitle">Hors timing officiel : design, lisibilité et narration avec ggplot2</p>
       <div class="slide-footer"><span class="slide-num">1 / 10</span></div>
     </section>
 
@@ -78,9 +78,9 @@
       <div class="progress-bar"><div class="progress-fill" style="width:20%; background:#a78bfa"></div></div>
       <div class="slide-header"><h2>Objectifs du bonus</h2></div>
       <ul class="bullet-list">
-        <li>Passer d'un graphique technique a un graphique decisionnel</li>
+        <li>Passer d'un graphique technique à un graphique décisionnel</li>
         <li>Structurer un storytelling visuel simple et robuste</li>
-        <li>Uniformiser le style pour les livrables metiers</li>
+        <li>Uniformiser le style pour les livrables métiers</li>
         <li>Exporter des figures propres pour slides et rapports</li>
       </ul>
       <div class="slide-footer"><span class="slide-num">2 / 10</span></div>
@@ -89,11 +89,11 @@
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:30%; background:#00f3ff"></div></div>
       <div class="slide-header"><h2>Mapping vs setting (rappel critique)</h2></div>
-      <pre><code class="language-r"># Couleur dependante d'une variable
+      <pre><code class="language-r"># Couleur dépendante d'une variable
 p1 <- ggplot(df, aes(x = mois, y = ca, color = region)) +
   geom_line(size = 1)
 
-# Couleur fixe pour toute la serie
+# Couleur fixe pour toute la série
 p2 <- ggplot(df, aes(x = mois, y = ca)) +
   geom_line(color = "#1f77b4", size = 1)</code></pre>
       <div class="slide-footer"><span class="slide-num">3 / 10</span></div>
@@ -107,15 +107,15 @@ p2 <- ggplot(df, aes(x = mois, y = ca)) +
   facet_wrap(~ region, ncol = 2, scales = "free_y") +
   labs(title = "Marge mensuelle par region")</code></pre>
       <ul class="bullet-list">
-        <li>Comparer des profils plutot que tout superposer</li>
-        <li>Utiliser <code>scales = "free_y"</code> seulement si justifie</li>
+        <li>Comparer des profils plutôt que tout superposer</li>
+        <li>Utiliser <code>scales = "free_y"</code> seulement si justifié</li>
       </ul>
       <div class="slide-footer"><span class="slide-num">4 / 10</span></div>
     </section>
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:50%; background:#a78bfa"></div></div>
-      <div class="slide-header"><h2>Echelles et etiquettes lisibles</h2></div>
+      <div class="slide-header"><h2>Échelles et étiquettes lisibles</h2></div>
       <pre><code class="language-r">library(scales)
 
 ggplot(kpi_df, aes(x = mois, y = ca)) +
@@ -127,7 +127,7 @@ ggplot(kpi_df, aes(x = mois, y = ca)) +
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:60%; background:#00f3ff"></div></div>
-      <div class="slide-header"><h2>Theme standard d'equipe</h2></div>
+      <div class="slide-header"><h2>Thème standard d'équipe</h2></div>
       <pre><code class="language-r">theme_reporting <- function() {
   theme_minimal(base_size = 13) +
     theme(
@@ -161,7 +161,7 @@ p + theme_reporting()</code></pre>
   p_volume +
   plot_annotation(title = "Cockpit regional")</code></pre>
       <ul class="bullet-list">
-        <li>Garder 2 a 3 visuels max par ecran</li>
+        <li>Garder 2 à 3 visuels max par écran</li>
         <li>Un message principal par slide</li>
       </ul>
       <div class="slide-footer"><span class="slide-num">8 / 10</span></div>
@@ -180,19 +180,19 @@ p + theme_reporting()</code></pre>
 )</code></pre>
       <ul class="bullet-list">
         <li>PNG pour slides, PDF pour impression</li>
-        <li>Verifier lisibilite a 100% zoom</li>
+        <li> Vérifier lisibilité à 100% zoom</li>
       </ul>
       <div class="slide-footer"><span class="slide-num">9 / 10</span></div>
     </section>
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:100%; background:#00f3ff"></div></div>
-      <div class="slide-header"><h2 style="color:#00f3ff">Recap Bonus</h2></div>
+      <div class="slide-header"><h2 style="color:#00f3ff">Récap Bonus</h2></div>
       <ul class="summary-list">
         <li><span class="check" style="color:#00f3ff">✓</span>Comparer avec faceting avant de multiplier les courbes</li>
-        <li><span class="check" style="color:#00f3ff">✓</span>Standardiser le theme pour tous les livrables</li>
-        <li><span class="check" style="color:#00f3ff">✓</span>Annoter les ruptures metier significatives</li>
-        <li><span class="check" style="color:#00f3ff">✓</span>Exporter avec dimensions et qualite controlees</li>
+        <li><span class="check" style="color:#00f3ff">✓</span>Standardiser le thème pour tous les livrables</li>
+        <li><span class="check" style="color:#00f3ff">✓</span>Annoter les ruptures métier significatives</li>
+        <li><span class="check" style="color:#00f3ff">✓</span>Exporter avec dimensions et qualité contrôlées</li>
       </ul>
       <div class="slide-footer"><span class="slide-num">10 / 10</span></div>
     </section>

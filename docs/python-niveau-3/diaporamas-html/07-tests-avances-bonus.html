@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bonus — Tests avances en Python</title>
+  <title>Bonus — Tests avancés en Python</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
@@ -69,7 +69,7 @@
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:10%; background:#00f3ff"></div></div>
-      <h1 style="color:#00f3ff; font-size:2.2em">Module Bonus — Tests avances</h1>
+      <h1 style="color:#00f3ff; font-size:2.2em">Module Bonus — Tests avancés</h1>
       <p class="subtitle">Hors timing officiel : fiabiliser le delivery avec pytest</p>
       <div class="slide-footer"><span class="slide-num">1 / 10</span></div>
     </section>
@@ -79,9 +79,9 @@
       <div class="slide-header"><h2>Objectifs du bonus</h2></div>
       <ul class="bullet-list">
         <li>Rendre les tests rapides, lisibles et fiables</li>
-        <li>Isoler les effets de bord (I/O, reseau, temps)</li>
+        <li>Isoler les effets de bord (I/O, réseau, temps)</li>
         <li>Couvrir les cas limites sans exploser la maintenance</li>
-        <li>Industrialiser l'execution en CI</li>
+        <li>Industrialiser l'exécution en CI</li>
       </ul>
       <div class="slide-footer"><span class="slide-num">2 / 10</span></div>
     </section>
@@ -90,8 +90,8 @@
       <div class="progress-bar"><div class="progress-fill" style="width:30%; background:#00f3ff"></div></div>
       <div class="slide-header"><h2>Pyramide de tests pragmatique</h2></div>
       <ul class="bullet-list">
-        <li>Unitaires : nombreux, tres rapides, sans dependances externes</li>
-        <li>Integration : moins nombreux, verifies contre de vraies interfaces</li>
+        <li>Unitaires : nombreux, très rapides, sans dépendances externes</li>
+        <li>Intégration : moins nombreux, vérifiés contre de vraies interfaces</li>
         <li>End-to-end : peu nombreux, parcours critiques uniquement</li>
         <li>Objectif : feedback rapide et confiance suffisante</li>
       </ul>
@@ -100,7 +100,7 @@
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:40%; background:#ff6b00"></div></div>
-      <div class="slide-header"><h2>Fixtures pytest reutilisables</h2></div>
+      <div class="slide-header"><h2>Fixtures pytest réutilisables</h2></div>
       <pre><code class="language-python">import pytest
 
 @pytest.fixture
@@ -118,7 +118,7 @@ def test_total_amount(sample_orders):
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:50%; background:#a78bfa"></div></div>
-      <div class="slide-header"><h2>Parametrization pour cas limites</h2></div>
+      <div class="slide-header"><h2>Paramétrage pour cas limites</h2></div>
       <pre><code class="language-python">import pytest
 
 @pytest.mark.parametrize(
@@ -128,15 +128,15 @@ def test_total_amount(sample_orders):
 def test_bucketize(value, expected):
     assert bucketize(value) == expected</code></pre>
       <ul class="bullet-list">
-        <li>Lisible et compact pour plusieurs scenarios</li>
-        <li>Evite la duplication de fonctions de tests</li>
+        <li>Lisible et compact pour plusieurs scénarios</li>
+        <li>Évite la duplication de fonctions de tests</li>
       </ul>
       <div class="slide-footer"><span class="slide-num">5 / 10</span></div>
     </section>
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:60%; background:#00f3ff"></div></div>
-      <div class="slide-header"><h2>Mocking des dependances externes</h2></div>
+      <div class="slide-header"><h2>Mocking des dépendances externes</h2></div>
       <pre><code class="language-python">from unittest.mock import Mock
 
 def test_sync_calls_gateway_once():
@@ -159,20 +159,20 @@ async def test_fetch_kpi_timeout(client):
     result = await client.fetch_kpi(timeout=0.2)
     assert result.status == "ok"</code></pre>
       <ul class="bullet-list">
-        <li>Toujours encadrer les appels reseau par timeout</li>
-        <li>Verifier les chemins d'erreur, pas seulement le chemin heureux</li>
+        <li>Toujours encadrer les appels réseau par timeout</li>
+        <li>Vérifier les chemins d'erreur, pas seulement le chemin heureux</li>
       </ul>
       <div class="slide-footer"><span class="slide-num">7 / 10</span></div>
     </section>
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:80%; background:#a78bfa"></div></div>
-      <div class="slide-header"><h2>Coverage utile, pas cosmetique</h2></div>
+      <div class="slide-header"><h2>Coverage utile, pas cosmétique</h2></div>
       <pre><code class="language-bash">pytest -q --maxfail=1 --disable-warnings \
   --cov=src --cov-report=term-missing --cov-fail-under=85</code></pre>
       <ul class="bullet-list">
         <li>Regarder les lignes critiques non couvertes</li>
-        <li>Prioriser les regles metier et transformations de donnees</li>
+        <li>Prioriser les règles métier et transformations de données</li>
       </ul>
       <div class="slide-footer"><span class="slide-num">8 / 10</span></div>
     </section>
@@ -196,12 +196,12 @@ jobs:
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:100%; background:#00f3ff"></div></div>
-      <div class="slide-header"><h2 style="color:#00f3ff">Recap bonus</h2></div>
+      <div class="slide-header"><h2 style="color:#00f3ff">Récap bonus</h2></div>
       <ul class="summary-list">
         <li><span class="check" style="color:#00f3ff">✓</span>Fixtures + parametrization pour scaler proprement</li>
-        <li><span class="check" style="color:#00f3ff">✓</span>Mocks pour isoler les dependances externes</li>
+        <li><span class="check" style="color:#00f3ff">✓</span>Mocks pour isoler les dépendances externes</li>
         <li><span class="check" style="color:#00f3ff">✓</span>Tests async avec garde-fous de timeout</li>
-        <li><span class="check" style="color:#00f3ff">✓</span>CI courte, fiable et executee a chaque PR</li>
+        <li><span class="check" style="color:#00f3ff">✓</span>CI courte, fiable et exécutée à chaque PR</li>
       </ul>
       <div class="slide-footer"><span class="slide-num">10 / 10</span></div>
     </section>
