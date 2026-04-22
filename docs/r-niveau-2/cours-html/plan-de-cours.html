@@ -33,337 +33,249 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 <body>
 <div class="header-bar"><strong>R Niveau II</strong></div>
 <h1>R Niveau II — Plan de cours détaillé</h1>
-<p><strong>Formation</strong> : Analyse de données avancée avec R (tidyverse, visualisation, statistiques, modélisation)
+<p><strong>Formation</strong> : Exploitation de données, requêtes et restitution avec R
 <strong>Durée</strong> : 2 jours (14 heures)
 <strong>Horaires</strong> : 9h00 – 17h00</p>
 <hr>
-<h2>JOUR 1 — Manipulation avancée et visualisation</h2>
+<h2>JOUR 1 — Connexion, extraction et requêtes</h2>
 <hr>
-<h3>Module 1 : Tidyverse et dplyr avancé (9h00 – 10h30)</h3>
-<p><strong>Objectifs</strong> : Structurer une chaîne de transformation fiable avec <code>dplyr</code> et <code>tidyverse</code>.</p>
+<h3>Module 1 : Bases de données avec R (9h00 – 10h30)</h3>
+<p><strong>Objectifs</strong> : Interroger une base relationnelle depuis R en gardant une logique analytique claire.</p>
 <p><strong>Contenu détaillé</strong> :</p>
 <ol>
-<li><p><strong>Rappels essentiels tidy data</strong> (10 min)</p>
+<li><p><strong>Connexion et environnement</strong> (20 min)</p>
 <ul>
-<li>Données en format long vs large selon le besoin d'analyse</li>
-<li>Convention de nommage des variables</li>
-<li>Qualité minimale attendue avant analyse</li>
+<li>Connexion via <code>DBI</code> et pilotage de sessions</li>
+<li>Principes de sécurité (paramètres, secrets, rôles)</li>
+<li>Préparer un script de connexion réutilisable</li>
 </ul>
 </li>
-<li><p><strong>Sélection et filtrage robustes</strong> (20 min)</p>
+<li><p><strong>Requêtes avec <code>dplyr</code>/<code>dbplyr</code></strong> (25 min)</p>
 <ul>
-<li><code>select()</code>, <code>rename()</code>, <code>relocate()</code></li>
-<li><code>filter()</code> avec conditions complexes et dates</li>
-<li>Bonnes pratiques pour éviter les filtres ambigus</li>
+<li>Construire des requêtes lisibles en verbes tidy</li>
+<li>Filtrer, sélectionner et ordonner sans SQL brut</li>
+<li>Lire et valider la requête SQL générée</li>
 </ul>
 </li>
-<li><p><strong>Transformation de colonnes</strong> (20 min)</p>
+<li><p><strong>Bonnes pratiques d'extraction</strong> (20 min)</p>
 <ul>
-<li><code>mutate()</code>, <code>case_when()</code>, <code>across()</code></li>
-<li>Création d'indicateurs métier dérivés</li>
-<li>Gestion des valeurs manquantes dans les transformations</li>
+<li>Limiter le volume remonté (colonnes/lignes utiles)</li>
+<li>Paginer ou segmenter les extractions volumineuses</li>
+<li>Tracer les paramètres utilisés</li>
 </ul>
 </li>
-<li><p><strong>Agrégation métier</strong> (20 min)</p>
+<li><p><strong>Exercice guidé</strong> (25 min)</p>
 <ul>
-<li><code>group_by()</code> + <code>summarise()</code></li>
-<li>Indicateurs par segment, période, catégorie</li>
-<li>Contrôles de cohérence après agrégation</li>
-</ul>
-</li>
-<li><p><strong>Pipeline lisible et reproductible</strong> (20 min)</p>
-<ul>
-<li>Chaîner avec <code>%&gt;%</code> et documenter les étapes</li>
-<li>Découper un pipeline long en blocs compréhensibles</li>
-<li>Exporter un résultat prêt à être partagé</li>
+<li>Extraire un périmètre ventes depuis une base fil rouge</li>
+<li>Contrôler le résultat avant transformation</li>
 </ul>
 </li>
 </ol>
-<p><strong>Activité</strong> : Nettoyer et consolider un extrait de ventes multi-magasins, puis produire un tableau d'indicateurs.</p>
 <hr>
-<h3>Module 2 : Reshape avec tidyr (10h45 – 12h15)</h3>
-<p><strong>Objectifs</strong> : Passer proprement d'un format de données à un autre pour faciliter l'analyse.</p>
+<h3>Module 2 : Extraction Excel / tableur (10h45 – 12h15)</h3>
+<p><strong>Objectifs</strong> : Importer des fichiers hétérogènes et les normaliser pour l'analyse.</p>
 <p><strong>Contenu détaillé</strong> :</p>
 <ol>
-<li><p><strong>Identifier le bon format</strong> (15 min)</p>
+<li><p><strong>Import multi-sources</strong> (20 min)</p>
 <ul>
-<li>Reconnaître une structure non tidy</li>
-<li>Choisir long vs wide selon l'usage</li>
-<li>Effets du format sur les graphiques et modèles</li>
+<li>Lire plusieurs feuilles/fichiers avec <code>readxl</code> et <code>readr</code></li>
+<li>Gérer encodage, séparateurs, formats de dates</li>
+<li>Standardiser le nommage des colonnes</li>
 </ul>
 </li>
-<li><p><strong><code>pivot_longer()</code> en pratique</strong> (20 min)</p>
+<li><p><strong>Normalisation avec <code>tidyr</code></strong> (25 min)</p>
 <ul>
-<li>Colonnes de périodes vers une variable temporelle</li>
-<li>Nettoyer les noms de mesures</li>
-<li>Conserver les métadonnées utiles</li>
+<li><code>pivot_longer()</code> et <code>pivot_wider()</code></li>
+<li>Passage d'un format tableur à un format analytique</li>
+<li>Préparer un schéma de données stable</li>
 </ul>
 </li>
-<li><p><strong><code>pivot_wider()</code> et tableaux de restitution</strong> (20 min)</p>
+<li><p><strong>Vérifications de cohérence</strong> (20 min)</p>
 <ul>
-<li>Construire une vue de synthèse orientée reporting</li>
-<li>Gérer les valeurs manquantes lors du pivot</li>
-<li>Éviter les collisions de clés</li>
+<li>Contrôler les doublons et colonnes critiques</li>
+<li>Identifier les trous de données</li>
+<li>Journaliser les corrections appliquées</li>
 </ul>
 </li>
-<li><p><strong>Séparer et fusionner des colonnes</strong> (15 min)</p>
+<li><p><strong>Exercice guidé</strong> (20 min)</p>
 <ul>
-<li><code>separate()</code>, <code>unite()</code>, <code>extract()</code></li>
-<li>Standardiser des codes ou dimensions métier</li>
-<li>Validation de structure après transformation</li>
+<li>Transformer un export Excel opérationnel en table propre</li>
 </ul>
 </li>
-<li><p><strong>Joindre et fiabiliser</strong> (20 min)</p>
+</ol>
+<hr>
+<h3>Module 3 : Requêtes avancées I (13h30 – 15h00)</h3>
+<p><strong>Objectifs</strong> : Construire une table analytique robuste à partir de plusieurs jeux de données.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Jointures maîtrisées</strong> (25 min)</p>
 <ul>
 <li><code>left_join()</code>, <code>inner_join()</code>, <code>anti_join()</code></li>
-<li>Vérifier les cardinalités avant/après jointure</li>
-<li>Éviter la duplication silencieuse des lignes</li>
+<li>Contrôles de cardinalité avant/après jointure</li>
+<li>Détection des clés manquantes</li>
+</ul>
+</li>
+<li><p><strong>Segmentation métier</strong> (20 min)</p>
+<ul>
+<li>Créer des classes via <code>case_when()</code></li>
+<li>Construire des segments exploitables en reporting</li>
+<li>Documenter la règle métier de segmentation</li>
+</ul>
+</li>
+<li><p><strong>Top N et tables intermédiaires</strong> (20 min)</p>
+<ul>
+<li>Classements par groupe et métriques comparables</li>
+<li>Préparer les bases de restitution</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (25 min)</p>
+<ul>
+<li>Consolider ventes + clients + produits + objectifs</li>
 </ul>
 </li>
 </ol>
-<p><strong>Activité</strong> : Recomposer un dataset marketing (campagnes, coûts, conversions) pour produire une vue exploitable.</p>
 <hr>
-<h3>Module 3 : Visualisation avec ggplot2 (13h30 – 15h00)</h3>
-<p><strong>Objectifs</strong> : Concevoir des visualisations lisibles, comparables et orientées décision.</p>
-<p><strong>Contenu détaillé</strong> :</p>
-<ol>
-<li><p><strong>Grammaire de ggplot2</strong> (15 min)</p>
-<ul>
-<li><code>ggplot()</code>, <code>aes()</code>, géométries, couches</li>
-<li>Données, mapping, rendu : séparation claire</li>
-<li>Erreurs courantes d'encodage visuel</li>
-</ul>
-</li>
-<li><p><strong>Graphiques essentiels</strong> (20 min)</p>
-<ul>
-<li><code>geom_point()</code>, <code>geom_line()</code>, <code>geom_col()</code>, <code>geom_boxplot()</code></li>
-<li>Choisir la bonne géométrie selon la question</li>
-<li>Limiter le bruit visuel</li>
-</ul>
-</li>
-<li><p><strong>Comparer et segmenter</strong> (20 min)</p>
-<ul>
-<li>Couleurs, groupes, facettes (<code>facet_wrap()</code>)</li>
-<li>Lecture multi-segments sans surcharge</li>
-<li>Échelles cohérentes entre graphiques</li>
-</ul>
-</li>
-<li><p><strong>Personnalisation et thème</strong> (20 min)</p>
-<ul>
-<li><code>labs()</code>, <code>theme_minimal()</code>, <code>theme()</code></li>
-<li>Titres explicites et annotation utile</li>
-<li>Palette et contraste adaptés au contexte pro</li>
-</ul>
-</li>
-<li><p><strong>Export et standardisation</strong> (15 min)</p>
-<ul>
-<li><code>ggsave()</code> (PDF, PNG, dimensions, dpi)</li>
-<li>Créer une charte visuelle simple de sortie</li>
-<li>Versionner les visuels pour restitution</li>
-</ul>
-</li>
-</ol>
-<p><strong>Activité</strong> : Produire un mini-dashboard de 4 graphiques commentés sur un cas d'analyse commerciale.</p>
-<hr>
-<h3>Module 4 : Programmation avancée en R (15h15 – 17h00)</h3>
-<p><strong>Objectifs</strong> : Industrialiser les traitements R via des fonctions réutilisables et une logique robuste.</p>
+<h3>Module 4 : Requêtes avancées II (15h15 – 17h00)</h3>
+<p><strong>Objectifs</strong> : Automatiser les extractions/requêtes et sécuriser l'exécution.</p>
 <p><strong>Contenu</strong> :</p>
 <ol>
-<li><p><strong>Fonctions robustes</strong> (20 min)</p>
+<li><p><strong>Paramétrage des requêtes</strong> (25 min)</p>
 <ul>
-<li>Écriture de fonctions paramétrables et testables</li>
-<li>Validation d'arguments (types, valeurs, bornes)</li>
-<li>Valeurs par défaut et retours explicites</li>
+<li>Fonctions R pour rejouer des extractions</li>
+<li>Paramètres date/périmètre/segment</li>
 </ul>
 </li>
-<li><p><strong>Programmation fonctionnelle</strong> (20 min)</p>
+<li><p><strong>Gestion d'erreurs</strong> (20 min)</p>
 <ul>
-<li><code>purrr::map()</code>, <code>map_dbl()</code>, <code>map_df()</code></li>
-<li>Appliquer un traitement sur plusieurs jeux de données</li>
-<li>Éviter la duplication de code par abstraction</li>
+<li><code>tryCatch()</code> et wrappers sécurisés</li>
+<li>Conserver les erreurs utiles au diagnostic</li>
 </ul>
 </li>
-<li><p><strong>Gestion d'erreurs et diagnostics</strong> (20 min)</p>
+<li><p><strong>Automatisation simple</strong> (25 min)</p>
 <ul>
-<li><code>tryCatch()</code>, messages et warnings utiles</li>
-<li>Tracer les étapes critiques d'un pipeline</li>
-<li>Produire des sorties compréhensibles en cas d'échec</li>
+<li>Exécutions en lot de scénarios</li>
+<li>Consolidation des sorties dans un format unique</li>
 </ul>
 </li>
-<li><p><strong>Scripts structurés</strong> (20 min)</p>
+<li><p><strong>Atelier de fin de journée</strong> (20 min)</p>
 <ul>
-<li>Organisation en sections et conventions de nommage</li>
-<li>Séparer fonctions, exécution et paramètres</li>
-<li>Préparer un script exécutable par un tiers</li>
-</ul>
-</li>
-<li><p><strong>Mini atelier de synthèse</strong> (25 min)</p>
-<ul>
-<li>Transformer un script monolithique en pipeline modulable</li>
-<li>Revue collective : lisibilité, robustesse, maintenabilité</li>
+<li>Pipeline complet extraction → jointures → table finale</li>
 </ul>
 </li>
 </ol>
 <hr>
-<h2>JOUR 2 — Statistiques appliquées et modélisation</h2>
+<h2>JOUR 2 — Qualité, statistiques et restitution</h2>
 <hr>
-<h3>Module 5 : Statistiques descriptives (9h00 – 10h30)</h3>
-<p><strong>Objectifs</strong> : Résumer proprement un jeu de données et identifier les signaux importants.</p>
+<h3>Module 5 : Qualité des données (9h00 – 10h30)</h3>
+<p><strong>Objectifs</strong> : Mettre en place des contrôles avant diffusion des indicateurs.</p>
 <p><strong>Contenu détaillé</strong> :</p>
 <ol>
-<li><p><strong>Mesures de tendance centrale</strong> (15 min)</p>
+<li><p><strong>Contrôles structurels</strong> (20 min)</p>
 <ul>
-<li>Moyenne, médiane, mode selon les cas d'usage</li>
-<li>Impact des valeurs extrêmes sur l'interprétation</li>
+<li>Taux de valeurs manquantes, doublons, types incohérents</li>
+<li>Règles bloquantes vs avertissements</li>
 </ul>
 </li>
-<li><p><strong>Mesures de dispersion</strong> (20 min)</p>
+<li><p><strong>Consolidation multi-sources</strong> (25 min)</p>
 <ul>
-<li>Écart-type, variance, IQR, quantiles</li>
-<li>Comparer la variabilité entre segments</li>
+<li>Aligner les référentiels et périodes d'analyse</li>
+<li>Gérer les écarts de granularité</li>
 </ul>
 </li>
-<li><p><strong>Distributions et asymétrie</strong> (20 min)</p>
+<li><p><strong>Reporting qualité</strong> (20 min)</p>
 <ul>
-<li>Histogrammes, densités et boxplots</li>
-<li>Détection de distributions atypiques</li>
+<li>Construire un mini rapport de contrôle</li>
+<li>Rendre les décisions de nettoyage traçables</li>
 </ul>
 </li>
-<li><p><strong>Tableaux de synthèse avancés</strong> (20 min)</p>
+<li><p><strong>Exercice guidé</strong> (25 min)</p>
 <ul>
-<li>Résumé multi-variables par groupes</li>
-<li>Construire une fiche de lecture statistique</li>
-</ul>
-</li>
-<li><p><strong>Interprétation métier</strong> (15 min)</p>
-<ul>
-<li>Passer du résultat chiffré à une conclusion actionnable</li>
-<li>Documenter limites et hypothèses</li>
+<li>Contrôler et corriger un dataset consolidé</li>
 </ul>
 </li>
 </ol>
-<p><strong>Activité</strong> : Analyser la performance de plusieurs agences et produire un commentaire statistique argumenté.</p>
 <hr>
-<h3>Module 6 : Tests statistiques (10h45 – 12h15)</h3>
-<p><strong>Objectifs</strong> : Choisir et exécuter un test statistique adapté à une question métier.</p>
+<h3>Module 6 : Statistiques descriptives pratiques (10h45 – 12h15)</h3>
+<p><strong>Objectifs</strong> : Produire une lecture statistique fiable d'un jeu de données métier.</p>
 <p><strong>Contenu détaillé</strong> :</p>
 <ol>
-<li><p><strong>Hypothèses et logique de test</strong> (15 min)</p>
+<li><p><strong>Mesures essentielles</strong> (20 min)</p>
 <ul>
-<li>Hypothèse nulle / alternative</li>
-<li>p-value, risque alpha, erreur de type I/II</li>
+<li>Moyenne, médiane, dispersion, quantiles</li>
+<li>Comparer des segments sans biais de lecture</li>
 </ul>
 </li>
-<li><p><strong>Test de normalité et choix de méthode</strong> (15 min)</p>
+<li><p><strong>Synthèses par groupes</strong> (25 min)</p>
 <ul>
-<li>Vérifier les prérequis avant test</li>
-<li>Approche paramétrique vs non paramétrique</li>
+<li>Statistiques par zone, segment, période</li>
+<li>Lecture des écarts entre populations</li>
 </ul>
 </li>
-<li><p><strong>Comparaison de moyennes</strong> (25 min)</p>
+<li><p><strong>Interprétation opérationnelle</strong> (20 min)</p>
 <ul>
-<li><code>t.test()</code> : échantillons indépendants/appariés</li>
-<li>Interprétation des résultats dans un contexte métier</li>
+<li>Passer du chiffre à la conclusion actionnable</li>
+<li>Identifier les limites d'interprétation</li>
 </ul>
 </li>
-<li><p><strong>Comparaison de distributions</strong> (20 min)</p>
+<li><p><strong>Exercice guidé</strong> (20 min)</p>
 <ul>
-<li><code>wilcox.test()</code>, <code>chisq.test()</code>, <code>fisher.test()</code></li>
-<li>Quand privilégier un test non paramétrique</li>
-</ul>
-</li>
-<li><p><strong>Communiquer un résultat de test</strong> (15 min)</p>
-<ul>
-<li>Formuler une conclusion claire et non ambiguë</li>
-<li>Rappeler les limites de validité</li>
+<li>Réaliser une fiche de synthèse statistique</li>
 </ul>
 </li>
 </ol>
-<p><strong>Activité</strong> : Tester l'effet d'une nouvelle campagne sur le taux de conversion de deux populations.</p>
 <hr>
-<h3>Module 7 : Modélisation (13h30 – 15h00)</h3>
-<p><strong>Objectifs</strong> : Construire et interpréter un premier modèle explicatif/prédictif avec R.</p>
+<h3>Module 7 : Restitution métier (13h30 – 15h00)</h3>
+<p><strong>Objectifs</strong> : Présenter les résultats dans un format utile à la décision.</p>
 <p><strong>Contenu détaillé</strong> :</p>
 <ol>
-<li><p><strong>Cadre de la modélisation</strong> (15 min)</p>
+<li><p><strong>KPI et narration</strong> (20 min)</p>
 <ul>
-<li>Variable cible, variables explicatives, fuite d'information</li>
-<li>Découpage apprentissage/test</li>
+<li>Sélectionner les indicateurs pertinents</li>
+<li>Structurer un message clair (constat, cause, action)</li>
 </ul>
 </li>
-<li><p><strong>Régression linéaire</strong> (25 min)</p>
+<li><p><strong>Visualisation de synthèse</strong> (25 min)</p>
 <ul>
-<li><code>lm()</code>, interprétation des coefficients</li>
-<li>Qualité globale : <code>R²</code>, erreurs, résidus</li>
+<li>Choisir le bon visuel selon la question métier</li>
+<li>Mettre en évidence les écarts majeurs</li>
 </ul>
 </li>
-<li><p><strong>Évaluation du modèle</strong> (20 min)</p>
+<li><p><strong>Préparation d'un livrable</strong> (20 min)</p>
 <ul>
-<li>Indicateurs de performance simples</li>
-<li>Lecture critique d'un modèle insuffisant</li>
+<li>Tableaux de synthèse et commentaires clés</li>
+<li>Hypothèses et limites clairement indiquées</li>
 </ul>
 </li>
-<li><p><strong>Premiers pas en classification</strong> (15 min)</p>
+<li><p><strong>Exercice guidé</strong> (25 min)</p>
 <ul>
-<li><code>glm(..., family = binomial)</code> pour une cible binaire</li>
-<li>Probabilité prédite et seuil de décision</li>
-</ul>
-</li>
-<li><p><strong>Bonnes pratiques de restitution</strong> (15 min)</p>
-<ul>
-<li>Éviter les conclusions causales hâtives</li>
-<li>Présenter les résultats de façon responsable</li>
+<li>Produire une restitution courte orientée direction métier</li>
 </ul>
 </li>
 </ol>
-<p><strong>Activité</strong> : Construire un modèle de prévision simple et commenter ses limites opérationnelles.</p>
 <hr>
-<h3>Module 8 : Projet d'analyse complète (15h15 – 17h00)</h3>
-<p><strong>Objectifs</strong> : Mobiliser toutes les compétences R Niveau II sur un cas d'étude concret.</p>
+<h3>Module 8 : Projet fil rouge (15h15 – 17h00)</h3>
+<p><strong>Objectifs</strong> : Mobiliser l'ensemble des modules sur un cas complet.</p>
 <p><strong>Contenu</strong> :</p>
 <ol>
-<li><p><strong>Cadrage du projet</strong> (10 min)</p>
+<li><p><strong>Cadrage</strong> (10 min)</p>
 <ul>
-<li>Jeu de données multi-sources fourni</li>
-<li>Questions métier et livrables attendus</li>
+<li>Question métier, périmètre, livrables attendus</li>
 </ul>
 </li>
-<li><p><strong>Étape 1 : préparation des données</strong> (20 min)</p>
+<li><p><strong>Exécution du pipeline</strong> (40 min)</p>
 <ul>
-<li>Nettoyage, reshape, jointures</li>
-<li>Contrôles de qualité des données</li>
+<li>Extraction, normalisation, requêtes, contrôles qualité</li>
+<li>Statistiques descriptives et préparation restitution</li>
 </ul>
 </li>
-<li><p><strong>Étape 2 : analyse descriptive</strong> (15 min)</p>
+<li><p><strong>Restitution et bilan</strong> (35 min)</p>
 <ul>
-<li>Statistiques clés par segment</li>
-<li>Premières hypothèses d'interprétation</li>
-</ul>
-</li>
-<li><p><strong>Étape 3 : visualisation</strong> (15 min)</p>
-<ul>
-<li>Construire 3 à 4 graphiques orientés décision</li>
-<li>Mettre en évidence les signaux majeurs</li>
-</ul>
-</li>
-<li><p><strong>Étape 4 : test ou modèle</strong> (15 min)</p>
-<ul>
-<li>Valider une hypothèse statistique ou entraîner un modèle simple</li>
-<li>Documenter la robustesse de la démarche</li>
-</ul>
-</li>
-<li><p><strong>Étape 5 : synthèse exécutive</strong> (10 min)</p>
-<ul>
-<li>Rédiger une conclusion orientée action</li>
-<li>Proposer 2 axes d'amélioration</li>
-</ul>
-</li>
-<li><p><strong>Restitution collective</strong> (15 min)</p>
-<ul>
-<li>Présentation rapide des travaux de groupe</li>
-<li>Bilan final et plan de progression post-formation</li>
+<li>Présentation des résultats par groupe</li>
+<li>Retours formateur et plan de progression</li>
 </ul>
 </li>
 </ol>
+<hr>
+<p><strong>Module bonus (hors timing)</strong> : Visualisation avancée.</p>
 </body>
 </html>

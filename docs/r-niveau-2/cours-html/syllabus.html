@@ -33,44 +33,42 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 <body>
 <div class="header-bar"><strong>R Niveau II</strong></div>
 <h1>R Niveau II — Syllabus</h1>
-<h2>Analyse de données avancée avec R</h2>
+<h2>Exploitation de données et restitution avec R</h2>
 <p><strong>Durée</strong> : 2 jours (14 heures)
 <strong>Format</strong> : Présentiel ou distanciel synchrone</p>
 <hr>
 <h2>Description</h2>
-<p>Cette formation approfondit l'usage de R pour des analyses professionnelles complètes. Elle couvre la transformation avancée avec le tidyverse, la visualisation avec ggplot2, les statistiques descriptives et inférentielles, ainsi qu'une première modélisation orientée décision.</p>
+<p>Cette formation vise la production d'analyses opérationnelles fiables avec R : extraction de données, normalisation de fichiers tableur, requêtes avancées, contrôles qualité, statistiques descriptives et restitution métier. Le parcours suit un cas fil rouge sur deux jours.</p>
 <hr>
 <h2>Public cible</h2>
 <ul>
-<li>Analystes de données ayant déjà pratiqué les bases de R</li>
-<li>Data analysts souhaitant industrialiser leurs traitements</li>
-<li>Chargés d'études/statisticiens passant à une approche tidyverse</li>
-<li>Professionnels data devant produire des restitutions fiables et actionnables</li>
+<li>Analystes ayant déjà les bases de R</li>
+<li>Profils data devant exploiter des sources SQL et tableur</li>
+<li>Chargés d'études qui construisent des KPI pour la direction</li>
+<li>Professionnels en charge de fiabiliser la chaîne de traitement des données</li>
 </ul>
 <h2>Prérequis</h2>
 <ul>
-<li>Compétences équivalentes au programme R Niveau I</li>
-<li>Maîtrise des objets de base R (<code>vector</code>, <code>data.frame</code>, fonctions simples)</li>
-<li>Connaissances de base en statistique descriptive</li>
-<li>Aisance dans l'environnement RStudio</li>
+<li>Compétences équivalentes à R Niveau I</li>
+<li>Aisance avec <code>data.frame</code>, filtres et agrégations simples</li>
+<li>Connaissances de base en lecture de tableaux de données</li>
+<li>Notions SQL utiles mais non obligatoires</li>
 </ul>
 <hr>
 <h2>Objectifs pédagogiques</h2>
 <ol>
-<li><strong>Construire des pipelines tidyverse robustes</strong> pour préparer les données</li>
-<li><strong>Restructurer les données</strong> (long/large) avec <code>tidyr</code> selon l'objectif d'analyse</li>
-<li><strong>Réaliser des jointures maîtrisées</strong> en contrôlant les cardinalités</li>
-<li><strong>Concevoir des visualisations professionnelles</strong> avec <code>ggplot2</code></li>
-<li><strong>Écrire des fonctions réutilisables</strong> et gérer les erreurs d'exécution</li>
-<li><strong>Produire des statistiques descriptives fiables</strong> et interprétables</li>
-<li><strong>Choisir et exécuter un test statistique</strong> adapté à une hypothèse métier</li>
-<li><strong>Construire un premier modèle</strong> de régression linéaire / logistique</li>
-<li><strong>Évaluer et interpréter les résultats</strong> avec recul méthodologique</li>
-<li><strong>Livrer une analyse complète</strong> du nettoyage à la recommandation</li>
+<li><strong>Extraire des données</strong> depuis une base avec R et <code>dbplyr</code></li>
+<li><strong>Importer et normaliser</strong> des fichiers Excel/tableur</li>
+<li><strong>Construire des requêtes avancées</strong> avec jointures et segmentation</li>
+<li><strong>Automatiser des extractions</strong> par paramétrage de scripts</li>
+<li><strong>Contrôler la qualité des données</strong> avant publication</li>
+<li><strong>Réaliser des statistiques descriptives</strong> par segments métier</li>
+<li><strong>Produire une restitution opérationnelle</strong> orientée décision</li>
+<li><strong>Livrer un projet fil rouge complet</strong> de l'extraction à la synthèse</li>
 </ol>
 <hr>
 <h2>Programme</h2>
-<h3>Jour 1 — Manipulation avancée et visualisation</h3>
+<h3>Jour 1 — Connexion, extraction et requêtes</h3>
 <table>
 <thead>
 <tr>
@@ -79,23 +77,23 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 </tr>
 </thead>
 <tbody><tr>
-<td>1. Tidyverse et dplyr avancé</td>
-<td><code>select</code>, <code>filter</code>, <code>mutate</code>, <code>across</code>, <code>group_by</code>, <code>summarise</code>, pipeline lisible</td>
+<td>1. Bases de données avec R</td>
+<td>Connexion DBI, extraction avec <code>dplyr</code>/<code>dbplyr</code>, requêtes paramétrées</td>
 </tr>
 <tr>
-<td>2. Reshape avec tidyr</td>
-<td><code>pivot_longer</code>, <code>pivot_wider</code>, <code>separate</code>, <code>unite</code>, jointures et fiabilisation</td>
+<td>2. Extraction Excel / tableur</td>
+<td>Import multi-feuilles, normalisation <code>tidyr</code>, contrôles de structure</td>
 </tr>
 <tr>
-<td>3. Visualisation avec ggplot2</td>
-<td>Grammaire des graphiques, comparaisons multi-segments, thèmes, annotations, export</td>
+<td>3. Requêtes avancées I</td>
+<td>Jointures, cardinalité, segmentation métier, tables analytiques</td>
 </tr>
 <tr>
-<td>4. Programmation avancée en R</td>
-<td>Fonctions robustes, <code>purrr::map</code>, gestion d'erreurs, structuration de scripts</td>
+<td>4. Requêtes avancées II</td>
+<td>Automatisation de scénarios, gestion d'erreurs, consolidation des sorties</td>
 </tr>
 </tbody></table>
-<h3>Jour 2 — Statistiques appliquées et modélisation</h3>
+<h3>Jour 2 — Qualité, statistiques et restitution</h3>
 <table>
 <thead>
 <tr>
@@ -104,22 +102,23 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 </tr>
 </thead>
 <tbody><tr>
-<td>5. Statistiques descriptives</td>
-<td>Tendance centrale, dispersion, distributions, synthèses par groupe, interprétation métier</td>
+<td>5. Qualité des données</td>
+<td>Contrôles NA/doublons/types, consolidation multi-sources, rapport qualité</td>
 </tr>
 <tr>
-<td>6. Tests statistiques</td>
-<td>Hypothèses, p-value, <code>t.test</code>, <code>wilcox.test</code>, <code>chisq.test</code>, conclusion statistique</td>
+<td>6. Statistiques descriptives pratiques</td>
+<td>Mesures de tendance/dispersions, synthèses par groupes, interprétation</td>
 </tr>
 <tr>
-<td>7. Modélisation</td>
-<td><code>lm</code>, <code>glm</code> binomial, qualité de modèle, limites et communication responsable</td>
+<td>7. Restitution métier</td>
+<td>KPI, visualisation de synthèse, recommandations actionnables</td>
 </tr>
 <tr>
-<td>8. Projet d'analyse complète</td>
-<td>Cas fil rouge : préparation, exploration, visualisation, test/modèle, synthèse exécutive</td>
+<td>8. Projet fil rouge</td>
+<td>Chaîne complète: extraction, requêtes, qualité, stats, restitution</td>
 </tr>
 </tbody></table>
+<p><strong>Module bonus (hors timing)</strong> : Visualisation avancée.</p>
 <hr>
 <h2>Compétences acquises</h2>
 <table>
@@ -130,45 +129,45 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 </tr>
 </thead>
 <tbody><tr>
-<td>Transformation tidyverse</td>
+<td>Extraction et connexion base depuis R</td>
 <td>Autonomie</td>
 </tr>
 <tr>
-<td>Reshape et jointures</td>
+<td>Normalisation de données tableur</td>
 <td>Autonomie</td>
 </tr>
 <tr>
-<td>Visualisation ggplot2</td>
+<td>Requêtes avancées et consolidation</td>
 <td>Autonomie</td>
 </tr>
 <tr>
-<td>Programmation fonctionnelle R</td>
+<td>Contrôles qualité de données</td>
+<td>Autonomie</td>
+</tr>
+<tr>
+<td>Statistiques descriptives appliquées</td>
 <td>Initiation avancée</td>
 </tr>
 <tr>
-<td>Tests statistiques appliqués</td>
+<td>Restitution opérationnelle</td>
 <td>Autonomie</td>
-</tr>
-<tr>
-<td>Modélisation de base</td>
-<td>Initiation</td>
 </tr>
 </tbody></table>
 <hr>
 <h2>Évaluation</h2>
 <ul>
-<li>Exercices pratiques à la fin de chaque module</li>
-<li>Études de cas avec restitution intermédiaire</li>
-<li>Projet d'analyse complète en fin de formation (Module 8)</li>
+<li>Exercices pratiques par module</li>
+<li>Mini-cas de fin de journée (J1/J2)</li>
+<li>Projet fil rouge final en restitution collective</li>
 <li>Attestation de participation</li>
 </ul>
 <h2>Méthodes pédagogiques</h2>
 <ul>
-<li>Apports ciblés et démonstrations live dans RStudio</li>
-<li>Pratique guidée sur jeux de données réalistes</li>
-<li>Progression par complexité croissante</li>
-<li>Relectures collectives de pipelines et visualisations</li>
-<li>Supports PDF, scripts commentés, exercices et corrections</li>
+<li>Démonstrations live dans RStudio</li>
+<li>Exercices progressifs sur données réalistes</li>
+<li>Relectures collectives de requêtes et résultats</li>
+<li>Approche orientée livrables métier</li>
+<li>Supports PDF, exercices et solutions</li>
 </ul>
 <h2>Outils</h2>
 <table>
@@ -188,7 +187,7 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 </tr>
 <tr>
 <td>Packages</td>
-<td><code>tidyverse</code>, <code>ggplot2</code>, <code>dplyr</code>, <code>tidyr</code>, <code>readr</code>, <code>purrr</code></td>
+<td><code>DBI</code>, <code>dbplyr</code>, <code>dplyr</code>, <code>tidyr</code>, <code>readxl</code>, <code>readr</code></td>
 </tr>
 </tbody></table>
 </body>
