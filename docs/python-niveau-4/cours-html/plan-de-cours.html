@@ -38,104 +38,274 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 <strong>Horaires</strong> : 9h00 – 17h00</p>
 <hr>
 
-<h2>Jour 1 — Architecture et design orienté production</h2>
-<table>
-  <tr><th>Créneau</th><th>Progression</th><th>Contenu</th><th>Code / livrable</th><th>Critère de réussite</th></tr>
-  <tr>
-    <td>09:00–10:30</td>
-    <td>Base avancée</td>
-    <td>Architecture modulaire : couches, frontières, dépendances.</td>
-    <td>Cartographie d'une base existante.</td>
-    <td>Découpage clair et justifié.</td>
-  </tr>
-  <tr>
-    <td>10:45–12:30</td>
-    <td>Intermédiaire</td>
-    <td>Ports/adaptateurs, inversion de dépendances, composition root.</td>
-    <td>Interfaces <code>Protocol</code> pour domaine.</td>
-    <td>Domaine testable sans infrastructure réelle.</td>
-  </tr>
-  <tr>
-    <td>13:30–15:00</td>
-    <td>Intermédiaire+</td>
-    <td>Design des cas d'usage et gestion des erreurs métier.</td>
-    <td>Service applicatif refactoré.</td>
-    <td>Flux métier lisible, erreurs explicites.</td>
-  </tr>
-  <tr>
-    <td>15:15–17:00</td>
-    <td>Consolidation</td>
-    <td>Atelier de refonte architecture sur module critique.</td>
-    <td>Blueprint « avant / après ».</td>
-    <td>Architecture revue et validée collectivement.</td>
-  </tr>
-</table>
-
-<h2>Jour 2 — Qualité, typing, tests et observabilité</h2>
-<table>
-  <tr><th>Créneau</th><th>Progression</th><th>Contenu</th><th>Code / livrable</th><th>Critère de réussite</th></tr>
-  <tr>
-    <td>09:00–10:30</td>
-    <td>Intermédiaire</td>
-    <td>Typing strict, contrats d'API interne, cohérence des données.</td>
-    <td>Module typé de bout en bout.</td>
-    <td>Mypy vert, signatures cohérentes.</td>
-  </tr>
-  <tr>
-    <td>10:45–12:30</td>
-    <td>Intermédiaire+</td>
-    <td>Tests unitaires et d'intégration, cas limites et non-régression.</td>
-    <td>Suite de tests ciblée.</td>
-    <td>Comportements critiques sécurisés.</td>
-  </tr>
-  <tr>
-    <td>13:30–15:00</td>
-    <td>Intermédiaire+</td>
-    <td>Observabilité : logs structurés, métriques, traces de diagnostic.</td>
-    <td>Instrumentation d'un service.</td>
-    <td>Incident reproductible et analysable rapidement.</td>
-  </tr>
-  <tr>
-    <td>15:15–17:00</td>
-    <td>Consolidation</td>
-    <td>Chaîne qualité complète locale et CI.</td>
-    <td>Pipeline lint + typing + tests.</td>
-    <td>Merge bloqué en cas de régression.</td>
-  </tr>
-</table>
-
-<h2>Jour 3 — Performance et industrialisation</h2>
-<table>
-  <tr><th>Créneau</th><th>Progression</th><th>Contenu</th><th>Code / livrable</th><th>Critère de réussite</th></tr>
-  <tr>
-    <td>09:00–10:30</td>
-    <td>Avancé</td>
-    <td>Profilage CPU/mémoire, benchmark, identification de points chauds.</td>
-    <td>Rapport avant/après optimisation.</td>
-    <td>Gain mesuré et documenté.</td>
-  </tr>
-  <tr>
-    <td>10:45–12:30</td>
-    <td>Avancé</td>
-    <td>Arbitrages performance : async, multiprocessing, cache, batching.</td>
-    <td>Comparatif de stratégies.</td>
-    <td>Choix technique argumenté par métriques.</td>
-  </tr>
-  <tr>
-    <td>13:30–15:00</td>
-    <td>Projet</td>
-    <td>Delivery : versioning, release progressive, rollback, runbook.</td>
-    <td>Pipeline CI/CD prêt production.</td>
-    <td>Scénario de déploiement sécurisé validé.</td>
-  </tr>
-  <tr>
-    <td>15:15–17:00</td>
-    <td>Clôture</td>
-    <td>Revue finale, quiz, feuille de route technique.</td>
-    <td>Plan d'amélioration équipe.</td>
-    <td>Capacité à piloter un projet Python production.</td>
-  </tr>
-</table>
+<h2>JOUR 1 — Architecture et design orienté production</h2>
+<hr>
+<h3>Module 1 : Cartographie d'architecture (9h00 – 10h30)</h3>
+<p><strong>Objectifs</strong> : Évaluer une base existante et identifier les améliorations de découpage.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Lecture d'architecture</strong> (25 min)</p>
+<ul>
+<li>Couches, frontières, dépendances</li>
+<li>Points de couplage critique</li>
+</ul>
+</li>
+<li><p><strong>Diagnostic orienté production</strong> (25 min)</p>
+<ul>
+<li>Risques de maintenabilité et d'évolutivité</li>
+<li>Identification des anti-patterns majeurs</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (25 min)</p>
+<ul>
+<li>Cartographier un module réel</li>
+<li>Proposer un découpage plus clair et justifié</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 2 : Ports, adaptateurs et inversion de dépendances (10h45 – 12h30)</h3>
+<p><strong>Objectifs</strong> : Isoler le domaine des détails techniques pour améliorer testabilité et robustesse.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Architecture hexagonale appliquée</strong> (30 min)</p>
+<ul>
+<li>Ports d'entrée/sortie et adaptateurs</li>
+<li>Composition root et assemblage explicite</li>
+</ul>
+</li>
+<li><p><strong>Contrats techniques stables</strong> (25 min)</p>
+<ul>
+<li><code>Protocol</code> pour interfaces de domaine</li>
+<li>Dépendances remplaçables (DB, API, cache)</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (20 min)</p>
+<ul>
+<li>Refactor d'un service dépendant de l'infrastructure</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 3 : Cas d'usage et erreurs métier (13h30 – 15h00)</h3>
+<p><strong>Objectifs</strong> : Concevoir des flux applicatifs explicites et résilients.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Design des cas d'usage</strong> (30 min)</p>
+<ul>
+<li>Orchestration claire des étapes métier</li>
+<li>Séparation validation, exécution, sortie</li>
+</ul>
+</li>
+<li><p><strong>Erreurs métier vs techniques</strong> (25 min)</p>
+<ul>
+<li>Hiérarchie d'exceptions et messages exploitables</li>
+<li>Gestion cohérente des erreurs attendues</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (20 min)</p>
+<ul>
+<li>Refactor d'un service applicatif critique</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 4 : Atelier de refonte architecture (15h15 – 17h00)</h3>
+<p><strong>Objectifs</strong> : Consolider la journée via une refonte encadrée d'un module existant.</p>
+<p><strong>Contenu</strong> :</p>
+<ol>
+<li><p><strong>Blueprint “avant / après”</strong> (35 min)</p>
+<ul>
+<li>Proposition de cible architecturale</li>
+<li>Plan de migration incrémental</li>
+</ul>
+</li>
+<li><p><strong>Revue collective</strong> (30 min)</p>
+<ul>
+<li>Évaluation des compromis techniques</li>
+<li>Validation de l'alignement avec les contraintes production</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>JOUR 2 — Qualité, typing, tests et observabilité</h2>
+<hr>
+<h3>Module 5 : Typage strict et contrats internes (9h00 – 10h30)</h3>
+<p><strong>Objectifs</strong> : Stabiliser les interfaces internes et réduire les erreurs d'intégration.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Typing orienté robustesse</strong> (30 min)</p>
+<ul>
+<li>Annotations avancées et invariants de données</li>
+<li>Signatures cohérentes entre couches</li>
+</ul>
+</li>
+<li><p><strong>Vérification statique</strong> (25 min)</p>
+<ul>
+<li>Mise en place de règles mypy progressives</li>
+<li>Gestion des cas limites sans désactiver les contrôles</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (20 min)</p>
+<ul>
+<li>Typer un module de bout en bout avec sortie mypy propre</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 6 : Stratégie de tests (10h45 – 12h30)</h3>
+<p><strong>Objectifs</strong> : Couvrir les comportements critiques avec une suite de tests utile et maintenable.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Tests unitaires ciblés</strong> (25 min)</p>
+<ul>
+<li>Tests nominaux, cas limites, erreurs attendues</li>
+<li>Isolation avec doubles de test</li>
+</ul>
+</li>
+<li><p><strong>Tests d'intégration</strong> (25 min)</p>
+<ul>
+<li>Validation des flux principaux</li>
+<li>Protection contre les régressions fonctionnelles</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (25 min)</p>
+<ul>
+<li>Construire une suite de tests orientée risque</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 7 : Observabilité opérationnelle (13h30 – 15h00)</h3>
+<p><strong>Objectifs</strong> : Instrumenter un service pour diagnostiquer rapidement les incidents.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Logs structurés et métriques</strong> (30 min)</p>
+<ul>
+<li>Champs de contexte et corrélation d'événements</li>
+<li>Métriques de performance et erreurs</li>
+</ul>
+</li>
+<li><p><strong>Diagnostic et traçabilité</strong> (25 min)</p>
+<ul>
+<li>Reconstituer une chaîne d'exécution</li>
+<li>Identifier rapidement l'origine d'une anomalie</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (20 min)</p>
+<ul>
+<li>Instrumenter un service et valider la lisibilité des traces</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 8 : Chaîne qualité locale et CI (15h15 – 17h00)</h3>
+<p><strong>Objectifs</strong> : Industrialiser les contrôles qualité avant merge.</p>
+<p><strong>Contenu</strong> :</p>
+<ol>
+<li><p><strong>Pipeline qualité</strong> (35 min)</p>
+<ul>
+<li>Lint + typing + tests dans un flux unique</li>
+<li>Politique de blocage en cas de régression</li>
+</ul>
+</li>
+<li><p><strong>Atelier d'intégration</strong> (30 min)</p>
+<ul>
+<li>Mise en place sur un dépôt d'exemple</li>
+<li>Validation de bout en bout en CI</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>JOUR 3 — Performance et industrialisation</h2>
+<hr>
+<h3>Module 9 : Profilage et mesure (9h00 – 10h30)</h3>
+<p><strong>Objectifs</strong> : Mesurer précisément les points chauds avant optimisation.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Profilage CPU/mémoire</strong> (30 min)</p>
+<ul>
+<li>Identifier les sections coûteuses</li>
+<li>Éviter les optimisations intuitives non mesurées</li>
+</ul>
+</li>
+<li><p><strong>Benchmark comparatif</strong> (25 min)</p>
+<ul>
+<li>Établir un rapport avant/après</li>
+<li>Documenter le gain et ses limites</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (20 min)</p>
+<ul>
+<li>Optimiser un point chaud avec preuve chiffrée</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 10 : Arbitrages de performance (10h45 – 12h30)</h3>
+<p><strong>Objectifs</strong> : Choisir la stratégie d'exécution la plus adaptée au contexte réel.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Comparaison des approches</strong> (30 min)</p>
+<ul>
+<li>Async, multiprocessing, cache, batching</li>
+<li>Impacts sur latence, débit, complexité opérationnelle</li>
+</ul>
+</li>
+<li><p><strong>Décision guidée par métriques</strong> (25 min)</p>
+<ul>
+<li>Construire une grille d'arbitrage reproductible</li>
+<li>Argumenter un choix technique devant l'équipe</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (20 min)</p>
+<ul>
+<li>Produire un comparatif de stratégies justifié</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 11 : Delivery et sécurité de déploiement (13h30 – 15h00)</h3>
+<p><strong>Objectifs</strong> : Sécuriser la mise en production avec des mécanismes de contrôle et rollback.</p>
+<p><strong>Contenu</strong> :</p>
+<ol>
+<li><p><strong>Process de release</strong> (30 min)</p>
+<ul>
+<li>Versioning, release progressive, runbook opérationnel</li>
+<li>Critères go/no-go</li>
+</ul>
+</li>
+<li><p><strong>Gestion d'incident</strong> (25 min)</p>
+<ul>
+<li>Rollback sécurisé et restauration rapide</li>
+<li>Retours d'expérience post-incident</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (20 min)</p>
+<ul>
+<li>Valider un scénario CI/CD prêt production</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 12 : Clôture stratégique (15h15 – 17h00)</h3>
+<p><strong>Objectifs</strong> : Formaliser une feuille de route d'amélioration pour piloter des projets Python production.</p>
+<p><strong>Contenu</strong> :</p>
+<ol>
+<li><p><strong>Revue finale</strong> (35 min)</p>
+<ul>
+<li>Quiz de validation et bilan des acquis</li>
+<li>Analyse des forces et zones de vigilance</li>
+</ul>
+</li>
+<li><p><strong>Plan d'action</strong> (30 min)</p>
+<ul>
+<li>Feuille de route technique d'équipe</li>
+<li>Priorisation des améliorations court/moyen terme</li>
+</ul>
+</li>
+</ol>
+<hr>
 
 <h2>Bloc théorique transverse (niveau IV)</h2>
 <ul>

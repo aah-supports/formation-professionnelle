@@ -38,71 +38,223 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 <strong>Horaires</strong> : 9h00 – 17h00</p>
 <hr>
 
-<h2>Jour 1 — Objet et décorateurs</h2>
-<table>
-  <tr><th>Créneau</th><th>Progression</th><th>Contenu</th><th>Exercice guidé</th><th>Critère de réussite</th></tr>
-  <tr>
-    <td>09:00–10:30</td>
-    <td>Base</td>
-    <td>Refonte d’un script en objets : responsabilités, attributs, méthodes, dataclasses.</td>
-    <td>Modéliser une entité métier (Commande, Client, Produit).</td>
-    <td>Chaque classe a une responsabilité claire.</td>
-  </tr>
-  <tr>
-    <td>10:45–12:30</td>
-    <td>Intermédiaire</td>
-    <td>Composition vs héritage, interfaces implicites, contrats de méthodes, introduction au data model Python.</td>
-    <td>Refactor d’un héritage excessif en composition.</td>
-    <td>Couplage réduit, meilleure lisibilité.</td>
-  </tr>
-  <tr>
-    <td>13:30–15:00</td>
-    <td>Intermédiaire+</td>
-    <td>Décorateurs : <code>wraps</code>, paramètres, logging, validation.</td>
-    <td>Créer <code>@validate_input</code> et <code>@log_duration</code>.</td>
-    <td>Décorateurs réutilisables et testables.</td>
-  </tr>
-  <tr>
-    <td>15:15–17:00</td>
-    <td>Consolidation</td>
-    <td>Atelier de synthèse J1 : architecture orientée objet + décorateurs.</td>
-    <td>Mini-moteur de traitement (entrée/sortie + règles métier).</td>
-    <td>Code cohérent, sans duplication majeure.</td>
-  </tr>
-</table>
-
-<h2>Jour 2 — Coroutines et async/await</h2>
-<table>
-  <tr><th>Créneau</th><th>Progression</th><th>Contenu</th><th>Exercice guidé</th><th>Critère de réussite</th></tr>
-  <tr>
-    <td>09:00–10:30</td>
-    <td>Base</td>
-    <td>Event loop, coroutine, <code>await</code>, <code>create_task</code>, <code>gather</code>.</td>
-    <td>Paralléliser 20 appels I/O simulés.</td>
-    <td>Temps d’exécution significativement réduit.</td>
-  </tr>
-  <tr>
-    <td>10:45–12:30</td>
-    <td>Intermédiaire</td>
-    <td>Gestion des erreurs async : timeout, annulation, retry, backoff.</td>
-    <td>Rendre tolérant un lot d’appels API instables.</td>
-    <td>Aucun crash global, erreurs tracées proprement.</td>
-  </tr>
-  <tr>
-    <td>13:30–15:00</td>
-    <td>Intermédiaire+</td>
-    <td>Limiter la concurrence (<code>Semaphore</code>), éviter surcharge et throttling.</td>
-    <td>Respecter une limite de 5 appels concurrents.</td>
-    <td>Débit stable, pas d’explosion d’erreurs.</td>
-  </tr>
-  <tr>
-    <td>15:15–17:00</td>
-    <td>Avancé</td>
-    <td>Projet final : service asynchrone complet orienté objet.</td>
-    <td>Assembler modèle, décorateurs, orchestration async.</td>
-    <td>Livrable exécutable + quiz + recommandations.</td>
-  </tr>
-</table>
+<h2>JOUR 1 — Objet et décorateurs</h2>
+<hr>
+<h3>Module 1 : Modélisation objet propre (9h00 – 10h30)</h3>
+<p><strong>Objectifs</strong> : Passer d'un script procédural à un design orienté objet lisible et maintenable.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Découpage des responsabilités</strong> (25 min)</p>
+<ul>
+<li>Identifier entités, comportements et règles métier</li>
+<li>Éviter les classes “fourre-tout”</li>
+<li>Définir une responsabilité claire par classe</li>
+</ul>
+</li>
+<li><p><strong>Attributs, méthodes, dataclasses</strong> (25 min)</p>
+<ul>
+<li>Structurer les données métier avec <code>@dataclass</code></li>
+<li>Différencier méthodes d'instance et méthodes utilitaires</li>
+<li>Contrôler l'état initial des objets</li>
+</ul>
+</li>
+<li><p><strong>Critères de qualité objet</strong> (20 min)</p>
+<ul>
+<li>Cohésion élevée, couplage faible</li>
+<li>Nommage explicite et API de classe stable</li>
+<li>Lisibilité des interactions entre objets</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (20 min)</p>
+<ul>
+<li>Modéliser une entité métier (<code>Commande</code>, <code>Client</code>, <code>Produit</code>)</li>
+<li>Vérifier que chaque classe a une responsabilité nette</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 2 : Composition, héritage et contrats (10h45 – 12h30)</h3>
+<p><strong>Objectifs</strong> : Choisir la bonne relation entre objets et formaliser des contrats de méthodes robustes.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Composition vs héritage</strong> (30 min)</p>
+<ul>
+<li>Quand privilégier l'assemblage d'objets</li>
+<li>Cas légitimes d'héritage</li>
+<li>Risques d'un arbre d'héritage trop profond</li>
+</ul>
+</li>
+<li><p><strong>Interfaces implicites et protocoles</strong> (20 min)</p>
+<ul>
+<li>Contrats attendus des méthodes publiques</li>
+<li>Préconditions, postconditions, exceptions attendues</li>
+<li>Introduction au data model Python</li>
+</ul>
+</li>
+<li><p><strong>Refactor guidé</strong> (25 min)</p>
+<ul>
+<li>Transformer un héritage excessif en composition</li>
+<li>Réduire le couplage entre modules</li>
+<li>Améliorer la testabilité</li>
+</ul>
+</li>
+</ol>
+<p><strong>Activité</strong> : Refactor d'un mini système métier avec revue collective des choix de conception.</p>
+<hr>
+<h3>Module 3 : Décorateurs réutilisables (13h30 – 15h00)</h3>
+<p><strong>Objectifs</strong> : Construire des décorateurs propres pour porter les besoins transverses.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Fondamentaux</strong> (20 min)</p>
+<ul>
+<li>Fonctions de premier ordre et closures</li>
+<li><code>functools.wraps</code> et conservation de la signature</li>
+<li>Décorateurs simples vs paramétrés</li>
+</ul>
+</li>
+<li><p><strong>Cas d'usage production</strong> (25 min)</p>
+<ul>
+<li>Validation d'entrée, logging, mesure de durée</li>
+<li>Gestion d'erreurs uniforme</li>
+<li>Éviter les décorateurs “tout-en-un”</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (25 min)</p>
+<ul>
+<li>Créer <code>@validate_input</code> et <code>@log_duration</code></li>
+<li>Tester nominal + erreur pour chaque décorateur</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 4 : Atelier de synthèse Jour 1 (15h15 – 17h00)</h3>
+<p><strong>Objectifs</strong> : Assembler POO et décorateurs sur un mini cas fil rouge.</p>
+<p><strong>Contenu</strong> :</p>
+<ol>
+<li><p><strong>Conception du mini moteur</strong> (25 min)</p>
+<ul>
+<li>Définition des classes et flux principal</li>
+<li>Isolation des règles métier</li>
+</ul>
+</li>
+<li><p><strong>Intégration des décorateurs</strong> (25 min)</p>
+<ul>
+<li>Instrumentation et validation transverse</li>
+<li>Contrôle de cohérence des entrées/sorties</li>
+</ul>
+</li>
+<li><p><strong>Revue et corrections</strong> (35 min)</p>
+<ul>
+<li>Suppression des duplications majeures</li>
+<li>Amélioration de la lisibilité</li>
+<li>Checklist de qualité partagée</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>JOUR 2 — Coroutines et async/await</h2>
+<hr>
+<h3>Module 5 : Bases de l'asynchrone (9h00 – 10h30)</h3>
+<p><strong>Objectifs</strong> : Comprendre le modèle d'exécution async Python pour les traitements I/O.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Event loop et coroutines</strong> (25 min)</p>
+<ul>
+<li>Différence entre concurrence et parallélisme</li>
+<li>Cycle de vie d'une coroutine</li>
+<li>Rôle de <code>await</code> dans l'ordonnancement</li>
+</ul>
+</li>
+<li><p><strong>Orchestration de tâches</strong> (25 min)</p>
+<ul>
+<li><code>create_task()</code> et <code>gather()</code></li>
+<li>Concevoir des lots d'appels I/O</li>
+<li>Mesurer le gain de temps d'exécution</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (25 min)</p>
+<ul>
+<li>Paralléliser 20 appels I/O simulés</li>
+<li>Comparer séquentiel vs async</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 6 : Gestion d'erreurs et résilience async (10h45 – 12h30)</h3>
+<p><strong>Objectifs</strong> : Rendre un flux async robuste face aux pannes intermittentes.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Timeouts et annulations</strong> (25 min)</p>
+<ul>
+<li><code>wait_for()</code> et garde-fous temporels</li>
+<li>Propagation de <code>CancelledError</code></li>
+<li>Nettoyage des ressources en cas d'arrêt</li>
+</ul>
+</li>
+<li><p><strong>Retry et backoff</strong> (25 min)</p>
+<ul>
+<li>Stratégies de reprise progressive</li>
+<li>Idempotence et sécurité des retries</li>
+<li>Journaliser les erreurs utiles au diagnostic</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (20 min)</p>
+<ul>
+<li>Rendre tolérant un lot d'appels API instables</li>
+<li>Éviter le crash global</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 7 : Contrôle de concurrence (13h30 – 15h00)</h3>
+<p><strong>Objectifs</strong> : Stabiliser le débit avec une concurrence limitée et prévisible.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Limiter la pression sur les dépendances</strong> (25 min)</p>
+<ul>
+<li><code>Semaphore</code> pour borner le nombre de tâches actives</li>
+<li>Prévenir le throttling et la surcharge API</li>
+<li>Ajuster les limites selon le contexte d'exécution</li>
+</ul>
+</li>
+<li><p><strong>Batching et scheduling</strong> (20 min)</p>
+<ul>
+<li>Segmenter les traitements en lots cohérents</li>
+<li>Équilibrer latence et throughput</li>
+<li>Tracer le comportement en charge</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (25 min)</p>
+<ul>
+<li>Respecter une limite de 5 appels concurrents</li>
+<li>Maintenir un débit stable sans explosion d'erreurs</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 8 : Projet final asynchrone (15h15 – 17h00)</h3>
+<p><strong>Objectifs</strong> : Produire un service asynchrone complet, lisible et testable.</p>
+<p><strong>Contenu</strong> :</p>
+<ol>
+<li><p><strong>Assemblage</strong> (30 min)</p>
+<ul>
+<li>Modèle objet + décorateurs + orchestration async</li>
+<li>Gestion d'erreurs de bout en bout</li>
+</ul>
+</li>
+<li><p><strong>Validation finale</strong> (25 min)</p>
+<ul>
+<li>Scénarios nominaux et dégradés</li>
+<li>Checklist de robustesse et observabilité minimale</li>
+</ul>
+</li>
+<li><p><strong>Restitution</strong> (20 min)</p>
+<ul>
+<li>Livrable exécutable, quiz de clôture et recommandations</li>
+</ul>
+</li>
+</ol>
+<hr>
 
 <h2>Bloc théorique transverse (niveau II)</h2>
 <ul>

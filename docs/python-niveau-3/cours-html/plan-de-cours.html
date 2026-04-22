@@ -38,104 +38,275 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 <strong>Horaires</strong> : 9h00 – 17h00</p>
 <hr>
 
-<h2>Jour 1 — Fondations NumPy et pandas</h2>
-<table>
-  <tr><th>Créneau</th><th>Progression</th><th>Contenu</th><th>Code / livrable</th><th>Critère de réussite</th></tr>
-  <tr>
-    <td>09:00–10:30</td>
-    <td>Base</td>
-    <td>NumPy : <code>dtype</code>, <code>shape</code>, indexation, masques booléens.</td>
-    <td>Notebook de manipulations d'arrays.</td>
-    <td>Maîtrise des axes et de la vectorisation simple.</td>
-  </tr>
-  <tr>
-    <td>10:45–12:30</td>
-    <td>Base+</td>
-    <td>Vectorisation, broadcasting, agrégations et contrôle mémoire.</td>
-    <td>Refactor d'algorithmes à boucles vers NumPy.</td>
-    <td>Code plus court, plus rapide, résultats identiques.</td>
-  </tr>
-  <tr>
-    <td>13:30–15:00</td>
-    <td>Intermédiaire</td>
-    <td>pandas : import robuste, parsing de dates, typage, normalisation de colonnes.</td>
-    <td>Script d'import normalisé.</td>
-    <td>Données exploitables sans ambiguïtés de types.</td>
-  </tr>
-  <tr>
-    <td>15:15–17:00</td>
-    <td>Consolidation</td>
-    <td>Nettoyage : NA, doublons, valeurs aberrantes, règles métier.</td>
-    <td>Pipeline de nettoyage reproductible.</td>
-    <td>Qualité mesurée avant/après traitement.</td>
-  </tr>
-</table>
-
-<h2>Jour 2 — Transformations et KPI</h2>
-<table>
-  <tr><th>Créneau</th><th>Progression</th><th>Contenu</th><th>Code / livrable</th><th>Critère de réussite</th></tr>
-  <tr>
-    <td>09:00–10:30</td>
-    <td>Intermédiaire</td>
-    <td><code>groupby</code>, <code>agg</code>, <code>pivot_table</code>, indicateurs métier.</td>
-    <td>Tableau KPI journalier et hebdomadaire.</td>
-    <td>KPI cohérents et vérifiables.</td>
-  </tr>
-  <tr>
-    <td>10:45–12:30</td>
-    <td>Intermédiaire+</td>
-    <td>Jointures, cardinalités, protection contre les doublons silencieux.</td>
-    <td>Consolidation fact/référentiel avec <code>merge(validate=...)</code>.</td>
-    <td>Aucune inflation artificielle des volumes.</td>
-  </tr>
-  <tr>
-    <td>13:30–15:00</td>
-    <td>Intermédiaire+</td>
-    <td>Séries temporelles : index datetime, <code>resample</code>, rolling windows.</td>
-    <td>KPI mensuels + variation MoM/YoY.</td>
-    <td>Lecture temporelle correcte et exploitable métier.</td>
-  </tr>
-  <tr>
-    <td>15:15–17:00</td>
-    <td>Consolidation</td>
-    <td>Atelier dirigé : pipeline complet import → nettoyage → KPI.</td>
-    <td>Notebook structuré et commenté.</td>
-    <td>Chaîne de calcul reproductible de bout en bout.</td>
-  </tr>
-</table>
-
-<h2>Jour 3 — Fiabilité, industrialisation et restitution</h2>
-<table>
-  <tr><th>Créneau</th><th>Progression</th><th>Contenu</th><th>Code / livrable</th><th>Critère de réussite</th></tr>
-  <tr>
-    <td>09:00–10:30</td>
-    <td>Avancé</td>
-    <td>Contrôles qualité : taux de NA, contrôles de clés, cohérence des volumes.</td>
-    <td>Suite de checks automatisables.</td>
-    <td>Détection d'anomalies avant publication.</td>
-  </tr>
-  <tr>
-    <td>10:45–12:30</td>
-    <td>Avancé</td>
-    <td>Structurer le code data : fonctions pures, modules, configuration.</td>
-    <td>Script packagé exécutable en CLI.</td>
-    <td>Pipeline relançable sur nouvelles données.</td>
-  </tr>
-  <tr>
-    <td>13:30–15:00</td>
-    <td>Projet</td>
-    <td>Cas fil rouge complet avec contraintes réalistes.</td>
-    <td>Livrable CSV/Excel + note d'hypothèses.</td>
-    <td>Résultats argumentés et traçables.</td>
-  </tr>
-  <tr>
-    <td>15:15–17:00</td>
-    <td>Clôture</td>
-    <td>Revue collective, quiz final, plan de progression individuelle.</td>
-    <td>Checklist de bonnes pratiques personnalisée.</td>
-    <td>Autonomie opérationnelle sur projets data intermédiaires.</td>
-  </tr>
-</table>
+<h2>JOUR 1 — Fondations NumPy et pandas</h2>
+<hr>
+<h3>Module 1 : Fondations NumPy (9h00 – 10h30)</h3>
+<p><strong>Objectifs</strong> : Comprendre les structures NumPy pour manipuler des volumes de données efficacement.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Structure des tableaux</strong> (20 min)</p>
+<ul>
+<li><code>dtype</code>, <code>shape</code>, axes et mémoire</li>
+<li>Impact du type sur performance et précision</li>
+</ul>
+</li>
+<li><p><strong>Indexation et masques booléens</strong> (25 min)</p>
+<ul>
+<li>Sélection ciblée des lignes/colonnes</li>
+<li>Filtrage vectorisé sans boucle Python</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (25 min)</p>
+<ul>
+<li>Notebook de manipulations d'arrays</li>
+<li>Validation de la maîtrise des axes</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 2 : Vectorisation et contrôle mémoire (10h45 – 12h30)</h3>
+<p><strong>Objectifs</strong> : Remplacer les boucles coûteuses par des opérations vectorisées lisibles.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Broadcasting</strong> (25 min)</p>
+<ul>
+<li>Règles d'alignement des dimensions</li>
+<li>Cas d'usage fréquents sur données tabulaires</li>
+</ul>
+</li>
+<li><p><strong>Agrégations performantes</strong> (20 min)</p>
+<ul>
+<li>Sommes, moyennes, statistiques par axe</li>
+<li>Éviter les copies et opérations redondantes</li>
+</ul>
+</li>
+<li><p><strong>Refactor guidé</strong> (30 min)</p>
+<ul>
+<li>Transformer des algorithmes à boucles vers NumPy</li>
+<li>Comparer lisibilité, vitesse et exactitude des résultats</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 3 : Import robuste avec pandas (13h30 – 15h00)</h3>
+<p><strong>Objectifs</strong> : Fiabiliser l'ingestion et le typage des données dès l'entrée du pipeline.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Lecture et parsing</strong> (25 min)</p>
+<ul>
+<li>Import CSV/Excel avec options de parsing pertinentes</li>
+<li>Conversion des dates et normalisation initiale</li>
+</ul>
+</li>
+<li><p><strong>Typage et conventions</strong> (20 min)</p>
+<ul>
+<li>Colonnes numériques, catégorielles, temporelles</li>
+<li>Noms de colonnes homogènes et documentés</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (25 min)</p>
+<ul>
+<li>Produire un script d'import normalisé</li>
+<li>Obtenir un dataset exploitable sans ambiguïté de type</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 4 : Nettoyage reproductible (15h15 – 17h00)</h3>
+<p><strong>Objectifs</strong> : Mettre en place un pipeline de nettoyage mesurable et relançable.</p>
+<p><strong>Contenu</strong> :</p>
+<ol>
+<li><p><strong>Traitement des anomalies</strong> (30 min)</p>
+<ul>
+<li>NA, doublons, valeurs aberrantes</li>
+<li>Application de règles métier explicites</li>
+</ul>
+</li>
+<li><p><strong>Mesure de la qualité</strong> (25 min)</p>
+<ul>
+<li>Indicateurs avant/après nettoyage</li>
+<li>Journal des corrections appliquées</li>
+</ul>
+</li>
+<li><p><strong>Synthèse</strong> (20 min)</p>
+<ul>
+<li>Consolider un pipeline de nettoyage reproductible</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>JOUR 2 — Transformations et KPI</h2>
+<hr>
+<h3>Module 5 : Agrégations métier (9h00 – 10h30)</h3>
+<p><strong>Objectifs</strong> : Construire des indicateurs fiables avec les outils d'agrégation pandas.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Groupes et agrégations</strong> (30 min)</p>
+<ul>
+<li><code>groupby</code>, <code>agg</code>, <code>pivot_table</code></li>
+<li>Choix des fonctions d'agrégation selon le besoin métier</li>
+</ul>
+</li>
+<li><p><strong>Construction de KPI</strong> (25 min)</p>
+<ul>
+<li>Indicateurs journaliers et hebdomadaires</li>
+<li>Contrôles de cohérence des résultats</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (20 min)</p>
+<ul>
+<li>Livrer un tableau KPI vérifiable</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 6 : Jointures et cardinalités (10h45 – 12h30)</h3>
+<p><strong>Objectifs</strong> : Sécuriser les consolidations de données multi-sources.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Types de jointures</strong> (25 min)</p>
+<ul>
+<li>Inner, left, right, outer : impacts métier</li>
+<li>Détection des pertes et duplications de lignes</li>
+</ul>
+</li>
+<li><p><strong>Validation des cardinalités</strong> (25 min)</p>
+<ul>
+<li><code>merge(validate=...)</code> et contrôles de clés</li>
+<li>Prévenir l'inflation artificielle des volumes</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (20 min)</p>
+<ul>
+<li>Consolider fact/référentiel avec garanties de qualité</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 7 : Séries temporelles et tendances (13h30 – 15h00)</h3>
+<p><strong>Objectifs</strong> : Produire des KPI temporels lisibles et comparables.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Index temporel</strong> (20 min)</p>
+<ul>
+<li>Préparer un index datetime fiable</li>
+<li>Gestion des fréquences d'échantillonnage</li>
+</ul>
+</li>
+<li><p><strong>Resampling et fenêtres glissantes</strong> (25 min)</p>
+<ul>
+<li><code>resample</code>, rolling windows, comparaisons MoM/YoY</li>
+<li>Interprétation métier des variations</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (25 min)</p>
+<ul>
+<li>Produire des KPI mensuels et variations associées</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 8 : Atelier pipeline complet (15h15 – 17h00)</h3>
+<p><strong>Objectifs</strong> : Enchaîner ingestion, nettoyage et KPI dans une chaîne reproductible.</p>
+<p><strong>Contenu</strong> :</p>
+<ol>
+<li><p><strong>Assemblage guidé</strong> (35 min)</p>
+<ul>
+<li>Pipeline import → nettoyage → consolidation → KPI</li>
+<li>Structuration claire du notebook</li>
+</ul>
+</li>
+<li><p><strong>Validation</strong> (25 min)</p>
+<ul>
+<li>Vérifications de cohérence de bout en bout</li>
+<li>Préparation d'un livrable commenté</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>JOUR 3 — Fiabilité, industrialisation et restitution</h2>
+<hr>
+<h3>Module 9 : Contrôles qualité avancés (9h00 – 10h30)</h3>
+<p><strong>Objectifs</strong> : Détecter les anomalies avant publication des résultats.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Checks bloquants</strong> (30 min)</p>
+<ul>
+<li>Taux de NA, contrôle de clés, cohérence des volumes</li>
+<li>Définir des seuils d'acceptation explicites</li>
+</ul>
+</li>
+<li><p><strong>Automatisation</strong> (25 min)</p>
+<ul>
+<li>Construire une suite de checks relançable</li>
+<li>Traçabilité des anomalies détectées</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (20 min)</p>
+<ul>
+<li>Détection d'anomalies avant publication</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 10 : Structuration du code data (10h45 – 12h30)</h3>
+<p><strong>Objectifs</strong> : Sortir du notebook unique pour livrer un code data industrialisable.</p>
+<p><strong>Contenu détaillé</strong> :</p>
+<ol>
+<li><p><strong>Fonctions pures et modules</strong> (30 min)</p>
+<ul>
+<li>Séparer logique métier, I/O et configuration</li>
+<li>Réduire les effets de bord</li>
+</ul>
+</li>
+<li><p><strong>Exécution CLI</strong> (25 min)</p>
+<ul>
+<li>Paramétrage d'un run reproductible</li>
+<li>Relance sur nouvelles données sans retouche manuelle</li>
+</ul>
+</li>
+<li><p><strong>Exercice guidé</strong> (20 min)</p>
+<ul>
+<li>Transformer un script en exécutable CLI packagé</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 11 : Projet fil rouge (13h30 – 15h00)</h3>
+<p><strong>Objectifs</strong> : Réaliser un cas complet avec contraintes réalistes de qualité et délais.</p>
+<p><strong>Contenu</strong> :</p>
+<ol>
+<li><p><strong>Production du livrable</strong> (45 min)</p>
+<ul>
+<li>Jeu consolidé + exports CSV/Excel</li>
+<li>Note d'hypothèses et limites</li>
+</ul>
+</li>
+<li><p><strong>Validation métier</strong> (25 min)</p>
+<ul>
+<li>Contrôles finaux et argumentation des choix</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3>Module 12 : Revue finale et autonomie (15h15 – 17h00)</h3>
+<p><strong>Objectifs</strong> : Consolider les acquis et formaliser le plan de progression post-formation.</p>
+<p><strong>Contenu</strong> :</p>
+<ol>
+<li><p><strong>Revue collective</strong> (35 min)</p>
+<ul>
+<li>Présentation des solutions et arbitrages techniques</li>
+<li>Quiz final de validation</li>
+</ul>
+</li>
+<li><p><strong>Clôture opérationnelle</strong> (30 min)</p>
+<ul>
+<li>Checklist de bonnes pratiques personnalisée</li>
+<li>Cible d'autonomie sur projets data intermédiaires</li>
+</ul>
+</li>
+</ol>
+<hr>
 
 <h2>Bloc théorique transverse (niveau III)</h2>
 <ul>
