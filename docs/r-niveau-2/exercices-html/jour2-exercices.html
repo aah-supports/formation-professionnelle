@@ -12,6 +12,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Ar
 h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
 h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
 h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+.difficulty{display:inline-flex;align-items:center;gap:6px;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.78em;font-weight:700;vertical-align:middle}
+.difficulty-dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.diff-facile{background:#e8f7ee;color:#166534}
+.diff-facile .difficulty-dot{background:#22c55e}
+.diff-intermediaire{background:#fff4e5;color:#92400e}
+.diff-intermediaire .difficulty-dot{background:#f59e0b}
+.diff-avance{background:#fee2e2;color:#991b1b}
+.diff-avance .difficulty-dot{background:#ef4444}
 h4{font-size:.95rem;margin:16px 0 6px}
 p{margin:8px 0}
 ul,ol{margin:8px 0 8px 24px}
@@ -31,6 +39,7 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 </style>
 </head>
 <body>
+<p style="margin:0 0 12px 0;"><a href="index.html">&larr; Retour exercices</a> · <a href="../index.html">↩ Retour à la page du cours</a></p>
 <div class="header-bar"><strong>R Niveau II</strong></div>
 <h1>R Niveau II — Jour 2 : Exercices pratiques</h1>
 <blockquote>
@@ -38,7 +47,7 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 </blockquote>
 <hr>
 <h2>Module 5 : Contrôles qualité et consolidation</h2>
-<h3>Exercice 5.1 : Profil qualité rapide [Difficulté: Facile]</h3>
+<h3>Exercice 5.1 : Profil qualité rapide <span class="difficulty diff-facile"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Facile</span></h3>
 <p><strong>Énoncé</strong> : Sur <code>base_analyse</code>, calculez pour chaque colonne :</p>
 <ol>
 <li>Le nombre de valeurs manquantes</li>
@@ -65,7 +74,7 @@ profil_qc
 </details>
 
 <hr>
-<h3>Exercice 5.2 : Détection de doublons [Difficulté: Intermédiaire]</h3>
+<h3>Exercice 5.2 : Détection de doublons <span class="difficulty diff-intermediaire"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Intermédiaire</span></h3>
 <p><strong>Énoncé</strong> : Identifiez les commandes dupliquées sur la clé <code>(id_commande, date)</code>.</p>
 <ol>
 <li>Compter les occurrences par clé</li>
@@ -86,7 +95,7 @@ dups_lignes
 </details>
 
 <hr>
-<h3>Exercice 5.3 : Réconciliation base vs Excel [Difficulté: Avancé]</h3>
+<h3>Exercice 5.3 : Réconciliation base vs Excel <span class="difficulty diff-avance"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Avancé</span></h3>
 <p><strong>Énoncé</strong> : Comparez les montants mensuels entre :</p>
 <ul>
 <li><code>ca_base</code> issu des transactions SQL</li>
@@ -110,7 +119,7 @@ reco
 
 <hr>
 <h2>Module 6 : Statistiques descriptives pratiques</h2>
-<h3>Exercice 6.1 : KPI de tendance centrale et dispersion [Difficulté: Intermédiaire]</h3>
+<h3>Exercice 6.1 : KPI de tendance centrale et dispersion <span class="difficulty diff-intermediaire"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Intermédiaire</span></h3>
 <p><strong>Énoncé</strong> : Sur la variable <code>montant_commande</code>, calculez :</p>
 <ul>
 <li>moyenne, médiane, p25, p75</li>
@@ -133,7 +142,7 @@ kpi_dispersion
 </details>
 
 <hr>
-<h3>Exercice 6.2 : Analyse par segment client [Difficulté: Intermédiaire]</h3>
+<h3>Exercice 6.2 : Analyse par segment client <span class="difficulty diff-intermediaire"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Intermédiaire</span></h3>
 <p><strong>Énoncé</strong> : Produisez un tableau descriptif par <code>segment</code> avec :</p>
 <ol>
 <li>Nombre de clients</li>
@@ -160,7 +169,7 @@ desc_segment
 </details>
 
 <hr>
-<h3>Exercice 6.3 : Indicateurs temporels pratiques [Difficulté: Avancé]</h3>
+<h3>Exercice 6.3 : Indicateurs temporels pratiques <span class="difficulty diff-avance"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Avancé</span></h3>
 <p><strong>Énoncé</strong> : Construisez un tableau mensuel avec :</p>
 <ul>
 <li>CA du mois</li>
@@ -187,7 +196,7 @@ serie_mensuelle
 
 <hr>
 <h2>Module 7 : Restitution opérationnelle</h2>
-<h3>Exercice 7.1 : Tableau de pilotage avec gt [Difficulté: Intermédiaire]</h3>
+<h3>Exercice 7.1 : Tableau de pilotage avec gt <span class="difficulty diff-intermediaire"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Intermédiaire</span></h3>
 <p><strong>Énoncé</strong> : À partir de <code>desc_segment</code>, produire un tableau lisible :</p>
 <ol>
 <li>Format monétaire pour CA et panier</li>
@@ -211,7 +220,7 @@ tbl_pilotage
 </details>
 
 <hr>
-<h3>Exercice 7.2 : Graphiques descriptifs utiles [Difficulté: Intermédiaire]</h3>
+<h3>Exercice 7.2 : Graphiques descriptifs utiles <span class="difficulty diff-intermediaire"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Intermédiaire</span></h3>
 <p><strong>Énoncé</strong> : Créer deux graphiques :</p>
 <ul>
 <li>CA mensuel (ligne)</li>
@@ -247,7 +256,7 @@ p2
 </details>
 
 <hr>
-<h3>Exercice 7.3 : Export des livrables [Difficulté: Facile]</h3>
+<h3>Exercice 7.3 : Export des livrables <span class="difficulty diff-facile"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Facile</span></h3>
 <p><strong>Énoncé</strong> : Exportez :</p>
 <ul>
 <li>Le tableau descriptif segment en CSV</li>

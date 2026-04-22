@@ -12,6 +12,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Ar
 h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
 h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
 h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+.difficulty{display:inline-flex;align-items:center;gap:6px;margin-left:8px;padding:2px 8px;border-radius:999px;font-size:.78em;font-weight:700;vertical-align:middle}
+.difficulty-dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.diff-facile{background:#e8f7ee;color:#166534}
+.diff-facile .difficulty-dot{background:#22c55e}
+.diff-intermediaire{background:#fff4e5;color:#92400e}
+.diff-intermediaire .difficulty-dot{background:#f59e0b}
+.diff-avance{background:#fee2e2;color:#991b1b}
+.diff-avance .difficulty-dot{background:#ef4444}
 h4{font-size:.95rem;margin:16px 0 6px}
 p{margin:8px 0}
 ul,ol{margin:8px 0 8px 24px}
@@ -31,6 +39,7 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 </style>
 </head>
 <body>
+<p style="margin:0 0 12px 0;"><a href="index.html">&larr; Retour exercices</a> · <a href="../index.html">↩ Retour à la page du cours</a></p>
 <div class="header-bar"><strong>R Niveau II</strong></div>
 <h1>R Niveau II — Jour 1 : Exercices pratiques</h1>
 <blockquote>
@@ -47,7 +56,7 @@ hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
 </ul>
 <hr>
 <h2>Module 1 : Connexion base de données avec R</h2>
-<h3>Exercice 1.1 : Connexion SQLite et découverte [Difficulté: Facile]</h3>
+<h3>Exercice 1.1 : Connexion SQLite et découverte <span class="difficulty diff-facile"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Facile</span></h3>
 <p><strong>Énoncé</strong> : Connectez-vous à une base SQLite nommée <code>business.db</code> et listez les tables disponibles.</p>
 <ol>
 <li>Créer la connexion DBI</li>
@@ -67,7 +76,7 @@ dbDisconnect(con)
 </details>
 
 <hr>
-<h3>Exercice 1.2 : Première requête dbplyr [Difficulté: Intermédiaire]</h3>
+<h3>Exercice 1.2 : Première requête dbplyr <span class="difficulty diff-intermediaire"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Intermédiaire</span></h3>
 <p><strong>Énoncé</strong> : À partir de la table <code>ventes</code> :</p>
 <ol>
 <li>Créer un objet distant <code>tbl(con, "ventes")</code></li>
@@ -94,7 +103,7 @@ ca_region |&gt; collect()
 </details>
 
 <hr>
-<h3>Exercice 1.3 : Limiter les volumes [Difficulté: Intermédiaire]</h3>
+<h3>Exercice 1.3 : Limiter les volumes <span class="difficulty diff-intermediaire"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Intermédiaire</span></h3>
 <p><strong>Énoncé</strong> : Pourquoi faut-il éviter <code>collect()</code> trop tôt ? Vérifiez sur cet exemple :</p>
 <ol>
 <li>Version A : <code>collect()</code> puis <code>filter()</code></li>
@@ -119,7 +128,7 @@ nrow(b)
 
 <hr>
 <h2>Module 2 : Import et nettoyage de fichiers Excel</h2>
-<h3>Exercice 2.1 : Import multi-feuilles [Difficulté: Facile]</h3>
+<h3>Exercice 2.1 : Import multi-feuilles <span class="difficulty diff-facile"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Facile</span></h3>
 <p><strong>Énoncé</strong> : Le classeur <code>catalogue.xlsx</code> contient les feuilles <code>Produits</code> et <code>Tarifs</code>.</p>
 <ol>
 <li>Lister les feuilles</li>
@@ -140,7 +149,7 @@ glimpse(produits)
 </details>
 
 <hr>
-<h3>Exercice 2.2 : Nettoyer un export messy [Difficulté: Intermédiaire]</h3>
+<h3>Exercice 2.2 : Nettoyer un export messy <span class="difficulty diff-intermediaire"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Intermédiaire</span></h3>
 <p><strong>Énoncé</strong> : Le fichier <code>objectifs.xlsx</code> contient 2 lignes d&#39;entête et des montants au format texte.</p>
 <ol>
 <li>Lire la feuille <code>Objectifs</code> en sautant 2 lignes</li>
@@ -162,7 +171,7 @@ objectifs &lt;- read_excel("objectifs.xlsx", sheet = "Objectifs", skip = 2) |&gt
 </details>
 
 <hr>
-<h3>Exercice 2.3 : Passer d&#39;un format large à tidy [Difficulté: Intermédiaire]</h3>
+<h3>Exercice 2.3 : Passer d&#39;un format large à tidy <span class="difficulty diff-intermediaire"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Intermédiaire</span></h3>
 <p><strong>Énoncé</strong> : Vous avez des colonnes <code>jan_2025</code>, <code>fev_2025</code>, <code>mar_2025</code> dans <code>objectifs_wide</code>.</p>
 <ol>
 <li>Transformer en format long avec <code>pivot_longer()</code></li>
@@ -185,7 +194,7 @@ objectifs_tidy &lt;- objectifs_wide |&gt;
 
 <hr>
 <h2>Module 3 : Requêtes avancées I</h2>
-<h3>Exercice 3.1 : Jointures multi-tables [Difficulté: Intermédiaire]</h3>
+<h3>Exercice 3.1 : Jointures multi-tables <span class="difficulty diff-intermediaire"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Intermédiaire</span></h3>
 <p><strong>Énoncé</strong> : Construire une table analytique en joignant :</p>
 <ul>
 <li><code>ventes</code> avec <code>clients</code> via <code>client_id</code></li>
@@ -206,7 +215,7 @@ base_analyse |&gt; collect() |&gt; glimpse()
 </details>
 
 <hr>
-<h3>Exercice 3.2 : Détecter les références absentes [Difficulté: Avancé]</h3>
+<h3>Exercice 3.2 : Détecter les références absentes <span class="difficulty diff-avance"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Avancé</span></h3>
 <p><strong>Énoncé</strong> : Trouvez les <code>produit_id</code> présents dans les ventes mais absents du catalogue Excel.</p>
 <p><strong>Indice</strong> : Utilisez <code>anti_join()</code>.</p>
 <details><summary>Solution</summary>
@@ -220,7 +229,7 @@ produits_absents
 </details>
 
 <hr>
-<h3>Exercice 3.3 : Top 5 clients par région [Difficulté: Avancé]</h3>
+<h3>Exercice 3.3 : Top 5 clients par région <span class="difficulty diff-avance"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Avancé</span></h3>
 <p><strong>Énoncé</strong> : Calculez le chiffre d&#39;affaires par client et région, puis gardez les 5 meilleurs clients de chaque région.</p>
 <details><summary>Solution</summary>
 <pre><code class="language-r">top_clients &lt;- ventes_tbl |&gt;
@@ -238,7 +247,7 @@ top_clients
 
 <hr>
 <h2>Module 4 : Requêtes avancées II et automatisation</h2>
-<h3>Exercice 4.1 : Calcul d&#39;évolution mensuelle [Difficulté: Avancé]</h3>
+<h3>Exercice 4.1 : Calcul d&#39;évolution mensuelle <span class="difficulty diff-avance"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Avancé</span></h3>
 <p><strong>Énoncé</strong> : Créez un indicateur d&#39;évolution mensuelle du CA par région avec <code>lag()</code>.</p>
 <ol>
 <li>Agréger le CA mensuel</li>
@@ -262,7 +271,7 @@ top_clients
 </details>
 
 <hr>
-<h3>Exercice 4.2 : Fonction d&#39;extraction paramétrée [Difficulté: Avancé]</h3>
+<h3>Exercice 4.2 : Fonction d&#39;extraction paramétrée <span class="difficulty diff-avance"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Avancé</span></h3>
 <p><strong>Énoncé</strong> : Écrire une fonction <code>extraire_kpi(con, date_debut, date_fin, region = NULL)</code> qui :</p>
 <ul>
 <li>Filtre les ventes sur la période</li>
@@ -292,7 +301,7 @@ extraire_kpi(con, "2025-01-01", "2025-03-31", "Nord")
 </details>
 
 <hr>
-<h3>Exercice 4.3 : Import robuste multi-fichiers [Difficulté: Avancé]</h3>
+<h3>Exercice 4.3 : Import robuste multi-fichiers <span class="difficulty diff-avance"><span class="difficulty-dot" aria-hidden="true"></span>Difficulté: Avancé</span></h3>
 <p><strong>Énoncé</strong> : Importez tous les fichiers <code>.xlsx</code> du dossier <code>exports/</code> et capturez les erreurs sans interrompre le traitement.</p>
 <details><summary>Solution</summary>
 <pre><code class="language-r">library(purrr)
