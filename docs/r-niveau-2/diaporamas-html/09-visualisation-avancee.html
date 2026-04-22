@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bases de données avec R</title>
+  <title>Bonus — Visualisation avancée</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
@@ -22,55 +22,46 @@
     .subtitle { font-size:1.1em; color:var(--muted); margin-top:0.3em; }
     .slide-subtitle { font-size:0.85em; font-weight:600; margin-bottom:0.8em; }
     .slide-header { margin-bottom:1em; }
-    .slide-body { display:flex; gap:40px; align-items:flex-start; }
-    .two-col .col-text, .two-col .col-code { flex:1.2; }
-    .two-col .col-visual { flex:0.8; display:flex; justify-content:center; align-items:center; }
-    pre { background:var(--bg2) !important; border:1px solid var(--border); border-radius:12px; padding:20px !important; margin:0 !important; font-size:0.7em !important; overflow-x:auto; }
+    pre { background:var(--bg2) !important; border:1px solid var(--border); border-radius:12px; padding:20px !important; margin:0 !important; font-size:0.68em !important; overflow-x:auto; }
     code { font-family:'JetBrains Mono',monospace !important; line-height:1.7 !important; font-variant-ligatures:none !important; font-feature-settings:'liga' 0,'calt' 0 !important; }
     .bullet-list, .summary-list { list-style:none; padding:0; margin:0; }
     .bullet-list li, .summary-list li { padding:8px 0; border-bottom:1px solid var(--border); color:var(--body); font-size:0.9em; line-height:1.5; }
     .bullet-list li:last-child, .summary-list li:last-child { border-bottom:none; }
     .check { font-weight:700; margin-right:8px; }
-    .schema { display:flex; flex-direction:column; gap:12px; align-items:center; justify-content:center; padding:20px; }
-    .schema-label { font-size:0.75em; font-weight:600; color:var(--accent,var(--cyan)); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px; }
-    .schema-row { display:flex; gap:12px; align-items:center; justify-content:center; }
-    .schema-box { background:var(--bg2); border:2px solid var(--accent,var(--cyan)); border-radius:8px; padding:12px 20px; color:var(--text); font-family:'JetBrains Mono',monospace; font-size:0.8em; text-align:center; }
-    .schema-arrow { color:var(--accent,var(--cyan)); font-size:1.5em; font-weight:700; }
     .progress-bar { position:absolute; top:0; left:0; width:100%; height:3px; background:var(--border); z-index:10; pointer-events:none; }
     .progress-fill { height:100%; transition:width .5s ease; border-radius:0 2px 2px 0; }
     .slide-footer { position:absolute; bottom:16px; right:24px; }
     .slide-num { font-size:0.65em; color:var(--dim); font-family:'JetBrains Mono',monospace; }
-@media print { .reveal .slides > section { page-break-after:always; } .progress-bar { display:none; } .fragment { opacity:1 !important; visibility:visible !important; } }
-  
-  .slide-nav {
-    position: fixed;
-    left: 14px;
-    bottom: 14px;
-    z-index: 60;
-    display: flex;
-    gap: 8px;
-  }
-  .slide-nav-link {
-    width: 30px;
-    height: 30px;
-    border-radius: 999px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #74b9ff;
-    text-decoration: none;
-    font-size: 0.75em;
-    font-weight: 700;
-    background: rgba(8,8,8,0.65);
-    border: 1px solid #2f3640;
-    opacity: 0.95;
-  }
-  .slide-nav-link:hover {
-    color: #ffffff;
-    border-color: #74b9ff;
-  }
-  @media print { .slide-nav { display: none !important; } }
-</style>
+
+    .slide-nav {
+      position: fixed;
+      left: 14px;
+      bottom: 14px;
+      z-index: 60;
+      display: flex;
+      gap: 8px;
+    }
+    .slide-nav-link {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #74b9ff;
+      text-decoration: none;
+      font-size: 0.75em;
+      font-weight: 700;
+      background: rgba(8,8,8,0.65);
+      border: 1px solid #2f3640;
+      opacity: 0.95;
+    }
+    .slide-nav-link:hover {
+      color: #ffffff;
+      border-color: #74b9ff;
+    }
+    @media print { .slide-nav { display: none !important; } }
+  </style>
 </head>
 <body>
   <div class="reveal">
@@ -78,158 +69,137 @@
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:10%; background:#00f3ff"></div></div>
-      <h1 style="color:#00f3ff; font-size:2.2em">Module 1 — Bases de données avec R</h1>
-      <p class="subtitle">DBI, dbplyr et requêtes performantes</p>
-      <div class="schema" style="--accent:#00f3ff">
-        <div class="schema-label">Objectif</div>
-        <div class="schema-row">
-          <div class="schema-box">Connexion</div><div class="schema-arrow">→</div>
-          <div class="schema-box">Requête SQL</div><div class="schema-arrow">→</div>
-          <div class="schema-box">KPI fiable</div>
-        </div>
-      </div>
+      <h1 style="color:#00f3ff; font-size:2.2em">Module Bonus — Visualisation avancée</h1>
+      <p class="subtitle">Hors timing officiel: design, lisibilité et narration avec ggplot2</p>
       <div class="slide-footer"><span class="slide-num">1 / 10</span></div>
     </section>
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:20%; background:#a78bfa"></div></div>
-      <div class="slide-header">
-        <h2>Pourquoi interroger la base directement ?</h2>
-        <p class="slide-subtitle" style="color:#a78bfa">Éviter les extractions lourdes et fragiles</p>
-      </div>
+      <div class="slide-header"><h2>Objectifs du bonus</h2></div>
       <ul class="bullet-list">
-        <li>Les données volumineuses restent côté serveur</li>
-        <li>Le filtrage se fait avant transfert</li>
-        <li>Moins de mémoire locale consommée</li>
-        <li>Meilleure traçabilité des requêtes</li>
+        <li>Passer d'un graphique technique a un graphique decisionnel</li>
+        <li>Structurer un storytelling visuel simple et robuste</li>
+        <li>Uniformiser le style pour les livrables metiers</li>
+        <li>Exporter des figures propres pour slides et rapports</li>
       </ul>
       <div class="slide-footer"><span class="slide-num">2 / 10</span></div>
     </section>
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:30%; background:#00f3ff"></div></div>
-      <div class="slide-header">
-        <h2>Connexion DBI</h2>
-        <p class="slide-subtitle" style="color:#00f3ff">Pattern standard, quel que soit le SGBD</p>
-      </div>
-      <pre><code class="language-r">library(DBI)
-library(RSQLite)
+      <div class="slide-header"><h2>Mapping vs setting (rappel critique)</h2></div>
+      <pre><code class="language-r"># Couleur dependante d'une variable
+p1 <- ggplot(df, aes(x = mois, y = ca, color = region)) +
+  geom_line(size = 1)
 
-con &lt;- dbConnect(RSQLite::SQLite(), "business.db")
-dbListTables(con)
-
-dbDisconnect(con)</code></pre>
+# Couleur fixe pour toute la serie
+p2 <- ggplot(df, aes(x = mois, y = ca)) +
+  geom_line(color = "#1f77b4", size = 1)</code></pre>
       <div class="slide-footer"><span class="slide-num">3 / 10</span></div>
     </section>
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:40%; background:#ff6b00"></div></div>
-      <div class="slide-header">
-        <h2>Objets distants avec dbplyr</h2>
-        <p class="slide-subtitle" style="color:#ff6b00">Code dplyr, exécution SQL</p>
-      </div>
-      <pre><code class="language-r">library(dplyr)
-library(dbplyr)
-
-ventes_tbl &lt;- tbl(con, "ventes")
-
-kpi &lt;- ventes_tbl |&gt;
-  filter(date &gt;= "2025-01-01") |&gt;
-  group_by(region) |&gt;
-  summarise(ca_total = sum(prix_net, na.rm = TRUE), .groups = "drop")
-
-show_query(kpi)
-kpi |&gt; collect()</code></pre>
+      <div class="slide-header"><h2>Facet pour comparer sans bruit</h2></div>
+      <pre><code class="language-r">ggplot(kpi_df, aes(x = mois, y = marge)) +
+  geom_col(fill = "#00b894") +
+  facet_wrap(~ region, ncol = 2, scales = "free_y") +
+  labs(title = "Marge mensuelle par region")</code></pre>
+      <ul class="bullet-list">
+        <li>Comparer des profils plutot que tout superposer</li>
+        <li>Utiliser <code>scales = "free_y"</code> seulement si justifie</li>
+      </ul>
       <div class="slide-footer"><span class="slide-num">4 / 10</span></div>
     </section>
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:50%; background:#a78bfa"></div></div>
-      <div class="slide-header">
-        <h2>Lazy evaluation</h2>
-        <p class="slide-subtitle" style="color:#a78bfa">La requête part au serveur au bon moment</p>
-      </div>
-      <ul class="bullet-list">
-        <li><code>tbl()</code> crée une référence, pas une copie des données</li>
-        <li>Les verbes dplyr construisent la requête SQL</li>
-        <li><code>collect()</code> déclenche l'exécution et rapatrie le résultat</li>
-        <li>Bonne pratique : collecter uniquement la table déjà agrégée</li>
-      </ul>
+      <div class="slide-header"><h2>Echelles et etiquettes lisibles</h2></div>
+      <pre><code class="language-r">library(scales)
+
+ggplot(kpi_df, aes(x = mois, y = ca)) +
+  geom_line(color = "#6c5ce7", size = 1.1) +
+  scale_y_continuous(labels = label_number(big.mark = " ", suffix = " €")) +
+  scale_x_date(date_labels = "%b %Y")</code></pre>
       <div class="slide-footer"><span class="slide-num">5 / 10</span></div>
     </section>
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:60%; background:#00f3ff"></div></div>
-      <div class="slide-header">
-        <h2>Bonnes pratiques de performance</h2>
-      </div>
-      <ul class="bullet-list">
-        <li>Filtrer le plus tôt possible dans le pipeline</li>
-        <li>Limiter les colonnes avec <code>select()</code></li>
-        <li>Éviter les jointures inutiles</li>
-        <li>Contrôler le SQL généré avec <code>show_query()</code></li>
-        <li>Fermer proprement la connexion après traitement</li>
-      </ul>
+      <div class="slide-header"><h2>Theme standard d'equipe</h2></div>
+      <pre><code class="language-r">theme_reporting <- function() {
+  theme_minimal(base_size = 13) +
+    theme(
+      plot.title = element_text(face = "bold", size = 16),
+      axis.title = element_text(face = "bold"),
+      panel.grid.minor = element_blank(),
+      legend.position = "bottom"
+    )
+}
+
+p + theme_reporting()</code></pre>
       <div class="slide-footer"><span class="slide-num">6 / 10</span></div>
     </section>
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:70%; background:#ff6b00"></div></div>
-      <div class="slide-header">
-        <h2>Jointure distante (aperçu)</h2>
-      </div>
-      <pre><code class="language-r">clients_tbl &lt;- tbl(con, "clients")
-
-analyse_tbl &lt;- ventes_tbl |&gt;
-  left_join(clients_tbl, by = "client_id") |&gt;
-  group_by(region, segment) |&gt;
-  summarise(ca = sum(prix_net, na.rm = TRUE), .groups = "drop")</code></pre>
+      <div class="slide-header"><h2>Annotations pour raconter</h2></div>
+      <pre><code class="language-r">p +
+  geom_vline(xintercept = as.Date("2025-09-01"), linetype = 2, color = "#fdcb6e") +
+  annotate("text", x = as.Date("2025-09-01"), y = 120000,
+           label = "Changement de politique tarifaire", hjust = -0.1)</code></pre>
       <div class="slide-footer"><span class="slide-num">7 / 10</span></div>
     </section>
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:80%; background:#a78bfa"></div></div>
-      <div class="slide-header">
-        <h2>Points de vigilance</h2>
-      </div>
+      <div class="slide-header"><h2>Composer plusieurs vues</h2></div>
+      <pre><code class="language-r">library(patchwork)
+
+(p_ca | p_marge) /
+  p_volume +
+  plot_annotation(title = "Cockpit regional")</code></pre>
       <ul class="bullet-list">
-        <li>Types incohérents entre tables (texte vs numérique)</li>
-        <li>Colonnes dates mal parsées</li>
-        <li>Clés non uniques causant des duplications silencieuses</li>
-        <li>Droits SQL insuffisants pour certaines tables</li>
+        <li>Garder 2 a 3 visuels max par ecran</li>
+        <li>Un message principal par slide</li>
       </ul>
       <div class="slide-footer"><span class="slide-num">8 / 10</span></div>
     </section>
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:90%; background:#00f3ff"></div></div>
-      <div class="slide-header">
-        <h2>Atelier du module</h2>
-      </div>
+      <div class="slide-header"><h2>Export propre pour livraison</h2></div>
+      <pre><code class="language-r">ggsave(
+  filename = "kpi_region.png",
+  plot = p_final,
+  width = 12,
+  height = 7,
+  dpi = 300,
+  bg = "white"
+)</code></pre>
       <ul class="bullet-list">
-        <li>Connecter une base de ventes</li>
-        <li>Calculer le CA mensuel par région</li>
-        <li>Produire le Top 10 clients de la période</li>
-        <li>Exporter le résultat final en CSV</li>
+        <li>PNG pour slides, PDF pour impression</li>
+        <li>Verifier lisibilite a 100% zoom</li>
       </ul>
       <div class="slide-footer"><span class="slide-num">9 / 10</span></div>
     </section>
 
     <section data-background-color="#080808" data-transition="slide">
       <div class="progress-bar"><div class="progress-fill" style="width:100%; background:#00f3ff"></div></div>
-      <div class="slide-header">
-        <h2 style="color:#00f3ff">Récapitulatif</h2>
-      </div>
+      <div class="slide-header"><h2 style="color:#00f3ff">Recap Bonus</h2></div>
       <ul class="summary-list">
-        <li><span class="check" style="color:#00f3ff">✓</span>DBI pour la connexion multi-SGBD</li>
-        <li><span class="check" style="color:#00f3ff">✓</span>dbplyr pour écrire en dplyr et exécuter en SQL</li>
-        <li><span class="check" style="color:#00f3ff">✓</span>collect() uniquement en fin de pipeline</li>
-        <li><span class="check" style="color:#00f3ff">✓</span>Focus performance et fiabilité des extractions</li>
+        <li><span class="check" style="color:#00f3ff">✓</span>Comparer avec faceting avant de multiplier les courbes</li>
+        <li><span class="check" style="color:#00f3ff">✓</span>Standardiser le theme pour tous les livrables</li>
+        <li><span class="check" style="color:#00f3ff">✓</span>Annoter les ruptures metier significatives</li>
+        <li><span class="check" style="color:#00f3ff">✓</span>Exporter avec dimensions et qualite controlees</li>
       </ul>
       <div class="slide-footer"><span class="slide-num">10 / 10</span></div>
     </section>
     </div>
-  </div><div class="slide-nav" aria-label="Navigation module">
+  </div>
+
+  <div class="slide-nav" aria-label="Navigation module">
     <a class="slide-nav-link" href="../index.html" title="Retour au module" aria-label="Retour au module">↩</a>
     <a class="slide-nav-link" href="index.html" title="Tous les modules" aria-label="Tous les modules">☰</a>
   </div>

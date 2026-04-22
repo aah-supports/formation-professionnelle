@@ -116,7 +116,36 @@
       .progress-bar { display: none; }
       .fragment { opacity: 1 !important; visibility: visible !important; }
     }
-  </style>
+  
+  .slide-nav {
+    position: fixed;
+    left: 14px;
+    bottom: 14px;
+    z-index: 60;
+    display: flex;
+    gap: 8px;
+  }
+  .slide-nav-link {
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #74b9ff;
+    text-decoration: none;
+    font-size: 0.75em;
+    font-weight: 700;
+    background: rgba(8,8,8,0.65);
+    border: 1px solid #2f3640;
+    opacity: 0.95;
+  }
+  .slide-nav-link:hover {
+    color: #ffffff;
+    border-color: #74b9ff;
+  }
+  @media print { .slide-nav { display: none !important; } }
+</style>
 </head>
 <body>
   <div class="reveal">
@@ -375,11 +404,10 @@ tapply(mtcars$mpg, mtcars$cyl, mean)</code></pre>
       </div>
     </section>
     </div>
+  </div><div class="slide-nav" aria-label="Navigation module">
+    <a class="slide-nav-link" href="../index.html" title="Retour au module" aria-label="Retour au module">↩</a>
+    <a class="slide-nav-link" href="index.html" title="Tous les modules" aria-label="Tous les modules">☰</a>
   </div>
-  <a class="home-link" href="../index.html" style="position:fixed; left:18px; bottom:14px; z-index:30; color:#74b9ff; text-decoration:none; font-size:0.6em; font-weight:600; opacity:0.92; background:rgba(8,8,8,0.55); border:1px solid #222; padding:6px 10px; border-radius:999px;">Retour au niveau</a>
-  <a class="modules-link" href="index.html" style="position:fixed;bottom:14px;z-index:30;color:#74b9ff;text-decoration:none;font-size:0.6em;font-weight:600;opacity:0.92;background:rgba(8,8,8,0.55);border:1px solid #222;padding:6px 10px;border-radius:999px;left:150px;">Tous les modules</a>
-  <a class="prev-module-link" href="05-import-export.html" style="position:fixed;bottom:14px;z-index:30;color:#74b9ff;text-decoration:none;font-size:0.6em;font-weight:600;opacity:0.92;background:rgba(8,8,8,0.55);border:1px solid #222;padding:6px 10px;border-radius:999px;right:170px;">&larr; Module précédent</a>
-  <a class="next-module-link" href="07-visualisation.html" style="position:fixed;bottom:14px;z-index:30;color:#74b9ff;text-decoration:none;font-size:0.6em;font-weight:600;opacity:0.92;background:rgba(8,8,8,0.55);border:1px solid #222;padding:6px 10px;border-radius:999px;right:18px;">Module suivant &rarr;</a>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/r.min.js"></script>

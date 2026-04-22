@@ -13,16 +13,37 @@
   .reveal h3 { font-size: 1.15em; }
   .reveal pre { font-size: .54em; border-radius: 10px; }
 
-  .course-home {
-    position: fixed; top: 14px; left: 14px; z-index: 50;
-    color: #74b9ff; text-decoration: none; font-size: .55em; font-weight: 600;
-    background: rgba(8,8,8,.55); border: 1px solid #333; padding: 6px 10px; border-radius: 999px;
+.slide-nav {
+    position: fixed;
+    left: 14px;
+    bottom: 14px;
+    z-index: 60;
+    display: flex;
+    gap: 8px;
   }
+  .slide-nav-link {
+    width: 30px;
+    height: 30px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #74b9ff;
+    text-decoration: none;
+    font-size: 0.75em;
+    font-weight: 700;
+    background: rgba(8,8,8,0.65);
+    border: 1px solid #2f3640;
+    opacity: 0.95;
+  }
+  .slide-nav-link:hover {
+    color: #ffffff;
+    border-color: #74b9ff;
+  }
+  @media print { .slide-nav { display: none !important; } }
 </style>
 </head>
-<body>
-<a class="course-home" href="../index.html">Accueil du niveau</a>
-<div class="reveal"><div class="slides">
+<body><div class="reveal"><div class="slides">
 <section>
   <h2>Chapitre 4 — Architecture modulaire</h2>
   <p>Concevoir un système Python évolutif et maintenable à long terme.</p>
@@ -168,7 +189,11 @@ class OrderPaid:
   </ul>
 </section>
 </div></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+  <div class="slide-nav" aria-label="Navigation module">
+    <a class="slide-nav-link" href="../index.html" title="Retour au module" aria-label="Retour au module">↩</a>
+    <a class="slide-nav-link" href="index.html" title="Tous les modules" aria-label="Tous les modules">☰</a>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
 <script>

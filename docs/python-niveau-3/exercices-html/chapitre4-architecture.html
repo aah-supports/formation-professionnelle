@@ -1,1 +1,101 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Exercices Architecture</title><style>body{font-family:Arial,sans-serif;max-width:860px;margin:24px auto;padding:0 16px;line-height:1.6;color:#222}ol{padding-left:22px}</style></head><body><p><a href="index.html">&larr; Retour exercices N4</a></p><h1>Exercices — Chapitre 1 Architecture</h1><ol><li>Découper un service monolithique en modules cohérents.</li><li>Définir des interfaces entre domaine et infrastructure.</li><li>Documenter les dépendances autorisées/interdites.</li></ol></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python N3 — Exercices Chapitre 4 Architecture</title>
+<style>
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:#2d3436;line-height:1.7;max-width:820px;margin:0 auto;padding:30px 20px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:20px 0 16px}
+h2{font-size:1.2rem;color:#2d3436;margin:26px 0 10px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:14px 18px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:10px 0}
+pre code{background:none;padding:0;color:inherit}
+.badge{display:inline-block;background:#eef6ff;border:1px solid #cfe4ff;color:#1c6dd0;padding:2px 8px;border-radius:999px;font-size:.8rem}
+</style>
+</head>
+<body>
+<p><a href="index.html">&larr; Retour exercices Python N3</a></p>
+<h1>Chapitre 4 — Architecture modulaire</h1>
+<p>Objectif: structurer le code pour isoler le métier, réduire le couplage et préparer la maintenabilité.</p>
+
+<h2>Exercice 4.1 — Découpage en couches <span class="badge">Intermédiaire</span></h2>
+<ol>
+<li>Proposer une arborescence <code>domain</code>, <code>application</code>, <code>infrastructure</code>, <code>interfaces</code>.</li>
+<li>Déplacer une logique de calcul KPI hors du contrôleur API.</li>
+<li>Écrire une règle simple de dépendances autorisées.</li>
+</ol>
+<details>
+<summary>Corrigé (exemple de structure)</summary>
+<pre><code class="language-text">src/
+  domain/
+    entities.py
+    rules.py
+  application/
+    use_cases.py
+  infrastructure/
+    repositories.py
+  interfaces/
+    api.py
+  bootstrap/
+    container.py
+</code></pre>
+</details>
+
+<h2>Exercice 4.2 — Port / adapter pour dépôt <span class="badge">Avancé</span></h2>
+<ol>
+<li>Définir un protocole <code>KPIRepository</code>.</li>
+<li>Coder un use case <code>ComputeRegionKPI</code> dépendant du protocole.</li>
+<li>Créer un adapter concret <code>PandasKPIRepository</code>.</li>
+</ol>
+<details>
+<summary>Corrigé</summary>
+<pre><code class="language-python">from typing import Protocol
+
+class KPIRepository(Protocol):
+    def sales_by_region(self, month: str) -> list[dict]: ...
+
+class ComputeRegionKPI:
+    def __init__(self, repo: KPIRepository) -> None:
+        self.repo = repo
+
+    def execute(self, month: str) -> list[dict]:
+        rows = self.repo.sales_by_region(month)
+        return sorted(rows, key=lambda r: r["ca_total"], reverse=True)</code></pre>
+</details>
+
+<h2>Exercice 4.3 — ADR de décision d'architecture <span class="badge">Avancé</span></h2>
+<p>Rédiger un mini ADR (1 page max) sur le choix: « pandas local vs entrepôt SQL pour les KPI mensuels ».</p>
+<ul>
+<li>Contexte</li>
+<li>Décision</li>
+<li>Alternatives rejetées</li>
+<li>Conséquences techniques</li>
+</ul>
+<details>
+<summary>Corrigé (trame)</summary>
+<pre><code class="language-text"># ADR-004: Stockage KPI mensuels
+Date: 2026-04-22
+
+Contexte:
+- Volumes en hausse, recalculs fréquents, besoin d'audit.
+
+Décision:
+- Calcul en SQL + extraction pandas pour restitution.
+
+Alternatives:
+- Tout en pandas local (rejeté: traçabilité limitée).
+- Tout en API externe (rejeté: dépendance forte).
+
+Conséquences:
++ Requêtes reproductibles, gouvernance améliorée.
+- Besoin de compétences SQL et monitoring BDD.
+</code></pre>
+</details>
+</body>
+</html>

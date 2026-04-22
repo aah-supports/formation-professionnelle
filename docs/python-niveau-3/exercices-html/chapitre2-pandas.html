@@ -1,1 +1,103 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Exercices pandas</title><style>body{font-family:Arial,sans-serif;max-width:860px;margin:24px auto;padding:0 16px;line-height:1.6;color:#222}ol{padding-left:22px}</style></head><body><p><a href="index.html">&larr; Retour exercices N3</a></p><h1>Exercices — Chapitre 2 pandas</h1><ol><li>Nettoyer un export avec types incohérents et valeurs manquantes.</li><li>Créer un pipeline de préparation reproductible.</li><li>Produire un tableau de contrôle qualité (NA, doublons, types).</li></ol></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python N3 — Exercices Chapitre 2 pandas</title>
+<style>
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:#2d3436;line-height:1.7;max-width:820px;margin:0 auto;padding:30px 20px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:20px 0 16px}
+h2{font-size:1.2rem;color:#2d3436;margin:26px 0 10px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:14px 18px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:10px 0}
+pre code{background:none;padding:0;color:inherit}
+.badge{display:inline-block;background:#eef6ff;border:1px solid #cfe4ff;color:#1c6dd0;padding:2px 8px;border-radius:999px;font-size:.8rem}
+</style>
+</head>
+<body>
+<p><a href="index.html">&larr; Retour exercices Python N3</a></p>
+<h1>Chapitre 2 — Nettoyage et transformation avec pandas</h1>
+<p>Objectif: transformer un export brut en table analytique fiable.</p>
+
+<h2>Exercice 2.1 — Nettoyage typage et valeurs manquantes <span class="badge">Intermédiaire</span></h2>
+<ol>
+<li>Charger un CSV contenant <code>date_commande</code>, <code>montant</code>, <code>region</code>.</li>
+<li>Parser les dates, convertir <code>montant</code> en float.</li>
+<li>Supprimer les lignes sans région et imputer les montants manquants par médiane régionale.</li>
+</ol>
+<details>
+<summary>Corrigé</summary>
+<pre><code class="language-python">import pandas as pd
+
+
+df = pd.read_csv("ventes_brut.csv")
+
+df["date_commande"] = pd.to_datetime(df["date_commande"], errors="coerce")
+df["montant"] = (
+    df["montant"].astype(str)
+    .str.replace(" ", "", regex=False)
+    .str.replace(",", ".", regex=False)
+)
+df["montant"] = pd.to_numeric(df["montant"], errors="coerce")
+
+df = df.dropna(subset=["region"])
+df["montant"] = df.groupby("region")["montant"].transform(
+    lambda s: s.fillna(s.median())
+)
+</code></pre>
+</details>
+
+<h2>Exercice 2.2 — Pipeline reproductible <span class="badge">Intermédiaire</span></h2>
+<ol>
+<li>Écrire une fonction <code>prepare_ventes(df)</code>.</li>
+<li>Chaîner les étapes avec <code>.pipe()</code>.</li>
+<li>Retourner un DataFrame trié par date et id commande.</li>
+</ol>
+<details>
+<summary>Corrigé</summary>
+<pre><code class="language-python">def standardize_columns(df):
+    df = df.copy()
+    df.columns = [c.strip().lower() for c in df.columns]
+    return df
+
+
+def prepare_dates(df):
+    df = df.copy()
+    df["date_commande"] = pd.to_datetime(df["date_commande"], errors="coerce")
+    return df
+
+
+def prepare_ventes(df):
+    return (
+        df.pipe(standardize_columns)
+          .pipe(prepare_dates)
+          .dropna(subset=["id_commande", "date_commande"])
+          .sort_values(["date_commande", "id_commande"])
+          .reset_index(drop=True)
+    )</code></pre>
+</details>
+
+<h2>Exercice 2.3 — Contrôle qualité tabulaire <span class="badge">Avancé</span></h2>
+<p>Produire un tableau QA avec, par colonne: type, nombre de NA, taux NA, nombre de valeurs distinctes.</p>
+<details>
+<summary>Corrigé</summary>
+<pre><code class="language-python">def quality_report(df: pd.DataFrame) -> pd.DataFrame:
+    n = len(df)
+    report = pd.DataFrame({
+        "dtype": df.dtypes.astype(str),
+        "na_count": df.isna().sum(),
+        "na_rate": (df.isna().sum() / n).round(4),
+        "n_unique": df.nunique(dropna=True),
+    })
+    return report.sort_values("na_rate", ascending=False)
+
+qa = quality_report(df)
+print(qa)</code></pre>
+</details>
+</body>
+</html>

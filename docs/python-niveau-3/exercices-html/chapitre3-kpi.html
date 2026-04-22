@@ -1,1 +1,93 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Exercices KPI</title><style>body{font-family:Arial,sans-serif;max-width:860px;margin:24px auto;padding:0 16px;line-height:1.6;color:#222}ol{padding-left:22px}</style></head><body><p><a href="index.html">&larr; Retour exercices N3</a></p><h1>Exercices — Chapitre 3 KPI et consolidation</h1><ol><li>Consolider deux tables avec vérification de cardinalité.</li><li>Calculer KPI hebdomadaires et mensuels.</li><li>Exporter un rapport final + note d’hypothèses.</li></ol></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python N3 — Exercices Chapitre 3 KPI</title>
+<style>
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:#2d3436;line-height:1.7;max-width:820px;margin:0 auto;padding:30px 20px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:20px 0 16px}
+h2{font-size:1.2rem;color:#2d3436;margin:26px 0 10px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:14px 18px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:10px 0}
+pre code{background:none;padding:0;color:inherit}
+.badge{display:inline-block;background:#eef6ff;border:1px solid #cfe4ff;color:#1c6dd0;padding:2px 8px;border-radius:999px;font-size:.8rem}
+</style>
+</head>
+<body>
+<p><a href="index.html">&larr; Retour exercices Python N3</a></p>
+<h1>Chapitre 3 — KPI, consolidation et temporalité</h1>
+<p>Objectif: construire des KPI stables et auditables à partir de plusieurs sources.</p>
+
+<h2>Exercice 3.1 — Consolidation multi-sources <span class="badge">Intermédiaire</span></h2>
+<ol>
+<li>Fusionner <code>ventes_df</code> avec <code>clients_df</code> puis <code>objectifs_df</code>.</li>
+<li>Vérifier la cardinalité des jointures.</li>
+<li>Signaler les clés manquantes dans une table d'anomalies.</li>
+</ol>
+<details>
+<summary>Corrigé</summary>
+<pre><code class="language-python">merged = ventes_df.merge(clients_df, on="client_id", how="left", indicator=True)
+anom_clients = merged.loc[merged["_merge"] == "left_only", ["client_id"]].drop_duplicates()
+merged = merged.drop(columns=["_merge"])
+
+merged = merged.merge(objectifs_df, on=["region", "mois"], how="left", indicator=True)
+anom_objectifs = merged.loc[merged["_merge"] == "left_only", ["region", "mois"]].drop_duplicates()
+merged = merged.drop(columns=["_merge"])</code></pre>
+</details>
+
+<h2>Exercice 3.2 — KPI mensuels et variation MoM <span class="badge">Avancé</span></h2>
+<ol>
+<li>Agréger CA, nb commandes, panier moyen par <code>region</code> et <code>mois</code>.</li>
+<li>Calculer variation mensuelle du CA.</li>
+<li>Identifier les régions en baisse 2 mois consécutifs.</li>
+</ol>
+<details>
+<summary>Corrigé</summary>
+<pre><code class="language-python">kpi = (
+    merged.groupby(["region", "mois"], as_index=False)
+          .agg(
+              ca_total=("montant", "sum"),
+              nb_commandes=("id_commande", "nunique"),
+          )
+)
+kpi["panier_moyen"] = kpi["ca_total"] / kpi["nb_commandes"]
+
+kpi = kpi.sort_values(["region", "mois"])
+kpi["ca_prev"] = kpi.groupby("region")["ca_total"].shift(1)
+kpi["mom_pct"] = (kpi["ca_total"] - kpi["ca_prev"]) / kpi["ca_prev"]
+
+kpi["baisse"] = kpi["mom_pct"] < 0
+kpi["baisse_2x"] = kpi.groupby("region")["baisse"].transform(lambda s: s &amp; s.shift(1).fillna(False))</code></pre>
+</details>
+
+<h2>Exercice 3.3 — Contrôle de cohérence KPI <span class="badge">Avancé</span></h2>
+<p>Produire une table de validation avec:</p>
+<ul>
+<li>KPI manquants, valeurs négatives, divisions invalides.</li>
+<li>Écart vs objectif &gt; 20%.</li>
+<li>Statut final: <code>OK</code>, <code>ALERTE</code>, <code>ERREUR</code>.</li>
+</ul>
+<details>
+<summary>Corrigé</summary>
+<pre><code class="language-python">qc = kpi.copy()
+qc["target_gap_pct"] = (qc["ca_total"] - qc["objectif_ca"]) / qc["objectif_ca"]
+
+conditions = [
+    qc[["ca_total", "nb_commandes", "panier_moyen"]].isna().any(axis=1),
+    (qc["ca_total"] < 0) | (qc["nb_commandes"] <= 0),
+    qc["target_gap_pct"].abs() > 0.20,
+]
+choices = ["ERREUR", "ERREUR", "ALERTE"]
+
+import numpy as np
+qc["statut"] = np.select(conditions, choices, default="OK")
+print(qc[["region", "mois", "statut", "target_gap_pct"]])</code></pre>
+</details>
+</body>
+</html>
