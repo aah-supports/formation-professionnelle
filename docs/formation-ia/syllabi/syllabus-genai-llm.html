@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formation IA — Syllabus bloc GenAI & LLM</title>
+<style>
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#2d3436;line-height:1.7;max-width:800px;margin:0 auto;padding:30px 24px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
+h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+h4{font-size:.95rem;margin:16px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid #dfe6e9;padding:8px 12px;text-align:left;font-size:.9rem;vertical-align:top}
+th{background:#f1f2f6;font-weight:600}
+tr:nth-child(even){background:#f8f9fa}
+blockquote{border-left:4px solid #74b9ff;margin:12px 0;padding:8px 16px;background:#f8f9fa;color:#636e72}
+strong{color:#2d3436}
+hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
+.header-bar{background:#0984e3;color:#fff;padding:12px 20px;border-radius:8px;margin-bottom:24px;font-size:.85rem}
+.header-bar strong{color:#fff}
+.back{margin-top:24px}
+.back a{text-decoration:none;color:#0984e3;font-weight:600}
+</style>
+</head>
+<body>
+<div class="header-bar"><strong>Formation IA</strong></div>
+<h1>Formation IA — Syllabus bloc GenAI & LLM</h1>
+<p><strong>Périmètre</strong> : J1 à J5
+<strong>Durée</strong> : 5 jours
+<strong>Focus</strong> : LLM, prompts, API, fine-tuning, RAG</p>
+<hr>
+
+<h2>Objectif général</h2>
+<p>Acquérir les bases solides pour concevoir des solutions GenAI utiles en entreprise : choisir le bon modèle, structurer les prompts, intégrer via API et exploiter un corpus documentaire avec RAG.</p>
+
+<h2>Programme détaillé</h2>
+
+<h3>Module 1 — Fondamentaux LLM</h3>
+<p><strong>Objectif</strong> : Comprendre les principes de fonctionnement des LLM et leurs limites opérationnelles.</p>
+<ul>
+  <li><strong>Contenu</strong> : tokenisation, contexte, paramètres de génération, limites (hallucinations, biais, coûts).</li>
+  <li><strong>Atelier</strong> : analyse de sorties de modèles sur plusieurs cas métier.</li>
+  <li><strong>Résultat attendu</strong> : savoir cadrer un usage LLM réaliste et mesurable.</li>
+</ul>
+
+<h3>Module 2 — Prompt engineering</h3>
+<p><strong>Objectif</strong> : Concevoir des prompts robustes, testables et réutilisables.</p>
+<ul>
+  <li><strong>Contenu</strong> : structure d'instructions, rôle système, zero-shot/few-shot, templates de prompts.</li>
+  <li><strong>Atelier</strong> : refonte de prompts instables en prompts industrialisables.</li>
+  <li><strong>Résultat attendu</strong> : bibliothèque de prompts versionnés par cas d'usage.</li>
+</ul>
+
+<h3>Module 3 — Intégration API LLM</h3>
+<p><strong>Objectif</strong> : Développer une intégration applicative fiable avec gestion de conversation.</p>
+<ul>
+  <li><strong>Contenu</strong> : appels API, gestion d'erreurs, retries, streaming, suivi de coût/token.</li>
+  <li><strong>Atelier</strong> : implémentation d'un chatbot avec historique de messages.</li>
+  <li><strong>Résultat attendu</strong> : prototype fonctionnel exploitable en environnement de test.</li>
+</ul>
+
+<h3>Module 4 — Personnalisation des modèles</h3>
+<p><strong>Objectif</strong> : Choisir entre prompting avancé, adaptation de contexte et fine-tuning selon le besoin.</p>
+<ul>
+  <li><strong>Contenu</strong> : préparation des données, qualité des exemples, critères de comparaison des approches.</li>
+  <li><strong>Atelier</strong> : définition d'un protocole d'évaluation (qualité, coût, latence).</li>
+  <li><strong>Résultat attendu</strong> : matrice de décision pour la personnalisation d'un cas réel.</li>
+</ul>
+
+<h3>Module 5 — RAG (Retrieval-Augmented Generation)</h3>
+<p><strong>Objectif</strong> : Mettre en place une chaîne RAG complète sur une base documentaire métier.</p>
+<ul>
+  <li><strong>Contenu</strong> : chunking, embeddings, indexation vectorielle, retrieval, génération avec citations.</li>
+  <li><strong>Atelier</strong> : construction d'un pipeline RAG de bout en bout.</li>
+  <li><strong>Résultat attendu</strong> : assistant QA sur documents internes avec réponses traçables.</li>
+</ul>
+
+<h2>Compétences visées</h2>
+<ul>
+  <li>Analyser un cas métier et choisir une stratégie LLM pertinente.</li>
+  <li>Produire des prompts testables, versionnables et réutilisables.</li>
+  <li>Développer une intégration API robuste avec gestion d'erreurs.</li>
+  <li>Mettre en place un pipeline RAG de production initiale.</li>
+</ul>
+
+<h2>Exemples de livrables</h2>
+<ul>
+  <li>Guide de prompting interne.</li>
+  <li>Mini chatbot API avec historique et logs.</li>
+  <li>Pipeline RAG complet sur documentation d'entreprise.</li>
+</ul>
+
+<h2>Prérequis</h2>
+<ul>
+  <li>Python intermédiaire (fonctions, modules, HTTP, JSON).</li>
+  <li>Notions SQL ou manipulation de données textuelles recommandées.</li>
+  <li>Aisance terminal/Git et debug applicatif.</li>
+</ul>
+
+<p class="back"><a href="index.html">&larr; Retour aux syllabi Formation IA</a></p>
+</body>
+</html>
