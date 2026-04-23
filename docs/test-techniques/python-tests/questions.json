@@ -1,0 +1,274 @@
+{
+  "questions": [
+    {
+      "id": "Q1",
+      "title": "Question 1/30",
+      "prompt": "Écris une fonction est_pair(n) qui retourne True si n est pair, sinon False.",
+      "functionName": "est_pair",
+      "template": "def est_pair(n):\n    # Retourne True si n est pair, sinon False\n    pass\n",
+      "points": 1,
+      "testFile": "test-q01.json"
+    },
+    {
+      "id": "Q2",
+      "title": "Question 2/30",
+      "prompt": "Écris une fonction valeur_absolue(n) qui retourne la valeur absolue de n.",
+      "functionName": "valeur_absolue",
+      "template": "def valeur_absolue(n):\n    # Retourne la valeur absolue de n\n    pass\n",
+      "points": 1,
+      "testFile": "test-q02.json"
+    },
+    {
+      "id": "Q3",
+      "title": "Question 3/30",
+      "prompt": "Écris une fonction max_deux(a, b) qui retourne le plus grand des deux nombres.",
+      "functionName": "max_deux",
+      "template": "def max_deux(a, b):\n    # Retourne le maximum entre a et b\n    pass\n",
+      "points": 1,
+      "testFile": "test-q03.json"
+    },
+    {
+      "id": "Q4",
+      "title": "Question 4/30",
+      "prompt": "Écris une fonction moyenne_trois(a, b, c) qui retourne la moyenne des trois valeurs.",
+      "functionName": "moyenne_trois",
+      "template": "def moyenne_trois(a, b, c):\n    # Retourne la moyenne de a, b, c\n    pass\n",
+      "points": 1,
+      "testFile": "test-q04.json"
+    },
+    {
+      "id": "Q5",
+      "title": "Question 5/30",
+      "prompt": "Écris une fonction compter_pairs(nombres) qui retourne le nombre de valeurs paires.",
+      "functionName": "compter_pairs",
+      "template": "def compter_pairs(nombres):\n    # Retourne le nombre de valeurs paires\n    pass\n",
+      "points": 1,
+      "testFile": "test-q05.json"
+    },
+    {
+      "id": "Q6",
+      "title": "Question 6/30",
+      "prompt": "Écris une fonction somme_positifs(nombres) qui retourne la somme des nombres strictement positifs.",
+      "functionName": "somme_positifs",
+      "template": "def somme_positifs(nombres):\n    # Retourne la somme des nombres strictement positifs\n    pass\n",
+      "points": 1,
+      "testFile": "test-q06.json"
+    },
+    {
+      "id": "Q7",
+      "title": "Question 7/30",
+      "prompt": "Écris une fonction inverser_chaine(texte) qui retourne la chaîne inversée.",
+      "functionName": "inverser_chaine",
+      "template": "def inverser_chaine(texte):\n    # Retourne la chaîne inversée\n    pass\n",
+      "points": 1,
+      "testFile": "test-q07.json"
+    },
+    {
+      "id": "Q8",
+      "title": "Question 8/30",
+      "prompt": "Écris une fonction est_palindrome(texte) qui retourne True si le texte est identique à l’envers.",
+      "functionName": "est_palindrome",
+      "template": "def est_palindrome(texte):\n    # Retourne True si texte est un palindrome\n    pass\n",
+      "points": 1,
+      "testFile": "test-q08.json"
+    },
+    {
+      "id": "Q9",
+      "title": "Question 9/30",
+      "prompt": "Écris une fonction factorielle(n) qui retourne n! (n factorielle).",
+      "functionName": "factorielle",
+      "template": "def factorielle(n):\n    # Retourne n!\n    pass\n",
+      "points": 1,
+      "testFile": "test-q09.json"
+    },
+    {
+      "id": "Q10",
+      "title": "Question 10/30",
+      "prompt": "Écris une fonction fibonacci_n(n) qui retourne le terme n de Fibonacci (F0=0, F1=1).",
+      "functionName": "fibonacci_n",
+      "template": "def fibonacci_n(n):\n    # Retourne F(n) avec F0=0 et F1=1\n    pass\n",
+      "points": 1,
+      "testFile": "test-q10.json"
+    },
+    {
+      "id": "Q11",
+      "title": "Question 11/30",
+      "prompt": "Écris une fonction filtrer_non_negatifs(nombres) qui garde uniquement les valeurs >= 0.",
+      "functionName": "filtrer_non_negatifs",
+      "template": "def filtrer_non_negatifs(nombres):\n    # Retourne une liste avec les valeurs >= 0\n    pass\n",
+      "points": 1,
+      "testFile": "test-q11.json"
+    },
+    {
+      "id": "Q12",
+      "title": "Question 12/30",
+      "prompt": "Écris une fonction dedoublonner_ordre(nombres) qui supprime les doublons en conservant l’ordre.",
+      "functionName": "dedoublonner_ordre",
+      "template": "def dedoublonner_ordre(nombres):\n    # Supprime les doublons en conservant l'ordre\n    pass\n",
+      "points": 1,
+      "testFile": "test-q12.json"
+    },
+    {
+      "id": "Q13",
+      "title": "Question 13/30",
+      "prompt": "Écris une fonction est_triee_croissante(nombres) qui retourne True si la liste est triée (croissante ou égale).",
+      "functionName": "est_triee_croissante",
+      "template": "def est_triee_croissante(nombres):\n    # Retourne True si la liste est triée croissante (avec égalité autorisée)\n    pass\n",
+      "points": 1,
+      "testFile": "test-q13.json"
+    },
+    {
+      "id": "Q14",
+      "title": "Question 14/30",
+      "prompt": "Écris une fonction trouver_index(nombres, cible) qui retourne le premier index de cible, sinon -1.",
+      "functionName": "trouver_index",
+      "template": "def trouver_index(nombres, cible):\n    # Retourne l'index de la première occurrence, sinon -1\n    pass\n",
+      "points": 1,
+      "testFile": "test-q14.json"
+    },
+    {
+      "id": "Q15",
+      "title": "Question 15/30",
+      "prompt": "Écris une fonction compter_mots(texte) qui retourne le nombre de mots (séparés par espaces).",
+      "functionName": "compter_mots",
+      "template": "def compter_mots(texte):\n    # Retourne le nombre de mots du texte\n    pass\n",
+      "points": 1,
+      "testFile": "test-q15.json"
+    },
+    {
+      "id": "Q16",
+      "title": "Question 16/30",
+      "prompt": "Écris une fonction fusionner_tries(a, b) qui fusionne deux listes triées en une liste triée.",
+      "functionName": "fusionner_tries",
+      "template": "def fusionner_tries(a, b):\n    # Fusionne deux listes triées\n    pass\n",
+      "points": 1,
+      "testFile": "test-q16.json"
+    },
+    {
+      "id": "Q17",
+      "title": "Question 17/30",
+      "prompt": "Écris une fonction compter_frequences(elements) qui retourne un dictionnaire des occurrences.",
+      "functionName": "compter_frequences",
+      "template": "def compter_frequences(elements):\n    # Retourne un dictionnaire {element: occurrences}\n    pass\n",
+      "points": 1,
+      "testFile": "test-q17.json"
+    },
+    {
+      "id": "Q18",
+      "title": "Question 18/30",
+      "prompt": "Écris une fonction moyenne_sans_extremes(nombres) qui retire min et max (une fois) puis fait la moyenne.",
+      "functionName": "moyenne_sans_extremes",
+      "template": "def moyenne_sans_extremes(nombres):\n    # Retire min et max (une fois) puis calcule la moyenne\n    pass\n",
+      "points": 1,
+      "testFile": "test-q18.json"
+    },
+    {
+      "id": "Q19",
+      "title": "Question 19/30",
+      "prompt": "Écris une fonction rotation_droite(nombres, k) qui fait une rotation à droite de k positions.",
+      "functionName": "rotation_droite",
+      "template": "def rotation_droite(nombres, k):\n    # Rotation à droite de k positions\n    pass\n",
+      "points": 1,
+      "testFile": "test-q19.json"
+    },
+    {
+      "id": "Q20",
+      "title": "Question 20/30",
+      "prompt": "Écris une fonction intercaler_listes(a, b) qui alterne les éléments de a et b, puis ajoute le reste.",
+      "functionName": "intercaler_listes",
+      "template": "def intercaler_listes(a, b):\n    # Alterne les éléments de a et b puis ajoute le reste\n    pass\n",
+      "points": 1,
+      "testFile": "test-q20.json"
+    },
+    {
+      "id": "Q21",
+      "title": "Question 21/30",
+      "prompt": "Écris une fonction indice_sous_chaine(texte, motif) qui retourne l’index du motif, sinon -1.",
+      "functionName": "indice_sous_chaine",
+      "template": "def indice_sous_chaine(texte, motif):\n    # Retourne l'index du motif, sinon -1\n    pass\n",
+      "points": 1,
+      "testFile": "test-q21.json"
+    },
+    {
+      "id": "Q22",
+      "title": "Question 22/30",
+      "prompt": "Écris une fonction nettoyer_espaces(texte) qui normalise les espaces multiples en un seul.",
+      "functionName": "nettoyer_espaces",
+      "template": "def nettoyer_espaces(texte):\n    # Normalise les espaces (trim + espaces simples)\n    pass\n",
+      "points": 1,
+      "testFile": "test-q22.json"
+    },
+    {
+      "id": "Q23",
+      "title": "Question 23/30",
+      "prompt": "Écris une fonction pairs_uniques_tries(nombres) qui retourne les pairs uniques triés croissants.",
+      "functionName": "pairs_uniques_tries",
+      "template": "def pairs_uniques_tries(nombres):\n    # Retourne les pairs uniques triés\n    pass\n",
+      "points": 1,
+      "testFile": "test-q23.json"
+    },
+    {
+      "id": "Q24",
+      "title": "Question 24/30",
+      "prompt": "Écris une fonction partition_pairs_impairs(nombres) qui retourne un dict {pairs, impairs}.",
+      "functionName": "partition_pairs_impairs",
+      "template": "def partition_pairs_impairs(nombres):\n    # Retourne {\"pairs\": [...], \"impairs\": [...]}\n    pass\n",
+      "points": 1,
+      "testFile": "test-q24.json"
+    },
+    {
+      "id": "Q25",
+      "title": "Question 25/30",
+      "prompt": "Écris une fonction parenthese_equilibree(texte) qui vérifie les parenthèses ().",
+      "functionName": "parenthese_equilibree",
+      "template": "def parenthese_equilibree(texte):\n    # Retourne True si les parenthèses sont équilibrées\n    pass\n",
+      "points": 1,
+      "testFile": "test-q25.json"
+    },
+    {
+      "id": "Q26",
+      "title": "Question 26/30",
+      "prompt": "Écris une fonction plus_long_mot(texte) qui retourne le mot le plus long (premier en cas d’égalité).",
+      "functionName": "plus_long_mot",
+      "template": "def plus_long_mot(texte):\n    # Retourne le mot le plus long\n    pass\n",
+      "points": 1,
+      "testFile": "test-q26.json"
+    },
+    {
+      "id": "Q27",
+      "title": "Question 27/30",
+      "prompt": "Écris une fonction transposer_matrice(m) qui transpose une matrice (liste de listes).",
+      "functionName": "transposer_matrice",
+      "template": "def transposer_matrice(m):\n    # Retourne la transposée de la matrice\n    pass\n",
+      "points": 1,
+      "testFile": "test-q27.json"
+    },
+    {
+      "id": "Q28",
+      "title": "Question 28/30",
+      "prompt": "Écris une fonction generer_slug(texte) qui retourne un slug en minuscules séparé par des tirets.",
+      "functionName": "generer_slug",
+      "template": "def generer_slug(texte):\n    # Exemple: \"Bonjour le Monde\" -> \"bonjour-le-monde\"\n    pass\n",
+      "points": 1,
+      "testFile": "test-q28.json"
+    },
+    {
+      "id": "Q29",
+      "title": "Question 29/30",
+      "prompt": "Écris une fonction groupe_par_parite(nombres) qui renvoie les pairs et impairs dans un dict.",
+      "functionName": "groupe_par_parite",
+      "template": "def groupe_par_parite(nombres):\n    # Retourne {\"pairs\": [...], \"impairs\": [...]}\n    pass\n",
+      "points": 1,
+      "testFile": "test-q29.json"
+    },
+    {
+      "id": "Q30",
+      "title": "Question 30/30",
+      "prompt": "Écris une fonction top_n_uniques(nombres, n) qui retourne les n plus grandes valeurs uniques triées décroissantes.",
+      "functionName": "top_n_uniques",
+      "template": "def top_n_uniques(nombres, n):\n    # Retourne les n plus grandes valeurs uniques triées décroissantes\n    pass\n",
+      "points": 1,
+      "testFile": "test-q30.json"
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test 1 - Culture générale</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f5f6fa;color:#2d3436;line-height:1.6;margin:0}
+.container{max-width:980px;margin:0 auto;padding:26px 18px 48px}
+.header-bar{background:#0984e3;color:#fff;padding:12px 18px;border-radius:10px;margin-bottom:18px;font-size:.9rem}
+.header-bar strong{color:#fff}
+h1{font-size:1.7rem;margin:0 0 8px 0}
+.subtitle{color:#636e72;margin-bottom:18px}
+.panel{background:#fff;border:1px solid #dfe6e9;border-radius:12px;padding:18px;margin-bottom:16px}
+.q-item{padding:12px;border:1px solid #e8ebef;border-radius:10px;margin:10px 0;background:#fbfcfd}
+.q-item p{margin:0 0 8px 0;font-weight:600}
+.options label{display:block;margin:6px 0}
+button{border:none;border-radius:8px;padding:10px 14px;background:#0984e3;color:#fff;font-weight:600;cursor:pointer}
+.result{margin-top:10px;padding:10px 12px;border-radius:8px;background:#f1f2f6}
+.ok{color:#00b894;font-weight:700}
+.ko{color:#d63031;font-weight:700}
+.pending{color:#636e72;font-weight:700}
+.back{margin-bottom:10px}
+.back a{text-decoration:none;color:#0984e3;font-weight:600}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header-bar"><strong>Test technique</strong></div>
+  <p class="back"><a href="index.html">← Retour aux tests</a></p>
+  <h1>Test 1 - Culture générale informatique</h1>
+  <p class="subtitle">30 questions QCM (choix de réponses uniquement).</p>
+
+  <section class="panel">
+    <h2>Questions</h2>
+    <form id="questions"></form>
+    <button type="button" id="grade-btn">Corriger ce thème</button>
+    <div id="result" class="result" aria-live="polite">Aucune correction lancée.</div>
+    <div id="decision" class="result" aria-live="polite">Décision globale RDV en attente des autres tests.</div>
+  </section>
+</div>
+
+<script>
+const CONFIG = {
+  themeKey: 'culture',
+  dataFile: './data/culture-generale-jauges.json'
+};
+const STORE_KEY = 'testTechScoresV3';
+
+let payload = null;
+
+function loadStore() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch (err) { return {}; }
+}
+function saveStore(store) { localStorage.setItem(STORE_KEY, JSON.stringify(store)); }
+
+function computeDecision(store) {
+  const required = ['culture', 'motivation', 'pseudo', 'python'];
+  const thresholds = { culture: 60, motivation: 60, pseudo: 60, python: 50 };
+  const missing = required.filter((k) => !store[k] || !store[k].completed);
+  if (missing.length) return { status: 'incomplete', missing };
+  const failed = required.filter((k) => (store[k].percent || 0) < thresholds[k]);
+  if (failed.length) return { status: 'no', failed };
+  return { status: 'yes' };
+}
+
+function renderDecision() {
+  const store = loadStore();
+  const d = computeDecision(store);
+  const box = document.getElementById('decision');
+  if (d.status === 'incomplete') {
+    box.innerHTML = `<span class="pending">Décision RDV : en attente</span><br><small>Tests manquants/incomplets : ${d.missing.join(', ')}</small>`;
+    return;
+  }
+  if (d.status === 'no') {
+    box.innerHTML = `<span class="ko">Décision RDV : NON</span><br><small>Thèmes sous le seuil : ${d.failed.join(', ')}</small>`;
+    return;
+  }
+  box.innerHTML = '<span class="ok">Décision RDV : OUI</span><br><small>Profil cohérent pour proposer un rendez-vous.</small>';
+}
+
+function renderQuestions() {
+  const form = document.getElementById('questions');
+  form.innerHTML = '';
+
+  payload.questions.forEach((q, idx) => {
+    const item = document.createElement('div');
+    item.className = 'q-item';
+
+    const options = q.options.map((opt, optIdx) =>
+      `<label><input type="radio" name="${q.id}" value="${optIdx}"> ${opt}</label>`
+    ).join('');
+
+    item.innerHTML = `<p>${idx + 1}) ${q.question}</p><div class="options">${options}</div>`;
+    form.appendChild(item);
+  });
+}
+
+function gradeTheme() {
+  const total = payload.questions.length;
+  let answered = 0;
+  let correct = 0;
+
+  payload.questions.forEach((q) => {
+    const checked = document.querySelector(`input[name="${q.id}"]:checked`);
+    if (!checked) return;
+    answered += 1;
+    if (Number(checked.value) === Number(q.answer)) correct += 1;
+  });
+
+  const completed = answered === total;
+  const percent = total ? (correct / total) * 100 : 0;
+
+  const store = loadStore();
+  store[CONFIG.themeKey] = {
+    score: correct,
+    max: total,
+    percent,
+    completed,
+    updatedAt: new Date().toISOString()
+  };
+  saveStore(store);
+
+  const box = document.getElementById('result');
+  if (!completed) {
+    box.innerHTML = `<span class="ko">Thème incomplet.</span><br><small>${total - answered} question(s) non répondues. Score actuel : ${correct}/${total} (${percent.toFixed(1)}%).</small>`;
+  } else if (percent >= 60) {
+    box.innerHTML = `<span class="ok">Thème validé.</span><br><small>Score : ${correct}/${total} (${percent.toFixed(1)}%).</small>`;
+  } else {
+    box.innerHTML = `<span class="ko">Thème sous le seuil.</span><br><small>Score : ${correct}/${total} (${percent.toFixed(1)}%).</small>`;
+  }
+
+  renderDecision();
+}
+
+async function init() {
+  try {
+    const res = await fetch(CONFIG.dataFile);
+    payload = await res.json();
+    renderQuestions();
+    renderDecision();
+  } catch (err) {
+    document.getElementById('result').innerHTML = `<span class="ko">Erreur de chargement.</span><br><small>${String(err)}</small>`;
+  }
+}
+
+document.getElementById('grade-btn').addEventListener('click', gradeTheme);
+init();
+</script>
+</body>
+</html>

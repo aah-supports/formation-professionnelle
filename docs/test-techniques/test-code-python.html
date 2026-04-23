@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test 4 - Exercice Python</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f5f6fa;color:#2d3436;line-height:1.6;margin:0}
+.container{max-width:980px;margin:0 auto;padding:26px 18px 48px}
+.header-bar{background:#0984e3;color:#fff;padding:12px 18px;border-radius:10px;margin-bottom:18px;font-size:.9rem}
+.header-bar strong{color:#fff}
+h1{font-size:1.7rem;margin:0 0 8px 0}
+.subtitle{color:#636e72;margin-bottom:18px}
+.panel{background:#fff;border:1px solid #dfe6e9;border-radius:12px;padding:18px;margin-bottom:16px}
+button{border:none;border-radius:8px;padding:10px 14px;background:#0984e3;color:#fff;font-weight:600;cursor:pointer}
+button:disabled{opacity:.6;cursor:not-allowed}
+.result{margin-top:10px;padding:10px 12px;border-radius:8px;background:#f1f2f6}
+.ok{color:#00b894;font-weight:700}
+.ko{color:#d63031;font-weight:700}
+.pending{color:#636e72;font-weight:700}
+small,.note{color:#636e72}
+textarea{width:100%;min-height:240px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace;font-size:.92rem;border:1px solid #dfe6e9;border-radius:10px;padding:12px;line-height:1.5;background:#fcfcfe}
+pre{background:#2d3436;color:#dfe6e9;padding:12px;border-radius:10px;overflow:auto;white-space:pre-wrap}
+.back{margin-bottom:10px}
+.back a{text-decoration:none;color:#0984e3;font-weight:600}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.badge{display:inline-block;background:#eef4ff;color:#0984e3;border:1px solid #cfe0ff;border-radius:999px;padding:4px 10px;font-size:.85rem;font-weight:600}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header-bar"><strong>Test technique</strong></div>
+  <p class="back"><a href="index.html">← Retour aux tests</a></p>
+  <h1>Test 4 - Exercice Python</h1>
+  <p class="subtitle">Dernier test : 1 question + 1 test, puis passage à la suivante.</p>
+
+  <section class="panel">
+    <span class="badge" id="progress">Question</span>
+    <h2 id="question-title">Question</h2>
+    <p id="question-prompt"></p>
+    <pre id="question-test"></pre>
+
+    <textarea id="python-code" spellcheck="false"></textarea>
+
+    <p><small id="engine-status">Initialisation de l'environnement Python...</small></p>
+
+    <div class="row">
+      <button type="button" id="run-test" disabled>Lancer le test de cette question</button>
+      <button type="button" id="next-question" disabled>Passer à la question suivante</button>
+    </div>
+
+    <div id="python-result" class="result" aria-live="polite">Aucun test lancé.</div>
+  </section>
+
+  <section class="panel">
+    <h2>Score et décision</h2>
+    <p id="score-text"><strong>Score Python :</strong> 0 / 0</p>
+    <div id="decision" class="result">Décision RDV en attente.</div>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/skulpt@1.2.0/dist/skulpt-stdlib.js"></script>
+<script>
+const STORE_KEY = 'testTechScoresV3';
+const thresholds = { culture: 60, motivation: 60, pseudo: 60, python: 50 };
+
+const state = {
+  engine: null,
+  pyodide: null,
+  questions: [],
+  index: 0,
+  drafts: {},
+  passed: {},
+  testsByQuestion: {}
+};
+
+function loadStore() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch (err) { return {}; }
+}
+function saveStore(store) { localStorage.setItem(STORE_KEY, JSON.stringify(store)); }
+
+function computeDecision(store) {
+  const required = ['culture', 'motivation', 'pseudo', 'python'];
+  const missing = required.filter((k) => !store[k] || !store[k].completed);
+  if (missing.length) return { status: 'incomplete', missing };
+
+  const failed = required.filter((k) => (store[k].percent || 0) < thresholds[k]);
+  if (failed.length) return { status: 'no', failed };
+
+  return { status: 'yes' };
+}
+
+function renderDecision() {
+  const store = loadStore();
+  const d = computeDecision(store);
+  const box = document.getElementById('decision');
+
+  if (d.status === 'incomplete') {
+    box.innerHTML = `<span class="pending">Décision RDV : en attente</span><br><small>Tests manquants/incomplets : ${d.missing.join(', ')}</small>`;
+    return;
+  }
+  if (d.status === 'no') {
+    box.innerHTML = `<span class="ko">Décision RDV : NON</span><br><small>Thèmes sous le seuil : ${d.failed.join(', ')}</small>`;
+    return;
+  }
+  box.innerHTML = '<span class="ok">Décision RDV : OUI</span><br><small>Profil valide pour proposer un rendez-vous.</small>';
+}
+
+function getCurrentQuestion() { return state.questions[state.index] || null; }
+function maxScore() {
+  return state.questions.reduce((acc, q) => acc + Number(q.points || 0), 0);
+}
+function totalScore() {
+  return state.questions.reduce((acc, q) => acc + (state.passed[q.id] ? q.points : 0), 0);
+}
+
+function updateScore() {
+  const score = totalScore();
+  const max = maxScore();
+  document.getElementById('score-text').innerHTML = `<strong>Score Python :</strong> ${score} / ${max}`;
+
+  const store = loadStore();
+  const percent = max ? (score / max) * 100 : 0;
+  const completed = state.questions.length > 0 && state.questions.every((q) => state.passed[q.id]);
+  store.python = { score, max, percent, completed, updatedAt: new Date().toISOString() };
+  saveStore(store);
+
+  renderDecision();
+}
+
+function setStatus(message, isError = false) {
+  const el = document.getElementById('engine-status');
+  el.textContent = message;
+  el.className = isError ? 'ko' : '';
+}
+
+function enableRun(enabled) {
+  document.getElementById('run-test').disabled = !enabled;
+}
+
+function builtinRead(x) {
+  if (window.Sk && window.Sk.builtinFiles && window.Sk.builtinFiles.files[x]) {
+    return window.Sk.builtinFiles.files[x];
+  }
+  throw new Error('Fichier introuvable: ' + x);
+}
+
+function parseJsonFromOutput(output) {
+  const lines = output.split(/\r?\n/).map((l) => l.trim()).filter(Boolean).reverse();
+  for (const line of lines) {
+    try { return JSON.parse(line); } catch (err) {}
+  }
+  return { status: 'error', error: 'Impossible de parser la sortie JSON.' };
+}
+
+function esc(str) {
+  return str.replace(/\\/g, '\\\\').replace(/'''/g, "\\'\\'\\'");
+}
+
+function buildProgram(userCode, question, testData, mode) {
+  const payloadArgs = esc(JSON.stringify(testData.args || []));
+  const payloadExpected = esc(JSON.stringify(testData.expected));
+  const ending = mode === 'pyodide' ? 'json.dumps(result, ensure_ascii=False)' : 'print(json.dumps(result, ensure_ascii=False))';
+
+  return `${userCode}
+
+import json
+import traceback
+
+result = {"status": "ok", "got": None, "expected": None, "passed": False, "error": None}
+
+try:
+    if "${question.functionName}" not in globals():
+        raise NameError("La fonction ${question.functionName} est introuvable.")
+
+    fn = globals()["${question.functionName}"]
+    args = json.loads(r'''${payloadArgs}''')
+    expected = json.loads(r'''${payloadExpected}''')
+
+    got = fn(*args)
+    result["got"] = got
+    result["expected"] = expected
+    result["passed"] = (got == expected)
+except Exception:
+    result["status"] = "error"
+    result["error"] = traceback.format_exc()
+
+${ending}
+`;
+}
+
+async function runWithPyodide(program) {
+  const raw = await state.pyodide.runPythonAsync(program);
+  return JSON.parse(String(raw));
+}
+
+async function runWithSkulpt(program) {
+  let output = '';
+  window.Sk.configure({ output: (text) => { output += text; }, read: builtinRead, __future__: window.Sk.python3 });
+
+  try {
+    await window.Sk.misceval.asyncToPromise(() => window.Sk.importMainWithBody('<stdin>', false, program, true));
+    return parseJsonFromOutput(output);
+  } catch (err) {
+    return { status: 'error', error: String(err) };
+  }
+}
+
+async function runProgram(program) {
+  if (state.engine === 'pyodide') return runWithPyodide(program);
+  if (state.engine === 'skulpt') return runWithSkulpt(program);
+  return { status: 'error', error: 'Aucun moteur Python disponible.' };
+}
+
+function saveDraft() {
+  const q = getCurrentQuestion();
+  if (!q) return;
+  state.drafts[q.id] = document.getElementById('python-code').value;
+}
+
+function renderQuestion() {
+  const q = getCurrentQuestion();
+  if (!q) return;
+
+  const testData = state.testsByQuestion[q.id];
+  document.getElementById('progress').textContent = `Question ${state.index + 1}/${state.questions.length}`;
+  document.getElementById('question-title').textContent = q.title;
+  document.getElementById('question-prompt').textContent = q.prompt;
+
+  const args = testData ? (testData.args || []) : [];
+  const argsText = args.map((v) => JSON.stringify(v)).join(', ');
+  const expected = testData ? testData.expected : null;
+  document.getElementById('question-test').textContent = `Test de validation : ${q.functionName}(${argsText}) -> ${JSON.stringify(expected)}`;
+  document.getElementById('python-code').value = state.drafts[q.id] || q.template;
+
+  const nextBtn = document.getElementById('next-question');
+  nextBtn.disabled = !state.passed[q.id];
+  nextBtn.textContent = state.index === state.questions.length - 1 ? 'Terminer' : 'Passer à la question suivante';
+
+  document.getElementById('python-result').textContent = state.passed[q.id]
+    ? 'Question validée. Tu peux passer à la suivante.'
+    : 'Aucun test lancé pour cette question.';
+}
+
+async function loadQuestions() {
+  const qRes = await fetch('./python-tests/questions.json');
+  const qData = await qRes.json();
+  state.questions = qData.questions || [];
+
+  await Promise.all(state.questions.map(async (q) => {
+    const tRes = await fetch(`./python-tests/${q.testFile}`);
+    state.testsByQuestion[q.id] = await tRes.json();
+  }));
+}
+
+async function initEngine() {
+  try {
+    if (typeof loadPyodide === 'function') {
+      state.pyodide = await loadPyodide();
+      state.engine = 'pyodide';
+      setStatus('Environnement Python prêt (Pyodide).');
+      enableRun(true);
+      return;
+    }
+  } catch (err) {}
+
+  if (window.Sk && window.Sk.builtinFiles) {
+    state.engine = 'skulpt';
+    setStatus('Environnement Python prêt (Skulpt fallback).');
+    enableRun(true);
+    return;
+  }
+
+  setStatus('Impossible de charger Python dans le navigateur.', true);
+  enableRun(false);
+}
+
+document.getElementById('run-test').addEventListener('click', async () => {
+  const q = getCurrentQuestion();
+  if (!q) return;
+
+  saveDraft();
+  const code = state.drafts[q.id];
+  const testData = state.testsByQuestion[q.id];
+  const resultBox = document.getElementById('python-result');
+
+  const data = await runProgram(buildProgram(code, q, testData, state.engine));
+
+  if (data.status === 'error') {
+    state.passed[q.id] = false;
+    document.getElementById('next-question').disabled = true;
+    updateScore();
+    resultBox.innerHTML = `<span class="ko">Exécution en erreur.</span><pre>${data.error}</pre>`;
+    return;
+  }
+
+  if (data.passed) {
+    state.passed[q.id] = true;
+    document.getElementById('next-question').disabled = false;
+    resultBox.innerHTML = `<span class="ok">Test validé.</span><br><small>Attendu : ${JSON.stringify(data.expected)} | Obtenu : ${JSON.stringify(data.got)}</small>`;
+  } else {
+    state.passed[q.id] = false;
+    document.getElementById('next-question').disabled = true;
+    resultBox.innerHTML = `<span class="ko">Test non validé.</span><br><small>Attendu : ${JSON.stringify(data.expected)} | Obtenu : ${JSON.stringify(data.got)}</small>`;
+  }
+
+  updateScore();
+});
+
+document.getElementById('next-question').addEventListener('click', () => {
+  const q = getCurrentQuestion();
+  if (!q || !state.passed[q.id]) return;
+
+  saveDraft();
+  if (state.index < state.questions.length - 1) {
+    state.index += 1;
+    renderQuestion();
+    updateScore();
+    return;
+  }
+
+  updateScore();
+  document.getElementById('python-result').innerHTML = `<span class="ok">Parcours Python terminé.</span><br><small>Score final : ${totalScore()} / ${maxScore()}</small>`;
+});
+
+async function init() {
+  updateScore();
+  try {
+    await loadQuestions();
+  } catch (err) {
+    document.getElementById('python-result').innerHTML = `<span class="ko">Erreur de chargement des questions/tests.</span><br><small>${String(err)}</small>`;
+  }
+  renderQuestion();
+  await initEngine();
+  renderDecision();
+}
+
+init();
+</script>
+</body>
+</html>

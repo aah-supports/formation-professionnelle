@@ -1,0 +1,202 @@
+{
+  "title": "Raisonnement code (pseudo-code)",
+  "description": "QCM pseudo-code (30 questions).",
+  "maxScore": 100,
+  "questions": [
+    {
+      "id": "pc1",
+      "question": "Que vaut x après ce pseudo-code ?",
+      "code": "x <- 0\nPOUR i de 1 à 3\n  x <- x + i\nFIN",
+      "options": ["3", "6", "9", "12"],
+      "answer": 1
+    },
+    {
+      "id": "pc2",
+      "question": "Que retourne cet algorithme pour n = 5 ?",
+      "code": "SI n % 2 = 0 ALORS\n  RETOURNER vrai\nSINON\n  RETOURNER faux\nFIN",
+      "options": ["vrai", "faux", "erreur", "0"],
+      "answer": 1
+    },
+    {
+      "id": "pc3",
+      "question": "Quel est l'objectif de cet algorithme ?",
+      "code": "max <- L[0]\nPOUR chaque v dans L\n  SI v > max ALORS max <- v\nFIN\nRETOURNER max",
+      "options": ["Trouver le minimum", "Compter les éléments", "Trouver le maximum", "Trier la liste"],
+      "answer": 2
+    },
+    {
+      "id": "pc4",
+      "question": "Combien de fois la boucle s'exécute ?",
+      "code": "POUR i de 0 à 4\n  afficher(i)\nFIN",
+      "options": ["4", "5", "6", "Dépend de i"],
+      "answer": 1
+    },
+    {
+      "id": "pc5",
+      "question": "Que fait ce pseudo-code ?",
+      "code": "s <- 0\nPOUR chaque n dans L\n  SI n % 2 = 0 ALORS s <- s + n\nFIN\nRETOURNER s",
+      "options": ["Somme de tous les éléments", "Somme des impairs", "Somme des pairs", "Nombre de pairs"],
+      "answer": 2
+    },
+    {
+      "id": "pc6",
+      "question": "Quel est le résultat pour L = [3,1,4] ?",
+      "code": "m <- L[0]\nPOUR chaque x dans L\n  SI x < m ALORS m <- x\nFIN\nRETOURNER m",
+      "options": ["1", "3", "4", "0"],
+      "answer": 0
+    },
+    {
+      "id": "pc7",
+      "question": "Quel est le rôle d'un paramètre de fonction ?",
+      "options": ["Stocker uniquement des booléens", "Recevoir des données d'entrée pour traiter", "Éviter le retour", "Remplacer une variable globale"],
+      "answer": 1
+    },
+    {
+      "id": "pc8",
+      "question": "Quel cas limite faut-il tester sur une liste ?",
+      "options": ["Liste vide", "Liste avec des nombres uniquement", "Liste triée", "Liste de taille 10"],
+      "answer": 0
+    },
+    {
+      "id": "pc9",
+      "question": "Quel est le résultat ?",
+      "code": "c <- 0\nPOUR chaque x dans [2,4,6]\n  SI x > 3 ALORS c <- c + 1\nFIN\nRETOURNER c",
+      "options": ["1", "2", "3", "0"],
+      "answer": 1
+    },
+    {
+      "id": "pc10",
+      "question": "Que signifie RETOURNER dans une fonction ?",
+      "options": ["Afficher une valeur", "Sortir une valeur de la fonction", "Boucler à nouveau", "Créer une variable"],
+      "answer": 1
+    },
+    {
+      "id": "pc11",
+      "question": "Quel est le but d'une condition IF/ELSE ?",
+      "options": ["Trier une liste", "Choisir un chemin selon une condition", "Multiplier des boucles", "Déclarer des types"],
+      "answer": 1
+    },
+    {
+      "id": "pc12",
+      "question": "Quel pseudo-code compte les éléments de L ?",
+      "options": ["c<-0 ; POUR x dans L c<-c+1 ; RETOURNER c", "RETOURNER L[0]", "Trier L", "RETOURNER vrai"],
+      "answer": 0
+    },
+    {
+      "id": "pc13",
+      "question": "Quel est le résultat ?",
+      "code": "x <- 10\nTANT QUE x > 6\n  x <- x - 2\nFIN\nRETOURNER x",
+      "options": ["6", "4", "8", "10"],
+      "answer": 0
+    },
+    {
+      "id": "pc14",
+      "question": "Que fait cet algorithme ?",
+      "code": "res <- []\nPOUR chaque x dans L\n  SI x non présent dans res ALORS ajouter x à res\nFIN\nRETOURNER res",
+      "options": ["Trie L", "Supprime les doublons", "Compte les doublons", "Inverse L"],
+      "answer": 1
+    },
+    {
+      "id": "pc15",
+      "question": "Quelle structure est la plus adaptée à des paires clé/valeur ?",
+      "options": ["Liste", "File", "Dictionnaire/Map", "Pile"],
+      "answer": 2
+    },
+    {
+      "id": "pc16",
+      "question": "Que renvoie ce pseudo-code pour n=0 ?",
+      "code": "SI n = 0 ALORS RETOURNER 1 SINON RETOURNER n * f(n-1)",
+      "options": ["0", "1", "Erreur", "n"],
+      "answer": 1
+    },
+    {
+      "id": "pc17",
+      "question": "Quel est l'intérêt principal de découper en fonctions ?",
+      "options": ["Avoir plus de lignes", "Réutiliser et clarifier le code", "Éviter les tests", "Supprimer les paramètres"],
+      "answer": 1
+    },
+    {
+      "id": "pc18",
+      "question": "Quel est le résultat ?",
+      "code": "L <- [5,2,9]\ns <- 0\nPOUR chaque x dans L\n  s <- s + x\nFIN\nRETOURNER s",
+      "options": ["16", "15", "14", "12"],
+      "answer": 0
+    },
+    {
+      "id": "pc19",
+      "question": "Quel algorithme correspond à une recherche linéaire ?",
+      "options": ["Parcourir la liste élément par élément", "Toujours couper en deux", "Trier puis retourner le premier", "Comparer uniquement les bornes"],
+      "answer": 0
+    },
+    {
+      "id": "pc20",
+      "question": "Quel est le résultat pour L=[1,2,3] ?",
+      "code": "res <- []\nPOUR chaque x dans L\n  ajouter x*x à res\nFIN\nRETOURNER res",
+      "options": ["[1,2,3]", "[1,4,9]", "[2,4,6]", "[0,1,4]"],
+      "answer": 1
+    },
+    {
+      "id": "pc21",
+      "question": "Pourquoi valider les entrées d'un algorithme ?",
+      "options": ["Pour réduire la RAM", "Pour éviter des erreurs et comportements inattendus", "Pour accélérer le CPU", "Pour éviter les retours"],
+      "answer": 1
+    },
+    {
+      "id": "pc22",
+      "question": "Deux boucles imbriquées ont souvent une complexité proche de :",
+      "options": ["O(1)", "O(n)", "O(n²)", "O(log n)"],
+      "answer": 2
+    },
+    {
+      "id": "pc23",
+      "question": "Quel résultat ?",
+      "code": "c <- 0\nPOUR i de 1 à 3\n  POUR j de 1 à 2\n    c <- c + 1\n  FIN\nFIN\nRETOURNER c",
+      "options": ["5", "6", "7", "8"],
+      "answer": 1
+    },
+    {
+      "id": "pc24",
+      "question": "Quel est le meilleur ordre de travail ?",
+      "options": ["Coder sans test", "Comprendre le besoin, écrire l'algo, tester", "Optimiser d'abord", "Déployer directement"],
+      "answer": 1
+    },
+    {
+      "id": "pc25",
+      "question": "Que signifie variable locale ?",
+      "options": ["Visible partout", "Visible uniquement dans la fonction/bloc", "Stockée en base", "Globale par défaut"],
+      "answer": 1
+    },
+    {
+      "id": "pc26",
+      "question": "Quel est le résultat ?",
+      "code": "x <- 1\nPOUR i de 1 à 4\n  x <- x * 2\nFIN\nRETOURNER x",
+      "options": ["8", "16", "32", "4"],
+      "answer": 1
+    },
+    {
+      "id": "pc27",
+      "question": "Le mot-clé TANT QUE est utile quand :",
+      "options": ["Le nombre d'itérations est inconnu à l'avance", "On veut exactement 10 tours", "On évite les conditions", "On écrit une constante"],
+      "answer": 0
+    },
+    {
+      "id": "pc28",
+      "question": "Quel est le résultat ?",
+      "code": "L <- [4,1,4,2]\nres <- []\nPOUR x dans L\n  SI x % 2 = 0 ALORS ajouter x à res\nFIN\nRETOURNER res",
+      "options": ["[1,2]", "[4,4,2]", "[4,2]", "[]"],
+      "answer": 1
+    },
+    {
+      "id": "pc29",
+      "question": "Quel est le principal intérêt d'un test unitaire ?",
+      "options": ["Faire plus de commits", "Vérifier qu'une fonction respecte son comportement attendu", "Remplacer la doc", "Éviter le debug"],
+      "answer": 1
+    },
+    {
+      "id": "pc30",
+      "question": "Pseudo-code vers code exécutable : la bonne approche est :",
+      "options": ["Copier sans réfléchir", "Traduire étape par étape et valider avec des cas tests", "Optimiser avant de finir", "Éviter les cas limites"],
+      "answer": 1
+    }
+  ]
+}

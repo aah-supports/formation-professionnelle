@@ -1,0 +1,7 @@
+{
+  "id": "T28",
+  "args": [
+    "Bonjour le Monde IA"
+  ],
+  "expected": "bonjour-le-monde-ia"
+}

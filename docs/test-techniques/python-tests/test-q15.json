@@ -1,0 +1,7 @@
+{
+  "id": "T15",
+  "args": [
+    "Bonjour le monde Python"
+  ],
+  "expected": 4
+}

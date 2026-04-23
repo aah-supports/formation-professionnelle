@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test techniques - Entrée Data/Web</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f5f6fa;color:#2d3436;line-height:1.6}
+.container{max-width:980px;margin:0 auto;padding:28px 18px 48px}
+.header-bar{background:#0984e3;color:#fff;padding:12px 20px;border-radius:8px;margin-bottom:18px;font-size:.9rem}
+.header-bar strong{color:#fff}
+h1{font-size:1.8rem;margin-bottom:8px}
+.subtitle{color:#636e72;margin-bottom:18px}
+.block{background:#fff;border-radius:12px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:14px}
+.list{list-style:none}
+.item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #eceff3}
+.item:last-child{border-bottom:none}
+.name{font-weight:600}
+.desc{font-size:.9rem;color:#636e72}
+.open{display:inline-block;text-decoration:none;color:#fff;background:#2d3436;padding:8px 12px;border-radius:8px;font-size:.86rem;font-weight:600;white-space:nowrap}
+.open:hover{opacity:.92}
+.back{margin-bottom:12px}
+.back a{text-decoration:none;color:#0984e3;font-weight:600}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #eef1f4}
+.row:last-child{border-bottom:none}
+.badge{font-weight:700}
+.ok{color:#00b894}
+.ko{color:#d63031}
+.pending{color:#636e72}
+button{border:none;border-radius:8px;padding:10px 14px;background:#0984e3;color:#fff;font-weight:600;cursor:pointer}
+.result{margin-top:10px;padding:10px 12px;border-radius:8px;background:#f1f2f6}
+@media(max-width:700px){.item{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header-bar"><strong>Test technique</strong></div>
+  <p class="back"><a href="../index.html">← Retour au catalogue</a></p>
+  <h1>Test d'entrée filière Tech</h1>
+  <p class="subtitle">30 questions par thème avec jauges + dernier test en Python. Décision RDV automatique à la fin.</p>
+
+  <div class="block">
+    <ul class="list">
+      <li class="item"><div><div class="name">Test 1 - Culture générale</div><div class="desc">Jauges (30 questions).</div></div><a class="open" href="test-culture-generale.html">Ouvrir</a></li>
+      <li class="item"><div><div class="name">Test 2 - Motivation</div><div class="desc">Jauges (30 questions).</div></div><a class="open" href="test-motivation.html">Ouvrir</a></li>
+      <li class="item"><div><div class="name">Test 3 - Raisonnement code (pseudo-code)</div><div class="desc">Jauges (30 questions, sans Python).</div></div><a class="open" href="test-code-pseudocode.html">Ouvrir</a></li>
+      <li class="item"><div><div class="name">Test 4 - Exercice Python</div><div class="desc">Progressif, question par question.</div></div><a class="open" href="test-code-python.html">Ouvrir</a></li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h2>Synthèse décision RDV</h2>
+    <div class="row"><span>Culture générale</span><span id="s-culture" class="badge pending">En attente</span></div>
+    <div class="row"><span>Motivation</span><span id="s-motivation" class="badge pending">En attente</span></div>
+    <div class="row"><span>Raisonnement code</span><span id="s-pseudo" class="badge pending">En attente</span></div>
+    <div class="row"><span>Exercice Python</span><span id="s-python" class="badge pending">En attente</span></div>
+    <button type="button" id="refresh">Rafraîchir la synthèse</button>
+    <div id="decision" class="result">Décision RDV en attente.</div>
+  </div>
+</div>
+
+<script>
+const STORE_KEY = 'testTechScoresV3';
+const thresholds = { culture: 60, motivation: 60, pseudo: 60, python: 50 };
+
+function loadStore() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch (err) { return {}; }
+}
+
+function renderTheme(themeKey, elId) {
+  const store = loadStore();
+  const el = document.getElementById(elId);
+  const data = store[themeKey];
+
+  if (!data || !data.completed) {
+    el.className = 'badge pending';
+    el.textContent = 'En attente';
+    return;
+  }
+
+  if ((data.percent || 0) >= thresholds[themeKey]) {
+    el.className = 'badge ok';
+    el.textContent = `OK (${data.percent.toFixed(1)}%)`;
+  } else {
+    el.className = 'badge ko';
+    el.textContent = `Sous seuil (${data.percent.toFixed(1)}%)`;
+  }
+}
+
+function computeDecision(store) {
+  const required = ['culture', 'motivation', 'pseudo', 'python'];
+  const missing = required.filter((k) => !store[k] || !store[k].completed);
+  if (missing.length) return { status: 'incomplete', missing };
+
+  const failed = required.filter((k) => (store[k].percent || 0) < thresholds[k]);
+  if (failed.length) return { status: 'no', failed };
+
+  return { status: 'yes' };
+}
+
+function renderDecision() {
+  const store = loadStore();
+  renderTheme('culture', 's-culture');
+  renderTheme('motivation', 's-motivation');
+  renderTheme('pseudo', 's-pseudo');
+  renderTheme('python', 's-python');
+
+  const d = computeDecision(store);
+  const box = document.getElementById('decision');
+
+  if (d.status === 'incomplete') {
+    box.innerHTML = `<span class="pending"><strong>Décision RDV : en attente</strong></span><br><small>Tests manquants ou incomplets : ${d.missing.join(', ')}</small>`;
+    return;
+  }
+  if (d.status === 'no') {
+    box.innerHTML = `<span class="ko"><strong>Décision RDV : NON</strong></span><br><small>Thèmes sous le seuil : ${d.failed.join(', ')}</small>`;
+    return;
+  }
+  box.innerHTML = '<span class="ok"><strong>Décision RDV : OUI</strong></span><br><small>Profil validé pour proposer un rendez-vous.</small>';
+}
+
+document.getElementById('refresh').addEventListener('click', renderDecision);
+renderDecision();
+</script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+{
+  "title": "Culture générale informatique",
+  "description": "QCM de culture informatique (30 questions).",
+  "maxScore": 100,
+  "questions": [
+    {
+      "id": "cg1",
+      "question": "À quoi sert le DNS ?",
+      "options": ["Chiffrer les mots de passe", "Traduire un nom de domaine en adresse IP", "Compiler du code", "Mesurer le trafic HTTP"],
+      "answer": 1
+    },
+    {
+      "id": "cg2",
+      "question": "Quelle est la différence principale entre HTTP et HTTPS ?",
+      "options": ["HTTPS est plus lent", "HTTPS utilise TLS pour chiffrer les échanges", "HTTP fonctionne seulement en local", "HTTPS ne supporte pas les API"],
+      "answer": 1
+    },
+    {
+      "id": "cg3",
+      "question": "Le code HTTP 404 signifie :",
+      "options": ["Accès interdit", "Ressource non trouvée", "Erreur serveur", "Succès"],
+      "answer": 1
+    },
+    {
+      "id": "cg4",
+      "question": "Le code HTTP 500 signifie :",
+      "options": ["Erreur interne du serveur", "Utilisateur non authentifié", "URL invalide", "Redirection"],
+      "answer": 0
+    },
+    {
+      "id": "cg5",
+      "question": "Une adresse IP privée est :",
+      "options": ["Accessible directement depuis Internet", "Utilisée uniquement dans un réseau local", "Toujours en IPv6", "Réservée au DNS"],
+      "answer": 1
+    },
+    {
+      "id": "cg6",
+      "question": "Le port 443 est généralement associé à :",
+      "options": ["SSH", "FTP", "HTTPS", "SMTP"],
+      "answer": 2
+    },
+    {
+      "id": "cg7",
+      "question": "À quoi sert une API REST ?",
+      "options": ["Dessiner des interfaces", "Faire communiquer des applications/services", "Compresser des images", "Exécuter du JavaScript côté serveur"],
+      "answer": 1
+    },
+    {
+      "id": "cg8",
+      "question": "Quelle méthode HTTP est la plus adaptée pour créer une ressource ?",
+      "options": ["GET", "POST", "DELETE", "HEAD"],
+      "answer": 1
+    },
+    {
+      "id": "cg9",
+      "question": "Authentification signifie :",
+      "options": ["Vérifier ce qu'un utilisateur peut faire", "Vérifier l'identité d'un utilisateur", "Chiffrer les données", "Sauvegarder une session"],
+      "answer": 1
+    },
+    {
+      "id": "cg10",
+      "question": "Autorisation signifie :",
+      "options": ["Vérifier l'identité", "Donner des droits d'accès à des actions/ressources", "Créer un token", "Vérifier le mot de passe"],
+      "answer": 1
+    },
+    {
+      "id": "cg11",
+      "question": "Pourquoi hash-t-on un mot de passe ?",
+      "options": ["Pour le rendre lisible plus vite", "Pour le stocker en clair", "Pour éviter de stocker le secret en clair", "Pour réduire la taille de la base"],
+      "answer": 2
+    },
+    {
+      "id": "cg12",
+      "question": "SQL est principalement utilisé pour :",
+      "options": ["Le routage réseau", "Les bases relationnelles", "Le rendu HTML", "La compression vidéo"],
+      "answer": 1
+    },
+    {
+      "id": "cg13",
+      "question": "Une clé primaire sert à :",
+      "options": ["Identifier de façon unique une ligne", "Relier deux bases", "Crypter une table", "Tri automatique"],
+      "answer": 0
+    },
+    {
+      "id": "cg14",
+      "question": "Une clé étrangère sert à :",
+      "options": ["Indexer une colonne texte", "Relier deux tables", "Supprimer les doublons", "Crypter les jointures"],
+      "answer": 1
+    },
+    {
+      "id": "cg15",
+      "question": "Une jointure SQL permet de :",
+      "options": ["Fusionner des données de plusieurs tables", "Supprimer toutes les lignes", "Exporter en JSON", "Créer un index"],
+      "answer": 0
+    },
+    {
+      "id": "cg16",
+      "question": "Une transaction en base garantit surtout :",
+      "options": ["Un style CSS commun", "Des opérations atomiques/cohérentes", "Des requêtes plus courtes", "Un backup automatique"],
+      "answer": 1
+    },
+    {
+      "id": "cg17",
+      "question": "Git est un outil de :",
+      "options": ["Monitoring", "Versioning de code", "Virtualisation", "Déploiement cloud"],
+      "answer": 1
+    },
+    {
+      "id": "cg18",
+      "question": "Une pull request sert principalement à :",
+      "options": ["Faire une revue de code avant intégration", "Compiler le projet", "Créer des utilisateurs", "Éteindre le serveur"],
+      "answer": 0
+    },
+    {
+      "id": "cg19",
+      "question": "CI/CD signifie globalement :",
+      "options": ["Creation/Index/Compression/Data", "Intégration continue / Livraison-déploiement continus", "Contrôle internet / Contrôle données", "Code interne / Code distribué"],
+      "answer": 1
+    },
+    {
+      "id": "cg20",
+      "question": "Docker permet surtout de :",
+      "options": ["Exécuter une app dans un conteneur reproductible", "Compiler du Python en C", "Remplacer Git", "Remplacer SQL"],
+      "answer": 0
+    },
+    {
+      "id": "cg21",
+      "question": "Une machine virtuelle se distingue d'un conteneur car :",
+      "options": ["Elle partage toujours le noyau de l'hôte", "Elle embarque un OS complet", "Elle ne peut pas être déployée", "Elle est réservée au frontend"],
+      "answer": 1
+    },
+    {
+      "id": "cg22",
+      "question": "L'environnement de préproduction (staging) sert à :",
+      "options": ["Tester proche de la production avant mise en ligne", "Remplacer la production", "Stocker les logs", "Former les utilisateurs"],
+      "answer": 0
+    },
+    {
+      "id": "cg23",
+      "question": "Une injection SQL est :",
+      "options": ["Une attaque via requêtes malicieuses", "Un type de base NoSQL", "Une méthode d'indexation", "Un protocole de chiffrement"],
+      "answer": 0
+    },
+    {
+      "id": "cg24",
+      "question": "XSS désigne :",
+      "options": ["Une attaque de script injecté côté client", "Une attaque réseau sur DNS", "Un protocole de cache", "Un format d'image"],
+      "answer": 0
+    },
+    {
+      "id": "cg25",
+      "question": "Valider les entrées utilisateur côté serveur permet surtout de :",
+      "options": ["Accélérer l'UI", "Réduire certains risques de sécurité et erreurs", "Éviter Git", "Supprimer le besoin de tests"],
+      "answer": 1
+    },
+    {
+      "id": "cg26",
+      "question": "Les logs applicatifs servent principalement à :",
+      "options": ["Dessiner des maquettes", "Diagnostiquer incidents/erreurs", "Compresser les assets", "Remplacer la supervision"],
+      "answer": 1
+    },
+    {
+      "id": "cg27",
+      "question": "Pourquoi faire des sauvegardes ?",
+      "options": ["Pour récupérer des données après incident", "Pour accélérer le frontend", "Pour remplacer la sécurité", "Pour réduire le code"],
+      "answer": 0
+    },
+    {
+      "id": "cg28",
+      "question": "MVC signifie :",
+      "options": ["Model View Controller", "Main Virtual Cache", "Module Version Core", "Model Value Code"],
+      "answer": 0
+    },
+    {
+      "id": "cg29",
+      "question": "Un langage interprété signifie en général :",
+      "options": ["Exécution via interpréteur sans binaire natif précompilé", "Pas de debug possible", "Pas de bibliothèques", "Uniquement pour le web"],
+      "answer": 0
+    },
+    {
+      "id": "cg30",
+      "question": "Un cache applicatif sert surtout à :",
+      "options": ["Conserver temporairement des données pour réduire la latence", "Remplacer la base de données", "Chiffrer toutes les requêtes", "Supprimer les erreurs 500"],
+      "answer": 0
+    }
+  ]
+}

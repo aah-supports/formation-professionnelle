@@ -1,0 +1,7 @@
+{
+  "id": "T25",
+  "args": [
+    "(a+(b*c))"
+  ],
+  "expected": true
+}

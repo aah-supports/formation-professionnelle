@@ -1,0 +1,7 @@
+{
+  "id": "T22",
+  "args": [
+    "  bonjour   tout   le   monde  "
+  ],
+  "expected": "bonjour tout le monde"
+}
