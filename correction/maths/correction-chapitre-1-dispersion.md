@@ -46,12 +46,16 @@ Série ordonnée : 2, 3, 5, 6, 7, 9, 12, 13, 15
 - IQR = Q3 - Q1 = 12 - 5 = **7**
 - **Justification** : cet indicateur ignore les extrêmes et se concentre sur la zone centrale de la distribution.
 
+
+
 ## Exercice 8
 Série : 11, 12, 12, 13, 14, 40
 - La valeur 40 est extrême.
 - L'écart-type est sensible aux valeurs extrêmes.
-Conclusion : l'indicateur le plus robuste est **IQR** (avec médiane).
+Conclusion : l'indicateur le plus `robuste` est **IQR** (avec médiane).
 - **Justification** : une valeur extrême augmente fortement la variance (car écarts au carré), alors que l'IQR varie peu.
+
+
 
 ## Exercice 9
 Données : min=4, Q1=8, médiane=11, Q3=15, max=28
@@ -60,6 +64,9 @@ Données : min=4, Q1=8, médiane=11, Q3=15, max=28
 - Moustache basse : 8 - 4 = 4
 Conclusion : asymétrie probable vers la droite.
 - **Justification** : la queue à droite est plus longue, ce qui indique des valeurs plus étalées vers les grandes valeurs.
+
+
+
 
 ## Exercice 10
 Indicateur recommandé : **médiane + IQR**

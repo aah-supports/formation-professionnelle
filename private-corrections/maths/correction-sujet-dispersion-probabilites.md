@@ -35,5 +35,5 @@
 ## Projet final - Pistes de correction
 
 - Partie dispersion: verifier calculs (etendue, quartiles, IQR) et interpretation.
-- Partie probabilites: verifier arbre, probabilite totale, interpretation conditionnelle.
+- Partie probabilites: verifier arbre, probabilite totale, application de Bayes et interpretation conditionnelle.
 - Conclusion: langage clair, distinction explicite entre `P(A|B)` et `P(B|A)`.

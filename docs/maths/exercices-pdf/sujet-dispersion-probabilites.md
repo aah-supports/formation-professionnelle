@@ -100,8 +100,9 @@ Contexte: un lycee analyse des notes et un depistage fictif.
 Travail demande:
 1. Calculer et interpreter les indicateurs de dispersion d'une serie donnee.
 2. Construire un arbre de probabilites conditionnelles.
-3. Calculer la probabilite d'un test positif.
-4. Rediger une conclusion claire en francais.
+3. Calculer la probabilite d'un test positif avec la formule des probabilites totales.
+4. Calculer puis interpreter la probabilite d'etre reellement concerne quand le test est positif (Bayes).
+5. Rediger une conclusion claire en francais.
 
 Livrable attendu:
 - calculs detailles,

@@ -15,12 +15,17 @@ Critères de validation :
 ## 2) Partie probabilités
 Attendus minimum :
 - arbre de probabilités complet et annoté,
-- calcul de la probabilité d'un test positif,
+- calcul de la probabilité d'un test positif via la formule des probabilités totales,
 - distinction explicite entre P(A|B) et P(B|A).
+
+Formules attendues :
+- Probabilité totale : `P(+) = P(+|M)P(M) + P(+|non M)P(non M)`
+- Bayes : `P(M|+) = [P(+|M)P(M)] / P(+)`
 
 Critères de validation :
 - branchements corrects,
 - produit sur branche et somme des chemins correctement appliqués,
+- usage correct de la probabilité totale avant l'inversion conditionnelle,
 - interprétation finale sans confusion de conditionnement.
 
 ## 3) Conclusion attendue
