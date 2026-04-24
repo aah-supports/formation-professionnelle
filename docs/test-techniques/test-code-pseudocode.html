@@ -48,20 +48,32 @@ const CONFIG = {
   dataFile: './data/code-pseudocode-jauges.json'
 };
 const STORE_KEY = 'testTechScoresV3';
+const requiredForRdv = ['culture', 'motivation', 'pseudo'];
+const thresholds = { culture: 60, motivation: 60, pseudo: 60 };
 
 let payload = null;
+let locked = false;
 
 function loadStore() {
   try { return JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch (err) { return {}; }
 }
 function saveStore(store) { localStorage.setItem(STORE_KEY, JSON.stringify(store)); }
 
+function globalScoreRdv(store) {
+  const score = requiredForRdv.reduce((acc, k) => acc + Number((store[k] && store[k].score) || 0), 0);
+  const maxTotal = requiredForRdv.reduce((acc, k) => {
+    const max = store[k] && typeof store[k].max === 'number' ? store[k].max : 30;
+    return acc + Number(max || 0);
+  }, 0);
+  const completedThemes = requiredForRdv.filter((k) => store[k] && store[k].completed).length;
+  const percent = maxTotal ? (score / maxTotal) * 100 : 0;
+  return { score, maxTotal, percent, completedThemes, totalThemes: requiredForRdv.length };
+}
+
 function computeDecision(store) {
-  const required = ['culture', 'motivation', 'pseudo', 'python'];
-  const thresholds = { culture: 60, motivation: 60, pseudo: 60, python: 50 };
-  const missing = required.filter((k) => !store[k] || !store[k].completed);
+  const missing = requiredForRdv.filter((k) => !store[k] || !store[k].completed);
   if (missing.length) return { status: 'incomplete', missing };
-  const failed = required.filter((k) => (store[k].percent || 0) < thresholds[k]);
+  const failed = requiredForRdv.filter((k) => (store[k].percent || 0) < thresholds[k]);
   if (failed.length) return { status: 'no', failed };
   return { status: 'yes' };
 }
@@ -69,69 +81,123 @@ function computeDecision(store) {
 function renderDecision() {
   const store = loadStore();
   const d = computeDecision(store);
+  const global = globalScoreRdv(store);
   const box = document.getElementById('decision');
   if (d.status === 'incomplete') {
-    box.innerHTML = `<span class="pending">Décision RDV : en attente</span><br><small>Tests manquants/incomplets : ${d.missing.join(', ')}</small>`;
+    box.innerHTML = `<span class="pending">Décision RDV : en attente</span><br><small>Tests 1-2-3 manquants/incomplets : ${d.missing.join(', ')}. Score global actuel : ${global.score}/${global.maxTotal} (${global.percent.toFixed(1)}%), tests terminés : ${global.completedThemes}/${global.totalThemes}.</small>`;
     return;
   }
   if (d.status === 'no') {
-    box.innerHTML = `<span class="ko">Décision RDV : NON</span><br><small>Thèmes sous le seuil : ${d.failed.join(', ')}</small>`;
+    box.innerHTML = `<span class="ko">Décision RDV : NON</span><br><small>Thèmes sous le seuil : ${d.failed.join(', ')}. Score global : ${global.score}/${global.maxTotal} (${global.percent.toFixed(1)}%).</small>`;
     return;
   }
-  box.innerHTML = '<span class="ok">Décision RDV : OUI</span><br><small>Profil cohérent pour proposer un rendez-vous.</small>';
+  box.innerHTML = `<span class="ok">Décision RDV : OUI</span><br><small>Profil cohérent pour proposer un rendez-vous. Score global : ${global.score}/${global.maxTotal} (${global.percent.toFixed(1)}%).</small>`;
+}
+
+function getThemeData() {
+  const store = loadStore();
+  return store[CONFIG.themeKey] || { answers: {}, score: 0, max: 0, percent: 0, completed: false };
+}
+
+function evaluateAnswers(answers) {
+  const total = payload.questions.length;
+  let answered = 0;
+  let correct = 0;
+
+  payload.questions.forEach((q) => {
+    if (!Object.prototype.hasOwnProperty.call(answers, q.id)) return;
+    answered += 1;
+    if (Number(answers[q.id]) === Number(q.answer)) correct += 1;
+  });
+
+  const completed = answered === total;
+  const percent = total ? (correct / total) * 100 : 0;
+  return { total, answered, correct, completed, percent };
+}
+
+function saveThemeFromAnswers(answers) {
+  const evaluation = evaluateAnswers(answers);
+  const store = loadStore();
+  store[CONFIG.themeKey] = {
+    answers,
+    score: evaluation.correct,
+    max: evaluation.total,
+    percent: evaluation.percent,
+    completed: evaluation.completed,
+    updatedAt: new Date().toISOString()
+  };
+  saveStore(store);
+  return evaluation;
+}
+
+function lockTheme() {
+  locked = true;
+  document.querySelectorAll('#questions input').forEach((input) => { input.disabled = true; });
+  const gradeBtn = document.getElementById('grade-btn');
+  gradeBtn.disabled = true;
+  gradeBtn.textContent = 'Test finalisé';
+}
+
+function renderResult(evaluation) {
+  const box = document.getElementById('result');
+
+  if (!evaluation.completed) {
+    box.innerHTML = `<span class="pending">Progression enregistrée.</span><br><small>${evaluation.answered}/${evaluation.total} réponses. Score actuel : ${evaluation.correct}/${evaluation.total} (${evaluation.percent.toFixed(1)}%).</small>`;
+    return;
+  }
+
+  if (evaluation.percent >= 60) {
+    box.innerHTML = `<span class="ok">Thème finalisé et validé.</span><br><small>Score : ${evaluation.correct}/${evaluation.total} (${evaluation.percent.toFixed(1)}%).</small>`;
+  } else {
+    box.innerHTML = `<span class="ko">Thème finalisé (sous seuil).</span><br><small>Score : ${evaluation.correct}/${evaluation.total} (${evaluation.percent.toFixed(1)}%).</small>`;
+  }
 }
 
 function renderQuestions() {
   const form = document.getElementById('questions');
   form.innerHTML = '';
+  const theme = getThemeData();
+  const answers = theme.answers || {};
 
   payload.questions.forEach((q, idx) => {
     const item = document.createElement('div');
     item.className = 'q-item';
 
     const options = q.options.map((opt, optIdx) =>
-      `<label><input type="radio" name="${q.id}" value="${optIdx}"> ${opt}</label>`
+      `<label><input type="radio" name="${q.id}" value="${optIdx}"${Number(answers[q.id]) === optIdx ? ' checked' : ''}> ${opt}</label>`
     ).join('');
 
     const code = q.code ? `<pre>${q.code}</pre>` : '';
     item.innerHTML = `<p>${idx + 1}) ${q.question}</p>${code}<div class="options">${options}</div>`;
     form.appendChild(item);
   });
+
+  const evaluation = saveThemeFromAnswers(answers);
+  renderResult(evaluation);
+  if (evaluation.completed) lockTheme();
+  renderDecision();
 }
 
 function gradeTheme() {
-  const total = payload.questions.length;
-  let answered = 0;
-  let correct = 0;
+  const theme = getThemeData();
+  const evaluation = saveThemeFromAnswers(theme.answers || {});
+  renderResult(evaluation);
+  if (evaluation.completed) lockTheme();
+  renderDecision();
+}
 
-  payload.questions.forEach((q) => {
-    const checked = document.querySelector(`input[name="${q.id}"]:checked`);
-    if (!checked) return;
-    answered += 1;
-    if (Number(checked.value) === Number(q.answer)) correct += 1;
-  });
+function handleChoiceChange(event) {
+  if (locked) return;
+  const target = event.target;
+  if (!target || target.type !== 'radio') return;
 
-  const completed = answered === total;
-  const percent = total ? (correct / total) * 100 : 0;
+  const theme = getThemeData();
+  const answers = { ...(theme.answers || {}) };
+  answers[target.name] = Number(target.value);
 
-  const store = loadStore();
-  store[CONFIG.themeKey] = {
-    score: correct,
-    max: total,
-    percent,
-    completed,
-    updatedAt: new Date().toISOString()
-  };
-  saveStore(store);
-
-  const box = document.getElementById('result');
-  if (!completed) {
-    box.innerHTML = `<span class="ko">Thème incomplet.</span><br><small>${total - answered} question(s) non répondues. Score actuel : ${correct}/${total} (${percent.toFixed(1)}%).</small>`;
-  } else if (percent >= 60) {
-    box.innerHTML = `<span class="ok">Thème validé.</span><br><small>Score : ${correct}/${total} (${percent.toFixed(1)}%).</small>`;
-  } else {
-    box.innerHTML = `<span class="ko">Thème sous le seuil.</span><br><small>Score : ${correct}/${total} (${percent.toFixed(1)}%).</small>`;
-  }
+  const evaluation = saveThemeFromAnswers(answers);
+  renderResult(evaluation);
+  if (evaluation.completed) lockTheme();
   renderDecision();
 }
 
@@ -140,7 +206,7 @@ async function init() {
     const res = await fetch(CONFIG.dataFile);
     payload = await res.json();
     renderQuestions();
-    renderDecision();
+    document.getElementById('questions').addEventListener('change', handleChoiceChange);
   } catch (err) {
     document.getElementById('result').innerHTML = `<span class="ko">Erreur de chargement.</span><br><small>${String(err)}</small>`;
   }

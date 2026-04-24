@@ -38,13 +38,13 @@ button{border:none;border-radius:8px;padding:10px 14px;background:#0984e3;color:
   <div class="header-bar"><strong>Test technique</strong></div>
   <p class="back"><a href="../index.html">← Retour au catalogue</a></p>
   <h1>Test d'entrée filière Tech</h1>
-  <p class="subtitle">30 questions par thème avec jauges + dernier test en Python. Décision RDV automatique à la fin.</p>
+  <p class="subtitle">30 questions QCM par thème + un test Python progressif. Décision RDV basée sur les tests 1, 2 et 3.</p>
 
   <div class="block">
     <ul class="list">
-      <li class="item"><div><div class="name">Test 1 - Culture générale</div><div class="desc">Jauges (30 questions).</div></div><a class="open" href="test-culture-generale.html">Ouvrir</a></li>
-      <li class="item"><div><div class="name">Test 2 - Motivation</div><div class="desc">Jauges (30 questions).</div></div><a class="open" href="test-motivation.html">Ouvrir</a></li>
-      <li class="item"><div><div class="name">Test 3 - Raisonnement code (pseudo-code)</div><div class="desc">Jauges (30 questions, sans Python).</div></div><a class="open" href="test-code-pseudocode.html">Ouvrir</a></li>
+      <li class="item"><div><div class="name">Test 1 - Culture générale</div><div class="desc">QCM (30 questions).</div></div><a class="open" href="test-culture-generale.html">Ouvrir</a></li>
+      <li class="item"><div><div class="name">Test 2 - Motivation</div><div class="desc">QCM (30 questions).</div></div><a class="open" href="test-motivation.html">Ouvrir</a></li>
+      <li class="item"><div><div class="name">Test 3 - Raisonnement code (pseudo-code)</div><div class="desc">QCM (30 questions, sans Python).</div></div><a class="open" href="test-code-pseudocode.html">Ouvrir</a></li>
       <li class="item"><div><div class="name">Test 4 - Exercice Python</div><div class="desc">Progressif, question par question.</div></div><a class="open" href="test-code-python.html">Ouvrir</a></li>
     </ul>
   </div>
@@ -54,8 +54,9 @@ button{border:none;border-radius:8px;padding:10px 14px;background:#0984e3;color:
     <div class="row"><span>Culture générale</span><span id="s-culture" class="badge pending">En attente</span></div>
     <div class="row"><span>Motivation</span><span id="s-motivation" class="badge pending">En attente</span></div>
     <div class="row"><span>Raisonnement code</span><span id="s-pseudo" class="badge pending">En attente</span></div>
-    <div class="row"><span>Exercice Python</span><span id="s-python" class="badge pending">En attente</span></div>
-    <button type="button" id="refresh">Rafraîchir la synthèse</button>
+    <div class="row"><span>Exercice Python (optionnel RDV)</span><span id="s-python" class="badge pending">En attente</span></div>
+    <div class="row"><span>Score global (tests 1-2-3)</span><span id="s-global" class="badge pending">En attente</span></div>
+    <button type="button" id="redo-tests">Refaire les tests 1-2-3</button>
     <div id="decision" class="result">Décision RDV en attente.</div>
   </div>
 </div>
@@ -63,10 +64,12 @@ button{border:none;border-radius:8px;padding:10px 14px;background:#0984e3;color:
 <script>
 const STORE_KEY = 'testTechScoresV3';
 const thresholds = { culture: 60, motivation: 60, pseudo: 60, python: 50 };
+const requiredForRdv = ['culture', 'motivation', 'pseudo'];
 
 function loadStore() {
   try { return JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch (err) { return {}; }
 }
+function saveStore(store) { localStorage.setItem(STORE_KEY, JSON.stringify(store)); }
 
 function renderTheme(themeKey, elId) {
   const store = loadStore();
@@ -88,12 +91,22 @@ function renderTheme(themeKey, elId) {
   }
 }
 
+function globalScoreRdv(store) {
+  const score = requiredForRdv.reduce((acc, k) => acc + Number((store[k] && store[k].score) || 0), 0);
+  const maxTotal = requiredForRdv.reduce((acc, k) => {
+    const max = store[k] && typeof store[k].max === 'number' ? store[k].max : 30;
+    return acc + Number(max || 0);
+  }, 0);
+  const completedThemes = requiredForRdv.filter((k) => store[k] && store[k].completed).length;
+  const percent = maxTotal ? (score / maxTotal) * 100 : 0;
+  return { score, maxTotal, percent, completedThemes, totalThemes: requiredForRdv.length };
+}
+
 function computeDecision(store) {
-  const required = ['culture', 'motivation', 'pseudo', 'python'];
-  const missing = required.filter((k) => !store[k] || !store[k].completed);
+  const missing = requiredForRdv.filter((k) => !store[k] || !store[k].completed);
   if (missing.length) return { status: 'incomplete', missing };
 
-  const failed = required.filter((k) => (store[k].percent || 0) < thresholds[k]);
+  const failed = requiredForRdv.filter((k) => (store[k].percent || 0) < thresholds[k]);
   if (failed.length) return { status: 'no', failed };
 
   return { status: 'yes' };
@@ -106,21 +119,36 @@ function renderDecision() {
   renderTheme('pseudo', 's-pseudo');
   renderTheme('python', 's-python');
 
+  const global = globalScoreRdv(store);
+  const globalEl = document.getElementById('s-global');
+  if (!global.completedThemes && !global.score) {
+    globalEl.className = 'badge pending';
+    globalEl.textContent = 'En attente';
+  } else {
+    globalEl.className = 'badge';
+    globalEl.textContent = `${global.score}/${global.maxTotal} (${global.percent.toFixed(1)}%) - ${global.completedThemes}/${global.totalThemes} tests`;
+  }
+
   const d = computeDecision(store);
   const box = document.getElementById('decision');
 
   if (d.status === 'incomplete') {
-    box.innerHTML = `<span class="pending"><strong>Décision RDV : en attente</strong></span><br><small>Tests manquants ou incomplets : ${d.missing.join(', ')}</small>`;
+    box.innerHTML = `<span class="pending"><strong>Décision RDV : en attente</strong></span><br><small>Tests manquants ou incomplets : ${d.missing.join(', ')}. Score global actuel : ${global.score}/${global.maxTotal} (${global.percent.toFixed(1)}%), tests terminés : ${global.completedThemes}/${global.totalThemes}.</small>`;
     return;
   }
   if (d.status === 'no') {
-    box.innerHTML = `<span class="ko"><strong>Décision RDV : NON</strong></span><br><small>Thèmes sous le seuil : ${d.failed.join(', ')}</small>`;
+    box.innerHTML = `<span class="ko"><strong>Décision RDV : NON</strong></span><br><small>Thèmes sous le seuil : ${d.failed.join(', ')}. Score global : ${global.score}/${global.maxTotal} (${global.percent.toFixed(1)}%).</small>`;
     return;
   }
-  box.innerHTML = '<span class="ok"><strong>Décision RDV : OUI</strong></span><br><small>Profil validé pour proposer un rendez-vous.</small>';
+  box.innerHTML = `<span class="ok"><strong>Décision RDV : OUI</strong></span><br><small>Profil validé pour proposer un rendez-vous. Score global : ${global.score}/${global.maxTotal} (${global.percent.toFixed(1)}%).</small>`;
 }
 
-document.getElementById('refresh').addEventListener('click', renderDecision);
+document.getElementById('redo-tests').addEventListener('click', () => {
+  const store = loadStore();
+  requiredForRdv.forEach((k) => { delete store[k]; });
+  saveStore(store);
+  renderDecision();
+});
 renderDecision();
 </script>
 </body>

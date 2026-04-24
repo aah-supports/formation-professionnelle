@@ -33,7 +33,7 @@ pre{background:#2d3436;color:#dfe6e9;padding:12px;border-radius:10px;overflow:au
   <div class="header-bar"><strong>Test technique</strong></div>
   <p class="back"><a href="index.html">← Retour aux tests</a></p>
   <h1>Test 4 - Exercice Python</h1>
-  <p class="subtitle">Dernier test : 1 question + 1 test, puis passage à la suivante.</p>
+  <p class="subtitle">Test additionnel : 1 question + 1 test, puis passage à la suivante.</p>
 
   <section class="panel">
     <span class="badge" id="progress">Question</span>
@@ -48,6 +48,7 @@ pre{background:#2d3436;color:#dfe6e9;padding:12px;border-radius:10px;overflow:au
     <div class="row">
       <button type="button" id="run-test" disabled>Lancer le test de cette question</button>
       <button type="button" id="next-question" disabled>Passer à la question suivante</button>
+      <button type="button" id="retry-python">Ré-essayer ce test</button>
     </div>
 
     <div id="python-result" class="result" aria-live="polite">Aucun test lancé.</div>
@@ -66,6 +67,7 @@ pre{background:#2d3436;color:#dfe6e9;padding:12px;border-radius:10px;overflow:au
 <script>
 const STORE_KEY = 'testTechScoresV3';
 const thresholds = { culture: 60, motivation: 60, pseudo: 60, python: 50 };
+const requiredForRdv = ['culture', 'motivation', 'pseudo'];
 
 const state = {
   engine: null,
@@ -83,30 +85,41 @@ function loadStore() {
 function saveStore(store) { localStorage.setItem(STORE_KEY, JSON.stringify(store)); }
 
 function computeDecision(store) {
-  const required = ['culture', 'motivation', 'pseudo', 'python'];
-  const missing = required.filter((k) => !store[k] || !store[k].completed);
+  const missing = requiredForRdv.filter((k) => !store[k] || !store[k].completed);
   if (missing.length) return { status: 'incomplete', missing };
 
-  const failed = required.filter((k) => (store[k].percent || 0) < thresholds[k]);
+  const failed = requiredForRdv.filter((k) => (store[k].percent || 0) < thresholds[k]);
   if (failed.length) return { status: 'no', failed };
 
   return { status: 'yes' };
 }
 
+function globalScoreRdv(store) {
+  const score = requiredForRdv.reduce((acc, k) => acc + Number((store[k] && store[k].score) || 0), 0);
+  const maxTotal = requiredForRdv.reduce((acc, k) => {
+    const max = store[k] && typeof store[k].max === 'number' ? store[k].max : 30;
+    return acc + Number(max || 0);
+  }, 0);
+  const completedThemes = requiredForRdv.filter((k) => store[k] && store[k].completed).length;
+  const percent = maxTotal ? (score / maxTotal) * 100 : 0;
+  return { score, maxTotal, percent, completedThemes, totalThemes: requiredForRdv.length };
+}
+
 function renderDecision() {
   const store = loadStore();
   const d = computeDecision(store);
+  const global = globalScoreRdv(store);
   const box = document.getElementById('decision');
 
   if (d.status === 'incomplete') {
-    box.innerHTML = `<span class="pending">Décision RDV : en attente</span><br><small>Tests manquants/incomplets : ${d.missing.join(', ')}</small>`;
+    box.innerHTML = `<span class="pending">Décision RDV : en attente</span><br><small>Décision basée sur les tests 1-2-3. Manquants/incomplets : ${d.missing.join(', ')}. Score global actuel : ${global.score}/${global.maxTotal} (${global.percent.toFixed(1)}%), tests terminés : ${global.completedThemes}/${global.totalThemes}.</small>`;
     return;
   }
   if (d.status === 'no') {
-    box.innerHTML = `<span class="ko">Décision RDV : NON</span><br><small>Thèmes sous le seuil : ${d.failed.join(', ')}</small>`;
+    box.innerHTML = `<span class="ko">Décision RDV : NON</span><br><small>Thèmes sous le seuil : ${d.failed.join(', ')}. Score global : ${global.score}/${global.maxTotal} (${global.percent.toFixed(1)}%).</small>`;
     return;
   }
-  box.innerHTML = '<span class="ok">Décision RDV : OUI</span><br><small>Profil valide pour proposer un rendez-vous.</small>';
+  box.innerHTML = `<span class="ok">Décision RDV : OUI</span><br><small>Profil valide pour proposer un rendez-vous. Score global (tests 1-2-3) : ${global.score}/${global.maxTotal} (${global.percent.toFixed(1)}%).</small>`;
 }
 
 function getCurrentQuestion() { return state.questions[state.index] || null; }
@@ -324,6 +337,18 @@ document.getElementById('next-question').addEventListener('click', () => {
 
   updateScore();
   document.getElementById('python-result').innerHTML = `<span class="ok">Parcours Python terminé.</span><br><small>Score final : ${totalScore()} / ${maxScore()}</small>`;
+});
+
+document.getElementById('retry-python').addEventListener('click', () => {
+  state.index = 0;
+  state.drafts = {};
+  state.passed = {};
+  const store = loadStore();
+  delete store.python;
+  saveStore(store);
+  renderQuestion();
+  updateScore();
+  document.getElementById('python-result').textContent = 'Aucun test lancé.';
 });
 
 async function init() {
