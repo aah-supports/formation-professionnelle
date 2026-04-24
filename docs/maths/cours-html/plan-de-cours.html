@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de Cours</title>
+<style>
+@page{margin:20mm 18mm;size:A4}
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:#2d3436;line-height:1.7;max-width:800px;margin:0 auto;padding:30px 24px 60px}
+h1{font-size:1.6rem;color:#0984e3;border-bottom:2px solid #74b9ff;padding-bottom:8px;margin:24px 0 16px}
+h2{font-size:1.25rem;color:#2d3436;margin:28px 0 12px;padding-bottom:4px;border-bottom:1px solid #dfe6e9}
+h3{font-size:1.05rem;color:#636e72;margin:20px 0 8px}
+h4{font-size:.95rem;margin:16px 0 6px}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:4px 0}
+code{background:#f1f2f6;padding:1px 5px;border-radius:3px;font-family:"SF Mono",Monaco,Consolas,"Liberation Mono",monospace;font-size:.88em}
+pre{background:#2d3436;color:#dfe6e9;padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:.82rem;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+th,td{border:1px solid #dfe6e9;padding:8px 12px;text-align:left;font-size:.9rem}
+th{background:#f1f2f6;font-weight:600}
+tr:nth-child(even){background:#f8f9fa}
+blockquote{border-left:4px solid #74b9ff;margin:12px 0;padding:8px 16px;background:#f8f9fa;color:#636e72}
+strong{color:#2d3436}
+hr{border:none;border-top:1px solid #dfe6e9;margin:24px 0}
+.header-bar{background:#0984e3;color:#fff;padding:12px 20px;border-radius:8px;margin-bottom:24px;font-size:.85rem}
+.header-bar strong{color:#fff}
+</style>
+</head>
+<body>
+<div class="header-bar"><strong>Maths - Terminale</strong></div>
+<h1>Maths - Plan de cours détaillé</h1>
+<p><strong>Module</strong> : Dispersion et probabilités (préparation Bayes)
+<strong>Durée</strong> : 4h30
+<strong>Niveau</strong> : Bac / Terminale</p>
+<hr>
+<h2>Déroulé de la session</h2>
+<table>
+<thead>
+<tr>
+<th>Séquence</th>
+<th>Durée</th>
+<th>Objectif principal</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ouverture et diagnostic rapide</td>
+<td>10 min</td>
+<td>Activer les prérequis et repérer les difficultés</td>
+</tr>
+<tr>
+<td>Chapitre 1 - Mesures de dispersion</td>
+<td>60 min</td>
+<td>Mesurer et interpréter la variabilité d'une série</td>
+</tr>
+<tr>
+<td>Exercices chapitre 1 (10 exercices)</td>
+<td>35 min</td>
+<td>Automatiser les calculs et le choix d'indicateurs</td>
+</tr>
+<tr>
+<td>Pause</td>
+<td>10 min</td>
+<td>Respiration pédagogique</td>
+</tr>
+<tr>
+<td>Chapitre 2 - Probabilités simples vers Bayes</td>
+<td>55 min</td>
+<td>Raisonner avec des conditionnements et arbres</td>
+</tr>
+<tr>
+<td>Exercices chapitre 2 (10 exercices)</td>
+<td>30 min</td>
+<td>Sécuriser les méthodes de calcul et d'interprétation</td>
+</tr>
+<tr>
+<td>Projet final</td>
+<td>60 min</td>
+<td>Mobiliser dispersion et probabilités sur un cas complet</td>
+</tr>
+<tr>
+<td>Synthèse finale et correction</td>
+<td>10 min</td>
+<td>Valider les acquis essentiels</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>CHAPITRE 1 - Mesures de dispersion</h2>
+<h3>Objectifs</h3>
+<ul>
+<li>Comprendre pourquoi deux séries peuvent avoir la même moyenne mais des profils différents</li>
+<li>Calculer étendue, variance, écart-type, quartiles et écart interquartile</li>
+<li>Choisir l'indicateur le plus robuste selon la présence de valeurs extrêmes</li>
+</ul>
+<h3>Contenu détaillé</h3>
+<ol>
+<li><strong>Rappel centralité vs dispersion</strong> (10 min)
+<ul>
+<li>Moyenne et médiane : ce qu'elles disent, ce qu'elles ne disent pas</li>
+<li>Exemple de deux classes ayant la même moyenne</li>
+</ul>
+</li>
+<li><strong>Étendue et limites</strong> (10 min)
+<ul>
+<li>Calcul simple : <code>max - min</code></li>
+<li>Sensibilité aux valeurs aberrantes</li>
+</ul>
+</li>
+<li><strong>Variance et écart-type</strong> (25 min)
+<ul>
+<li>Interprétation de l'écart à la moyenne</li>
+<li>Calcul guidé pas à pas</li>
+<li>Lecture de l'unité de l'écart-type</li>
+</ul>
+</li>
+<li><strong>Quartiles et écart interquartile</strong> (20 min)
+<ul>
+<li>Définir Q1, Q2, Q3</li>
+<li>Calcul de l'IQR : <code>Q3 - Q1</code></li>
+<li>Quand préférer IQR à l'écart-type</li>
+</ul>
+</li>
+<li><strong>Lecture graphique</strong> (15 min)
+<ul>
+<li>Boîte à moustaches : médiane, dispersion, valeurs extrêmes</li>
+<li>Comparer rapidement deux distributions</li>
+</ul>
+</li>
+<li><strong>Série d'exercices (10 items)</strong> (35 min)
+<ul>
+<li>10 exercices progressifs sur étendue, écart-type, IQR et interprétation</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>CHAPITRE 2 - Probabilités simples vers Bayes</h2>
+<h3>Objectifs</h3>
+<ul>
+<li>Poser proprement un univers et des événements</li>
+<li>Utiliser la probabilité conditionnelle sur des situations réalistes</li>
+<li>Préparer l'inversion du conditionnement (intuition de Bayes)</li>
+</ul>
+<h3>Contenu détaillé</h3>
+<ol>
+<li><strong>Univers et événements</strong> (10 min)
+<ul>
+<li>Notations : <code>Ω</code>, <code>A</code>, <code>B</code></li>
+<li>Complémentaire, union, intersection</li>
+</ul>
+</li>
+<li><strong>Probabilité conditionnelle</strong> (20 min)
+<ul>
+<li>Formule : <code>P(A|B)=P(A∩B)/P(B)</code></li>
+<li>Différence entre <code>P(A|B)</code> et <code>P(B|A)</code></li>
+<li>Erreurs classiques de lecture</li>
+</ul>
+</li>
+<li><strong>Arbres de probabilités</strong> (20 min)
+<ul>
+<li>Construire les branches</li>
+<li>Règle du produit sur une branche</li>
+<li>Sommer des chemins compatibles</li>
+</ul>
+</li>
+<li><strong>Probabilités totales</strong> (10 min)
+<ul>
+<li>Décomposer un événement selon une partition</li>
+<li>Lecture en tableau et en arbre</li>
+</ul>
+</li>
+<li><strong>Préparation à Bayes</strong> (10 min)
+<ul>
+<li>Question type : "si le test est positif, quelle est la probabilité d'être malade ?"</li>
+<li>Comprendre le rôle de la fréquence de base</li>
+</ul>
+</li>
+<li><strong>Série d'exercices (10 items)</strong> (30 min)
+<ul>
+<li>10 exercices progressifs sur conditionnement, arbre et probabilité totale</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>Projet final - 1h</h2>
+<ul>
+<li>Étude de cas unique : résultats scolaires + dépistage fictif</li>
+<li>Calculs attendus : dispersion (étendue, quartiles, IQR) + probabilités conditionnelles</li>
+<li>Livrable : raisonnement écrit, arbre annoté, conclusion argumentée</li>
+</ul>
+<hr>
+<h2>Synthèse finale</h2>
+<ul>
+<li>Relier dispersion et prise de décision sur des données</li>
+<li>Valider les notations de probabilité conditionnelle</li>
+<li>Reformuler en français une conclusion probabiliste correcte</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Critère</th>
+<th>Attendu fin de session</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dispersion</td>
+<td>Choix et interprétation correcte de l'indicateur</td>
+</tr>
+<tr>
+<td>Conditionnement</td>
+<td>Calcul juste et interprétation claire</td>
+</tr>
+<tr>
+<td>Arbre de probabilité</td>
+<td>Construction et lecture sans erreur de branche</td>
+</tr>
+</tbody></table>
+
+</body>
+</html>
