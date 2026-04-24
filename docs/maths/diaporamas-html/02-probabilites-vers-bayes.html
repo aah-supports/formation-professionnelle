@@ -58,9 +58,31 @@
       margin: 10px 0;
     }
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .method-list { margin: 0; padding-left: 18px; }
+    .method-list li { margin: 6px 0; }
     table.simple { width: 100%; border-collapse: collapse; margin-top: 10px; }
     table.simple th, table.simple td { border: 1px solid #2f3640; padding: 8px 10px; text-align: center; font-size: .74em; }
     table.simple th { color: #f8fafc; background: #0f172a; }
+    .tree {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: .74em;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: #e2e8f0;
+      line-height: 1.45;
+      white-space: pre;
+    }
+    .result-box {
+      border: 1px solid #2f3640;
+      border-left: 4px solid var(--green);
+      border-radius: 8px;
+      background: #0b1412;
+      padding: 10px 12px;
+      margin-top: 10px;
+      font-size: .82em;
+    }
     .slide-nav {
       position: fixed;
       left: 14px;
@@ -98,7 +120,7 @@
         <p class="subtitle">Raisonner avec les conditionnements.</p>
         <div class="card">
           <span class="tag purple">Objectif</span>
-          <p>Savoir calculer et interpréter une probabilité conditionnelle, puis préparer l'inversion du conditionnement.</p>
+          <p>Passer de la probabilité conditionnelle à une application complète de la probabilité totale puis de Bayes.</p>
         </div>
       </section>
 
@@ -108,92 +130,114 @@
           <span class="tag cyan">Rappels</span>
           <ul>
             <li><strong>Ω</strong> : univers des issues possibles.</li>
-            <li><strong>A, B</strong> : événements.</li>
-            <li><strong>Ā</strong> : complémentaire de A.</li>
-            <li><strong>A ∩ B</strong> : A et B en même temps.</li>
-            <li><strong>A ∪ B</strong> : A ou B.</li>
+            <li><strong>M</strong> : événement "malade" ; <strong>non M</strong> : complémentaire.</li>
+            <li><strong>+</strong> : événement "test positif".</li>
+            <li><strong>M ∩ +</strong> : malade et test positif.</li>
           </ul>
         </div>
       </section>
 
       <section>
-        <h2>Probabilité conditionnelle</h2>
+        <h2>Méthode en 5 étapes</h2>
         <div class="card">
-          <span class="tag green">Formule</span>
-          <div class="equation">P(A|B) = P(A ∩ B) / P(B) avec P(B) ≠ 0</div>
-          <ul>
-            <li>"Sachant B", on restreint l'univers à B.</li>
-            <li>Attention : <code>P(A|B)</code> n'est pas <code>P(B|A)</code>.</li>
-          </ul>
+          <span class="tag orange">Procédure</span>
+          <ol class="method-list">
+            <li>Poser les données de fréquence de base et de test.</li>
+            <li>Construire l'arbre (M / non M puis + / -).</li>
+            <li>Calculer les probabilités de branches complètes.</li>
+            <li>Appliquer la probabilité totale pour obtenir <code>P(+)</code>.</li>
+            <li>Appliquer Bayes pour obtenir <code>P(M|+)</code>.</li>
+          </ol>
         </div>
       </section>
 
       <section>
-        <h2>Arbre de probabilités</h2>
-        <div class="two-col">
-          <div class="card">
-            <span class="tag orange">Méthode</span>
-            <ul>
-              <li>Écrire les branches à chaque étape.</li>
-              <li>Multiplier sur une branche complète.</li>
-              <li>Additionner les branches compatibles.</li>
-            </ul>
-          </div>
-          <div class="card">
-            <span class="tag cyan">Exemple</span>
-            <p>Test médical : Test+ / Test- selon Malade / Non malade.</p>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2>Probabilités totales</h2>
+        <h2>Exemple - Données</h2>
         <div class="card">
-          <span class="tag purple">Idée</span>
-          <p>Si B et B̄ forment une partition :</p>
-          <div class="equation">P(A) = P(A|B)P(B) + P(A|B̄)P(B̄)</div>
-          <p>Très utile avant d'inverser un conditionnement.</p>
-        </div>
-      </section>
-
-      <section>
-        <h2>Préparer Bayes sans surcharge</h2>
-        <div class="card">
-          <span class="tag green">Question type</span>
-          <p>"Le test est positif : quelle est la probabilité d'être malade ?"</p>
-          <ul>
-            <li>On cherche un conditionnement inversé.</li>
-            <li>On ne doit pas oublier la fréquence de base de la maladie.</li>
-            <li>Le tableau ou l'arbre évite les erreurs.</li>
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <h2>Exemple chiffré simple</h2>
-        <div class="card">
-          <span class="tag orange">Données</span>
+          <span class="tag orange">Hypothèses</span>
           <table class="simple">
             <thead>
-              <tr><th></th><th>Malade</th><th>Non malade</th></tr>
+              <tr><th></th><th>Malade (M)</th><th>Non malade (non M)</th></tr>
             </thead>
             <tbody>
               <tr><td>Population</td><td>1%</td><td>99%</td></tr>
               <tr><td>Test positif</td><td>95%</td><td>5%</td></tr>
             </tbody>
           </table>
-          <p>Lecture guidée : un test positif ne signifie pas automatiquement "forte probabilité d'être malade".</p>
+          <p>Objectif : calculer <code>P(+)</code> puis <code>P(M|+)</code>.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Arbre de probabilités (joli format)</h2>
+        <div class="card">
+          <span class="tag cyan">Visualisation</span>
+          <div class="tree">Population
++-- M (1%)
+|   +-- + (95%)  => P(M ∩ +) = 0,01 x 0,95 = 0,0095
+|   \-- - (5%)   => P(M ∩ -) = 0,01 x 0,05 = 0,0005
+\-- non M (99%)
+    +-- + (5%)   => P(non M ∩ +) = 0,99 x 0,05 = 0,0495
+    \-- - (95%)  => P(non M ∩ -) = 0,99 x 0,95 = 0,9405</div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Correction de l'exemple - Probabilité totale</h2>
+        <div class="card">
+          <span class="tag purple">Étape 1</span>
+          <div class="equation">P(+) = P(+|M)P(M) + P(+|non M)P(non M)</div>
+          <div class="equation">P(+) = 0,95×0,01 + 0,05×0,99 = 0,059</div>
+          <div class="result-box"><strong>Résultat</strong> : <code>P(+)=5,9%</code></div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Correction de l'exemple - Bayes</h2>
+        <div class="card">
+          <span class="tag green">Étape 2</span>
+          <div class="equation">P(M|+) = [P(+|M)P(M)] / P(+)</div>
+          <div class="equation">P(M|+) = (0,95×0,01) / 0,059 = 0,161</div>
+          <div class="result-box"><strong>Résultat</strong> : <code>P(M|+) ≈ 16,1%</code></div>
+          <p>Conclusion : un test positif n'implique pas une probabilité majoritaire d'être malade.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Vérification sur 10 000 personnes</h2>
+        <div class="card">
+          <span class="tag cyan">Contrôle intuitif</span>
+          <ul>
+            <li>Malades : 100 -> positifs vrais : 95</li>
+            <li>Non malades : 9 900 -> faux positifs : 495</li>
+            <li>Total positifs : 590</li>
+            <li><code>P(M|+) = 95/590 ≈ 16,1%</code></li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>Formules à retenir</h2>
+        <div class="two-col">
+          <div class="card">
+            <span class="tag purple">Probabilité totale</span>
+            <div class="equation">P(A)=P(A|B)P(B)+P(A|B barre)P(B barre)</div>
+          </div>
+          <div class="card">
+            <span class="tag green">Bayes</span>
+            <div class="equation">P(B|A)=[P(A|B)P(B)]/P(A)</div>
+          </div>
         </div>
       </section>
 
       <section>
         <h2>Exercice guidé</h2>
         <div class="card">
-          <span class="tag cyan">À faire</span>
+          <span class="tag orange">Application</span>
           <ul>
-            <li>Construire l'arbre correspondant à l'exemple.</li>
-            <li>Calculer la probabilité d'avoir un test positif.</li>
-            <li>Interpréter qualitativement la probabilité recherchée après test positif.</li>
+            <li>Refaire le même exemple avec un faux positif de 2%.</li>
+            <li>Comparer la nouvelle valeur de <code>P(M|+)</code>.</li>
+            <li>Conclure sur l'impact des faux positifs.</li>
           </ul>
         </div>
       </section>
@@ -215,9 +259,9 @@
         <div class="card">
           <span class="tag purple">À retenir</span>
           <ul>
-            <li>Conditionner, c'est restreindre l'univers.</li>
-            <li>Arbres et tableaux limitent les confusions.</li>
-            <li>On est prêt à aborder le théorème de Bayes avec sérénité.</li>
+            <li>Arbre -> branches -> probabilité totale -> Bayes.</li>
+            <li>Ne pas confondre <code>P(M|+)</code> et <code>P(+|M)</code>.</li>
+            <li>La fréquence de base influence fortement l'interprétation.</li>
           </ul>
         </div>
       </section>
